@@ -1,0 +1,66 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- development
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  BROWSER: chrome
+
+jobs:
+  - job : Setup
+    steps:
+      - bash: 
+          "curl -k -i $(PBURL) --fail --connect-timeout 30"
+        displayName: 'Check URL is reachable'    
+    
+
+  - job: OrderFormAcceptanceTests
+    dependsOn: Setup
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use DotNet Core 3.1.x'
+      inputs:
+        packageType: 'sdk'
+        version: '3.1.101'
+        includePreviewVersions: false
+        installationPath: '$(Agent.ToolsDirectory)'
+
+    - task: AzureKeyVault@1
+      inputs:
+        azureSubscription: 'NHSAPP-BuyingCatalogue (Non-Prod)'
+        KeyVaultName: 'gpitfutures-dev-kv'
+        SecretsFilter: "*"
+
+    - task: A8515EC8-7254-4FFD-912C-86772E2B5962@3
+      displayName: 'Replace tokens'
+      inputs:
+        targetFiles: '**/*.json'
+        encoding: 'auto'
+        writeBOM: true
+        actionOnMissing: 'continue'
+        keepToken: true
+        tokenPrefix: '#{'
+        tokenSuffix: '}#'
+        emptyValue: 
+    
+    - task: Bash@3
+      displayName: Selenium Grid Setup
+      inputs:
+        targetType: 'inline'
+        script: |
+          docker-compose stop &&
+          docker-compose rm -f &&
+          docker-compose up --scale chrome=4 --scale firefox=4  -d
+    - task: DotNetCoreCLI@2
+      displayName: "Run Order Form Acceptance Tests"
+      inputs:
+        command: 'test'
+        projects: 'src/OrderFormAcceptanceTests.Tests/*csproj'
+        arguments: '-v n'        
