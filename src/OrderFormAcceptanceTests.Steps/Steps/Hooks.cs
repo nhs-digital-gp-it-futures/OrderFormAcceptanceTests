@@ -1,0 +1,19 @@
+﻿using OrderFormAcceptanceTests.Steps.Utils;
+using System.Threading.Tasks;
+using TechTalk.SpecFlow;
+
+namespace OrderFormAcceptanceTests.Steps.Steps
+{
+    public sealed class Hooks : TestBase
+    {
+        public Hooks(UITest test, ScenarioContext context) : base(test, context)
+        {
+        }
+
+        [AfterScenario]
+        public async Task AfterScenario()
+        {
+            Test.Driver.Quit();
+        }
+    }
+}
