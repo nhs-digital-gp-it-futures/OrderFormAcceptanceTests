@@ -63,7 +63,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the User will be informed they cannot access that feature")]
         public void ThenTheUserWillBeInformedTheyCannotAccessThatFeature()
         {
-            Test.Pages.OrderForm.ErrorTitle().Should().BeEquivalentTo("You're not authorised to view this page");
+            Test.Pages.OrderForm.ErrorTitle().Should().ContainEquivalentOf("not authorised");
         }
     }
 }
