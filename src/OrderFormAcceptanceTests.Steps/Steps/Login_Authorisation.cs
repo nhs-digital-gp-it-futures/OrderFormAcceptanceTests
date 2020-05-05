@@ -1,4 +1,6 @@
-﻿using OrderFormAcceptanceTests.Steps.Utils;
+﻿using FluentAssertions;
+using OrderFormAcceptanceTests.Actions.Utils;
+using OrderFormAcceptanceTests.Steps.Utils;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -10,58 +12,58 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
         }
 
-        [Given(@"that a User is not authenticated and the user  logs in using the '(.*)' function")]
-        public void GivenThatAUserIsNotAuthenticatedAndTheUserLogsInUsingTheFunction(string p0)
+        [Given(@"that a User is not authenticated and the user logs in using the 'login' function")]
+        public void GivenThatAUserIsNotAuthenticatedAndTheUserLogsInUsingTheFunction()
         {
-            Context.Pending();
+            Test.Pages.Homepage.ClickLoginButton();
         }
         
         [Given(@"that a User is not authenticated and the user selects the order form tile")]
         public void GivenThatAUserIsNotAuthenticatedAndTheUserSelectsTheOrderFormTile()
         {
-            Context.Pending();
+            Test.Pages.Homepage.ClickOrderTile();
         }
         
         [Given(@"the User is prompted to login")]
         public void GivenTheUserIsPromptedToLogin()
         {
-            Context.Pending();
+            Test.Pages.Authentication.PageDisplayed();
         }
         
         [When(@"the User is a Buyer User")]
         public void WhenTheUserIsABuyerUser()
         {
-            Context.Pending();
+            Context.Add("User", EnvironmentVariables.User(UserType.Buyer));
         }
         
         [When(@"the User is not a Buyer User")]
         public void WhenTheUserIsNotABuyerUser()
         {
-            Context.Pending();
+            Context.Add("User", EnvironmentVariables.User(UserType.Authority));            
         }
         
         [Then(@"the Buyer will be logged in")]
         public void ThenTheBuyerWillBeLoggedIn()
         {
-            Context.Pending();
+            Test.Pages.Authentication.Login((User)Context["User"]);
         }
         
         [Then(@"the Buyer will be able to access the Order Form feature without having to authenticate again")]
         public void ThenTheBuyerWillBeAbleToAccessTheOrderFormFeatureWithoutHavingToAuthenticateAgain()
         {
-            Context.Pending();
+            Test.Pages.Homepage.ClickOrderTile();
         }
         
         [Then(@"will be taken to the Order Form Feature")]
         public void ThenWillBeTakenToTheOrderFormFeature()
         {
-            Context.Pending();
+            Test.Driver.Url.Should().Contain("/order/");
         }
         
         [Then(@"the User will be informed they cannot access that feature")]
         public void ThenTheUserWillBeInformedTheyCannotAccessThatFeature()
         {
-            Context.Pending();
+            Test.Pages.OrderForm.ErrorTitle().Should().BeEquivalentTo("You're not authorised to view this page");
         }
     }
 }

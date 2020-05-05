@@ -4,7 +4,7 @@
 	So that I can use the Order Form if I have permission
 
 Scenario: Login as a Buyer via Login
-	Given that a User is not authenticated and the user  logs in using the 'login' function
+	Given that a User is not authenticated and the user logs in using the 'login' function
 	When the User is a Buyer User
 	Then the Buyer will be logged in
 	And the Buyer will be able to access the Order Form feature without having to authenticate again

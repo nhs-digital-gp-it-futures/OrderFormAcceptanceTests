@@ -15,8 +15,4 @@
     <ProjectReference Include="..\OrderFormAcceptanceTests.TestData\OrderFormAcceptanceTests.TestData.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\" />
-  </ItemGroup>
-
 </Project>

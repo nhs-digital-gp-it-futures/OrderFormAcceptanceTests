@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Collections;
+using OrderFormAcceptanceTests.Actions.Pages;
 
 namespace OrderFormAcceptanceTests.Actions
 {
@@ -9,6 +10,9 @@ namespace OrderFormAcceptanceTests.Actions
         {
             PageActionCollection = new PageActionCollection
             {
+                Authentication = new Authentication(driver),
+                Homepage = new Homepage(driver),
+                OrderForm = new OrderForm(driver)
             };
         }
 
