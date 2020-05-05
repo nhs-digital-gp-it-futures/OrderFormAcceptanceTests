@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using OrderFormAcceptanceTests.Actions.Utils;
 
 namespace OrderFormAcceptanceTests.Steps.Utils
 {
@@ -65,6 +66,30 @@ namespace OrderFormAcceptanceTests.Steps.Utils
                 .FirstOrDefault(s => !s.Contains("#{"));
 
             return string.IsNullOrEmpty(result) ? defaultValue : result;
+        }
+
+        internal static User User(UserType userType)
+        {
+            string userTypeString = string.Empty;
+            string defaultUserName = string.Empty;
+
+            switch (userType)
+            {
+                case UserType.Authority:
+                    userTypeString = "adminUser";
+                    defaultUserName = "BobSmith@email.com";
+                    break;
+                case UserType.Buyer:
+                    userTypeString = "buyerUser";
+                    defaultUserName = "AliceSmith@email.com";
+                    break;
+            }
+
+            var userJson = JsonConfigValues(userTypeString, $"{{\"username\": \"{defaultUserName}\", \"password\": \"Pass123$\" }}");
+
+            var user = JsonConvert.DeserializeObject<User>(userJson);
+
+            return user;
         }
 
         private static string DefaultUri()

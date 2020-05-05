@@ -11,7 +11,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [AfterScenario]
-        public async Task AfterScenario()
+        public void AfterScenario()
         {
             Test.Driver.Quit();
         }

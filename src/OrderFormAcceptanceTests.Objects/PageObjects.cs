@@ -1,4 +1,5 @@
 ﻿using OrderFormAcceptanceTests.Objects.Collections;
+using OrderFormAcceptanceTests.Objects.Pages;
 
 namespace OrderFormAcceptanceTests.Objects
 {
@@ -8,6 +9,9 @@ namespace OrderFormAcceptanceTests.Objects
         {
             Pages = new PageCollection
             {
+                Login = new Login(),
+                Homepage = new Homepage(),
+                Common = new Common()
             };
         }
         public PageCollection Pages { get; set; }
