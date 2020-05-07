@@ -1,10 +1,9 @@
 ﻿using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
-using System;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
-	public class Authentication : PageAction
+    public class Authentication : PageAction
 	{
 		public Authentication(IWebDriver driver) : base(driver)
 		{

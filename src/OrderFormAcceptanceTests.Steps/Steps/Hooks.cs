@@ -13,7 +13,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [AfterScenario]
         public void AfterScenario()
         {
-            Test.Driver.Quit();
+            Test.Driver?.Close();
+            Test.Driver?.Quit();
         }
     }
 }

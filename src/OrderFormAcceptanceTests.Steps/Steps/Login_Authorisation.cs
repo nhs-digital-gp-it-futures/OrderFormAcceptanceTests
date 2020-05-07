@@ -42,7 +42,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("User", EnvironmentVariables.User(UserType.Authority));            
         }
         
-        [Then(@"the Buyer will be logged in")]
+        [Then(@"the User will be logged in")]
         public void ThenTheBuyerWillBeLoggedIn()
         {
             Test.Pages.Authentication.Login((User)Context["User"]);
