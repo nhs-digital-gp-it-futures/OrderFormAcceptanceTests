@@ -4,9 +4,7 @@
 	So that I can order from the Buying Catalogue
 
 Background: 
-	Given that a User is not authenticated and the user logs in using the 'login' function
-	When the User is a Buyer User
-	Then the User will be logged in
+	Given that a buyer user has logged in
 
 Scenario: Create a new Order
 	Given the User is presented with the Organisation's Orders dashboard
