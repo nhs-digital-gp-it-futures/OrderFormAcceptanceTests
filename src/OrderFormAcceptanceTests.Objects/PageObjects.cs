@@ -11,7 +11,9 @@ namespace OrderFormAcceptanceTests.Objects
             {
                 Login = new Login(),
                 Homepage = new Homepage(),
-                Common = new Common()
+                Common = new Common(),
+                OrderFormDashboard = new OrderFormDashboard(),
+                OrderForm = new OrderForm()
             };
         }
         public PageCollection Pages { get; set; }
