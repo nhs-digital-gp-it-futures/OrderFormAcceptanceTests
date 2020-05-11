@@ -1,4 +1,5 @@
-﻿using OrderFormAcceptanceTests.Steps.Utils;
+﻿using OrderFormAcceptanceTests.Actions.Utils;
+using OrderFormAcceptanceTests.Steps.Utils;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -8,6 +9,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
     {
         public CommonSteps(UITest test, ScenarioContext context) : base(test, context)
         {
+        }
+
+        [Given(@"that a buyer user has logged in")]
+        public void GivenThatABuyerUserHasLoggedIn()
+        {
+            Test.Pages.Homepage.ClickLoginButton();
+            var user = (User)EnvironmentVariables.User(UserType.Buyer);
+            Test.Pages.Authentication.Login(user);
         }
     }
 }

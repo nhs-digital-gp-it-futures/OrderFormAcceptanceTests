@@ -10,7 +10,7 @@ Background:
 
 Scenario: Create a new Order
 	Given the User is presented with the Organisation's Orders dashboard
-	And they choose to create a new Order
+	When they choose to create a new Order
 	Then the new Order is presented
 	And the User is presented with a control to return to the Organisation's Orders dashboard
 	And the User is unable to delete the order

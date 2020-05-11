@@ -17,7 +17,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.Homepage.ClickOrderTile();            
         }
         
-        [Given(@"they choose to create a new Order")]
+        [When(@"they choose to create a new Order")]
         public void GivenTheyChooseToCreateANewOrder()
         {
             Test.Pages.OrderForm.CreateNewOrder();
