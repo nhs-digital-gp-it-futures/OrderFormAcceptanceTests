@@ -11,6 +11,22 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 		}
 
+		public bool LoggedInDisplayNameIsDisplayed()
+		{
+			try
+			{
+				Wait.Until(s => s.FindElement(Pages.Common.LoggedInDisplayName).Text.Contains("Logged in as: ", StringComparison.OrdinalIgnoreCase));
+				string loggedInText = Driver.FindElement(Pages.Common.LoggedInDisplayName).Text;
+				string displayName = loggedInText.Split(":")[1].Split("for")[0].Trim();
+				string organisationName = loggedInText.Split("for")[1].Trim();
+				return displayName != "" && organisationName != "";
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
 		public string ErrorTitle()
 		{
 			return Driver.FindElement(Pages.Common.ErrorTitle).Text;
