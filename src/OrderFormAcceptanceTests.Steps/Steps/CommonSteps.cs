@@ -24,7 +24,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenThatABuyerUserHasLoggedIn();
             Test.Pages.Homepage.ClickOrderTile();
-            //Test.Pages.OrderForm.CreateNewOrder();
+            Test.Pages.OrderForm.CreateNewOrder();
         }
 
     }
