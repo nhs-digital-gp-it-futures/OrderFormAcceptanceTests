@@ -84,5 +84,37 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			Driver.FindElement(Pages.OrderForm.SubmitOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
 		}
+
+		public bool EditDescriptionSectionDisplayed()
+		{
+			
+			try
+			{
+				Wait.Until(s => s.FindElements(Pages.OrderForm.EditDescription).Count == 1);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public void ClickEditDescription()
+		{
+			Driver.FindElement(Pages.OrderForm.EditDescription).Click();
+		}
+
+		public bool EditNamedSectionPageDisplayed(string namedSectionPageTitle)
+		{
+			try
+			{
+				Wait.Until(s => s.FindElement(By.TagName("h1")).Text.Equals(namedSectionPageTitle, StringComparison.OrdinalIgnoreCase));
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
 	}
 }
