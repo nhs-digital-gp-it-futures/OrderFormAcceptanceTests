@@ -15,10 +15,10 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			try
 			{
-				Wait.Until(s => s.FindElement(Pages.Common.LoggedInDisplayName).Text.Equals("Logged in as: ", StringComparison.OrdinalIgnoreCase));
+				Wait.Until(s => s.FindElement(Pages.Common.LoggedInDisplayName).Text.Contains("Logged in as: ", StringComparison.OrdinalIgnoreCase));
 				string loggedInText = Driver.FindElement(Pages.Common.LoggedInDisplayName).Text;
-				string displayName = loggedInText.Split(":")[1].Split("for")[0];
-				string organisationName = loggedInText.Split("for")[1];
+				string displayName = loggedInText.Split(":")[1].Split("for")[0].Trim();
+				string organisationName = loggedInText.Split("for")[1].Trim();
 				return displayName != "" && organisationName != "";
 			}
 			catch
