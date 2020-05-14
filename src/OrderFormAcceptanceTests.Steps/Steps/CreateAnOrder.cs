@@ -24,6 +24,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
         
         [Then(@"the new Order is presented")]
+        [When(@"the Order Form is presented")]
         public void ThenTheNewOrderIsPresented()
         {
             Test.Pages.OrderForm.NewOrderFormDisplayed().Should().BeTrue();
