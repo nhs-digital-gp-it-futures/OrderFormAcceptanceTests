@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using System;
+using System.Linq;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
@@ -125,6 +126,18 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public void EnterTextIntoTextArea(string value, int index = 0)
 		{
 			Driver.FindElements(Pages.OrderForm.TextArea)[index].SendKeys(value);
+		}
+
+		public string ClickOnErrorLink()
+		{
+			var errorMessages = Driver.FindElements(Pages.Common.ErrorMessages).ToList();
+			var index = new Random().Next(errorMessages.Count());
+
+			var linkHref = errorMessages[index].GetAttribute("href");
+
+			errorMessages[index].Click();
+
+			return linkHref;
 		}
 	}
 }

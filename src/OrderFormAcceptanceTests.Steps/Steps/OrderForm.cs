@@ -36,6 +36,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [When(@"the User chooses to save")]
+        [Given(@"the validation has been triggered")]
         public void WhenTheUserChoosesToSave()
         {
             Test.Pages.OrderForm.ClickSaveButton();
@@ -52,6 +53,20 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var randomText = RandomInformation.RandomString(maxLength + 1);
             Test.Pages.OrderForm.EnterTextIntoTextArea(randomText);
+        }
+
+        [When(@"the user selects an error link in the Error Summary")]
+        public void WhenTheUserSelectsAnErrorLinkInTheErrorSummary()
+        {
+            var url = Test.Pages.OrderForm.ClickOnErrorLink();
+            Context.Add("ExpectedUrl", url);
+        }
+
+        [Then(@"they will be navigated to the relevant part of the page")]
+        public void ThenTheyWillBeNavigatedToTheRelevantPartOfThePage()
+        {
+            var expectedUrl = (string)Context["ExpectedUrl"];
+            Test.Driver.Url.Should().Contain(expectedUrl);
         }
 
     }

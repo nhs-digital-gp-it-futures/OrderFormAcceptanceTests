@@ -23,17 +23,18 @@ When the User chooses to save
 Then the Order Description section is not saved
 And the reason is displayed
 
-Scenario: Data exceeds the maximum length
+Scenario: Order Description - Data exceeds the maximum length
 	Given the user is managing the Order Description section
 	And the User has entered data into a field that exceeds the maximum length of 100 characters
 	When the User chooses to save
 	Then the Order Description section is not saved 
 	And the reason is displayed
 
-Scenario 5: Validation Error Message Anchors
-Given validation has been triggered
-When the user selects an error link in the Error Summary
-Then they will be navigated to the relevant part of the page
+Scenario: Order Description - Validation Error Message Anchors
+	Given the user is managing the Order Description section
+	And the validation has been triggered
+	When the user selects an error link in the Error Summary
+	Then they will be navigated to the relevant part of the page
 
 Scenario 6: All data are valid
 Given all data are valid
