@@ -36,9 +36,10 @@ Scenario: Order Description - Validation Error Message Anchors
 	When the user selects an error link in the Error Summary
 	Then they will be navigated to the relevant part of the page
 
-Scenario 6: All data are valid
-Given all data are valid
-When the User saves the Order Description section
+Scenario: Order Description - All data are valid
+Given the user is managing the Order Description section
+And the user has entered a valid description for the order
+When the User chooses to save
 Then the Order is saved
 And the section is saved
 And the content validation status of the section is Complete 

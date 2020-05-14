@@ -69,5 +69,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Driver.Url.Should().Contain(expectedUrl);
         }
 
+        [Given(@"the user has entered a valid description for the order")]
+        public void GivenTheUserHasEnteredAValidDescriptionForTheOrder()
+        {
+            var randomText = RandomInformation.RandomString(99);
+            Test.Pages.OrderForm.EnterTextIntoTextArea(randomText);
+        }
+
+
     }
 }
