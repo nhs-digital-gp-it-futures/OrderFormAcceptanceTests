@@ -116,5 +116,15 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 				return false;
 			}
 		}
+
+		public void ClickSaveButton()
+		{
+			Driver.FindElement(Pages.Common.SaveButton).Click();
+		}
+
+		public void EnterTextIntoTextArea(string value, int index = 0)
+		{
+			Driver.FindElements(Pages.OrderForm.TextArea)[index].SendKeys(value);
+		}
 	}
 }

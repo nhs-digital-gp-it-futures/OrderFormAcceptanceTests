@@ -16,18 +16,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.Homepage.ClickOrderTile();            
         }
-        
+
         [When(@"they choose to create a new Order")]
         public void GivenTheyChooseToCreateANewOrder()
         {
             Test.Pages.OrderForm.CreateNewOrder();
-        }
-        
-        [Then(@"the new Order is presented")]
-        [When(@"the Order Form is presented")]
-        public void ThenTheNewOrderIsPresented()
-        {
-            Test.Pages.OrderForm.NewOrderFormDisplayed().Should().BeTrue();
         }
         
         [Then(@"the User is presented with a control to return to the Organisation's Orders dashboard")]

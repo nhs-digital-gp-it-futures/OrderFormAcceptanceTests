@@ -9,5 +9,6 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By PreviewOrderButton => CustomBy.DataTestId("preview-order-button");
 		public By SubmitOrderButton => CustomBy.DataTestId("submit-order-button");
 		public By EditDescription => CustomBy.DataTestId("item-0-description");
+		public By TextArea => By.TagName("textarea");
 	}
 }
