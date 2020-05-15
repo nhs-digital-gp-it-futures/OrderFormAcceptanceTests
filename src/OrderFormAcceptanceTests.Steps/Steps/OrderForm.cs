@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Information;
 using TechTalk.SpecFlow;
 
@@ -74,8 +75,37 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var randomText = RandomInformation.RandomString(99);
             Test.Pages.OrderForm.EnterTextIntoTextArea(randomText);
+            Context.Add("ExpectedDescriptionValue", randomText);
         }
 
+        [Then(@"the Order is saved")]
+        public void ThenTheOrderIsSaved()
+        {
+            Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the content validation status of the (.*) section is (.*)")]
+        public void ThenTheContentValidationStatusOfTheSectionIsComplete(string sectionName, string sectionStatus)
+        {
+            Test.Pages.OrderForm.SectionStatusTextMatchesExpected(sectionName, sectionStatus);
+        }
+
+        [Then(@"the Call Off Agreement ID is generated")]
+        public void ThenTheCallOffAgreementIDIsGenerated()
+        {
+            var id = Test.Pages.OrderForm.GetCallOffId();
+            id.Should().NotBeNullOrEmpty();
+        }
+
+        [Then(@"the Order Description section is saved in the DB")]
+        public void ThenTheOrderDescriptionSectionIsSavedInTheDB()
+        {
+            var expectedDescriptionValue = (string)Context["ExpectedDescriptionValue"];
+            var id = Test.Pages.OrderForm.GetCallOffId();
+            var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
+            order.Description.Should().BeEquivalentTo(expectedDescriptionValue);
+
+        }
 
     }
 }
