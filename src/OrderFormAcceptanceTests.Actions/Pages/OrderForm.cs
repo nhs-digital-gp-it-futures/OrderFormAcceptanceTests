@@ -33,8 +33,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElement(Pages.Common.ErrorTitle).Text;
 		}
 
+		public void WaitForDashboardToBeDisplayed()
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.PageTitle).Count == 1);
+		}
+
 		public void CreateNewOrder()
 		{
+			Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.CreateOrderButton).Count == 1);
 			Driver.FindElement(Pages.OrderFormDashboard.CreateOrderButton).Click();			
 		}
 

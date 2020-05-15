@@ -25,6 +25,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenThatABuyerUserHasLoggedIn();
             Test.Pages.Homepage.ClickOrderTile();
+            Test.Pages.OrderForm.WaitForDashboardToBeDisplayed();
             Test.Pages.OrderForm.CreateNewOrder();
         }
 

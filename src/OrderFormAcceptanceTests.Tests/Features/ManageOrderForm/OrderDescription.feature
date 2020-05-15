@@ -16,7 +16,7 @@ Scenario: Order Description - Mandatory data missing
 	Then Order Description section is not saved
 	And the reason is displayed
 
-Scenario 2: Data type is not valid
+Scenario: Data type is not valid
 Given the User has entered data into a field
 And the data type is not valid
 When the User chooses to save
@@ -46,7 +46,7 @@ And the content validation status of the section is Complete
 And the Call Off Agreement ID is generated
 And the generated ID is set on the Order
 
-Scenario 7: Section status
+Scenario: Section status
 Given the User saves the Order Description section 
 When the section has been successfully saved
 Then the section content validation status of Complete is displayed on the Orders dashboard
