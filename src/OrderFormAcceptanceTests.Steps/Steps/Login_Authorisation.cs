@@ -65,5 +65,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.ErrorTitle().Should().ContainEquivalentOf("not authorised");
         }
+
+        [Then(@"the Public Browse homepage is presented")]
+        public void ThenThePublicBrowseHomepageIsPresented()
+        {
+            Test.Pages.Homepage.PageDisplayed();
+        }
+
     }
 }

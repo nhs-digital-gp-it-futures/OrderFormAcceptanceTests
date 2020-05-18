@@ -26,8 +26,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenThatABuyerUserHasLoggedIn();
             Test.Pages.Homepage.ClickOrderTile();
-            Test.Pages.OrderForm.WaitForDashboardToBeDisplayed();
-            Test.Pages.OrderForm.CreateNewOrder();
+            Test.Pages.Dashboard.WaitForDashboardToBeDisplayed();
+            Test.Pages.Dashboard.CreateNewOrder();
         }
 
         [Then(@"the new Order is presented")]
@@ -57,8 +57,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenThatABuyerUserHasLoggedIn();
             Test.Pages.Homepage.ClickOrderTile();
-            Test.Pages.OrderForm.WaitForDashboardToBeDisplayed();
-            Test.Pages.OrderForm.SelectExistingOrder(((Order)Context["CreatedOrder"]).OrderId);
+            Test.Pages.Dashboard.WaitForDashboardToBeDisplayed();
+            Test.Pages.Dashboard.SelectExistingOrder(((Order)Context["CreatedOrder"]).OrderId);
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
         }
 
