@@ -33,6 +33,16 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElement(Pages.Common.ErrorTitle).Text;
 		}
 
+		public bool ErrorSummaryDisplayed()
+		{
+			return Driver.FindElements(Pages.Common.ErrorSummary).Count > 0;
+		}
+
+		public bool ErrorMessagesDisplayed()
+		{
+			return Driver.FindElements(Pages.Common.ErrorMessages).Count > 0;
+		}
+
 		public void WaitForDashboardToBeDisplayed()
 		{
 			Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.PageTitle).Count == 1);
@@ -78,7 +88,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public void SectionStatusTextMatchesExpected(string section, string expectedStatus)
 		{
 			var sectionelement = Driver.FindElements(Pages.OrderForm.GenericSection(section)).Single()
-				.FindElement(By.XPath(".."))
+				.FindElement(By.XPath("../.."))
 				.FindElement(Pages.OrderForm.SectionStatus);
 			sectionelement.Text.Should().BeEquivalentTo(expectedStatus);
 		}

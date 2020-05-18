@@ -46,7 +46,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the reason is displayed")]
         public void ThenTheReasonIsDisplayed()
         {
-            Test.Pages.OrderForm.ErrorTitle().Should().NotBeNullOrEmpty();
+            Test.Pages.OrderForm.ErrorSummaryDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
         }
 
         [Given(@"the User has entered data into a field that exceeds the maximum length of (.*) characters")]
