@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using System;
+using System.Linq;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
@@ -15,7 +16,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			try
 			{
-				Wait.Until(s => s.FindElement(Pages.Common.LoggedInDisplayName).Text.Contains("Logged in as: ", StringComparison.OrdinalIgnoreCase));
+				Wait.Until(d => d.FindElement(Pages.Common.LoggedInDisplayName).Text.Contains("Logged in as: ", StringComparison.OrdinalIgnoreCase));
 				string loggedInText = Driver.FindElement(Pages.Common.LoggedInDisplayName).Text;
 				string displayName = loggedInText.Split(":")[1].Split("for")[0].Trim();
 				string organisationName = loggedInText.Split("for")[1].Trim();
@@ -32,8 +33,24 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElement(Pages.Common.ErrorTitle).Text;
 		}
 
+		public bool ErrorSummaryDisplayed()
+		{
+			return Driver.FindElements(Pages.Common.ErrorSummary).Count > 0;
+		}
+
+		public bool ErrorMessagesDisplayed()
+		{
+			return Driver.FindElements(Pages.Common.ErrorMessages).Count > 0;
+		}
+
+		public void WaitForDashboardToBeDisplayed()
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.PageTitle).Count == 1);
+		}
+
 		public void CreateNewOrder()
 		{
+			Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.CreateOrderButton).Count == 1);
 			Driver.FindElement(Pages.OrderFormDashboard.CreateOrderButton).Click();			
 		}
 
@@ -41,13 +58,39 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			try
 			{
-				Wait.Until(s => s.FindElement(By.TagName("h1")).Text.Equals("New Order", StringComparison.OrdinalIgnoreCase));
+				Wait.Until(d => d.FindElement(Pages.OrderForm.PageTitle).Text.Equals("New Order", StringComparison.OrdinalIgnoreCase));
 				return true;
 			}
 			catch
 			{
 				return false;
 			}
+		}
+
+		public string GetCallOffId()
+		{
+			return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Split("Order")[1].Trim();
+		}
+
+		public bool TaskListDisplayed()
+		{
+			try
+			{
+				Wait.Until(d => d.FindElements(Pages.OrderForm.TaskList).Count == 1);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public void SectionStatusTextMatchesExpected(string section, string expectedStatus)
+		{
+			var sectionelement = Driver.FindElements(Pages.OrderForm.GenericSection(section)).Single()
+				.FindElement(By.XPath("../.."))
+				.FindElement(Pages.OrderForm.SectionStatus);
+			sectionelement.Text.Should().BeEquivalentTo(expectedStatus);
 		}
 
 		public void BackLinkDisplayed()
@@ -90,7 +133,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			
 			try
 			{
-				Wait.Until(s => s.FindElements(Pages.OrderForm.EditDescription).Count == 1);
+				Wait.Until(d => d.FindElements(Pages.OrderForm.EditDescription).Count == 1);
 				return true;
 			}
 			catch
@@ -108,13 +151,35 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			try
 			{
-				Wait.Until(s => s.FindElement(By.TagName("h1")).Text.Equals(namedSectionPageTitle, StringComparison.OrdinalIgnoreCase));
+				Wait.Until(d => d.FindElement(Pages.OrderForm.PageTitle).Text.Equals(namedSectionPageTitle, StringComparison.OrdinalIgnoreCase));
 				return true;
 			}
 			catch
 			{
 				return false;
 			}
+		}
+
+		public void ClickSaveButton()
+		{
+			Driver.FindElement(Pages.Common.SaveButton).Click();
+		}
+
+		public void EnterTextIntoTextArea(string value, int index = 0)
+		{
+			Driver.FindElements(Pages.Common.TextArea)[index].SendKeys(value);
+		}
+
+		public string ClickOnErrorLink()
+		{
+			var errorMessages = Driver.FindElements(Pages.Common.ErrorMessages).ToList();
+			var index = new Random().Next(errorMessages.Count());
+
+			var linkHref = errorMessages[index].GetAttribute("href");
+
+			errorMessages[index].Click();
+
+			return linkHref;
 		}
 	}
 }

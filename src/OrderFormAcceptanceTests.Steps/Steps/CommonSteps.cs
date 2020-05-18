@@ -1,4 +1,5 @@
-﻿using OrderFormAcceptanceTests.Actions.Utils;
+﻿using FluentAssertions;
+using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using TechTalk.SpecFlow;
 
@@ -24,7 +25,22 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenThatABuyerUserHasLoggedIn();
             Test.Pages.Homepage.ClickOrderTile();
+            Test.Pages.OrderForm.WaitForDashboardToBeDisplayed();
             Test.Pages.OrderForm.CreateNewOrder();
+        }
+
+        [Then(@"the new Order is presented")]
+        [When(@"the Order Form is presented")]
+        public void ThenTheNewOrderIsPresented()
+        {
+            Test.Pages.OrderForm.NewOrderFormDisplayed().Should().BeTrue();
+        }
+
+        [Given(@"mandatory data are missing")]
+        [Then(@".* section is not saved")]
+        public void GivenMandatoryDataAreMissing()
+        {
+            //do nothing
         }
 
     }

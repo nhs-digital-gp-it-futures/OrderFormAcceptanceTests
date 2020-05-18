@@ -15,6 +15,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the page displays who is logged in and the primary organisation name")]
         public void ThenThePageDisplaysWhoIsLoggedInAndThePrimaryOrganisationName()
         {
+            Test.Pages.OrderForm.WaitForDashboardToBeDisplayed();
             Test.Pages.OrderForm.LoggedInDisplayNameIsDisplayed().Should().BeTrue();
         }
 
@@ -25,6 +26,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.NewOrderFormDisplayed().Should().BeTrue();
             Test.Pages.OrderForm.LoggedInDisplayNameIsDisplayed().Should().BeTrue();
             Test.Driver.Navigate().Back();
+            Test.Pages.OrderForm.WaitForDashboardToBeDisplayed();
         }
 
     }
