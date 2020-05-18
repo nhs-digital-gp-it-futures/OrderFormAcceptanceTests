@@ -45,7 +45,15 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
 		public void WaitForDashboardToBeDisplayed()
 		{
+			Driver.WaitForJsToComplete(Wait);
 			Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.PageTitle).Count == 1);
+		}
+
+		public void SelectExistingOrder(string CallOffAgreementId)
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.ExistingOrder(CallOffAgreementId)).Count == 1);
+			Wait.Until(ElementExtensions.ElementToBeClickable(Pages.OrderFormDashboard.ExistingOrder(CallOffAgreementId)));
+			Driver.FindElement(Pages.OrderFormDashboard.ExistingOrder(CallOffAgreementId)).Click();
 		}
 
 		public void CreateNewOrder()
@@ -98,19 +106,19 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElements(Pages.Common.BackLink).Count.Should().Be(1);
 		}
 
-		public void DeleteOrderButtonIsDisabled()
+		public bool DeleteOrderButtonIsDisabled()
 		{
-			Driver.FindElement(Pages.OrderForm.DeleteOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled").Should().BeEquivalentTo("true");
+			return Driver.FindElement(Pages.OrderForm.DeleteOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
 		}
 
-		public void PreviewOrderButtonIsDisabled()
+		public bool PreviewOrderButtonIsDisabled()
 		{
-			Driver.FindElement(Pages.OrderForm.PreviewOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled").Should().BeEquivalentTo("true");
+			return Driver.FindElement(Pages.OrderForm.PreviewOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
 		}
 
-		public void SubmitOrderButtonIsDisabled()
+		public bool SubmitOrderButtonIsDisabled()
 		{
-			Driver.FindElement(Pages.OrderForm.SubmitOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled").Should().BeEquivalentTo("true");
+			return Driver.FindElement(Pages.OrderForm.SubmitOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
 		}
 
 		public void DeleteOrderButtonHasAltTest()
@@ -145,6 +153,25 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public void ClickEditDescription()
 		{
 			Driver.FindElement(Pages.OrderForm.EditDescription).Click();
+		}
+
+		public bool EditCallOffOrderingPartySectionDisplayed()
+		{
+
+			try
+			{
+				Wait.Until(d => d.FindElements(Pages.OrderForm.EditCallOffOrderingParty).Count == 1);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public void ClickEditCallOffOrderingParty()
+		{
+			Driver.FindElement(Pages.OrderForm.EditCallOffOrderingParty).Click();
 		}
 
 		public bool EditNamedSectionPageDisplayed(string namedSectionPageTitle)
