@@ -133,7 +133,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			
 			try
 			{
-				Wait.Until(s => s.FindElements(Pages.OrderForm.EditDescription).Count == 1);
+				Wait.Until(d => d.FindElements(Pages.OrderForm.EditDescription).Count == 1);
 				return true;
 			}
 			catch
@@ -151,7 +151,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			try
 			{
-				Wait.Until(d => d.FindElement(By.TagName("h1")).Text.Equals(namedSectionPageTitle, StringComparison.OrdinalIgnoreCase));
+				Wait.Until(d => d.FindElement(Pages.OrderForm.PageTitle).Text.Equals(namedSectionPageTitle, StringComparison.OrdinalIgnoreCase));
 				return true;
 			}
 			catch
@@ -167,7 +167,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
 		public void EnterTextIntoTextArea(string value, int index = 0)
 		{
-			Driver.FindElements(Pages.OrderForm.TextArea)[index].SendKeys(value);
+			Driver.FindElements(Pages.Common.TextArea)[index].SendKeys(value);
 		}
 
 		public string ClickOnErrorLink()

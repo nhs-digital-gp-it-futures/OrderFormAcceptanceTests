@@ -15,6 +15,5 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By GenericSection(string section) { 
 			return CustomBy.PartialDataTestId("item-0-{0}", section);
 		}
-		public By TextArea => By.TagName("textarea");
 	}
 }
