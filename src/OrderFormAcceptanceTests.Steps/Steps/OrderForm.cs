@@ -20,11 +20,26 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditDescriptionSectionDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is the Call-off Ordering Party section")]
+        public void ThenThereIsTheCall_OffOrderingPartySection()
+        {
+            Test.Pages.OrderForm.EditCallOffOrderingPartySectionDisplayed().Should().BeTrue();
+        }
+
         [Then(@"the user is able to manage the Order Description section")]
         public void ThenTheUserIsAbleToManageTheOrderDescriptionSection()
         {
             Test.Pages.OrderForm.ClickEditDescription();
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Order description").Should().BeTrue();
+        }
+
+        [Then(@"the user is able to manage the Call-off Ordering Party section")]
+        public void ThenTheUserIsAbleToManageTheCall_OffOrderingPartySection()
+        {
+            Test.Pages.OrderForm.ClickEditCallOffOrderingParty();
+            // TODO: At present it's accepted that an error page is displayed because the page does not exist yet
+            //Test.Pages.OrderForm.EditNamedSectionPageDisplayed("call-off-ordering-party").Should().BeTrue();
+            Test.Pages.OrderForm.ErrorTitle().Should().ContainEquivalentOf("call-off-ordering-party");
         }
 
         [Given(@"the user is managing the Order Description section")]
@@ -92,6 +107,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the Call Off Agreement ID is generated")]
+        [Then(@"the Call Off Agreement ID is displayed")]
         public void ThenTheCallOffAgreementIDIsGenerated()
         {
             var id = Test.Pages.OrderForm.GetCallOffId();
@@ -106,6 +122,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
             order.Description.Should().BeEquivalentTo(expectedDescriptionValue);
 
+        }
+
+        [Given(@"the Call Off Ordering Party section is not complete")]
+        public void GivenTheCallOffOrderingPartySectionIsNotComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            // TODO: When datamodel has changed, we need to update Order class to have the call-off ordering party property, and set it to null here 
         }
 
     }

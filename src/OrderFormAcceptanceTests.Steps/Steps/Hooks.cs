@@ -1,4 +1,5 @@
 ﻿using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -12,7 +13,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [AfterScenario]
         public void AfterScenario()
-        {   
+        {
+            if (Context.ContainsKey("CreatedOrder"))
+            {
+                ((Order)Context["CreatedOrder"]).Delete(Test.ConnectionString);
+            }
+
             Test.Driver?.Quit();
         }
     }

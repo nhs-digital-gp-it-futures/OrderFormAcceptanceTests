@@ -32,21 +32,40 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the User is unable to delete the order")]
         public void ThenTheUserIsUnableToDeleteTheOrder()
         {
-            Test.Pages.OrderForm.DeleteOrderButtonIsDisabled();
+            Test.Pages.OrderForm.DeleteOrderButtonIsDisabled().Should().BeTrue();
         }
-        
+
+        [Then(@"the Delete order button is enabled")]
+        public void ThenTheDeleteOrderButtonIsEnabled()
+        {
+            Test.Pages.OrderForm.DeleteOrderButtonIsDisabled().Should().BeFalse();
+        }
+
         [Then(@"the User is unable to preview the order summary")]
         public void ThenTheUserIsUnableToPreviewTheOrderSummary()
         {
-            Test.Pages.OrderForm.PreviewOrderButtonIsDisabled();
+            Test.Pages.OrderForm.PreviewOrderButtonIsDisabled().Should().BeTrue();
         }
-        
+
+        [Then(@"the Preview order summary button is enabled")]
+        public void ThenThePreviewOrderSummaryButtonIsEnabled()
+        {
+            Test.Pages.OrderForm.PreviewOrderButtonIsDisabled().Should().BeFalse();
+        }
+
         [Then(@"the User is unable to submit the order")]
+        [Then(@"the Submit order button is disabled")]
         public void ThenTheUserIsUnableToSubmitTheOrder()
         {
-            Test.Pages.OrderForm.SubmitOrderButtonIsDisabled();
+            Test.Pages.OrderForm.SubmitOrderButtonIsDisabled().Should().BeTrue();
         }
-        
+
+        [Then(@"the Submit order button is enabled")]
+        public void ThenTheSubmitOrderButtonIsDisabled()
+        {
+            Test.Pages.OrderForm.SubmitOrderButtonIsDisabled().Should().BeFalse();
+        }
+
         [Then(@"there is alt text content on the disabled Delete order button")]
         public void ThenThereIsAltTextContentOnTheDisabledDeleteOrderButton()
         {
