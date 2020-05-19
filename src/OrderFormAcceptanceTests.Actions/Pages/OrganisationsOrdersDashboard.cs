@@ -6,9 +6,9 @@ using System.Text;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
-    public class Dashboard : PageAction
+    public class OrganisationsOrdersDashboard : PageAction
     {
-        public Dashboard(IWebDriver driver) : base(driver)
+        public OrganisationsOrdersDashboard(IWebDriver driver) : base(driver)
         {
 
         }
@@ -16,21 +16,21 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public void WaitForDashboardToBeDisplayed()
         {
             Driver.WaitForJsToComplete(Wait);
-            Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.PageTitle).Count == 1);
+            Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.PageTitle).Count == 1);
         }
 
         public void SelectExistingOrder(string CallOffAgreementId)
         {
-            Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.SpecificExistingOrder(CallOffAgreementId)).Count == 1);
-            Wait.Until(ElementExtensions.ElementToBeClickable(Pages.OrderFormDashboard.SpecificExistingOrder(CallOffAgreementId)));
-            Driver.FindElement(Pages.OrderFormDashboard.SpecificExistingOrder(CallOffAgreementId)).Click();
+            Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(CallOffAgreementId)).Count == 1);
+            Wait.Until(ElementExtensions.ElementToBeClickable(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(CallOffAgreementId)));
+            Driver.FindElement(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(CallOffAgreementId)).Click();
         }
 
         public bool CreateNewOrderButtonDisplayed()
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.CreateOrderButton).Count == 1);
+                Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.CreateOrderButton).Count == 1);
                 return true;
             }
             catch
@@ -42,46 +42,46 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public void CreateNewOrder()
         {
             CreateNewOrderButtonDisplayed();
-            Driver.FindElement(Pages.OrderFormDashboard.CreateOrderButton).Click();
+            Driver.FindElement(Pages.OrganisationsOrdersDashboard.CreateOrderButton).Click();
         }
 
         public int GetNumberOfOrdersDisplayed()
         {
-            return Driver.FindElements(Pages.OrderFormDashboard.Orders).Count;
+            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.Orders).Count;
         }
 
         public int GetNumberOfCallOffAgreementIds()
         {
-            return Driver.FindElements(Pages.OrderFormDashboard.GenericExistingOrder).Count;
+            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Count;
         }
         public int GetNumberOfDescriptions()
         {
-            return Driver.FindElements(Pages.OrderFormDashboard.GenericExistingOrderDescription).Count;
+            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Count;
         }
         public int GetNumberOfLastUpdatedBys()
         {
-            return Driver.FindElements(Pages.OrderFormDashboard.GenericExistingOrderLastUpdatedBy).Count;
+            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Count;
         }
         public int GetNumberOfLastUpdatedDates()
         {
-            return Driver.FindElements(Pages.OrderFormDashboard.GenericExistingOrderLastUpdatedDate).Count;
+            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate).Count;
         }
         public int GetNumberOfCreatedDates()
         {
-            return Driver.FindElements(Pages.OrderFormDashboard.GenericExistingOrderCreatedDate).Count;
+            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Count;
         }
         public bool UnsubmittedOrdersTableDisplayed()
         {
-            return Driver.FindElements(Pages.OrderFormDashboard.UnsubmittedOrdersTable).Count == 1;
+            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.UnsubmittedOrdersTable).Count == 1;
         }
 
         public bool SubmittedOrdersTableDisplayed()
         {
-            return Driver.FindElements(Pages.OrderFormDashboard.SubmittedOrdersTable).Count == 1;
+            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.SubmittedOrdersTable).Count == 1;
         }
         public bool NominateProxyDisplayed()
         {
-            return Driver.FindElements(Pages.OrderFormDashboard.NominateProxy).Count == 1;
+            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.NominateProxy).Count == 1;
         }
         public bool BackLinkDisplayed()
         {

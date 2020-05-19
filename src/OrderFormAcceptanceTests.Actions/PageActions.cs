@@ -12,7 +12,7 @@ namespace OrderFormAcceptanceTests.Actions
             {
                 Authentication = new Authentication(driver),
                 Homepage = new Homepage(driver),
-                Dashboard = new Dashboard(driver),
+                OrganisationsOrdersDashboard = new OrganisationsOrdersDashboard(driver),
                 OrderForm = new OrderForm(driver)
             };
         }

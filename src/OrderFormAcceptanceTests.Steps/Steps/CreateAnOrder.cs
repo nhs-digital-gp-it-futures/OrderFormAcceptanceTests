@@ -20,7 +20,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [When(@"they choose to create a new Order")]
         public void GivenTheyChooseToCreateANewOrder()
         {
-            Test.Pages.Dashboard.CreateNewOrder();
+            Test.Pages.OrganisationsOrdersDashboard.CreateNewOrder();
         }
         
         [Then(@"the User is presented with a control to return to the Organisation's Orders dashboard")]
