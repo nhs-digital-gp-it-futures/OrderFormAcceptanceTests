@@ -12,7 +12,7 @@ namespace OrderFormAcceptanceTests.Objects
                 Login = new Login(),
                 Homepage = new Homepage(),
                 Common = new Common(),
-                OrderFormDashboard = new OrderFormDashboard(),
+                OrganisationsOrdersDashboard = new OrganisationsOrdersDashboard(),
                 OrderForm = new OrderForm()
             };
         }

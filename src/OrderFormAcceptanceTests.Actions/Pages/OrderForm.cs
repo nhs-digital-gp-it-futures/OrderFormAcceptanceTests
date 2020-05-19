@@ -27,6 +27,15 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 				return false;
 			}
 		}
+		public bool FooterDisplayed()
+		{
+			return Driver.FindElements(Pages.Common.Footer).Count == 1;
+		}
+
+		public bool HeaderDisplayed()
+		{
+			return Driver.FindElements(Pages.Common.Header).Count == 1;
+		}
 
 		public string ErrorTitle()
 		{
@@ -41,25 +50,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public bool ErrorMessagesDisplayed()
 		{
 			return Driver.FindElements(Pages.Common.ErrorMessages).Count > 0;
-		}
-
-		public void WaitForDashboardToBeDisplayed()
-		{
-			Driver.WaitForJsToComplete(Wait);
-			Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.PageTitle).Count == 1);
-		}
-
-		public void SelectExistingOrder(string CallOffAgreementId)
-		{
-			Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.ExistingOrder(CallOffAgreementId)).Count == 1);
-			Wait.Until(ElementExtensions.ElementToBeClickable(Pages.OrderFormDashboard.ExistingOrder(CallOffAgreementId)));
-			Driver.FindElement(Pages.OrderFormDashboard.ExistingOrder(CallOffAgreementId)).Click();
-		}
-
-		public void CreateNewOrder()
-		{
-			Wait.Until(d => d.FindElements(Pages.OrderFormDashboard.CreateOrderButton).Count == 1);
-			Driver.FindElement(Pages.OrderFormDashboard.CreateOrderButton).Click();			
 		}
 
 		public bool NewOrderFormDisplayed()

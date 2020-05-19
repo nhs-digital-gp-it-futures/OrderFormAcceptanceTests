@@ -16,6 +16,7 @@ namespace OrderFormAcceptanceTests.TestData
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }
         public Guid LastUpdatedBy { get; set; }
+        public string LastUpdatedByName { get; set; }
 
         public Order Retrieve(string connectionString)
         {
@@ -35,7 +36,8 @@ namespace OrderFormAcceptanceTests.TestData
                 OrderStatusId = 2,
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now,
-                LastUpdatedBy = Guid.Parse("BC0A6D7B-B44B-436D-8916-1E64EBCAAE64")
+                LastUpdatedBy = Guid.Parse("BC0A6D7B-B44B-436D-8916-1E64EBCAAE64"),
+                LastUpdatedByName = "Alice Smith"
             };
         }
 
@@ -48,7 +50,8 @@ namespace OrderFormAcceptanceTests.TestData
                                  OrderStatusId,
                                  Created,
                                  LastUpdated,
-                                 LastUpdatedBy
+                                 LastUpdatedBy,
+                                 LastUpdatedByName
                                  )
                                 VALUES
                                 (@OrderId,
@@ -57,7 +60,8 @@ namespace OrderFormAcceptanceTests.TestData
                                  @OrderStatusId,
                                  @Created,
                                  @LastUpdated,
-                                 @LastUpdatedBy
+                                 @LastUpdatedBy,
+                                 @LastUpdatedByName
                         )";
             SqlExecutor.Execute<Order>(connectionString, query, this);
         }
@@ -72,7 +76,8 @@ namespace OrderFormAcceptanceTests.TestData
                             OrderStatusId=@orderStatusId,
                             Created=@created,
                             LastUpdated=@lastUpdated,
-                            LastUpdatedBy=@lastUpdatedBy
+                            LastUpdatedBy=@lastUpdatedBy,
+                            LastUpdatedByName=@lastUpdatedByName
                         WHERE OrderId=@orderId";
             SqlExecutor.Execute<Order>(connectionString, query, this);
         }
