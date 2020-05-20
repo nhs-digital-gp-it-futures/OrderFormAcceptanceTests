@@ -182,6 +182,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElement(Pages.Common.SaveButton).Click();
 		}
 
+		public void ClickBackLink()
+		{
+			Driver.FindElement(Pages.Common.BackLink).Click();
+		}
+
 		public void EnterTextIntoTextArea(string value, int index = 0)
 		{
 			Driver.FindElements(Pages.Common.TextArea)[index].SendKeys(value);

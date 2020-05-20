@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -148,6 +149,70 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void WhenTheUserChooseToGoBackToTheHomepage()
         {
             Test.Pages.OrganisationsOrdersDashboard.ClickBackLink();
+        }
+
+        [Then(@"the saved Order is displayed as an item on the Organisation's Orders dashboard")]
+        public void ThenTheSavedOrderIsDisplayedAsAnItemOnTheOrganisationSOrdersDashboard()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            (Test.Driver.FindElements(By.LinkText(order.OrderId)).Count == 1).Should().BeTrue();
+        }
+
+        [StepDefinition(@"the item is displayed as an Unsubmitted Order")]
+        public void ThenTheItemIsDisplayedAsAnUnsubmittedOrder()
+        {
+            var createdOrder = (Order)Context["CreatedOrder"];
+            var orders = Test.Pages.OrganisationsOrdersDashboard.GetListOfUnsubmittedOrders();
+            bool found = false;
+            foreach(Order order in orders)
+            {
+                if (order.OrderId == createdOrder.OrderId)
+                {
+                    found = true;
+                    Context.Add("OrderFromUI", order);
+                    break;
+                }
+            }
+            found.Should().BeTrue();
+        }
+
+        [StepDefinition(@"the item includes the Call Off Agreement ID")]
+        public void WhenTheItemIncludesTheCallOffAgreementID()
+        {
+            var CreatedOrder = (Order)Context["CreatedOrder"];
+            var OrderFromUI = (Order)Context["OrderFromUI"];
+            OrderFromUI.OrderId.Should().BeEquivalentTo(CreatedOrder.OrderId);
+        }
+
+        [Then(@"the item includes the Order Description")]
+        public void ThenTheItemIncludesTheOrderDescription()
+        {
+            var CreatedOrder = (Order)Context["CreatedOrder"];
+            var OrderFromUI = (Order)Context["OrderFromUI"];
+            OrderFromUI.Description.Should().BeEquivalentTo(CreatedOrder.Description);
+        }
+
+        [Then(@"the item includes the Display Name of the User who made most recent edit")]
+        public void ThenTheItemIncludesTheDisplayNameOfTheUserWhoMadeMostRecentEdit()
+        {
+            var CreatedOrder = (Order)Context["CreatedOrder"];
+            var OrderFromUI = (Order)Context["OrderFromUI"];
+            OrderFromUI.LastUpdatedByName.Should().BeEquivalentTo(CreatedOrder.LastUpdatedByName);
+        }
+
+        [Then(@"the item includes the date of the most recent edit")]
+        public void ThenTheItemIncludesTheDateOfTheMostRecentEdit()
+        {
+            var CreatedOrder = (Order)Context["CreatedOrder"];
+            var OrderFromUI = (Order)Context["OrderFromUI"];
+            OrderFromUI.LastUpdated.Should().BeSameDateAs(CreatedOrder.LastUpdated);
+        }
+        [Then(@"the item includes the date it was created")]
+        public void ThenTheItemIncludesTheDateItWasCreated()
+        {
+            var CreatedOrder = (Order)Context["CreatedOrder"];
+            var OrderFromUI = (Order)Context["OrderFromUI"];
+            OrderFromUI.Created.Should().BeSameDateAs(CreatedOrder.Created);
         }
 
     }
