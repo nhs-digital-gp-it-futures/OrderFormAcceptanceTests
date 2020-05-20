@@ -8,27 +8,27 @@ Scenario: Display Order Description
 	When the Order Form is presented
 	Then there is the Order description section
 	And the user is able to manage the Order Description section
-	@ignore
+
 Scenario: Order Description - Mandatory data missing
 	Given the user is managing the Order Description section
 	And mandatory data are missing 
 	When the User chooses to save
 	Then Order Description section is not saved
 	And the reason is displayed
-	@ignore
+
 Scenario: Order Description - Data exceeds the maximum length
 	Given the user is managing the Order Description section
 	And the User has entered data into a field that exceeds the maximum length of 100 characters
 	When the User chooses to save
 	Then the Order Description section is not saved 
 	And the reason is displayed
-	@ignore
+
 Scenario: Order Description - Validation Error Message Anchors
 	Given the user is managing the Order Description section
 	And the validation has been triggered
 	When the user selects an error link in the Error Summary
 	Then they will be navigated to the relevant part of the page
-	@ignore
+
 Scenario: Order Description - All data are valid
 	Given the user is managing the Order Description section
 	And the user has entered a valid description for the order
@@ -37,7 +37,7 @@ Scenario: Order Description - All data are valid
 	And the content validation status of the description section is complete 
 	And the Call Off Agreement ID is generated
 	And the Order Description section is saved in the DB
-	@ignore
+
 Scenario: Order Description - Saved Order on the Organisation's Orders dashboard
 	Given the Order is saved for the first time 
 	When the User navigates back to the Organisation's Orders dashboard
