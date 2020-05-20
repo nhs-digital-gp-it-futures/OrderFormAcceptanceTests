@@ -20,7 +20,7 @@ namespace OrderFormAcceptanceTests.TestData
 
         public Order Retrieve(string connectionString)
         {
-            var query = "SELECT * from [dbo].[Order] WHERE Order.OrderId=@orderId";
+            var query = "SELECT * from [dbo].[Order] WHERE OrderId=@orderId";
 
             return SqlExecutor.Execute<Order>(connectionString, query, this).Single();
         }

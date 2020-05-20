@@ -1,4 +1,6 @@
 ﻿using FluentAssertions;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Information;
@@ -100,6 +102,19 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
         }
 
+        [Given(@"the Order is saved for the first time")]
+        public void GivenTheOrderIsSavedForTheFirstTime()
+        {
+            GivenTheUserIsManagingTheOrderDescriptionSection();
+            GivenTheUserHasEnteredAValidDescriptionForTheOrder();
+            WhenTheUserChoosesToSave();
+            ThenTheOrderIsSaved();
+            ThenTheCallOffAgreementIDIsGenerated();
+            var id = (string)Context["CallOffAgreementId"];
+            var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
+            Context.Add("CreatedOrder", order);
+        }
+
         [Then(@"the content validation status of the (.*) section is (.*)")]
         public void ThenTheContentValidationStatusOfTheSectionIsComplete(string sectionName, string sectionStatus)
         {
@@ -112,6 +127,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var id = Test.Pages.OrderForm.GetCallOffId();
             id.Should().NotBeNullOrEmpty();
+            Context.Add("CallOffAgreementId", id);
         }
 
         [Then(@"the Order Description section is saved in the DB")]
@@ -121,7 +137,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var id = Test.Pages.OrderForm.GetCallOffId();
             var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
             order.Description.Should().BeEquivalentTo(expectedDescriptionValue);
-
+            Context.Add("CreatedOrder", order);
         }
 
         [Given(@"the Call Off Ordering Party section is not complete")]
@@ -129,6 +145,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context["CreatedOrder"];
             // TODO: When datamodel has changed, we need to update Order class to have the call-off ordering party property, and set it to null here 
+        }
+
+        [When(@"the User navigates back to the Organisation's Orders dashboard")]
+        public void WhenTheUserNavigatesBackToTheOrganisationSOrdersDashboard()
+        {
+            Test.Pages.OrderForm.ClickBackLink();
+            Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
         }
 
     }
