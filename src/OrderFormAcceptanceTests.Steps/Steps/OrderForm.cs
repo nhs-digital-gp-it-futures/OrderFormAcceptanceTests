@@ -28,6 +28,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditCallOffOrderingPartySectionDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is the Supplier section")]
+        public void ThenThereIsTheSupplierSection()
+        {
+            Test.Pages.OrderForm.EditSupplierSectionDisplayed().Should().BeTrue();
+        }
+
         [Then(@"the user is able to manage the Order Description section")]
         public void ThenTheUserIsAbleToManageTheOrderDescriptionSection()
         {

@@ -15,6 +15,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By SectionStatus => By.CssSelector("[data-test-id$='-complete-tag']");
 		public By EditDescription => CustomBy.DataTestId("task-0-item-0-description");
 		public By EditCallOffOrderingParty => CustomBy.DataTestId("task-1-item-0-description");
+		public By EditSupplier => CustomBy.DataTestId("task-1-item-1-description");
 		public By GenericSection(string sectionHrefRoute) {
 			return By.CssSelector(string.Format("[href$='{0}']", sectionHrefRoute));
 		}
@@ -26,5 +27,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By OrganisationAddressCounty => CustomBy.DataTestId("organisation-address-county");
 		public By OrganisationAddressPostcode => CustomBy.DataTestId("organisation-address-postcode");
 		public By OrganisationAddressCountry => CustomBy.DataTestId("organisation-address-country");
-	}
+
+        
+    }
 }
