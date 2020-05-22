@@ -35,15 +35,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Order description").Should().BeTrue();
         }
 
-        [Then(@"the user is able to manage the Call-off Ordering Party section")]
-        public void ThenTheUserIsAbleToManageTheCall_OffOrderingPartySection()
-        {
-            Test.Pages.OrderForm.ClickEditCallOffOrderingParty();
-            // TODO: At present it's accepted that an error page is displayed because the page does not exist yet
-            //Test.Pages.OrderForm.EditNamedSectionPageDisplayed("call-off-ordering-party").Should().BeTrue();
-            Test.Pages.OrderForm.ErrorTitle().Should().ContainEquivalentOf("call-off-ordering-party");
-        }
-
         [Given(@"the user is managing the Order Description section")]
         public void GivenTheUserIsManagingTheOrderDescriptionSection()
         {
@@ -97,6 +88,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the Order is saved")]
+        [Then(@"the Order dashboard is presented")]
+        [Then(@"the Order tasklist is presented")]
         public void ThenTheOrderIsSaved()
         {
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
