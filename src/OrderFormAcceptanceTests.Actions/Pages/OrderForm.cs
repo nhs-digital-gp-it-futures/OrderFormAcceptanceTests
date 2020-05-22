@@ -70,6 +70,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Split("Order")[1].Trim();
 		}
 
+		public bool CallOffIdDisplayedInPageTitle(string callOffAgreementId)
+		{
+			return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains(callOffAgreementId);
+		}
+
 		public bool TaskListDisplayed()
 		{
 			try
@@ -168,7 +173,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			try
 			{
-				Wait.Until(d => d.FindElement(Pages.OrderForm.PageTitle).Text.Equals(namedSectionPageTitle, StringComparison.OrdinalIgnoreCase));
+				Wait.Until(d => d.FindElement(Pages.OrderForm.PageTitle).Text.Contains(namedSectionPageTitle, StringComparison.OrdinalIgnoreCase));
 				return true;
 			}
 			catch
@@ -202,6 +207,44 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			errorMessages[index].Click();
 
 			return linkHref;
+		}
+
+		public bool OdsCodeDisplayedAndNotEditable()
+		{
+			try
+			{
+				var displayed = Driver.FindElements(Pages.OrderForm.OrganisationOdsCode).Count == 1;
+				var notEditable = Driver.FindElement(Pages.OrderForm.OrganisationOdsCode).TagName == "div";
+				return displayed && notEditable;
+			}
+			catch { return false; }
+		}
+
+		public bool OrganisationNameDisplayedAndNotEditable()
+		{
+			try
+			{
+				var displayed = Driver.FindElements(Pages.OrderForm.OrganisationName).Count == 1;
+				var notEditable = Driver.FindElement(Pages.OrderForm.OrganisationName).TagName == "div";
+				return displayed && notEditable;
+			}
+			catch { return false; }
+		}
+		public bool OrganisationAddressDisplayedAndNotEditable()
+		{
+			try
+			{
+				var lineDisplayed = Driver.FindElements(Pages.OrderForm.AddressLineX(1)).Count == 1;
+				var lineNotEditable = Driver.FindElement(Pages.OrderForm.AddressLineX(1)).TagName == "div";
+				var townDisplayed = Driver.FindElements(Pages.OrderForm.OrganisationAddressTown).Count == 1;
+				var townNotEditable = Driver.FindElement(Pages.OrderForm.OrganisationAddressTown).TagName == "div";
+				var countyDisplayed = Driver.FindElements(Pages.OrderForm.OrganisationAddressCounty).Count == 1;
+				var countyNotEditable = Driver.FindElement(Pages.OrderForm.OrganisationAddressCounty).TagName == "div";
+				var postcodeDisplayed = Driver.FindElements(Pages.OrderForm.OrganisationAddressPostcode).Count == 1;
+				var postcodeNotEditable = Driver.FindElement(Pages.OrderForm.OrganisationAddressPostcode).TagName == "div";
+				return lineDisplayed && lineNotEditable && townDisplayed && townNotEditable && countyDisplayed && countyNotEditable && postcodeDisplayed && postcodeNotEditable;
+			}
+			catch { return false; }
 		}
 	}
 }

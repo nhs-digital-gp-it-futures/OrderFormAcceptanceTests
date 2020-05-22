@@ -22,6 +22,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             {
                 ((Contact)Context["CreatedContact"]).Delete(Test.ConnectionString);
             }
+            if (Context.ContainsKey("CreatedAddress"))
+            {
+                ((Address)Context["CreatedAddress"]).Delete(Test.ConnectionString);
+            }
 
             Test.Driver?.Quit();
         }

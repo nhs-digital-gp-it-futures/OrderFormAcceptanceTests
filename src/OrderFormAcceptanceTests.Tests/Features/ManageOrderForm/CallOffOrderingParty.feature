@@ -21,7 +21,7 @@ Scenario: Call Off Ordering Party - Order description section is now complete
 	And the Delete order button is enabled
 	And the User is unable to submit the order
 
-Scenario: Name and Address autopopulated
+Scenario: Call Off Ordering Party - Name and Address autopopulated
 	Given an unsubmitted order exists
 	And the Call Off Ordering Party section is not complete
 	When the User chooses to edit the Call Off Ordering Party information
@@ -30,23 +30,28 @@ Scenario: Name and Address autopopulated
 	And the Call Off Ordering Party Organisation Address is autopopulated from the User's organisation
 	And the Call Off Agreement ID is displayed in the page title
 
-Scenario: Unable to edit Call Off Ordering Party Organisation ODS code
-Given the Call Off Ordering Party Organisation ODS code is autopopulated 
-When the edit screen is displayed
-Then the User is unable to edit the ODS code
+Scenario: Call Off Ordering Party - Unable to edit Call Off Ordering Party Organisation ODS code
+	Given an unsubmitted order exists
+	And the Call Off Ordering Party section is not complete
+	When the User chooses to edit the Call Off Ordering Party information
+	Then the User is unable to edit the ODS code
 
-Scenario: Unable to edit Call Off Ordering Party Organisation Name
-Given the Call Off Ordering Party Organisation Name is autopopulated
-When the edit screen is displayed
-Then the User is unable to edit the Organisation Name
+Scenario: Call Off Ordering Party - Unable to edit Call Off Ordering Party Organisation Name
+	Given an unsubmitted order exists
+	And the Call Off Ordering Party section is not complete
+	When the User chooses to edit the Call Off Ordering Party information
+	Then the User is unable to edit the Organisation Name
 
-Scenario: Unable to edit Call Off Ordering Party Organisation Address
-Given the Call Off Ordering Party Organisation Address is autopopulated 
-When the edit screen is displayed
-Then the User is unable to edit Address
+Scenario: Call Off Ordering Party - Unable to edit Call Off Ordering Party Organisation Address
+Given an unsubmitted order exists
+	And the Call Off Ordering Party section is not complete
+	When the User chooses to edit the Call Off Ordering Party information
+	Then the User is unable to edit Address
 
-Scenario: Go back
-Given the edit Call Off Ordering Party screen is presented
-When the User chooses to go back
-Then the Orders dashboard is presented
+Scenario: Call Off Ordering Party - Go back
+	Given an unsubmitted order exists
+	And the Call Off Ordering Party section is not complete
+	And the User chooses to edit the Call Off Ordering Party information
+	When the User chooses to go back
+	Then the Order dashboard is presented
 

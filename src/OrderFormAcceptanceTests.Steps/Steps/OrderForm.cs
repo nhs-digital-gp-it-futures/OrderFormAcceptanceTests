@@ -88,6 +88,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the Order is saved")]
+        [Then(@"the Order dashboard is presented")]
+        [Then(@"the Order tasklist is presented")]
         public void ThenTheOrderIsSaved()
         {
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();

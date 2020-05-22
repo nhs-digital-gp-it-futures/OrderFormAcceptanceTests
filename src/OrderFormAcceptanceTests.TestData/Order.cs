@@ -14,14 +14,14 @@ namespace OrderFormAcceptanceTests.TestData
         public Guid OrganisationId { get; set; }
         public string OrganisationName { get; set; }
         public string OrganisationOdsCode { get; set; }
-        public int OrganisationAddressId { get; set; }
-        public int OrganisationBillingAddressId { get; set; }
-        public int OrganisationContactId { get; set; }
+        public int? OrganisationAddressId { get; set; }
+        public int? OrganisationBillingAddressId { get; set; }
+        public int? OrganisationContactId { get; set; }
         public int OrderStatusId { get; set; }
-        public int SupplierId { get; set; }
+        public int? SupplierId { get; set; }
         public string SupplierName { get; set; }
-        public int SupplierAddressId { get; set; }
-        public int SupplierContactId { get; set; }
+        public int? SupplierAddressId { get; set; }
+        public int? SupplierContactId { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }
         public Guid LastUpdatedBy { get; set; }
@@ -62,12 +62,12 @@ namespace OrderFormAcceptanceTests.TestData
                                 ,OrganisationOdsCode
                                 ,OrganisationAddressId
                                 ,OrganisationBillingAddressId
-                                ,OrganisationContactId
+                                ,OrganisationContactId,
                                  OrderStatusId
                                 ,SupplierId
                                 ,SupplierName
                                 ,SupplierAddressId
-                                ,SupplierContactId
+                                ,SupplierContactId,
                                  Created,
                                  LastUpdated,
                                  LastUpdatedBy,
@@ -81,12 +81,12 @@ namespace OrderFormAcceptanceTests.TestData
                                 ,@OrganisationOdsCode
                                 ,@OrganisationAddressId
                                 ,@OrganisationBillingAddressId
-                                ,@OrganisationContactId
+                                ,@OrganisationContactId,
                                  @OrderStatusId
                                 ,@SupplierId
                                 ,@SupplierName
                                 ,@SupplierAddressId
-                                ,@SupplierContactId
+                                ,@SupplierContactId,
                                  @Created,
                                  @LastUpdated,
                                  @LastUpdatedBy,
@@ -106,12 +106,12 @@ namespace OrderFormAcceptanceTests.TestData
                            ,OrganisationOdsCode=@OrganisationOdsCode
                            ,OrganisationAddressId=@OrganisationAddressId
                            ,OrganisationBillingAddressId=@OrganisationBillingAddressId
-                           ,OrganisationContactId=@OrganisationContactId
+                           ,OrganisationContactId=@OrganisationContactId,
                             OrderStatusId=@orderStatusId,
                             SupplierId=@SupplierId
                            ,SupplierName=@SupplierName
                            ,SupplierAddressId=@SupplierAddressId
-                           ,SupplierContactId=@SupplierContactId
+                           ,SupplierContactId=@SupplierContactId,
                             Created=@created,
                             LastUpdated=@lastUpdated,
                             LastUpdatedBy=@lastUpdatedBy,

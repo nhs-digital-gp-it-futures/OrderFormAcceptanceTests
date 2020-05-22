@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Objects.Utils;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace OrderFormAcceptanceTests.Objects.Pages
 {
@@ -16,5 +18,13 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By GenericSection(string sectionHrefRoute) {
 			return By.CssSelector(string.Format("[href$='{0}']", sectionHrefRoute));
 		}
+
+		public By OrganisationName => CustomBy.DataTestId("organisation-name");
+		public By OrganisationOdsCode => CustomBy.DataTestId("organisation-ods-code");
+		public Func<int, By> AddressLineX => (LineNumber) => CustomBy.PartialDataTestId("organisation-address-{0}", LineNumber.ToString());
+		public By OrganisationAddressTown => CustomBy.DataTestId("organisation-address-town");
+		public By OrganisationAddressCounty => CustomBy.DataTestId("organisation-address-county");
+		public By OrganisationAddressPostcode => CustomBy.DataTestId("organisation-address-postcode");
+		public By OrganisationAddressCountry => CustomBy.DataTestId("organisation-address-country");
 	}
 }
