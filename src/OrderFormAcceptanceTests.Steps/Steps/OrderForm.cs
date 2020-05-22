@@ -146,6 +146,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             // TODO: When datamodel has changed, we need to update Order class to have the call-off ordering party property, and set it to null here 
         }
 
+        [Given(@"the Supplier section is not complete")]
+        public void GivenTheSupplierSectionIsNotComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            // TODO: When datamodel has changed make sure we clear the supplier section
+        }
+
+
         [When(@"the User navigates back to the Organisation's Orders dashboard")]
         public void WhenTheUserNavigatesBackToTheOrganisationSOrdersDashboard()
         {
