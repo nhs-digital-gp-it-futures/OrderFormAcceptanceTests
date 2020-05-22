@@ -24,9 +24,13 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         private void EnterUsername(string username)
         {
-            Wait.Until(d => d.FindElements(Pages.Login.Username).Count > 0);
+            Driver.WaitForJsToComplete(Wait);
+            Wait.Until(d => d.FindElements(Pages.Login.Username).Count == 1);
+            Wait.Until(d => d.FindElement(Pages.Login.Username).GetAttribute("value") == "");
+            Wait.Until(ElementExtensions.ElementToBeClickable(Pages.Login.Username));
             Driver.FindElement(Pages.Login.Username).Click();
-            Driver.FindElement(Pages.Login.Username).SendKeys(username);
+            Driver.EnterTextViaJs(Wait, Pages.Login.Username, username);
+            Wait.Until(d => d.FindElement(Pages.Login.Username).GetAttribute("value") != "");
         }
 
         public void PageDisplayed()

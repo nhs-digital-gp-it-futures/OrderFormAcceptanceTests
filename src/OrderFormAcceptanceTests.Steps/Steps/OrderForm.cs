@@ -114,10 +114,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedOrder", order);
         }
 
-        [Then(@"the content validation status of the (.*) section is (.*)")]
-        public void ThenTheContentValidationStatusOfTheSectionIsComplete(string sectionName, string sectionStatus)
+        [Then(@"the content validation status of the (.*) section is complete")]
+        public void ThenTheContentValidationStatusOfTheSectionIsComplete(string sectionName)
         {
-            Test.Pages.OrderForm.SectionStatusTextMatchesExpected(sectionName, sectionStatus);
+            Test.Pages.OrderForm.SectionComplete(sectionName).Should().BeTrue();
+        }
+
+        [Then(@"the content validation status of the (.*) section is incomplete")]
+        public void ThenTheContentValidationStatusOfTheSupplierSectionIsIncomplete(string sectionName)
+        {
+            Test.Pages.OrderForm.SectionComplete(sectionName).Should().BeFalse();
         }
 
         [Then(@"the Call Off Agreement ID is generated")]
