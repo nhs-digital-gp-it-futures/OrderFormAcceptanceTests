@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
+using OrderFormAcceptanceTests.TestData;
 using System;
 using System.Linq;
 
@@ -224,6 +225,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElements(Pages.Common.TextArea)[index].SendKeys(value);
 		}
 
+		public void EnterTextIntoTextField(string value, int index = 0)
+		{
+			Driver.FindElements(Pages.Common.TextField)[index].SendKeys(value);
+		}
+
 		public string ClickOnErrorLink()
 		{
 			var errorMessages = Driver.FindElements(Pages.Common.ErrorMessages).ToList();
@@ -272,6 +278,40 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 				return lineDisplayed && lineNotEditable && townDisplayed && townNotEditable && countyDisplayed && countyNotEditable && postcodeDisplayed && postcodeNotEditable;
 			}
 			catch { return false; }
+		}
+
+		public string GetOdsCode()
+		{
+			return Driver.FindElement(Pages.OrderForm.OrganisationOdsCode).Text;
+		}
+
+		public string GetOrganisationName()
+		{
+			return Driver.FindElement(Pages.OrderForm.OrganisationName).Text;
+		}
+
+		public Address GetOrganisationAddress()
+		{
+			return new Address
+			{
+				Line1 = Driver.FindElement(Pages.OrderForm.AddressLineX(1)).Text,
+				Line2 = Driver.FindElement(Pages.OrderForm.AddressLineX(2)).Text,
+				Line3 = Driver.FindElement(Pages.OrderForm.AddressLineX(3)).Text,
+				Line4 = Driver.FindElement(Pages.OrderForm.AddressLineX(4)).Text,
+				Town = Driver.FindElement(Pages.OrderForm.OrganisationAddressTown).Text,
+				County = Driver.FindElement(Pages.OrderForm.OrganisationAddressCounty).Text,
+				Postcode = Driver.FindElement(Pages.OrderForm.OrganisationAddressPostcode).Text,
+				Country = Driver.FindElement(Pages.OrderForm.OrganisationAddressCountry).Text
+			};
+		}
+
+		public void EnterContact(Contact contact)
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderForm.ContactFirstName).Count == 1);
+			Driver.FindElement(Pages.OrderForm.ContactFirstName).SendKeys(contact.FirstName);
+			Driver.FindElement(Pages.OrderForm.ContactLastName).SendKeys(contact.LastName);
+			Driver.FindElement(Pages.OrderForm.ContactEmail).SendKeys(contact.Email);
+			Driver.FindElement(Pages.OrderForm.ContactTelephone).SendKeys(contact.Phone);
 		}
 	}
 }

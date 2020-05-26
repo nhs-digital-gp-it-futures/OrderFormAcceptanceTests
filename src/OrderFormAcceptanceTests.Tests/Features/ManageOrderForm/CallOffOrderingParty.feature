@@ -44,7 +44,7 @@ Scenario: Call Off Ordering Party - Unable to edit Call Off Ordering Party Organ
 	Then the User is unable to edit the Organisation Name
 
 Scenario: Call Off Ordering Party - Unable to edit Call Off Ordering Party Organisation Address
-Given an unsubmitted order exists
+	Given an unsubmitted order exists
 	And the Call Off Ordering Party section is not complete
 	When the User chooses to edit the Call Off Ordering Party information
 	Then the User is unable to edit Address
@@ -55,4 +55,33 @@ Scenario: Call Off Ordering Party - Go back
 	And the User chooses to edit the Call Off Ordering Party information
 	When the User chooses to go back
 	Then the Order dashboard is presented
-
+	@ignore
+Scenario: Call Off Ordering Party - Mandatory data missing
+	Given the user is managing the Call Off Ordering Party section
+	And mandatory data are missing 
+	When the User chooses to save
+	Then Call Off Ordering Party section is not saved
+	And the reason is displayed
+	@ignore
+Scenario: Call Off Ordering Party - Data exceeds the maximum length
+	Given the user is managing the Call Off Ordering Party section
+	And the User has entered data into a field that exceeds the maximum length of 100 characters
+	When the User chooses to save
+	Then the Call Off Ordering Party section is not saved 
+	And the reason is displayed
+	@ignore
+Scenario: Call Off Ordering Party - Validation Error Message Anchors
+	Given the user is managing the Call Off Ordering Party section
+	And the validation has been triggered
+	When the user selects an error link in the Error Summary
+	Then they will be navigated to the relevant part of the page
+	@ignore
+Scenario: Call Off Ordering Party - All data are valid
+	Given the user is managing the Call Off Ordering Party section
+	And the user has entered a valid Call Off Ordering Party contact for the order
+	And makes a note of the autopopulated Ordering Party details
+	When the User chooses to save
+	Then the Order is saved
+	And the content validation status of the call-off-ordering-party section is complete 
+	And the Call Off Agreement ID is generated
+	And the Call Off Ordering Party section is saved in the DB
