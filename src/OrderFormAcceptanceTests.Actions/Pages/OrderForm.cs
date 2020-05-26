@@ -42,7 +42,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElement(Pages.Common.ErrorTitle).Text;
 		}
 
-		public bool ErrorSummaryDisplayed()
+        public bool ErrorSummaryDisplayed()
 		{
 			return Driver.FindElements(Pages.Common.ErrorSummary).Count > 0;
 		}
@@ -88,12 +88,20 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			}
 		}
 
-		public void SectionStatusTextMatchesExpected(string section, string expectedStatus)
+		public bool SectionComplete(string section)
 		{
-			var sectionelement = Driver.FindElements(Pages.OrderForm.GenericSection(section)).Single()
+			var search = Driver.FindElements(Pages.OrderForm.GenericSection(section)).Single()
 				.FindElement(By.XPath("../.."))
-				.FindElement(Pages.OrderForm.SectionStatus);
-			sectionelement.Text.Should().BeEquivalentTo(expectedStatus);
+				.FindElements(Pages.OrderForm.SectionStatus);
+
+			if (search.Count == 0)
+			{
+				return false;
+			}
+			else
+			{
+				return search[0].Text.Equals("COMPLETE", StringComparison.OrdinalIgnoreCase);
+			}
 		}
 
 		public void BackLinkDisplayed()
@@ -167,6 +175,25 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public void ClickEditCallOffOrderingParty()
 		{
 			Driver.FindElement(Pages.OrderForm.EditCallOffOrderingParty).Click();
+		}
+
+		public bool EditSupplierSectionDisplayed()
+		{
+			try
+			{
+				Wait.Until(d => d.FindElements(Pages.OrderForm.EditSupplier).Count == 1);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+
+		}
+
+		public void ClickEditSupplier()
+		{
+			Driver.FindElement(Pages.OrderForm.EditSupplier).Click();
 		}
 
 		public bool EditNamedSectionPageDisplayed(string namedSectionPageTitle)

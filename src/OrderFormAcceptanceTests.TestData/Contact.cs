@@ -9,7 +9,7 @@ namespace OrderFormAcceptanceTests.TestData
 {
     public sealed class Contact
     {
-        public int ContactId { get; set; }
+        public int? ContactId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -20,7 +20,6 @@ namespace OrderFormAcceptanceTests.TestData
             Faker faker = new Faker();
             return new Contact()
             {
-                ContactId = faker.Random.Number(),
                 FirstName = faker.Name.FirstName(),
                 LastName = faker.Name.LastName(),
                 Email = faker.Internet.Email(),
@@ -28,23 +27,25 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
-        public void Create(string connectionString)
+        public int? Create(string connectionString)
         {
+
             var query = @"INSERT INTO [dbo].[Contact]
-                                (ContactId,
-                                 FirstName,
+                                (FirstName,
                                  LastName,
                                  Email,
                                  Phone
                                  )
                                 VALUES
-                                (@ContactId,
-                                 @FirstName,
+                                (@FirstName,
                                  @LastName,
                                  @Email,
                                  @Phone
-                        )";
-            SqlExecutor.Execute<Contact>(connectionString, query, this);
+                        );
+    
+                        SELECT ContactId = SCOPE_IDENTITY()";
+            this.ContactId = SqlExecutor.Execute<int>(connectionString, query, this).Single();
+            return this.ContactId;
         }
 
         public Contact Retrieve(string connectionString)
@@ -56,9 +57,7 @@ namespace OrderFormAcceptanceTests.TestData
         public void Update(string connectionString)
         {
             var query = @"UPDATE [dbo].[Contact] 
-                        SET 
-                            ContactId=@ContactId,
-                            FirstName=@FirstName,
+                        SET FirstName=@FirstName,
                             LastName=@LastName,
                             Email=@Email,
                             Phone=@Phone

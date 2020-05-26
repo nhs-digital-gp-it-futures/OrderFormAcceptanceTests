@@ -16,6 +16,7 @@ Scenario: Call Off Ordering Party - Order description section is now complete
 	When the Order Form for the existing order is presented
 	Then the Call Off Agreement ID is displayed
 	And there is the Order description section
+	And the content validation status of the description section is complete 
 	And there is the Call-off Ordering Party section
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled

@@ -10,7 +10,7 @@ namespace OrderFormAcceptanceTests.TestData
 {
     public sealed class Address
     {
-          public int AddressId { get; set; }
+          public int? AddressId { get; set; }
           public string Line1 { get; set; }
           public string Line2 { get; set; }
           public string Line3 { get; set; }
@@ -27,7 +27,6 @@ namespace OrderFormAcceptanceTests.TestData
             var randomAddress = faker.Address;
             return new Address()
             {
-                AddressId = faker.Random.Number(),
                 Line1 = randomAddress.StreetAddress(),
                 Town = randomAddress.City(),
                 County = randomAddress.County(),
@@ -36,11 +35,10 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
-        public void Create(string connectionString)
+        public int? Create(string connectionString)
         {
             var query = @"INSERT INTO [dbo].[Address]
-                                (AddressId,
-                                 Line1,
+                                (Line1,
                                  Line2,
                                  Line3,
                                  Line4,
@@ -51,8 +49,7 @@ namespace OrderFormAcceptanceTests.TestData
                                  Country
                                  )
                                 VALUES
-                                (@AddressId,
-                                 @Line1,
+                                (@Line1,
                                  @Line2,
                                  @Line3,
                                  @Line4,
@@ -61,8 +58,11 @@ namespace OrderFormAcceptanceTests.TestData
                                  @County,
                                  @Postcode,
                                  @Country
-                        )";
-            SqlExecutor.Execute<Address>(connectionString, query, this);
+                        );
+
+                        SELECT AddressId = SCOPE_IDENTITY()";
+            this.AddressId = SqlExecutor.Execute<int>(connectionString, query, this).Single();
+            return this.AddressId;
         }
 
         public Address Retrieve(string connectionString)
@@ -75,7 +75,7 @@ namespace OrderFormAcceptanceTests.TestData
         {
             var query = @"UPDATE [dbo].[Address] 
                         SET 
-                            AddressId=@AddressId,
+                            
                             Line1=@Line1,
                             Line2=@Line2,
                             Line3=@Line3,

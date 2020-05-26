@@ -46,8 +46,29 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Given(@"an unsubmitted order exists")]
         public void GivenAnUnsubmittedOrderExists()
-        {
+        {            
+            var orgAddress = new Address().Generate();
+            orgAddress.Create(Test.ConnectionString);
+            Context.Add("CreatedAddress", orgAddress);
+            var orgContact = new Contact().Generate();
+            orgContact.Create(Test.ConnectionString);
+            Context.Add("CreatedContact", orgContact);
+
+            var supplierAddress = new Address().Generate();
+            supplierAddress.Create(Test.ConnectionString);
+            Context.Add("CreatedSupplierAddress", supplierAddress);
+            var supplierContact = new Contact().Generate();
+            supplierContact.Create(Test.ConnectionString);
+            Context.Add("CreatedSupplierContact", supplierContact);
+
             var order = new Order().Generate();
+            order.OrganisationAddressId = orgAddress.AddressId;
+            order.OrganisationBillingAddressId = orgAddress.AddressId;
+            order.OrganisationContactId = orgContact.ContactId;
+            order.SupplierAddressId = supplierAddress.AddressId;
+            order.SupplierContactId = supplierContact.ContactId;
+            order.SupplierId = 100000;
+            order.SupplierName = "Really Kool Corporation";
             order.Create(Test.ConnectionString);
             Context.Add("CreatedOrder", order);
         }

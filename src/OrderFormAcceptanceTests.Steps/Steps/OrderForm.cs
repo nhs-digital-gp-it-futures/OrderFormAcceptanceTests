@@ -28,6 +28,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditCallOffOrderingPartySectionDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is the Supplier section")]
+        public void ThenThereIsTheSupplierSection()
+        {
+            Test.Pages.OrderForm.EditSupplierSectionDisplayed().Should().BeTrue();
+        }
+
         [Then(@"the user is able to manage the Order Description section")]
         public void ThenTheUserIsAbleToManageTheOrderDescriptionSection()
         {
@@ -108,10 +114,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedOrder", order);
         }
 
-        [Then(@"the content validation status of the (.*) section is (.*)")]
-        public void ThenTheContentValidationStatusOfTheSectionIsComplete(string sectionName, string sectionStatus)
+        [Then(@"the content validation status of the (.*) section is complete")]
+        public void ThenTheContentValidationStatusOfTheSectionIsComplete(string sectionName)
         {
-            Test.Pages.OrderForm.SectionStatusTextMatchesExpected(sectionName, sectionStatus);
+            Test.Pages.OrderForm.SectionComplete(sectionName).Should().BeTrue();
+        }
+
+        [Then(@"the content validation status of the (.*) section is incomplete")]
+        public void ThenTheContentValidationStatusOfTheSupplierSectionIsIncomplete(string sectionName)
+        {
+            Test.Pages.OrderForm.SectionComplete(sectionName).Should().BeFalse();
         }
 
         [Then(@"the Call Off Agreement ID is generated")]
@@ -137,7 +149,21 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheCallOffOrderingPartySectionIsNotComplete()
         {
             var order = (Order)Context["CreatedOrder"];
-            // TODO: When datamodel has changed, we need to update Order class to have the call-off ordering party property, and set it to null here 
+            order.OrganisationAddressId = null;
+            order.OrganisationBillingAddressId = null;
+            order.OrganisationContactId = null;
+            order.Update(Test.ConnectionString);
+        }
+
+        [Given(@"the Supplier section is not complete")]
+        public void GivenTheSupplierSectionIsNotComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierAddressId = null;
+            order.SupplierContactId = null;
+            order.SupplierId = null;
+            order.SupplierName = null;
+            order.Update(Test.ConnectionString);
         }
 
         [When(@"the User navigates back to the Organisation's Orders dashboard")]
