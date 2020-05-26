@@ -27,5 +27,9 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By OrganisationAddressCounty => CustomBy.DataTestId("organisation-address-county");
 		public By OrganisationAddressPostcode => CustomBy.DataTestId("organisation-address-postcode");
 		public By OrganisationAddressCountry => CustomBy.DataTestId("organisation-address-country");
+		public By ContactFirstName => By.Id("firstName");
+		public By ContactLastName => By.Id("lastName");
+		public By ContactEmail => By.Id("emailAddress");
+		public By ContactTelephone => By.Id("telephoneNumber");
     }
 }

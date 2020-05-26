@@ -68,7 +68,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheUserHasEnteredDataIntoAFieldThatExceedsTheMaximumLength(int maxLength)
         {
             var randomText = RandomInformation.RandomString(maxLength + 1);
-            Test.Pages.OrderForm.EnterTextIntoTextArea(randomText);
+            if (Test.Driver.FindElements(By.TagName("textarea")).Count > 0)
+            {
+                Test.Pages.OrderForm.EnterTextIntoTextArea(randomText);
+            }
+            else
+            {
+                Test.Pages.OrderForm.EnterTextIntoTextField(randomText);
+            }
         }
 
         [When(@"the user selects an error link in the Error Summary")]

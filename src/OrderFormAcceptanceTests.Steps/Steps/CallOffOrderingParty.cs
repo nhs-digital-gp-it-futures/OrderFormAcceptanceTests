@@ -57,6 +57,59 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.CallOffIdDisplayedInPageTitle(((Order)Context["CreatedOrder"]).OrderId).Should().BeTrue();
         }
 
+        [Given(@"the user is managing the Call Off Ordering Party section")]
+        public void GivenTheUserIsManagingTheCallOffOrderingPartySection()
+        {
+            new CommonSteps(Test, Context).GivenAnUnsubmittedOrderExists();
+            new OrderForm(Test, Context).GivenTheCallOffOrderingPartySectionIsNotComplete();
+            WhenTheUserChoosesToEditTheCallOffOrderingPartyInformation();
+        }
+
+        [Given(@"the user has entered a valid Call Off Ordering Party contact for the order")]
+        public void GivenTheUserHasEnteredAValidCallOffOrderingPartyContactForTheOrder()
+        {
+            var contact = new Contact().Generate();
+            Test.Pages.OrderForm.EnterContact(contact);
+            Context.Add("ExpectedContact", contact);
+        }
+
+        [Given(@"makes a note of the autopopulated Ordering Party details")]
+        public void GivenMakesANoteOfTheAutopopulatedOrderingPartyDetails()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.OrganisationOdsCode = Test.Pages.OrderForm.GetOdsCode();
+            order.OrganisationName = Test.Pages.OrderForm.GetOrganisationName();
+            var address = Test.Pages.OrderForm.GetOrganisationAddress();
+            Context.Add("ExpectedAddress", address);
+        }
+
+        [Then(@"the Call Off Ordering Party section is saved in the DB")]
+        public void ThenTheCallOffOrderingPartySectionIsSavedInTheDB()
+        {
+            var id = Test.Pages.OrderForm.GetCallOffId();
+            var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
+            var dbContact = new Contact { ContactId = order.OrganisationContactId }.Retrieve(Test.ConnectionString);
+            Context.Add("CreatedContact", dbContact);
+
+            var dbAddress = new Address { AddressId = order.OrganisationAddressId }.Retrieve(Test.ConnectionString);
+            Context.Add("CreatedAddress", dbAddress);
+
+            var expectedContact = (Contact)Context["ExpectedContact"];
+            dbContact.FirstName.Should().BeEquivalentTo(expectedContact.FirstName);
+            dbContact.LastName.Should().BeEquivalentTo(expectedContact.LastName);
+            dbContact.Email.Should().BeEquivalentTo(expectedContact.Email);
+            dbContact.Phone.Should().BeEquivalentTo(expectedContact.Phone);
+
+            var expectedAddress = (Address)Context["ExpectedAddress"];
+            dbAddress.Line1.Should().BeEquivalentTo(expectedAddress.Line1);
+            dbAddress.Line2.Should().BeEquivalentTo(expectedAddress.Line2);
+            dbAddress.Line3.Should().BeEquivalentTo(expectedAddress.Line3);
+            dbAddress.Line4.Should().BeEquivalentTo(expectedAddress.Line4);
+            dbAddress.Town.Should().BeEquivalentTo(expectedAddress.Town);
+            dbAddress.County.Should().BeEquivalentTo(expectedAddress.County);
+            dbAddress.Postcode.Should().BeEquivalentTo(expectedAddress.Postcode);
+            dbAddress.Country.Should().BeEquivalentTo(expectedAddress.Country);
+        }
 
     }
 }
