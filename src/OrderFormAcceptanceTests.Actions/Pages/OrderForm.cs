@@ -3,6 +3,8 @@ using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.TestData;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
@@ -312,6 +314,17 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElement(Pages.OrderForm.ContactLastName).SendKeys(contact.LastName);
 			Driver.FindElement(Pages.OrderForm.ContactEmail).SendKeys(contact.Email);
 			Driver.FindElement(Pages.OrderForm.ContactTelephone).SendKeys(contact.Phone);
+		}
+
+		public void ClickSearchButton()
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderForm.SearchButton).Count == 1);
+			Driver.FindElement(Pages.OrderForm.SearchButton).Click();
+		}
+
+		public ReadOnlyCollection<IWebElement> ListOfSuppliers()
+		{
+			return Driver.FindElements(Pages.OrderForm.SupplierOptions);
 		}
 	}
 }

@@ -31,5 +31,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By ContactLastName => By.Id("lastName");
 		public By ContactEmail => By.Id("emailAddress");
 		public By ContactTelephone => By.Id("telephoneNumber");
+		public By SearchButton => CustomBy.DataTestId("search-button", "button");
+		public By SupplierOptions => CustomBy.DataTestId("question-selectSupplier", "input");
     }
 }
