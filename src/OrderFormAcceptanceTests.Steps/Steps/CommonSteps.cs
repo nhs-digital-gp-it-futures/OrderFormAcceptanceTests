@@ -39,6 +39,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Given(@"mandatory data are missing")]
         [Then(@".* section is not saved")]
+        [When(@"the User has not entered a Supplier search criterion")]
         public void GivenMandatoryDataAreMissing()
         {
             //do nothing

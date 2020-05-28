@@ -43,14 +43,14 @@ Scenario: Supplier Information - Search supplier
 	And the Supplier section is not complete
 	When the User chooses to edit the Supplier section for the first time
 	Then the Search supplier screen is presented
-	And the Call Off Agreement ID is displayed
+	And the Call Off Agreement ID is displayed in the page title
 
 Scenario: Supplier Information - Supplier(s) returned
 	Given an unsubmitted order exists
 	And the Supplier section is not complete
 	And the User chooses to edit the Supplier section for the first time
 	When the User has entered a valid Supplier search criterion
-	And they choose to search
+	And the User chooses to search
 	Then the matching Suppliers are presented
 
 Scenario: Supplier Information - No Supplier(s) returned
@@ -58,7 +58,7 @@ Scenario: Supplier Information - No Supplier(s) returned
 	And the Supplier section is not complete
 	And the User chooses to edit the Supplier section for the first time
 	When the User has entered a non matching Supplier search criterion
-	And they choose to search
+	And the User chooses to search
 	Then no matching Suppliers are presented
 	And the User is informed that no matching Suppliers exist
 
@@ -82,8 +82,8 @@ Scenario: Supplier Information - Go Back (No Supplier(s) returned)
 	Given an unsubmitted order exists
 	And the Supplier section is not complete
 	And the User chooses to edit the Supplier section for the first time
-	When the User has entered a non matching Supplier search criterion
-	And they choose to search
-	Then no matching Suppliers are presented
+	And the User has entered a non matching Supplier search criterion
+	And the User chooses to search
+	And no matching Suppliers are presented
 	When the User chooses to go back
 	Then the Search supplier screen is presented
