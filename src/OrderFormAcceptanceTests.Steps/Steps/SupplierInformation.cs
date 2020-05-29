@@ -30,6 +30,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [StepDefinition(@"the Search supplier screen is presented")]
+        [StepDefinition(@"the Edit Supplier Form Page is presented")]
         public void ThenTheSearchSupplierScreenIsPresented()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("supplier information").Should().BeTrue();
@@ -77,6 +78,59 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("supplierName");
         }
+
+        [Given(@"the User has been presented with matching Suppliers")]
+        public void GivenTheUserHasBeenPresentedWithMatchingSuppliers()
+        {
+            new CommonSteps(Test, Context).GivenAnUnsubmittedOrderExists();
+            new OrderForm(Test, Context).GivenTheSupplierSectionIsNotComplete();
+            WhenTheUserChoosesToEditTheSupplierSectionForTheFirstTime();
+            WhenTheUserHasEnteredAValidSupplierSearchCriterion();
+            WhenTheyChooseToSearch();
+            ThenTheMatchingSuppliersArePresented();
+        }
+
+        [When(@"they select a Supplier")]
+        public void WhenTheySelectASupplier()
+        {
+            Test.Pages.OrderForm.SelectSupplier();
+        }
+
+        [When(@"they choose to continue")]
+        public void WhenTheyChooseToContinue()
+        {
+            Test.Pages.OrderForm.ClickContinueButton();
+        }
+
+        [Then(@"they are informed that a Supplier needs to be selected")]
+        public void ThenTheyAreInformedThatASupplierNeedsToBeSelected()
+        {
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectSupplier");
+        }
+
+        [Then(@"the Supplier name is autopopulated")]
+        public void ThenTheSupplierNameIsAutopopulated()
+        {
+            Test.Pages.OrderForm.SupplierNameIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the Supplier Registered Address is autopopulated")]
+        public void ThenTheSupplierRegisteredAddressIsAutopopulated()
+        {
+            Test.Pages.OrderForm.AddressDisplayedAndNotEditable().Should().BeTrue();
+        }
+
+        [Then(@"the Supplier Contact details are autopopulated")]
+        public void ThenTheSupplierContactDetailsAreAutopopulated()
+        {
+            var contactDetails = Test.Pages.OrderForm.GetContact();
+            contactDetails.FirstName.Should().NotBeNullOrEmpty();
+            contactDetails.LastName.Should().NotBeNullOrEmpty();
+            contactDetails.Email.Should().NotBeNullOrEmpty();
+            contactDetails.Phone.Should().NotBeNullOrEmpty();
+        }
+
 
     }
 }
