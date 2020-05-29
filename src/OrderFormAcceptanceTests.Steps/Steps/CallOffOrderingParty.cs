@@ -66,6 +66,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Given(@"the user has entered a valid Call Off Ordering Party contact for the order")]
+        [Given(@"the user has entered a valid supplier contact for the order")]
         public void GivenTheUserHasEnteredAValidCallOffOrderingPartyContactForTheOrder()
         {
             var contact = new Contact().Generate();
