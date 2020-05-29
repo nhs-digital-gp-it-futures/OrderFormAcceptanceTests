@@ -87,3 +87,23 @@ Scenario: Supplier Information - Go Back (No Supplier(s) returned)
 	And no matching Suppliers are presented
 	When the User chooses to go back
 	Then the Search supplier screen is presented
+
+Scenario: Supplier Information - Supplier selected
+	Given the User has been presented with matching Suppliers
+	When they select a Supplier
+	And they choose to continue
+	Then the Edit Supplier Form Page is presented
+	And the Supplier name is autopopulated
+	And the Supplier Registered Address is autopopulated
+	And the Supplier Contact details are autopopulated
+
+Scenario: Supplier Information - No Supplier selected
+	Given the User has been presented with matching Suppliers
+	And no Supplier is selected
+	When they choose to continue
+	Then they are informed that a Supplier needs to be selected
+
+Scenario: Supplier Information - Go Back (matching suppliers list)
+	Given the User has been presented with matching Suppliers
+	When the User chooses to go back
+	Then the Search supplier screen is presented

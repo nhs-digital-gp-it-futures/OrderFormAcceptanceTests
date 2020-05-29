@@ -20,6 +20,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             Driver.WaitForJsToComplete(Wait);
             Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.PageTitle).Count == 1);
+            Wait.Until(d => CreateNewOrderButtonDisplayed());
         }
 
         public void SelectExistingOrder(string CallOffAgreementId)

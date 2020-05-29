@@ -22,16 +22,18 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 
 		public By OrganisationName => CustomBy.DataTestId("organisation-name");
 		public By OrganisationOdsCode => CustomBy.DataTestId("organisation-ods-code");
-		public Func<int, By> AddressLineX => (LineNumber) => CustomBy.PartialDataTestId("organisation-address-{0}", LineNumber.ToString());
-		public By OrganisationAddressTown => CustomBy.DataTestId("organisation-address-town");
-		public By OrganisationAddressCounty => CustomBy.DataTestId("organisation-address-county");
-		public By OrganisationAddressPostcode => CustomBy.DataTestId("organisation-address-postcode");
-		public By OrganisationAddressCountry => CustomBy.DataTestId("organisation-address-country");
+		public Func<int, By> AddressLineX => (LineNumber) => By.CssSelector(string.Format("[data-test-id$=-address-{0}]", LineNumber.ToString()));
+		public By AddressTown => By.CssSelector("[data-test-id$=-address-town]");
+		public By AddressCounty => By.CssSelector("[data-test-id$=-address-county]");
+		public By AddressPostcode => By.CssSelector("[data-test-id$=-address-postcode]");
+		public By AddressCountry => By.CssSelector("[data-test-id$=-address-country]");
 		public By ContactFirstName => By.Id("firstName");
 		public By ContactLastName => By.Id("lastName");
 		public By ContactEmail => By.Id("emailAddress");
 		public By ContactTelephone => By.Id("telephoneNumber");
 		public By SearchButton => CustomBy.DataTestId("search-button", "button");
 		public By SupplierOptions => CustomBy.DataTestId("question-selectSupplier", "input");
+		public By SupplierName => CustomBy.DataTestId("supplier-name");
+
     }
 }

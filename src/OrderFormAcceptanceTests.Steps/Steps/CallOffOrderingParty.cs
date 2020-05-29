@@ -48,7 +48,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the User is unable to edit Address")]
         public void ThenTheCallOffOrderingPartyOrganisationAddressIsAutopopulatedFromTheUserSOrganisation()
         {
-            Test.Pages.OrderForm.OrganisationAddressDisplayedAndNotEditable().Should().BeTrue();
+            Test.Pages.OrderForm.AddressDisplayedAndNotEditable().Should().BeTrue();
         }
 
         [Then(@"the Call Off Agreement ID is displayed in the page title")]
@@ -79,7 +79,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context["CreatedOrder"];
             order.OrganisationOdsCode = Test.Pages.OrderForm.GetOdsCode();
             order.OrganisationName = Test.Pages.OrderForm.GetOrganisationName();
-            var address = Test.Pages.OrderForm.GetOrganisationAddress();
+            var address = Test.Pages.OrderForm.GetAddress();
             Context.Add("ExpectedAddress", address);
         }
 

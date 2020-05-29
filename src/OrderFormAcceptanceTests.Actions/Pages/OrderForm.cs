@@ -142,7 +142,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElement(Pages.OrderForm.SubmitOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
 		}
 
-		public bool EditDescriptionSectionDisplayed()
+        public bool EditDescriptionSectionDisplayed()
 		{
 			
 			try
@@ -217,6 +217,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElement(Pages.Common.SaveButton).Click();
 		}
 
+		public void ClickContinueButton()
+		{
+			Driver.FindElement(Pages.Common.ContinueButton).Click();
+		}
+
 		public void ClickBackLink()
 		{
 			Driver.FindElement(Pages.Common.BackLink).Click();
@@ -229,6 +234,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
 		public void EnterTextIntoTextField(string value, int index = 0)
 		{
+			Wait.Until(d => d.FindElements(Pages.Common.TextField).Count > 0);
 			Driver.FindElements(Pages.Common.TextField)[index].SendKeys(value);
 		}
 
@@ -265,18 +271,18 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			}
 			catch { return false; }
 		}
-		public bool OrganisationAddressDisplayedAndNotEditable()
+		public bool AddressDisplayedAndNotEditable()
 		{
 			try
 			{
 				var lineDisplayed = Driver.FindElements(Pages.OrderForm.AddressLineX(1)).Count == 1;
 				var lineNotEditable = Driver.FindElement(Pages.OrderForm.AddressLineX(1)).TagName == "div";
-				var townDisplayed = Driver.FindElements(Pages.OrderForm.OrganisationAddressTown).Count == 1;
-				var townNotEditable = Driver.FindElement(Pages.OrderForm.OrganisationAddressTown).TagName == "div";
-				var countyDisplayed = Driver.FindElements(Pages.OrderForm.OrganisationAddressCounty).Count == 1;
-				var countyNotEditable = Driver.FindElement(Pages.OrderForm.OrganisationAddressCounty).TagName == "div";
-				var postcodeDisplayed = Driver.FindElements(Pages.OrderForm.OrganisationAddressPostcode).Count == 1;
-				var postcodeNotEditable = Driver.FindElement(Pages.OrderForm.OrganisationAddressPostcode).TagName == "div";
+				var townDisplayed = Driver.FindElements(Pages.OrderForm.AddressTown).Count == 1;
+				var townNotEditable = Driver.FindElement(Pages.OrderForm.AddressTown).TagName == "div";
+				var countyDisplayed = Driver.FindElements(Pages.OrderForm.AddressCounty).Count == 1;
+				var countyNotEditable = Driver.FindElement(Pages.OrderForm.AddressCounty).TagName == "div";
+				var postcodeDisplayed = Driver.FindElements(Pages.OrderForm.AddressPostcode).Count == 1;
+				var postcodeNotEditable = Driver.FindElement(Pages.OrderForm.AddressPostcode).TagName == "div";
 				return lineDisplayed && lineNotEditable && townDisplayed && townNotEditable && countyDisplayed && countyNotEditable && postcodeDisplayed && postcodeNotEditable;
 			}
 			catch { return false; }
@@ -292,7 +298,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElement(Pages.OrderForm.OrganisationName).Text;
 		}
 
-		public Address GetOrganisationAddress()
+		public Address GetAddress()
 		{
 			return new Address
 			{
@@ -300,10 +306,10 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 				Line2 = Driver.FindElement(Pages.OrderForm.AddressLineX(2)).Text,
 				Line3 = Driver.FindElement(Pages.OrderForm.AddressLineX(3)).Text,
 				Line4 = Driver.FindElement(Pages.OrderForm.AddressLineX(4)).Text,
-				Town = Driver.FindElement(Pages.OrderForm.OrganisationAddressTown).Text,
-				County = Driver.FindElement(Pages.OrderForm.OrganisationAddressCounty).Text,
-				Postcode = Driver.FindElement(Pages.OrderForm.OrganisationAddressPostcode).Text,
-				Country = Driver.FindElement(Pages.OrderForm.OrganisationAddressCountry).Text
+				Town = Driver.FindElement(Pages.OrderForm.AddressTown).Text,
+				County = Driver.FindElement(Pages.OrderForm.AddressCounty).Text,
+				Postcode = Driver.FindElement(Pages.OrderForm.AddressPostcode).Text,
+				Country = Driver.FindElement(Pages.OrderForm.AddressCountry).Text
 			};
 		}
 
@@ -316,6 +322,22 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElement(Pages.OrderForm.ContactTelephone).SendKeys(contact.Phone);
 		}
 
+		public Contact GetContact()
+		{			
+			Wait.Until(d => d.FindElements(Pages.OrderForm.ContactFirstName).Count == 1);
+			var FirstNameElement = Driver.FindElement(Pages.OrderForm.ContactFirstName);
+			var LastNameElement = Driver.FindElement(Pages.OrderForm.ContactLastName);
+			var EmailElement = Driver.FindElement(Pages.OrderForm.ContactEmail);
+			var PhoneElement = Driver.FindElement(Pages.OrderForm.ContactTelephone);
+			return new Contact()
+			{
+				FirstName = FirstNameElement.Text == "" ? FirstNameElement.GetAttribute("value") : FirstNameElement.Text,
+				LastName = LastNameElement.Text == "" ? LastNameElement.GetAttribute("value") : LastNameElement.Text,
+				Email = EmailElement.Text == "" ? EmailElement.GetAttribute("value") : EmailElement.Text,
+				Phone = PhoneElement.Text == "" ? PhoneElement.GetAttribute("value") : PhoneElement.Text,
+			};
+		}
+
 		public void ClickSearchButton()
 		{
 			Wait.Until(d => d.FindElements(Pages.OrderForm.SearchButton).Count == 1);
@@ -325,6 +347,26 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public ReadOnlyCollection<IWebElement> ListOfSuppliers()
 		{
 			return Driver.FindElements(Pages.OrderForm.SupplierOptions);
+		}
+
+		public void SelectSupplier()
+		{
+			SelectSupplier(null);
+		}
+
+		public void SelectSupplier(int? index)
+		{
+			var suppliers = ListOfSuppliers();
+			if (index == null)
+			{
+				index = new Random().Next(suppliers.Count());
+			}
+			suppliers[(int)index].Click();
+		}
+
+		public bool SupplierNameIsDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.SupplierName).Count == 1;
 		}
 	}
 }
