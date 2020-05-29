@@ -364,5 +364,20 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			return Driver.FindElements(Pages.OrderForm.SupplierName).Count == 1;
 		}
+
+		public string GetSupplierName()
+		{
+			return Driver.FindElement(Pages.OrderForm.SupplierName).Text;
+		}
+
+		public bool SearchAgainLinkIsDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.SearchAgainLink).Count == 1;
+		}
+
+		public void ClickSearchAgainLink()
+		{
+			Driver.FindElement(Pages.OrderForm.SearchAgainLink).Click();
+		}
 	}
 }

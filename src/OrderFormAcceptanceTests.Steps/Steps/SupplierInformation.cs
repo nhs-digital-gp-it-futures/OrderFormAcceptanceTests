@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheUserIsAbleToManageTheSupplierSection()
         {
             Test.Pages.OrderForm.ClickEditSupplier();
-            ThenTheSearchSupplierScreenIsPresented();
+            ThenTheSupplierInformationScreenIsPresented();
         }
 
         [StepDefinition(@"the User chooses to edit the Supplier section for the first time")]
@@ -31,7 +32,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [StepDefinition(@"the Search supplier screen is presented")]
         [StepDefinition(@"the Edit Supplier Form Page is presented")]
-        public void ThenTheSearchSupplierScreenIsPresented()
+        public void ThenTheSupplierInformationScreenIsPresented()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("supplier information").Should().BeTrue();
         }
@@ -131,6 +132,67 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             contactDetails.Phone.Should().NotBeNullOrEmpty();
         }
 
+        [Given(@"the User has selected a supplier for the first time")]
+        public void GivenTheUserHasSelectedASupplierForTheFirstTime()
+        {
+            GivenTheUserHasBeenPresentedWithMatchingSuppliers();
+            WhenTheySelectASupplier();
+            WhenTheyChooseToContinue();
+            ThenTheSupplierInformationScreenIsPresented();
+        }
+
+        [Then(@"there is a control available to search again for a Supplier")]
+        public void ThenThereIsAControlAvailableToSearchAgainForASupplier()
+        {
+            Test.Pages.OrderForm.SearchAgainLinkIsDisplayed().Should().BeTrue();
+        }
+
+        [When(@"the User chooses to search again for a Supplier")]
+        public void WhenTheUserChoosesToSearchAgainForASupplier()
+        {
+            Test.Pages.OrderForm.ClickSearchAgainLink();
+        }
+
+        [Given(@"makes a note of the autopopulated Supplier details")]
+        public void GivenMakesANoteOfTheAutopopulatedSupplierDetails()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierName = Test.Pages.OrderForm.GetSupplierName();
+            var address = Test.Pages.OrderForm.GetAddress();
+            Context.Add("ExpectedAddress", address);
+        }
+
+        [Then(@"the Supplier section is saved in the DB")]
+        public void ThenTheSupplierSectionIsSavedInTheDB()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var expectedSupplierName = order.SupplierName;
+            order = order.Retrieve(Test.ConnectionString);
+            var dbContact = new Contact { ContactId = order.SupplierContactId }.Retrieve(Test.ConnectionString);
+            Context.Add("CreatedContact", dbContact);
+
+            var dbAddress = new Address { AddressId = order.SupplierAddressId }.Retrieve(Test.ConnectionString);
+            Context.Add("CreatedAddress", dbAddress);
+
+            order.SupplierName.Should().BeEquivalentTo(expectedSupplierName);
+            order.SupplierId.Should().NotBeNull();
+
+            var expectedContact = (Contact)Context["ExpectedContact"];
+            dbContact.FirstName.Should().BeEquivalentTo(expectedContact.FirstName);
+            dbContact.LastName.Should().BeEquivalentTo(expectedContact.LastName);
+            dbContact.Email.Should().BeEquivalentTo(expectedContact.Email);
+            dbContact.Phone.Should().BeEquivalentTo(expectedContact.Phone);
+
+            var expectedAddress = (Address)Context["ExpectedAddress"];
+            dbAddress.Line1.Should().BeEquivalentTo(expectedAddress.Line1);
+            dbAddress.Line2.Should().BeEquivalentTo(expectedAddress.Line2);
+            dbAddress.Line3.Should().BeEquivalentTo(expectedAddress.Line3);
+            dbAddress.Line4.Should().BeEquivalentTo(expectedAddress.Line4);
+            dbAddress.Town.Should().BeEquivalentTo(expectedAddress.Town);
+            dbAddress.County.Should().BeEquivalentTo(expectedAddress.County);
+            dbAddress.Postcode.Should().BeEquivalentTo(expectedAddress.Postcode);
+            dbAddress.Country.Should().BeEquivalentTo(expectedAddress.Country);
+        }
 
     }
 }
