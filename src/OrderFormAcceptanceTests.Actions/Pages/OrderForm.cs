@@ -234,7 +234,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
 		public void EnterTextIntoTextField(string value, int index = 0)
 		{
-			Wait.Until(d => d.FindElements(Pages.Common.TextField).Count > 0);
+			Wait.Until(d => d.FindElements(Pages.Common.TextField).Count > index);
 			Driver.FindElements(Pages.Common.TextField)[index].SendKeys(value);
 		}
 
@@ -325,16 +325,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public Contact GetContact()
 		{			
 			Wait.Until(d => d.FindElements(Pages.OrderForm.ContactFirstName).Count == 1);
-			var FirstNameElement = Driver.FindElement(Pages.OrderForm.ContactFirstName);
-			var LastNameElement = Driver.FindElement(Pages.OrderForm.ContactLastName);
-			var EmailElement = Driver.FindElement(Pages.OrderForm.ContactEmail);
-			var PhoneElement = Driver.FindElement(Pages.OrderForm.ContactTelephone);
 			return new Contact()
 			{
-				FirstName = FirstNameElement.Text == "" ? FirstNameElement.GetAttribute("value") : FirstNameElement.Text,
-				LastName = LastNameElement.Text == "" ? LastNameElement.GetAttribute("value") : LastNameElement.Text,
-				Email = EmailElement.Text == "" ? EmailElement.GetAttribute("value") : EmailElement.Text,
-				Phone = PhoneElement.Text == "" ? PhoneElement.GetAttribute("value") : PhoneElement.Text,
+				FirstName = Driver.FindElement(Pages.OrderForm.ContactFirstName).GetAttribute("value"),
+				LastName = Driver.FindElement(Pages.OrderForm.ContactLastName).GetAttribute("value"),
+				Email = Driver.FindElement(Pages.OrderForm.ContactEmail).GetAttribute("value"),
+				Phone = Driver.FindElement(Pages.OrderForm.ContactTelephone).GetAttribute("value")
 			};
 		}
 
