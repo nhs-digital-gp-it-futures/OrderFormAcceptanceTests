@@ -55,21 +55,21 @@ Scenario: Call Off Ordering Party - Go back
 	And the User chooses to edit the Call Off Ordering Party information
 	When the User chooses to go back
 	Then the Order dashboard is presented
-	@ignore
+	#@ignore
 Scenario: Call Off Ordering Party - Mandatory data missing
 	Given the user is managing the Call Off Ordering Party section
 	And mandatory data are missing 
 	When the User chooses to save
 	Then Call Off Ordering Party section is not saved
 	And the reason is displayed
-	@ignore
+	#@ignore
 Scenario: Call Off Ordering Party - Data exceeds the maximum length
 	Given the user is managing the Call Off Ordering Party section
 	And the User has entered data into a field that exceeds the maximum length of 100 characters
 	When the User chooses to save
 	Then the Call Off Ordering Party section is not saved 
 	And the reason is displayed
-	@ignore
+	#@ignore
 Scenario: Call Off Ordering Party - Validation Error Message Anchors
 	Given the user is managing the Call Off Ordering Party section
 	And the validation has been triggered
