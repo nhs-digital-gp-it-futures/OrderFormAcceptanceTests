@@ -114,21 +114,21 @@ Scenario: Supplier Information - Supplier selected (first time)
 	And they choose to continue
 	Then the Edit Supplier Form Page is presented
 	And there is a control available to search again for a Supplier
-	@ignore
+
 Scenario: Supplier Information - Mandatory data missing
 	Given the User has selected a supplier for the first time
 	And mandatory data are missing 
 	When the User chooses to save
 	Then Supplier section is not saved
 	And the reason is displayed
-	@ignore
+
 Scenario: Supplier Information - Data exceeds the maximum length
 	Given the User has selected a supplier for the first time
 	And the User has entered data into a field that exceeds the maximum length of 100 characters
 	When the User chooses to save
 	Then the Supplier section is not saved 
 	And the reason is displayed
-	@ignore
+
 Scenario: Supplier Information - Validation Error Message Anchors
 	Given the User has selected a supplier for the first time
 	And the validation has been triggered
