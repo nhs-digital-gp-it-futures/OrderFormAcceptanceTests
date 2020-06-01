@@ -23,7 +23,7 @@ Scenario: Supplier Information - Call Off Ordering Party section is now complete
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled
-	@ignore
+
 Scenario: Supplier Information - Supplier section is now complete but, Call Off Ordering Party not
 	Given an unsubmitted order exists
 	And the Call Off Ordering Party section is not complete
