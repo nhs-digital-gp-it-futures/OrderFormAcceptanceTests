@@ -1,9 +1,7 @@
 ﻿using Bogus;
+using FluentAssertions;
 using OrderFormAcceptanceTests.TestData.Utils;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OrderFormAcceptanceTests.TestData
 {
@@ -14,6 +12,14 @@ namespace OrderFormAcceptanceTests.TestData
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+
+        public void Equals(Contact contact)
+        {
+            this.FirstName.Should().BeEquivalentTo(contact.FirstName);
+            this.LastName.Should().BeEquivalentTo(contact.LastName);
+            this.Email.Should().BeEquivalentTo(contact.Email);
+            this.Phone.Should().BeEquivalentTo(contact.Phone);
+        }
 
         public Contact Generate()
         {

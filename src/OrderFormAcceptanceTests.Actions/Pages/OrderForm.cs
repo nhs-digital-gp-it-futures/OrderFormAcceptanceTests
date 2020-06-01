@@ -316,9 +316,13 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public void EnterContact(Contact contact)
 		{
 			Wait.Until(d => d.FindElements(Pages.OrderForm.ContactFirstName).Count == 1);
+			Driver.FindElement(Pages.OrderForm.ContactFirstName).Clear();
 			Driver.FindElement(Pages.OrderForm.ContactFirstName).SendKeys(contact.FirstName);
+			Driver.FindElement(Pages.OrderForm.ContactLastName).Clear();
 			Driver.FindElement(Pages.OrderForm.ContactLastName).SendKeys(contact.LastName);
+			Driver.FindElement(Pages.OrderForm.ContactEmail).Clear();
 			Driver.FindElement(Pages.OrderForm.ContactEmail).SendKeys(contact.Email);
+			Driver.FindElement(Pages.OrderForm.ContactTelephone).Clear();
 			Driver.FindElement(Pages.OrderForm.ContactTelephone).SendKeys(contact.Phone);
 		}
 
