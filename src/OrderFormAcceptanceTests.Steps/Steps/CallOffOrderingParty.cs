@@ -96,20 +96,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedAddress", dbAddress);
 
             var expectedContact = (Contact)Context["ExpectedContact"];
-            dbContact.FirstName.Should().BeEquivalentTo(expectedContact.FirstName);
-            dbContact.LastName.Should().BeEquivalentTo(expectedContact.LastName);
-            dbContact.Email.Should().BeEquivalentTo(expectedContact.Email);
-            dbContact.Phone.Should().BeEquivalentTo(expectedContact.Phone);
+            dbContact.Equals(expectedContact);
 
             var expectedAddress = (Address)Context["ExpectedAddress"];
-            dbAddress.Line1.Should().BeEquivalentTo(expectedAddress.Line1);
-            dbAddress.Line2.Should().BeEquivalentTo(expectedAddress.Line2);
-            dbAddress.Line3.Should().BeEquivalentTo(expectedAddress.Line3);
-            dbAddress.Line4.Should().BeEquivalentTo(expectedAddress.Line4);
-            dbAddress.Town.Should().BeEquivalentTo(expectedAddress.Town);
-            dbAddress.County.Should().BeEquivalentTo(expectedAddress.County);
-            dbAddress.Postcode.Should().BeEquivalentTo(expectedAddress.Postcode);
-            dbAddress.Country.Should().BeEquivalentTo(expectedAddress.Country);
+            dbAddress.Equals(expectedAddress);
         }
 
     }

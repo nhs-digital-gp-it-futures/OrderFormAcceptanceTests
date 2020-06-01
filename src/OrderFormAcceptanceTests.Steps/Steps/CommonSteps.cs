@@ -75,7 +75,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedOrder", order);
         }
 
-        [When(@"the Order Form for the existing order is presented")]
+        [StepDefinition(@"the Order Form for the existing order is presented")]
         public void WhenTheOrderFormForTheExistingOrderIsPresented()
         {
             GivenThatABuyerUserHasLoggedIn();

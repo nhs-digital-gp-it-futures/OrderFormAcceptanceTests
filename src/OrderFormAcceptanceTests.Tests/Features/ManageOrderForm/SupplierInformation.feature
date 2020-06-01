@@ -154,3 +154,33 @@ Scenario: Supplier Information - Go Back (first time)
 	And mandatory data are missing 
 	When the User chooses to go back
 	Then the matching Suppliers are presented
+
+
+Scenario: Supplier Information - Edit (subsequent times)
+	Given an unsubmitted order exists
+	And the Order Form for the existing order is presented
+	When the User re-edits the Supplier section
+	Then the Edit Supplier Form Page is presented
+	And there is not a control available to search again for a Supplier
+	And the Supplier name is autopopulated
+	And the Supplier Registered Address is autopopulated
+	And the Supplier Contact details are autopopulated
+
+Scenario: Supplier Information - Edit and save (subsequent times)
+	Given an unsubmitted order exists
+	And the Order Form for the existing order is presented
+	And the User re-edits the Supplier section
+	And the user has entered a valid supplier contact for the order
+	And makes a note of the autopopulated Supplier details
+	When the User chooses to save
+	Then the Order is saved
+	And the content validation status of the supplier section is complete
+	And the Supplier section is saved in the DB
+
+Scenario: Supplier Information - Go Back (subsequent times)
+	Given an unsubmitted order exists
+	And the Order Form for the existing order is presented
+	And the User re-edits the Supplier section
+	And the Edit Supplier Form Page is presented
+	When the User chooses to go back
+	Then the Order dashboard is presented
