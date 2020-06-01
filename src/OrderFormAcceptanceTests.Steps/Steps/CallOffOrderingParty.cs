@@ -90,9 +90,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var id = Test.Pages.OrderForm.GetCallOffId();
             var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
             var dbContact = new Contact { ContactId = order.OrganisationContactId }.Retrieve(Test.ConnectionString);
+            Context.Remove("CreatedContact");
             Context.Add("CreatedContact", dbContact);
 
             var dbAddress = new Address { AddressId = order.OrganisationAddressId }.Retrieve(Test.ConnectionString);
+            Context.Remove("CreatedAddress");
             Context.Add("CreatedAddress", dbAddress);
 
             var expectedContact = (Contact)Context["ExpectedContact"];
