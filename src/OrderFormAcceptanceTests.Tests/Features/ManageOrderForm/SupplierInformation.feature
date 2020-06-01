@@ -9,7 +9,7 @@ Scenario: Supplier Information - Sections presented
 	When the Order Form for the existing order is presented
 	Then there is the Supplier section
 	And the user is able to manage the Supplier section
-	@ignore
+
 Scenario: Supplier Information - Call Off Ordering Party section is now complete but, Supplier not 
 	Given an unsubmitted order exists
 	And the Supplier section is not complete
@@ -17,7 +17,7 @@ Scenario: Supplier Information - Call Off Ordering Party section is now complete
 	Then the Call Off Agreement ID is displayed
 	And there is the Order description section
 	And there is the Call-off Ordering Party section
-	And the content validation status of the call-off-ordering-party section is complete 
+	And the content validation status of the ordering-party section is complete 
 	And there is the Supplier section
 	And the content validation status of the supplier section is incomplete 
 	And the Preview order summary button is enabled
@@ -31,7 +31,7 @@ Scenario: Supplier Information - Supplier section is now complete but, Call Off 
 	Then the Call Off Agreement ID is displayed
 	And there is the Order description section
 	And there is the Call-off Ordering Party section
-	And the content validation status of the call-off-ordering-party section is incomplete 
+	And the content validation status of the ordering-party section is incomplete 
 	And there is the Supplier section
 	And the content validation status of the supplier section is complete 
 	And the Preview order summary button is enabled
@@ -87,7 +87,7 @@ Scenario: Supplier Information - Go Back (No Supplier(s) returned)
 	And no matching Suppliers are presented
 	When the User chooses to go back
 	Then the Search supplier screen is presented
-
+	@ignore
 Scenario: Supplier Information - Supplier selected
 	Given the User has been presented with matching Suppliers
 	When they select a Supplier
@@ -134,7 +134,7 @@ Scenario: Supplier Information - Validation Error Message Anchors
 	And the validation has been triggered
 	When the user selects an error link in the Error Summary
 	Then they will be navigated to the relevant part of the page
-	@ignore
+
 Scenario: Supplier Information - All data are valid
 	Given the User has selected a supplier for the first time
 	And the user has entered a valid supplier contact for the order
@@ -154,7 +154,6 @@ Scenario: Supplier Information - Go Back (first time)
 	And mandatory data are missing 
 	When the User chooses to go back
 	Then the matching Suppliers are presented
-
 
 Scenario: Supplier Information - Edit (subsequent times)
 	Given an unsubmitted order exists
