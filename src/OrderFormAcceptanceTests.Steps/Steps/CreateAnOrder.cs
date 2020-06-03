@@ -47,7 +47,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.PreviewOrderButtonIsDisabled().Should().BeTrue();
         }
 
-        [Then(@"the Preview order summary button is enabled")]
+        [Then(@"the Preview order summary button is enabled")]        
         public void ThenThePreviewOrderSummaryButtonIsEnabled()
         {
             Test.Pages.OrderForm.PreviewOrderButtonIsDisabled().Should().BeFalse();

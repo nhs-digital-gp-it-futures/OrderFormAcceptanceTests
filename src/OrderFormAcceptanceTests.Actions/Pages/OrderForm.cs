@@ -142,7 +142,25 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElement(Pages.OrderForm.SubmitOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
 		}
 
-        public bool EditDescriptionSectionDisplayed()
+		public bool EditCommencementDateSectionDisplayed()
+		{
+			try
+			{
+				Wait.Until(d => d.FindElements(Pages.OrderForm.EditCommencementDate).Count == 1);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public void ClickEditCommencementDate()
+		{
+			Driver.FindElement(Pages.OrderForm.EditCommencementDate).Click();
+		}
+
+		public bool EditDescriptionSectionDisplayed()
 		{
 			
 			try
@@ -175,9 +193,29 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			}
 		}
 
+		public bool CallOffOrderingPartyEnabled()
+		{
+			return Driver.FindElement(Pages.OrderForm.EditCallOffOrderingParty).TagName == "a";
+		}
+
+		public bool OrderDescriptionEnabled()
+		{
+			return Driver.FindElement(Pages.OrderForm.EditDescription).TagName == "a";
+		}
+
+		public bool SupplierInformationEnabled()
+		{
+			return Driver.FindElement(Pages.OrderForm.EditSupplier).TagName == "a";
+		}
+
 		public void ClickEditCallOffOrderingParty()
 		{
 			Driver.FindElement(Pages.OrderForm.EditCallOffOrderingParty).Click();
+		}
+
+		public bool CommencementDateEnabled()
+		{
+			return Driver.FindElement(Pages.OrderForm.EditCommencementDate).TagName == "a";
 		}
 
 		public bool EditSupplierSectionDisplayed()
