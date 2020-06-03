@@ -41,7 +41,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@".* section is not saved")]
         [When(@"the User has not entered a Supplier search criterion")]
         [Given(@"no Supplier is selected")]
-        public void GivenMandatoryDataAreMissing()
+        [Then(@"the Commencement Date information is not saved")]
+        public void DoNothing()
         {
             //do nothing
         }

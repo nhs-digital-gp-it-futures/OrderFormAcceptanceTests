@@ -90,11 +90,5 @@ namespace OrderFormAcceptanceTests.Steps
         {
             Test.Pages.OrderForm.CommencementDateEnabled().Should().BeTrue();
         }
-        
-        [Then(@"the Commencement Date information is not saved")]
-        public void ThenTheCommencementDateInformationIsNotSaved()
-        {
-            // Do nothing
-        }
     }
 }
