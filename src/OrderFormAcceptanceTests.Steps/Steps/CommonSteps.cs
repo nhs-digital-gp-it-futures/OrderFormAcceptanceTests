@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using Bogus;
+using Bogus.DataSets;
+using FluentAssertions;
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
@@ -63,14 +65,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"an unsubmitted order exists")]
         public void GivenAnUnsubmittedOrderExists()
         {            
-            var orgAddress = new Address().Generate();
+            var orgAddress = new TestData.Address().Generate();
             orgAddress.Create(Test.ConnectionString);
             Context.Add("CreatedAddress", orgAddress);
             var orgContact = new Contact().Generate();
             orgContact.Create(Test.ConnectionString);
             Context.Add("CreatedContact", orgContact);
 
-            var supplierAddress = new Address().Generate();
+            var supplierAddress = new TestData.Address().Generate();
             supplierAddress.Create(Test.ConnectionString);
             Context.Add("CreatedSupplierAddress", supplierAddress);
             var supplierContact = new Contact().Generate();
@@ -85,6 +87,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.SupplierContactId = supplierContact.ContactId;
             order.SupplierId = 100000;
             order.SupplierName = "Really Kool Corporation";
+
+            order.CommencementDate = new Faker().Date.Future();
             order.Create(Test.ConnectionString);
             Context.Add("CreatedOrder", order);
         }

@@ -22,6 +22,7 @@ namespace OrderFormAcceptanceTests.TestData
         public string SupplierName { get; set; }
         public int? SupplierAddressId { get; set; }
         public int? SupplierContactId { get; set; }
+        public DateTime? CommencementDate { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }
         public Guid LastUpdatedBy { get; set; }
@@ -68,6 +69,7 @@ namespace OrderFormAcceptanceTests.TestData
                                 ,SupplierName
                                 ,SupplierAddressId
                                 ,SupplierContactId,
+                                 CommencementDate,
                                  Created,
                                  LastUpdated,
                                  LastUpdatedBy,
@@ -87,6 +89,7 @@ namespace OrderFormAcceptanceTests.TestData
                                 ,@SupplierName
                                 ,@SupplierAddressId
                                 ,@SupplierContactId,
+                                 @CommencementDate,
                                  @Created,
                                  @LastUpdated,
                                  @LastUpdatedBy,
@@ -112,6 +115,7 @@ namespace OrderFormAcceptanceTests.TestData
                            ,SupplierName=@SupplierName
                            ,SupplierAddressId=@SupplierAddressId
                            ,SupplierContactId=@SupplierContactId,
+                            CommencementDate=@CommencementDate,
                             Created=@created,
                             LastUpdated=@lastUpdated,
                             LastUpdatedBy=@lastUpdatedBy,

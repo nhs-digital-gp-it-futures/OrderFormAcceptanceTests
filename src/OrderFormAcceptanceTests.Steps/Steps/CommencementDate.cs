@@ -46,15 +46,6 @@ namespace OrderFormAcceptanceTests.Steps
             Test.Pages.CommencementDate.SetDate(date);
         }
         
-        [Then(@"there is a list of sections")]
-        public void ThenThereIsAListOfSections()
-        {
-            Test.Pages.OrderForm.EditCallOffOrderingPartySectionDisplayed().Should().BeTrue();
-            Test.Pages.OrderForm.EditDescriptionSectionDisplayed().Should().BeTrue();
-            Test.Pages.OrderForm.EditSupplierSectionDisplayed().Should().BeTrue();
-            Test.Pages.OrderForm.EditCommencementDateSectionDisplayed().Should().BeTrue();
-        }
-        
         [Then(@"the user is able to manage the Commencement Date section")]
         [StepDefinition(@"the user chooses to manage the Commencement Date Section")]
         public void ThenTheUserIsAbleToManageTheCommencementDateSection()
@@ -62,29 +53,5 @@ namespace OrderFormAcceptanceTests.Steps
             Test.Pages.OrderForm.ClickEditCommencementDate();
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("commencement date").Should().BeTrue();
         }        
-        
-        [Then(@"the enabled sections are Order description")]
-        public void ThenTheEnabledSectionsAreOrderDescription()
-        {
-            Test.Pages.OrderForm.OrderDescriptionEnabled().Should().BeTrue();
-        }
-        
-        [Then(@"Call Off Ordering Party")]
-        public void ThenCallOffOrderingParty()
-        {
-            Test.Pages.OrderForm.CallOffOrderingPartyEnabled().Should().BeTrue();
-        }
-        
-        [Then(@"Supplier")]
-        public void ThenSupplier()
-        {
-            Test.Pages.OrderForm.SupplierInformationEnabled().Should().BeTrue();
-        }
-        
-        [Then(@"Commencement date")]
-        public void ThenCommencementDate()
-        {
-            Test.Pages.OrderForm.CommencementDateEnabled().Should().BeTrue();
-        }
     }
 }
