@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using System;
@@ -192,6 +193,29 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
             var expectedAddress = (Address)Context["ExpectedAddress"];
             dbAddress.Equals(expectedAddress);
+        }
+
+        [When(@"the User chooses to the visit the search supplier page")]
+        public void WhenTheUserChoosesToTheVisitTheSearchSupplierPage()
+        {
+            var currentUrl = Test.Driver.Url;
+            Test.Driver.Navigate().GoToUrl(currentUrl + "/supplier/search");
+        }
+
+        [When(@"the User chooses to visit the select supplier page")]
+        public void WhenTheUserChoosesToVisitTheSelectSupplierPage()
+        {
+            var currentUrl = Test.Driver.Url;
+            Test.Driver.Navigate().GoToUrl(currentUrl + "/supplier/search/select");
+        }
+    
+
+        [Then(@"they are redirected to the Edit Supplier page")]
+        public void ThenTheyAreRedirectedToTheEditSupplierPage()
+        {
+            ThenTheSupplierInformationScreenIsPresented();
+            var currentUrl = Test.Driver.Url;
+            currentUrl.Should().NotContain("/supplier/search");
         }
 
     }
