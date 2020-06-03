@@ -184,3 +184,15 @@ Scenario: Supplier Information - Go Back (subsequent times)
 	And the Edit Supplier Form Page is presented
 	When the User chooses to go back
 	Then the Order dashboard is presented
+
+Scenario: Supplier Information - Visit search supplier page after section complete
+	Given an unsubmitted order exists
+	And the Order Form for the existing order is presented
+	When the User chooses to the visit the search supplier page
+	Then they are redirected to the Edit Supplier page
+
+Scenario: Supplier Information - Visit select supplier page after section complete
+	Given an unsubmitted order exists
+	And the Order Form for the existing order is presented
+	When the User chooses to visit the select supplier page
+	Then they are redirected to the Edit Supplier page
