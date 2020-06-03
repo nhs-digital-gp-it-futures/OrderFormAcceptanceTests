@@ -87,7 +87,7 @@ Scenario: Supplier Information - Go Back (No Supplier(s) returned)
 	And no matching Suppliers are presented
 	When the User chooses to go back
 	Then the Search supplier screen is presented
-	@ignore
+	
 Scenario: Supplier Information - Supplier selected
 	Given the User has been presented with matching Suppliers
 	When they select a Supplier
@@ -131,6 +131,7 @@ Scenario: Supplier Information - Data exceeds the maximum length
 
 Scenario: Supplier Information - Validation Error Message Anchors
 	Given the User has selected a supplier for the first time
+	And mandatory data are missing
 	And the validation has been triggered
 	When the user selects an error link in the Error Summary
 	Then they will be navigated to the relevant part of the page
