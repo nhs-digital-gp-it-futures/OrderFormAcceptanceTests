@@ -15,10 +15,11 @@ Scenario: Commencement Date - Sections presented
 Scenario: Commencement Date - Order Description, Supplier and Call Off Ordering Party sections complete	
 	Then the Call Off Agreement ID is displayed
 	And there is the Order description section
-	And the enabled sections are Order description
-	And Call Off Ordering Party
-	And Supplier
-	And Commencement date
+	And there is the Call-off Ordering Party section
+	And the content validation status of the ordering-party section is complete 
+	And there is the Supplier section
+	And the content validation status of the supplier section is complete 
+	And there is the Commencement date section
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled

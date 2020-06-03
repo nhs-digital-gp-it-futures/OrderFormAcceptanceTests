@@ -53,29 +53,5 @@ namespace OrderFormAcceptanceTests.Steps
             Test.Pages.OrderForm.ClickEditCommencementDate();
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("commencement date").Should().BeTrue();
         }        
-        
-        [Then(@"the enabled sections are Order description")]
-        public void ThenTheEnabledSectionsAreOrderDescription()
-        {
-            Test.Pages.OrderForm.OrderDescriptionEnabled().Should().BeTrue();
-        }
-        
-        [Then(@"Call Off Ordering Party")]
-        public void ThenCallOffOrderingParty()
-        {
-            Test.Pages.OrderForm.CallOffOrderingPartyEnabled().Should().BeTrue();
-        }
-        
-        [Then(@"Supplier")]
-        public void ThenSupplier()
-        {
-            Test.Pages.OrderForm.SupplierInformationEnabled().Should().BeTrue();
-        }
-        
-        [Then(@"Commencement date")]
-        public void ThenCommencementDate()
-        {
-            Test.Pages.OrderForm.CommencementDateEnabled().Should().BeTrue();
-        }
     }
 }
