@@ -199,14 +199,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void WhenTheUserChoosesToTheVisitTheSearchSupplierPage()
         {
             var currentUrl = Test.Driver.Url;
-            Test.Driver.Navigate().GoToUrl(currentUrl + "/search");
+            Test.Driver.Navigate().GoToUrl(currentUrl + "/supplier/search");
         }
 
         [When(@"the User chooses to visit the select supplier page")]
         public void WhenTheUserChoosesToVisitTheSelectSupplierPage()
         {
             var currentUrl = Test.Driver.Url;
-            Test.Driver.Navigate().GoToUrl(currentUrl + "/search/select");
+            Test.Driver.Navigate().GoToUrl(currentUrl + "/supplier/search/select");
         }
     
 
@@ -215,7 +215,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             ThenTheSupplierInformationScreenIsPresented();
             var currentUrl = Test.Driver.Url;
-            currentUrl.Should().NotContain("/search");
+            currentUrl.Should().NotContain("/supplier/search");
         }
 
     }
