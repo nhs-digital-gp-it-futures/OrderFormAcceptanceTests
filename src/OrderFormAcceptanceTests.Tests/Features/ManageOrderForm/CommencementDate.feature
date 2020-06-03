@@ -7,11 +7,11 @@ Background:
 	Given an unsubmitted order exists
 	When the Order Form for the existing order is presented
 
-Scenario: Sections presented	
+Scenario: Commencement Date - Sections presented	
 	Then there is a list of sections
 	And the user is able to manage the Commencement Date section
 
-Scenario: Order Description, Supplier and Call Off Ordering Party sections complete	
+Scenario: Commencement Date - Order Description, Supplier and Call Off Ordering Party sections complete	
 	Then the Call Off Agreement ID is displayed
 	And there is the Order description section
 	And the enabled sections are Order description
@@ -22,13 +22,13 @@ Scenario: Order Description, Supplier and Call Off Ordering Party sections compl
 	And the Delete order button is enabled
 	And the Submit order button is disabled
 
-Scenario: Mandatory data missing
+Scenario: Commencement Date - Mandatory data missing
 	When the user chooses to manage the Commencement Date Section
 	And the User chooses to save
 	Then Commencement Date section is not saved
 	And the reason is displayed
 
-Scenario: Data type is not valid
+Scenario: Commencement Date - Data type is not valid
 	Given the user chooses to manage the Commencement Date Section
 	And the Day is set to <Day>
 	And the Month is set to <Month>
@@ -43,7 +43,7 @@ Scenario: Data type is not valid
 	| 12     | banana | 2020   |
 	| banana | 12     | 2020   |
 
-Scenario Outline: Data exceeds the maximum length
+Scenario Outline: Commencement Date - Data exceeds the maximum length
 	Given the user chooses to manage the Commencement Date Section
 	And the Day is set to <Day>
 	And the Month is set to <Month>
@@ -58,7 +58,7 @@ Scenario Outline: Data exceeds the maximum length
 	| 12  | 125   | 2020  |
 	| 123 | 12    | 2020  |
 
-Scenario: Data are less than the minimum length
+Scenario: Commencement Date - Data are less than the minimum length
 	Given the user chooses to manage the Commencement Date Section
 	And the Day is set to <Day>
 	And the Month is set to <Month>
@@ -73,32 +73,32 @@ Scenario: Data are less than the minimum length
 	| 12  |       | 2020 |
 	|     | 12    | 2020  |
 
-Scenario: Validation Error Message Anchors
+Scenario: Commencement Date - Validation Error Message Anchors
 	When the user chooses to manage the Commencement Date Section
 	And the User chooses to save
 	And the user selects an error link in the Error Summary
 	Then they will be navigated to the relevant part of the page
 
-Scenario: All data are valid
+Scenario: Commencement Date - All data are valid
 	Given the user chooses to manage the Commencement Date Section
 	And a valid date is entered
 	When the User chooses to save
 	Then the content validation status of the commencement-date section is complete
 
-Scenario: Earliest Commencement Date is not 60 days before today
+Scenario: Commencement Date - Earliest Commencement Date is not 60 days before today
 	Given the user chooses to manage the Commencement Date Section
 	And the Commencement Date entered is 59 days earlier than today's date
 	When the User chooses to save
 	Then the content validation status of the commencement-date section is complete
 
-Scenario: Earliest Commencement Date is 60 days before today
+Scenario: Commencement Date - Earliest Commencement Date is 60 days before today
 	Given the user chooses to manage the Commencement Date Section
 	And the Commencement Date entered is 60 days earlier than today's date
 	When the User chooses to save
 	Then the section is not saved
 	And the reason is displayed	
 
-Scenario: Go Back
+Scenario: Commencement Date - Go Back
 	Given the user chooses to manage the Commencement Date Section
 	When the User chooses to go back
 	Then the Order dashboard is presented
