@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
+using System;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
@@ -7,6 +8,13 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 	{
 		public CommencementDate(IWebDriver driver) : base(driver)
 		{
+		}
+
+		public void SetDate(DateTime date)
+		{
+			SetDayValue(date.Day.ToString());
+			SetMonthValue(date.Month.ToString());
+			SetYearValue(date.Year.ToString());
 		}
 
 		public void SetDayValue(string day)

@@ -16,9 +16,7 @@ namespace OrderFormAcceptanceTests.Steps
         public void GivenAValidDateIsEntered()
         {
             var today = DateTime.Today;
-            GivenTheDayIsSetTo(today.Day.ToString());
-            GivenTheMonthIsSetTo(today.Month.ToString());
-            GivenTheYearIsSetTo(today.Year.ToString());
+            Test.Pages.CommencementDate.SetDate(today);
         }
 
 
@@ -45,9 +43,7 @@ namespace OrderFormAcceptanceTests.Steps
         {
             // No option
             var date = DateTime.Today.AddDays((days * -1));
-            GivenTheDayIsSetTo(date.Day.ToString());
-            GivenTheMonthIsSetTo(date.Month.ToString());
-            GivenTheYearIsSetTo(date.Year.ToString());
+            Test.Pages.CommencementDate.SetDate(date);
         }
         
         [Then(@"there is a list of sections")]
