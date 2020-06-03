@@ -35,5 +35,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By SupplierOptions => CustomBy.DataTestId("question-selectSupplier", "input");
 		public By SupplierName => CustomBy.DataTestId("supplier-name");
 		public By SearchAgainLink => CustomBy.DataTestId("search-again-link", "a");
-    }
+
+		public By EditCommencementDate => CustomBy.DataTestId("task-2-item-0-description");
+	}
 }

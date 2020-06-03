@@ -42,18 +42,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [When(@"the User has not entered a Supplier search criterion")]
         public void GivenMandatoryDataAreMissing()
         {
-            //clear fields
-            //var listOfTextAreas = Test.Driver.FindElements(By.TagName("textarea"));
+            //clear fields	
+            //var listOfTextAreas = Test.Driver.FindElements(By.TagName("textarea"));	
             var listOfInputs = Test.Driver.FindElements(By.ClassName("nhsuk-input"));
-            foreach(var element in listOfInputs)
+            foreach (var element in listOfInputs)
             {
                 element.Clear();
             }
-
         }
 
         [Then(@".* section is not saved")]
         [Given(@"no Supplier is selected")]
+        [Then("the Commencement Date information is not saved")]
         public void DoNothing()
         {
             //do nothing
