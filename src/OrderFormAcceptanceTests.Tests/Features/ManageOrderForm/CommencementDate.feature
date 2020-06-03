@@ -8,7 +8,7 @@ Background:
 	When the Order Form for the existing order is presented
 
 Scenario: Commencement Date - Sections presented	
-	Then there is a list of sections
+	Then there is the Commencement date section
 	And the user is able to manage the Commencement Date section
 
 Scenario: Commencement Date - Order Description, Supplier and Call Off Ordering Party sections complete	

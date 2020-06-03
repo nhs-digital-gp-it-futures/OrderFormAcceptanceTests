@@ -34,6 +34,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditSupplierSectionDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is the Commencement date section")]
+        public void ThenThereIsTheCommencementDateSection()
+        {
+            Test.Pages.OrderForm.EditCommencementDateSectionDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"there is the Service Recipients section")]
+        public void ThenThereIsTheServiceRecipientsSection()
+        {
+            Test.Pages.OrderForm.EditServiceRecipientsSectionDisplayed().Should().BeTrue();
+        }
+
         [Then(@"the user is able to manage the Order Description section")]
         public void ThenTheUserIsAbleToManageTheOrderDescriptionSection()
         {
@@ -171,6 +183,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.SupplierId = null;
             order.SupplierName = null;
             order.Update(Test.ConnectionString);
+        }
+
+        [Given(@"the Service Recipients section is not complete")]
+        public void GivenTheServiceRecipientsSectionIsNotComplete()
+        {
+            //TODO: clear fields once data model 
         }
 
         [When(@"the User navigates back to the Organisation's Orders dashboard")]

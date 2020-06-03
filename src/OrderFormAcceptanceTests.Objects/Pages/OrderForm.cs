@@ -16,6 +16,8 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By EditDescription => CustomBy.DataTestId("task-0-item-0-description");
 		public By EditCallOffOrderingParty => CustomBy.DataTestId("task-1-item-0-description");
 		public By EditSupplier => CustomBy.DataTestId("task-1-item-1-description");
+		public By EditCommencementDate => CustomBy.DataTestId("task-2-item-0-description");
+		public By EditServiceRecipients => CustomBy.DataTestId("task-3-item-0-description");
 		public By GenericSection(string sectionHrefRoute) {
 			return By.CssSelector(string.Format("[href$='{0}']", sectionHrefRoute));
 		}
@@ -36,6 +38,6 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By SupplierName => CustomBy.DataTestId("supplier-name");
 		public By SearchAgainLink => CustomBy.DataTestId("search-again-link", "a");
 
-		public By EditCommencementDate => CustomBy.DataTestId("task-2-item-0-description");
+		
 	}
 }

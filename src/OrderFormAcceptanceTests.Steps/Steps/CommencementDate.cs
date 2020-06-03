@@ -46,15 +46,6 @@ namespace OrderFormAcceptanceTests.Steps
             Test.Pages.CommencementDate.SetDate(date);
         }
         
-        [Then(@"there is a list of sections")]
-        public void ThenThereIsAListOfSections()
-        {
-            Test.Pages.OrderForm.EditCallOffOrderingPartySectionDisplayed().Should().BeTrue();
-            Test.Pages.OrderForm.EditDescriptionSectionDisplayed().Should().BeTrue();
-            Test.Pages.OrderForm.EditSupplierSectionDisplayed().Should().BeTrue();
-            Test.Pages.OrderForm.EditCommencementDateSectionDisplayed().Should().BeTrue();
-        }
-        
         [Then(@"the user is able to manage the Commencement Date section")]
         [StepDefinition(@"the user chooses to manage the Commencement Date Section")]
         public void ThenTheUserIsAbleToManageTheCommencementDateSection()

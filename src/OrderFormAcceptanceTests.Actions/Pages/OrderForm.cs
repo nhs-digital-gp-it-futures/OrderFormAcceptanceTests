@@ -250,6 +250,24 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			}
 		}
 
+		public bool EditServiceRecipientsSectionDisplayed()
+		{
+			try
+			{
+				Wait.Until(d => d.FindElements(Pages.OrderForm.EditServiceRecipients).Count == 1);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public void ClickEditServiceRecipients()
+		{
+			Driver.FindElement(Pages.OrderForm.EditServiceRecipients).Click();
+		}
+
 		public void ClickSaveButton()
 		{
 			Driver.FindElement(Pages.Common.SaveButton).Click();
