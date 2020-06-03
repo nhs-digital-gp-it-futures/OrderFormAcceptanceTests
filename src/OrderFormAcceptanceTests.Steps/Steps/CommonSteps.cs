@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
@@ -38,13 +39,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Given(@"mandatory data are missing")]
-        [Then(@".* section is not saved")]
         [When(@"the User has not entered a Supplier search criterion")]
+        [Then(@".* section is not saved")]
         [Given(@"no Supplier is selected")]
-        [Then(@"the Commencement Date information is not saved")]
         public void DoNothing()
         {
             //do nothing
+
         }
 
         [Given(@"an unsubmitted order exists")]
