@@ -5,6 +5,7 @@
 
 Background:
 	Given an unsubmitted order exists
+	And the Commencement Date section is not complete
 	When the Order Form for the existing order is presented
 
 Scenario: Commencement Date - Sections presented	

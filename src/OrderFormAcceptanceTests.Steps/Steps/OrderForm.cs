@@ -185,10 +185,20 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Update(Test.ConnectionString);
         }
 
+        [Given(@"the Commencement Date section is not complete")]
+        public void GivenTheCommencementDateSectionIsNotComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.CommencementDate = null;
+            order.Update(Test.ConnectionString);
+        }
+
         [Given(@"the Service Recipients section is not complete")]
         public void GivenTheServiceRecipientsSectionIsNotComplete()
         {
+            var order = (Order)Context["CreatedOrder"];
             //TODO: clear fields once data model 
+            order.Update(Test.ConnectionString);
         }
 
         [When(@"the User navigates back to the Organisation's Orders dashboard")]
