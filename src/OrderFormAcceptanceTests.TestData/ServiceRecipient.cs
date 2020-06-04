@@ -46,6 +46,13 @@ namespace OrderFormAcceptanceTests.TestData
             return SqlExecutor.Execute<ServiceRecipient>(connectionString, query, this).Single();
         }
 
+        public ServiceRecipient RetrieveByOrderId(string connectionString, string orderId)
+        {
+            var query = "SELECT * from [dbo].[ServiceRecipient] WHERE ServiceRecipientId=@orderId";
+
+            return SqlExecutor.Execute<ServiceRecipient>(connectionString, query, new { orderId }).Single();
+        }
+
         public void Update(string connectionString)
         {
             var query = @"UPDATE [dbo].[ServiceRecipient]

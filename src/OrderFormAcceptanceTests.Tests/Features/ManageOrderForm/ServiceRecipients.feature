@@ -27,13 +27,12 @@ Scenario: Service Recipients - Commencement date section is now complete
 	And the Delete order button is enabled
 	And the Submit order button is disabled
 
-
+	@ignore
 Scenario: Service Recipients - Select Service Recipient
 	Given the User chooses to edit the Service Recipient section 
-	When the Service Recipients form is presented 
 	Then the Call Off Ordering Party's Name (organisation name) and ODS code are presented as a Service Recipient
 	And the User is able to select the Call Off Ordering Party
-
+	@ignore
 Scenario: Service Recipients - Select all/Deselect all Service Recipients
 	Given the User chooses to edit the Service Recipient section
 	When the User chooses to select all 
@@ -42,19 +41,20 @@ Scenario: Service Recipients - Select all/Deselect all Service Recipients
 	When the User chooses to deselect all 
 	Then the selected Call Off Ordering Party presented is deselected
 	And the Deselect all button changes to Select all
-
+	@ignore
 Scenario: Service Recipients - Call Off Ordering Party selected
 	Given the User chooses to edit the Service Recipient section
 	And the Call Off Ordering Party is selected
 	When the User chooses to continue
-	Then the Call Off Ordering Party is saved to the order as a Service Recipient
-	And the content validation status of the Service Recipient section is Complete
-	And the section content validation status of Complete is displayed on the Order dashboard
-
+	Then the Order is saved
+	And the content validation status of the service-recipients section is complete
+	And the Service Recipient section is saved in the DB
+	And the Service Recipient is saved in the DB
+	@ignore
 Scenario: Service Recipients - Call Off Ordering Party is not selected
 	Given the User chooses to edit the Service Recipient section
 	And the Call Off Ordering Party is not selected
 	When the User chooses to continue
-	Then the Call Off Ordering Party is not saved to the order as a Service Recipient
-	And the content validation status of the Service Recipient section is Complete
-	And the section content validation status of Complete is displayed on the Order dashboard
+	Then the Service Recipient section is not saved
+	And the content validation status of the service-recipients section is complete
+	And the Service Recipient section is saved in the DB
