@@ -197,7 +197,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheServiceRecipientsSectionIsNotComplete()
         {
             var order = (Order)Context["CreatedOrder"];
-            //TODO: clear fields once data model 
+            order.ServiceRecipientsViewed = 0;
             order.Update(Test.ConnectionString);
         }
 
