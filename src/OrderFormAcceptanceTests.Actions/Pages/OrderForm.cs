@@ -439,5 +439,27 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			Driver.FindElement(Pages.OrderForm.SearchAgainLink).Click();
 		}
+
+		public void ClickSelectDeselectAll()
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderForm.SelectDeselectAll).Count == 1);
+			Driver.FindElement(Pages.OrderForm.SelectDeselectAll).Click();			
+		}
+
+		public string GetSelectDeselectAllText()
+		{
+			return Driver.FindElement(Pages.OrderForm.SelectDeselectAll).Text;
+		}
+
+		public int NumberOfCheckboxesDisplayed()
+		{
+			return Driver.FindElements(Pages.Common.Checkbox).Count;
+		}
+
+		public void ClickCheckbox(int index = 0)
+		{
+			Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
+			Driver.FindElements(Pages.Common.Checkbox)[index].Click();
+		}
 	}
 }

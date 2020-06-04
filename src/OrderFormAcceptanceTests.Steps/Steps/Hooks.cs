@@ -34,9 +34,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             {
                 ((Address)Context["CreatedSupplierAddress"]).Delete(Test.ConnectionString);
             }
-
-
-            
+            if (Context.ContainsKey("CreatedServiceRecipient"))
+            {
+                ((ServiceRecipient)Context["CreatedServiceRecipient"]).Delete(Test.ConnectionString);
+            }
 
             Test.Driver?.Quit();
         }
