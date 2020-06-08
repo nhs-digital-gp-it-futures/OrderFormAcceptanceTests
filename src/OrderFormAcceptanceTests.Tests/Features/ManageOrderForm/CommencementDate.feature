@@ -51,6 +51,7 @@ Scenario Outline: Commencement Date - Data exceeds the maximum length
 	When the User chooses to save
 	Then the Commencement Date section is not saved 
 	And the reason is displayed
+	And the date remains <Day>, <Month> and <Year>
 
 	Examples: 
 	| Day | Month | Year  |
