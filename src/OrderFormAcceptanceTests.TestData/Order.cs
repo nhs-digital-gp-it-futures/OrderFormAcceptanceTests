@@ -18,10 +18,13 @@ namespace OrderFormAcceptanceTests.TestData
         public int? OrganisationBillingAddressId { get; set; }
         public int? OrganisationContactId { get; set; }
         public int OrderStatusId { get; set; }
+        public int ServiceRecipientsViewed { get; set; }
         public int? SupplierId { get; set; }
         public string SupplierName { get; set; }
         public int? SupplierAddressId { get; set; }
         public int? SupplierContactId { get; set; }
+        public int CatalogueSolutionsViewed { get; set; }
+        public DateTime? CommencementDate { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }
         public Guid LastUpdatedBy { get; set; }
@@ -43,8 +46,10 @@ namespace OrderFormAcceptanceTests.TestData
                 Description = faker.Lorem.Sentence(6),
                 OrganisationId = Guid.Parse("6F6F7D0D-01E9-488F-B7CD-C2E889C4080B"),
                 OrganisationName = "NHS Darlington CCG",
-                OrganisationOdsCode = "00C",                
+                OrganisationOdsCode = "00C",
+                ServiceRecipientsViewed = 0,
                 OrderStatusId = 2,
+                CatalogueSolutionsViewed = 0,
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now,
                 LastUpdatedBy = Guid.Parse("BC0A6D7B-B44B-436D-8916-1E64EBCAAE64"),
@@ -63,11 +68,14 @@ namespace OrderFormAcceptanceTests.TestData
                                 ,OrganisationAddressId
                                 ,OrganisationBillingAddressId
                                 ,OrganisationContactId,
-                                 OrderStatusId
-                                ,SupplierId
+                                 OrderStatusId,
+                                 ServiceRecipientsViewed,
+                                 SupplierId
                                 ,SupplierName
                                 ,SupplierAddressId
                                 ,SupplierContactId,
+                                 CatalogueSolutionsViewed,
+                                 CommencementDate,
                                  Created,
                                  LastUpdated,
                                  LastUpdatedBy,
@@ -82,11 +90,14 @@ namespace OrderFormAcceptanceTests.TestData
                                 ,@OrganisationAddressId
                                 ,@OrganisationBillingAddressId
                                 ,@OrganisationContactId,
-                                 @OrderStatusId
-                                ,@SupplierId
+                                 @OrderStatusId,
+                                 @ServiceRecipientsViewed,
+                                 @SupplierId
                                 ,@SupplierName
                                 ,@SupplierAddressId
                                 ,@SupplierContactId,
+                                 @CatalogueSolutionsViewed,
+                                 @CommencementDate,
                                  @Created,
                                  @LastUpdated,
                                  @LastUpdatedBy,
@@ -108,10 +119,13 @@ namespace OrderFormAcceptanceTests.TestData
                            ,OrganisationBillingAddressId=@OrganisationBillingAddressId
                            ,OrganisationContactId=@OrganisationContactId,
                             OrderStatusId=@orderStatusId,
+                            ServiceRecipientsViewed=@ServiceRecipientsViewed,
                             SupplierId=@SupplierId
                            ,SupplierName=@SupplierName
                            ,SupplierAddressId=@SupplierAddressId
                            ,SupplierContactId=@SupplierContactId,
+                            CatalogueSolutionsViewed=@CatalogueSolutionsViewed,
+                            CommencementDate=@CommencementDate,
                             Created=@created,
                             LastUpdated=@lastUpdated,
                             LastUpdatedBy=@lastUpdatedBy,

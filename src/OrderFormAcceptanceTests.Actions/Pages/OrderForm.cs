@@ -250,6 +250,24 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			}
 		}
 
+		public bool EditServiceRecipientsSectionDisplayed()
+		{
+			try
+			{
+				Wait.Until(d => d.FindElements(Pages.OrderForm.EditServiceRecipients).Count == 1);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public void ClickEditServiceRecipients()
+		{
+			Driver.FindElement(Pages.OrderForm.EditServiceRecipients).Click();
+		}
+
 		public void ClickSaveButton()
 		{
 			Driver.FindElement(Pages.Common.SaveButton).Click();
@@ -420,6 +438,28 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public void ClickSearchAgainLink()
 		{
 			Driver.FindElement(Pages.OrderForm.SearchAgainLink).Click();
+		}
+
+		public void ClickSelectDeselectAll()
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderForm.SelectDeselectAll).Count == 1);
+			Driver.FindElement(Pages.OrderForm.SelectDeselectAll).Click();			
+		}
+
+		public string GetSelectDeselectAllText()
+		{
+			return Driver.FindElement(Pages.OrderForm.SelectDeselectAll).Text;
+		}
+
+		public int NumberOfCheckboxesDisplayed()
+		{
+			return Driver.FindElements(Pages.Common.Checkbox).Count;
+		}
+
+		public void ClickCheckbox(int index = 0)
+		{
+			Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
+			Driver.FindElements(Pages.Common.Checkbox)[index].Click();
 		}
 	}
 }

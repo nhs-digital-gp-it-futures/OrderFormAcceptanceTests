@@ -100,6 +100,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [When(@"they choose to continue")]
+        [StepDefinition(@"the User chooses to continue")]
         public void WhenTheyChooseToContinue()
         {
             Test.Pages.OrderForm.ClickContinueButton();

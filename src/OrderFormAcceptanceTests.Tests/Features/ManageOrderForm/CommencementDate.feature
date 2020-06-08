@@ -5,19 +5,21 @@
 
 Background:
 	Given an unsubmitted order exists
+	And the Commencement Date section is not complete
 	When the Order Form for the existing order is presented
 
 Scenario: Commencement Date - Sections presented	
-	Then there is a list of sections
+	Then there is the Commencement date section
 	And the user is able to manage the Commencement Date section
 
 Scenario: Commencement Date - Order Description, Supplier and Call Off Ordering Party sections complete	
 	Then the Call Off Agreement ID is displayed
 	And there is the Order description section
-	And the enabled sections are Order description
-	And Call Off Ordering Party
-	And Supplier
-	And Commencement date
+	And there is the Call-off Ordering Party section
+	And the content validation status of the ordering-party section is complete 
+	And there is the Supplier section
+	And the content validation status of the supplier section is complete 
+	And there is the Commencement date section
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled
