@@ -86,5 +86,14 @@ namespace OrderFormAcceptanceTests.Steps
         {
             Test.Pages.OrderForm.CommencementDateEnabled().Should().BeTrue();
         }
+
+        [Then(@"the date remains (.*), (.*) and (.*)")]
+        public void ThenTheDateRemainsAnd(string day, string month, string year)
+        {
+            Test.Pages.CommencementDate.GetDay().Should().Be(day);
+            Test.Pages.CommencementDate.GetMonth().Should().Be(month);
+            Test.Pages.CommencementDate.GetYear().Should().Be(year);
+        }
+
     }
 }

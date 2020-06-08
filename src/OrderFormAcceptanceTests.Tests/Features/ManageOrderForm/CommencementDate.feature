@@ -66,6 +66,7 @@ Scenario: Commencement Date - Data are less than the minimum length
 	When the User chooses to save
 	Then the Commencement Date information is not saved 
 	And the reason is displayed	
+	And the date remains <Day>, <Month> and <Year>
 
 	Examples: 
 	| Day | Month | Year |
