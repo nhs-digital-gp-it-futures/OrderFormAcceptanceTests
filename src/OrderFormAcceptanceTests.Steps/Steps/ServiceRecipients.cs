@@ -16,13 +16,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the user is able to manage the Service Recipients section")]
-        [Given(@"the User chooses to edit the Service Recipient section")]
         public void ThenTheUserIsAbleToManageTheServiceRecipientsSection()
         {
-            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             Test.Pages.OrderForm.ClickEditServiceRecipients();
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeFalse();
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("service recipients").Should().BeTrue();
+        }
+
+        [Given(@"the User chooses to edit the Service Recipient section")]
+        public void GivenTheUserChoosesToManageTheServiceRecipientsSection()
+        {
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
+            ThenTheUserIsAbleToManageTheServiceRecipientsSection();
         }
 
         [Then(@"the Call Off Ordering Party's Name \(organisation name\) and ODS code are presented as a Service Recipient")]
@@ -87,7 +92,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context["CreatedOrder"];
             var serviceRecipientInDB = new ServiceRecipient().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
-            serviceRecipientInDB.Should().NotBeNull();
+            Context.Add("CreatedServiceRecipient", serviceRecipientInDB);
+            serviceRecipientInDB.Should().NotBeNull();            
         }
 
     }

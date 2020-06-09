@@ -46,6 +46,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditServiceRecipientsSectionDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is the Catalogue Solutions section")]
+        public void ThenThereIsTheCatalogueSolutionsSection()
+        {
+            Test.Pages.OrderForm.EditCatalogueSolutionsSectionDisplayed().Should().BeTrue();
+        }
+
         [Then(@"the user is able to manage the Order Description section")]
         public void ThenTheUserIsAbleToManageTheOrderDescriptionSection()
         {
@@ -198,6 +204,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context["CreatedOrder"];
             order.ServiceRecipientsViewed = 0;
+            order.Update(Test.ConnectionString);
+
+            var serviceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
+            serviceRecipient.Delete(Test.ConnectionString);
+            Context.Remove("CreatedServiceRecipient");
+        }
+
+        [Given(@"the Catalogue Solutions section is not complete")]
+        public void GivenTheCatalogueSolutionsSectionIsNotComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.CatalogueSolutionsViewed = 0;
             order.Update(Test.ConnectionString);
         }
 

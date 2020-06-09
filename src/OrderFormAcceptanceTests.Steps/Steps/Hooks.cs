@@ -14,6 +14,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [AfterScenario]
         public void AfterScenario()
         {
+            if (Context.ContainsKey("CreatedServiceRecipient"))
+            {
+                ((ServiceRecipient)Context["CreatedServiceRecipient"]).Delete(Test.ConnectionString);
+            }
+
             if (Context.ContainsKey("CreatedOrder"))
             {
                 ((Order)Context["CreatedOrder"]).Delete(Test.ConnectionString);
@@ -33,11 +38,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             if (Context.ContainsKey("CreatedSupplierAddress"))
             {
                 ((Address)Context["CreatedSupplierAddress"]).Delete(Test.ConnectionString);
-            }
-            if (Context.ContainsKey("CreatedServiceRecipient"))
-            {
-                ((ServiceRecipient)Context["CreatedServiceRecipient"]).Delete(Test.ConnectionString);
-            }
+            }            
 
             Test.Driver?.Quit();
         }

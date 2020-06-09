@@ -90,8 +90,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.SupplierName = "Really Kool Corporation";
 
             order.CommencementDate = new Faker().Date.Future();
+
+            var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);            
+            order.ServiceRecipientsViewed = 1;
+
             order.Create(Test.ConnectionString);
             Context.Add("CreatedOrder", order);
+            serviceRecipient.Create(Test.ConnectionString);
+            Context.Add("CreatedServiceRecipient", serviceRecipient);
         }
 
         [StepDefinition(@"the Order Form for the existing order is presented")]
