@@ -8,7 +8,6 @@ Background:
 	And the Service Recipients section is not complete
 
 Scenario: Service Recipients - Sections presented
-	Given an unsubmitted order exists
 	When the Order Form for the existing order is presented
 	Then there is the Service Recipients section
 	And the user is able to manage the Service Recipients section
