@@ -31,5 +31,20 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			Driver.FindElement(Pages.CommencementDate.Year).SendKeys(year);
 		}
+
+		public string GetDay()
+		{
+			return Driver.FindElement(Pages.CommencementDate.Day).GetAttribute("value");
+		}
+
+		public string GetMonth()
+		{
+			return Driver.FindElement(Pages.CommencementDate.Month).GetAttribute("value");
+		}
+
+		public string GetYear()
+		{
+			return Driver.FindElement(Pages.CommencementDate.Year).GetAttribute("value");
+		}
 	}
 }
