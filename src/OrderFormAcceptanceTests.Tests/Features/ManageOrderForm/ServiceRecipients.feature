@@ -8,7 +8,6 @@ Background:
 	And the Service Recipients section is not complete
 
 Scenario: Service Recipients - Sections presented
-	Given an unsubmitted order exists
 	When the Order Form for the existing order is presented
 	Then there is the Service Recipients section
 	And the user is able to manage the Service Recipients section
@@ -27,12 +26,11 @@ Scenario: Service Recipients - Commencement date section is now complete
 	And the Delete order button is enabled
 	And the Submit order button is disabled
 
-	@ignore
 Scenario: Service Recipients - Select Service Recipient
 	Given the User chooses to edit the Service Recipient section 
 	Then the Call Off Ordering Party's Name (organisation name) and ODS code are presented as a Service Recipient
 	And the User is able to select the Call Off Ordering Party
-	@ignore
+	
 Scenario: Service Recipients - Select all/Deselect all Service Recipients
 	Given the User chooses to edit the Service Recipient section
 	When the User chooses to select all 

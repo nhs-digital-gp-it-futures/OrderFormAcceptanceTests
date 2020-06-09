@@ -38,6 +38,9 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By SupplierName => CustomBy.DataTestId("supplier-name");
 		public By SearchAgainLink => CustomBy.DataTestId("search-again-link", "a");
 		public By SelectDeselectAll => CustomBy.DataTestId("select-deselect-button", "button");
-		
+		public By ServiceRecipientName => By.CssSelector("[data-test-id^='organisation-name'] label");
+		public By ServiceRecipientOdsCode => By.CssSelector(".bc-c-service-recipients-table__ods");
+
+
 	}
 }

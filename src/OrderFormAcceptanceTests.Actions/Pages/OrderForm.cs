@@ -461,5 +461,16 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
 			Driver.FindElements(Pages.Common.Checkbox)[index].Click();
 		}
+
+		public bool IsCheckboxChecked(int index = 0)
+		{
+			Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
+			return Driver.FindElements(Pages.Common.Checkbox)[index].GetAttribute("checked") != null;
+		}
+
+		public bool ServiceRecipientsNameAndOdsDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.ServiceRecipientName).Count > 0 && Driver.FindElements(Pages.OrderForm.ServiceRecipientOdsCode).Count > 0;
+		}
 	}
 }

@@ -9,9 +9,9 @@ using TechTalk.SpecFlow;
 namespace OrderFormAcceptanceTests.Steps.Steps
 {
     [Binding]
-    public sealed class ServiceRecipents : TestBase
+    public sealed class ServiceRecipients : TestBase
     {
-        public ServiceRecipents(UITest test, ScenarioContext context) : base(test, context)
+        public ServiceRecipients(UITest test, ScenarioContext context) : base(test, context)
         {
         }
 
@@ -19,6 +19,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the User chooses to edit the Service Recipient section")]
         public void ThenTheUserIsAbleToManageTheServiceRecipientsSection()
         {
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             Test.Pages.OrderForm.ClickEditServiceRecipients();
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeFalse();
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("service recipients").Should().BeTrue();
@@ -27,8 +28,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Call Off Ordering Party's Name \(organisation name\) and ODS code are presented as a Service Recipient")]
         public void ThenTheCallOffOrderingPartySNameOrganisationNameAndODSCodeArePresentedAsAServiceRecipient()
         {
-            Test.Pages.OrderForm.OdsCodeDisplayedAndNotEditable().Should().BeTrue();
-            Test.Pages.OrderForm.OrganisationNameDisplayedAndNotEditable().Should().BeTrue();
+            Test.Pages.OrderForm.ServiceRecipientsNameAndOdsDisplayed().Should().BeTrue();
         }
 
         [Then(@"the User is able to select the Call Off Ordering Party")]
@@ -59,15 +59,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Call Off Ordering Party is selected")]
         public void ThenTheCallOffOrderingPartyIsSelected()
         {
-            //assert checkbox checked == true
-            Context.Pending();
+            Test.Pages.OrderForm.IsCheckboxChecked().Should().BeTrue();
         }
 
         [Then(@"the selected Call Off Ordering Party presented is deselected")]
         public void ThenTheSelectedCallOffOrderingPartyPresentedIsDeselected()
         {
-            ////assert checkbox checked == false
-            Context.Pending();
+            Test.Pages.OrderForm.IsCheckboxChecked().Should().BeFalse();
         }
 
         [Given(@"the Call Off Ordering Party is selected")]
