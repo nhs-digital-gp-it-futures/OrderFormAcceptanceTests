@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using OrderFormAcceptanceTests.TestData.Utils;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OrderFormAcceptanceTests.TestData
@@ -32,18 +33,18 @@ namespace OrderFormAcceptanceTests.TestData
                             ,[OdsCode]
                         )VALUES
                         (
-                            @[OrderId]
-                            ,@[Name]
-                            ,@[OdsCode]
+                            @OrderId
+                            ,@Name
+                            ,@OdsCode
                         )";
             SqlExecutor.Execute<ServiceRecipient>(connectionString, query, this);
         }
 
-        public ServiceRecipient Retrieve(string connectionString)
+        public IEnumerable<ServiceRecipient> Retrieve(string connectionString)
         {
-            var query = "SELECT * from [dbo].[ServiceRecipient] WHERE ServiceRecipientId=@ServiceRecipientId";
+            var query = "SELECT * from [dbo].[ServiceRecipient] WHERE OrderId=@OrderId";
 
-            return SqlExecutor.Execute<ServiceRecipient>(connectionString, query, this).Single();
+            return SqlExecutor.Execute<ServiceRecipient>(connectionString, query, this);
         }
 
         public ServiceRecipient RetrieveByOrderId(string connectionString, string orderId)
@@ -66,7 +67,7 @@ namespace OrderFormAcceptanceTests.TestData
 
         public void Delete(string connectionString)
         {
-            var query = @"DELETE FROM [dbo].[ServiceRecipient] WHERE ServiceRecipientId=@ServiceRecipientId";
+            var query = @"DELETE FROM [dbo].[ServiceRecipient] WHERE OrderId=@OrderId";
             SqlExecutor.Execute<Order>(connectionString, query, this);
         }
     }

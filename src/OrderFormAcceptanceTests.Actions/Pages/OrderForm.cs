@@ -268,6 +268,24 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElement(Pages.OrderForm.EditServiceRecipients).Click();
 		}
 
+		public bool EditCatalogueSolutionsSectionDisplayed()
+		{
+			try
+			{
+				Wait.Until(d => d.FindElements(Pages.OrderForm.EditCatalogueSolutions).Count == 1);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public void ClickEditCatalogueSolutions()
+		{
+			Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).Click();
+		}
+
 		public void ClickSaveButton()
 		{
 			Driver.FindElement(Pages.Common.SaveButton).Click();
