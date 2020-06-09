@@ -99,13 +99,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.SelectSupplier();
         }
 
-        [When(@"they choose to continue")]
-        [StepDefinition(@"the User chooses to continue")]
-        public void WhenTheyChooseToContinue()
-        {
-            Test.Pages.OrderForm.ClickContinueButton();
-        }
-
         [Then(@"they are informed that a Supplier needs to be selected")]
         public void ThenTheyAreInformedThatASupplierNeedsToBeSelected()
         {
@@ -140,7 +133,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserHasBeenPresentedWithMatchingSuppliers();
             WhenTheySelectASupplier();
-            WhenTheyChooseToContinue();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheSupplierInformationScreenIsPresented();
         }
 

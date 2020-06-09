@@ -151,6 +151,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.SectionComplete(sectionName).Should().BeFalse();
         }
 
+        [Then(@"the Order description is displayed")]
+        public void ThenTheOrderDescriptionIsDisplayed()
+        {
+            Test.Pages.OrderForm.GetOrderDescription().Should().NotBeNullOrEmpty();
+        }
+
         [Then(@"the Call Off Agreement ID is generated")]
         [Then(@"the Call Off Agreement ID is displayed")]
         public void ThenTheCallOffAgreementIDIsGenerated()

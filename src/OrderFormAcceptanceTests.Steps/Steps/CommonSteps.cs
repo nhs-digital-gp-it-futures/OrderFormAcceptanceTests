@@ -57,6 +57,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"no Supplier is selected")]
         [Then("the Commencement Date information is not saved")]
         [Given(@"the Call Off Ordering Party is not selected")]
+        [Given(@"the User chooses not to add a Catalogue Solution")]
         public void DoNothing()
         {
             //do nothing
@@ -115,6 +116,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.ClickBackLink();
         }
-                
+
+        [When(@"they choose to continue")]
+        [StepDefinition(@"the User chooses to continue")]
+        public void WhenTheyChooseToContinue()
+        {
+            Test.Pages.OrderForm.ClickContinueButton();
+        }
     }
 }
