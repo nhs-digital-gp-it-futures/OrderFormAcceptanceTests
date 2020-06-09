@@ -92,7 +92,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context["CreatedOrder"];
             var serviceRecipientInDB = new ServiceRecipient().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
-            serviceRecipientInDB.Should().NotBeNull();
+            Context.Add("CreatedServiceRecipient", serviceRecipientInDB);
+            serviceRecipientInDB.Should().NotBeNull();            
         }
 
     }

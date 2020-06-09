@@ -205,6 +205,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context["CreatedOrder"];
             order.ServiceRecipientsViewed = 0;
             order.Update(Test.ConnectionString);
+
+            var serviceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
+            serviceRecipient.Delete(Test.ConnectionString);
+            Context.Remove("CreatedServiceRecipient");
         }
 
         [Given(@"the Catalogue Solutions section is not complete")]
