@@ -41,6 +41,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheCatalogueSolutionDashboardIsPresented();
         }
 
+        [Then(@"the User is not able to manage the Catalogue Solutions section")]
+        public void ThenTheUserIsNotAbleToManageTheCatalogueSolutionsSection()
+        {
+            Test.Pages.OrderForm.EditCatalogueSolutionsSectionIsEnabled().Should().BeFalse();
+        }
+
         [StepDefinition(@"the User has chosen to manage the Catalogue Solution section")]
         public void WhenTheUserHasChosenToManageTheCatalogueSolutionSection()
         {

@@ -281,6 +281,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			}
 		}
 
+		public bool EditCatalogueSolutionsSectionIsEnabled()
+		{
+			return Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).TagName == "a";
+		}
+
 		public void ClickEditCatalogueSolutions()
 		{
 			Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).Click();

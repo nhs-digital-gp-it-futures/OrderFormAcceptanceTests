@@ -26,10 +26,13 @@ Scenario: Catalogue Solutions - Service Recipient now complete, >=1 Service Reci
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled
-	@ignore
+
 Scenario: Catalogue Solutions - Service Recipient now complete, 0 Service Recipient
 	Given there are no Service Recipients in the order
 	When the Order Form for the existing order is presented
+	Then the content validation status of the service-recipients section is complete
+	And there is the Catalogue Solutions section
+	And the User is not able to manage the Catalogue Solutions section 
 
 Scenario: Catalogue Solutions - Catalogue Solution dashboard
 	When the User has chosen to manage the Catalogue Solution section
