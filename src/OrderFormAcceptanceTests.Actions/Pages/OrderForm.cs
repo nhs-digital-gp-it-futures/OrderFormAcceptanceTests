@@ -281,6 +281,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			}
 		}
 
+		public bool EditCatalogueSolutionsSectionIsEnabled()
+		{
+			return Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).TagName == "a";
+		}
+
 		public void ClickEditCatalogueSolutions()
 		{
 			Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).Click();
@@ -289,6 +294,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public void ClickSaveButton()
 		{
 			Driver.FindElement(Pages.Common.SaveButton).Click();
+		}
+
+		public bool ContinueButtonDisplayed()
+		{
+			return Driver.FindElements(Pages.Common.ContinueButton).Count ==  1;
 		}
 
 		public void ClickContinueButton()
@@ -322,6 +332,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			errorMessages[index].Click();
 
 			return linkHref;
+		}
+
+		public string GetOrderDescription()
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderForm.OrderDescription).Count == 1);
+			return Driver.FindElement(Pages.OrderForm.OrderDescription).Text;
 		}
 
 		public bool OdsCodeDisplayedAndNotEditable()
@@ -489,6 +505,22 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public bool ServiceRecipientsNameAndOdsDisplayed()
 		{
 			return Driver.FindElements(Pages.OrderForm.ServiceRecipientName).Count > 0 && Driver.FindElements(Pages.OrderForm.ServiceRecipientOdsCode).Count > 0;
+		}
+
+		public bool AddSolutionButtonDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.AddSolution).Count == 1;
+		}
+
+		public void ClickAddSolutionButton()
+		{
+			Wait.Until(d => AddSolutionButtonDisplayed());
+			Driver.FindElement(Pages.OrderForm.AddSolution).Click();
+		}
+
+		public bool NoSolutionsAddedDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.NoSolutionsAdded).Count == 1;
 		}
 	}
 }

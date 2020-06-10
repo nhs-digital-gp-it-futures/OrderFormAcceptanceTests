@@ -39,10 +39,10 @@ namespace OrderFormAcceptanceTests.Steps.Utils
 
         internal static (string serverUrl, string databaseName, string dbUser, string dbPassword) DbConnectionDetails()
         {
-            var serverUrl = Environment.GetEnvironmentVariable("SERVERURL") ?? "127.0.0.1,1452";
+            var serverUrl = Environment.GetEnvironmentVariable("SERVERURL") ?? "127.0.0.1,1450";
             var databaseName = Environment.GetEnvironmentVariable("DATABASENAME") ?? "CatalogueOrdering";
-            var dbUser = JsonConfigValues("user", "NHSD");
-            var dbPassword = JsonConfigValues("password", "DisruptTheMarket1!");
+            var dbUser = JsonConfigValues("user", "SA");
+            var dbPassword = JsonConfigValues("password", "8VSKwQ8xgk35qWFm8VSKwQ8xgk35qWFm!");
 
             return (serverUrl, databaseName, dbUser, dbPassword);
         }

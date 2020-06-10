@@ -13,14 +13,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [AfterScenario]
         public void AfterScenario()
-        {
-            if (Context.ContainsKey("CreatedServiceRecipient"))
-            {
-                ((ServiceRecipient)Context["CreatedServiceRecipient"]).Delete(Test.ConnectionString);
-            }
-
+        {            
             if (Context.ContainsKey("CreatedOrder"))
             {
+                var SRs = new ServiceRecipient().RetrieveByOrderId(Test.ConnectionString, ((Order)Context["CreatedOrder"]).OrderId);
+                foreach (ServiceRecipient sr in SRs)
+                {
+                    sr.Delete(Test.ConnectionString);
+                }
+
                 ((Order)Context["CreatedOrder"]).Delete(Test.ConnectionString);
             }
             if (Context.ContainsKey("CreatedContact"))

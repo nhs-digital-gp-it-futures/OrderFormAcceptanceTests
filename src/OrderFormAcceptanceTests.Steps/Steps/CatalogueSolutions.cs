@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,12 +17,65 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         }
 
+        [Given(@"there are one or more Service Recipients in the order")]
+        public void GivenThereAreOneOrMoreServiceRecipientsInTheOrder()
+        {
+            Context.ContainsKey("CreatedServiceRecipient").Should().BeTrue();
+        }
+
+        [Given(@"there are no Service Recipients in the order")]
+        public void GivenThereAreNoServiceRecipientsInTheOrder()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.ServiceRecipientsViewed.Should().Be(1);
+
+            var serviceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
+            serviceRecipient.Delete(Test.ConnectionString);
+            Context.Remove("CreatedServiceRecipient");
+        }
+
         [Then(@"the User is able to manage the Catalogue Solutions section")]
         public void ThenTheUserIsAbleToManageTheCatalogueSolutionsSection()
         {
             Test.Pages.OrderForm.ClickEditCatalogueSolutions();
-            Test.Pages.OrderForm.TaskListDisplayed().Should().BeFalse();
+            ThenTheCatalogueSolutionDashboardIsPresented();
+        }
+
+        [Then(@"the User is not able to manage the Catalogue Solutions section")]
+        public void ThenTheUserIsNotAbleToManageTheCatalogueSolutionsSection()
+        {
+            Test.Pages.OrderForm.EditCatalogueSolutionsSectionIsEnabled().Should().BeFalse();
+        }
+
+        [StepDefinition(@"the User has chosen to manage the Catalogue Solution section")]
+        public void WhenTheUserHasChosenToManageTheCatalogueSolutionSection()
+        {
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
+            ThenTheUserIsAbleToManageTheCatalogueSolutionsSection();
+        }
+
+        [Then(@"the Catalogue Solution dashboard is presented")]
+        public void ThenTheCatalogueSolutionDashboardIsPresented()
+        {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Catalogue Solution").Should().BeTrue();
+        }
+
+        [Then(@"there is a control to add a Catalogue Solution")]
+        public void ThenThereIsAControlToAddACatalogueSolution()
+        {
+            Test.Pages.OrderForm.AddSolutionButtonDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"there is a control to continue")]
+        public void ThenThereIsAControlToContinue()
+        {
+            Test.Pages.OrderForm.ContinueButtonDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"there is content indicating there is no Catalogue Solution added")]
+        public void ThenThereIsContentIndicatingThereIsNoCatalogueSolutionAdded()
+        {
+            Test.Pages.OrderForm.NoSolutionsAddedDisplayed().Should().BeTrue();
         }
 
     }

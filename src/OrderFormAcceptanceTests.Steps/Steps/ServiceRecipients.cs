@@ -84,7 +84,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheServiceRecipientSectionIsSavedInTheDB()
         {
             var order = (Order)Context["CreatedOrder"];
-            order.ServiceRecipientsViewed.Should().Be(1);
+            order.Retrieve(Test.ConnectionString).ServiceRecipientsViewed.Should().Be(1);
         }
 
         [Then(@"the Service Recipient is saved in the DB")]

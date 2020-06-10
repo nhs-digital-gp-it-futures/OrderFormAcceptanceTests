@@ -23,6 +23,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 			return By.CssSelector(string.Format("[href$='{0}']", sectionHrefRoute));
 		}
 
+		public By OrderDescription => CustomBy.DataTestId("order-description");
 		public By OrganisationName => CustomBy.DataTestId("organisation-name");
 		public By OrganisationOdsCode => CustomBy.DataTestId("organisation-ods-code");
 		public Func<int, By> AddressLineX => (LineNumber) => By.CssSelector(string.Format("[data-test-id$=-address-{0}]", LineNumber.ToString()));
@@ -41,7 +42,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By SelectDeselectAll => CustomBy.DataTestId("select-deselect-button", "button");
 		public By ServiceRecipientName => By.CssSelector("[data-test-id^='organisation-name'] label");
 		public By ServiceRecipientOdsCode => By.CssSelector(".bc-c-service-recipients-table__ods");
-
-
+		public By AddSolution => CustomBy.DataTestId("add-solution-button", "a");
+		public By NoSolutionsAdded => CustomBy.DataTestId("no-added-solutions");
 	}
 }
