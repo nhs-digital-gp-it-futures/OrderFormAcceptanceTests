@@ -45,7 +45,7 @@ Scenario: Catalogue Solutions - Catalogue Solution dashboard
 Scenario: Catalogue Solutions - No Catalogue Solution added
 	When the User has chosen to manage the Catalogue Solution section
 	Then there is content indicating there is no Catalogue Solution added
-	@ignore
+	#@ignore
 Scenario: Catalogue Solutions - User chooses not to add Catalogue Solution
 	Given the User has chosen to manage the Catalogue Solution section
 	And the User chooses not to add a Catalogue Solution

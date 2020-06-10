@@ -39,7 +39,7 @@ Scenario: Service Recipients - Select all/Deselect all Service Recipients
 	When the User chooses to deselect all 
 	Then the selected Call Off Ordering Party presented is deselected
 	And the Deselect all button changes to Select all
-	@ignore
+	#@ignore
 Scenario: Service Recipients - Call Off Ordering Party selected
 	Given the User chooses to edit the Service Recipient section
 	And the Call Off Ordering Party is selected
@@ -48,7 +48,7 @@ Scenario: Service Recipients - Call Off Ordering Party selected
 	And the content validation status of the service-recipients section is complete
 	And the Service Recipient section is saved in the DB
 	And the Service Recipient is saved in the DB
-	@ignore
+	#@ignore
 Scenario: Service Recipients - Call Off Ordering Party is not selected
 	Given the User chooses to edit the Service Recipient section
 	And the Call Off Ordering Party is not selected
