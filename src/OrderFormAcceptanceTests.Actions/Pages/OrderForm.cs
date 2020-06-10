@@ -522,5 +522,16 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			return Driver.FindElements(Pages.OrderForm.NoSolutionsAdded).Count == 1;
 		}
+
+		public int NumberOfRadioButtonsDisplayed()
+		{
+			return Driver.FindElements(Pages.Common.RadioButton).Count;
+		}
+
+		public void ClickRadioButton(int index = 0)
+		{
+			Wait.Until(d => NumberOfRadioButtonsDisplayed() > index);
+			Driver.FindElements(Pages.Common.RadioButton)[index].Click();
+		}
 	}
 }

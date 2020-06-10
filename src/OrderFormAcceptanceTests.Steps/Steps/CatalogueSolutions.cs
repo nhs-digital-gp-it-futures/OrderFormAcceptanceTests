@@ -78,5 +78,39 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.NoSolutionsAddedDisplayed().Should().BeTrue();
         }
 
+        [When(@"the User chooses to add a single Catalogue Solution")]
+        public void WhenTheUserChoosesToAddASingleCatalogueSolution()
+        {
+            Test.Pages.OrderForm.ClickAddSolutionButton();
+        }
+
+        [Then(@"they are presented with the Catalogue Solutions available from their chosen Supplier")]
+        public void ThenTheyArePresentedWithTheCatalogueSolutionsAvailableFromTheirChosenSupplier()
+        {
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Catalogue Solution").Should().BeTrue();
+        }
+
+        [Then(@"they can select one Catalogue Solution to add")]
+        public void ThenTheyCanSelectOneCatalogueSolutionToAdd()
+        {
+            Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
+        }
+
+        [Given(@"the User is presented with Catalogue Solutions available from their chosen Supplier")]
+        public void GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier()
+        {
+            WhenTheUserHasChosenToManageTheCatalogueSolutionSection();
+            WhenTheUserChoosesToAddASingleCatalogueSolution();
+            ThenTheyArePresentedWithTheCatalogueSolutionsAvailableFromTheirChosenSupplier();
+        }
+
+        [Then(@"the User is informed they have to select a Catalogue Solution")]
+        public void ThenTheUserIsInformedTheyHaveToSelectACatalogueSolution()
+        {
+            Test.Pages.OrderForm.ErrorSummaryDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectSolution");
+        }
+
     }
 }
