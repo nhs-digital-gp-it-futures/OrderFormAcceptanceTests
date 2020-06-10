@@ -7,7 +7,6 @@ namespace OrderFormAcceptanceTests.TestData
 {
     public sealed class ServiceRecipient
     {
-        public int ServiceRecipientId { get; set; }
         public string OrderId { get; set; }
         public string Name { get; set; }
         public string OdsCode { get; set; }
@@ -49,7 +48,7 @@ namespace OrderFormAcceptanceTests.TestData
 
         public IEnumerable<ServiceRecipient> RetrieveByOrderId(string connectionString, string orderId)
         {
-            var query = "SELECT * from [dbo].[ServiceRecipient] WHERE ServiceRecipientId=@orderId";
+            var query = "SELECT * from [dbo].[ServiceRecipient] WHERE OrderId=@orderId";
 
             return SqlExecutor.Execute<ServiceRecipient>(connectionString, query, new { orderId });
         }
@@ -61,7 +60,7 @@ namespace OrderFormAcceptanceTests.TestData
                             [OrderId]=@OrderId
                             ,[Name]=@Name 
                             ,[OdsCode]=@OdsCode
-                        WHERE ServiceRecipientId=@ServiceRecipientId";
+                        WHERE OrderId=@OrderId";
             SqlExecutor.Execute<ServiceRecipient>(connectionString, query, this);
         }
 
