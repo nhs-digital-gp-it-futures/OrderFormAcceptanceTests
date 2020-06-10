@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Objects.Utils;
+using System.Runtime.CompilerServices;
 
 namespace OrderFormAcceptanceTests.Objects.Pages
 {
@@ -15,6 +16,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By TextArea => By.TagName("textarea");
 		public By TextField => By.ClassName("nhsuk-input");
 		public By Checkbox => By.ClassName("nhsuk-checkboxes__input");
+		public By RadioButton => By.ClassName("nhsuk-radios__input");
 		public By Footer => By.Id("nhsuk-footer");
 		public By Header => CustomBy.DataTestId("header-banner");
 		public By BetaBanner => CustomBy.DataTestId("beta-banner");

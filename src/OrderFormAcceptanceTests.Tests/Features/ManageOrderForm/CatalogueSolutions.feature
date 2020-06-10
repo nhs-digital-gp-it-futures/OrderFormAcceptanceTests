@@ -57,3 +57,21 @@ Scenario: Catalogue Solutions - Go back
 	Given the User has chosen to manage the Catalogue Solution section
 	When the User chooses to go back
 	Then the Order dashboard is presented
+
+Scenario: Catalogue Solutions - Select a single Catalogue Solution to add
+	Given the User has chosen to manage the Catalogue Solution section
+	When the User chooses to add a single Catalogue Solution
+	Then they are presented with the Catalogue Solutions available from their chosen Supplier
+	And they can select one Catalogue Solution to add
+	And the Call Off Agreement ID is displayed in the page title
+
+Scenario: Catalogue Solutions - No Catalogue Solution selected
+	Given the User is presented with Catalogue Solutions available from their chosen Supplier
+	And no Catalogue Solution is selected
+	When they choose to continue
+	Then the User is informed they have to select a Catalogue Solution
+
+Scenario: Catalogue Solutions - Go back from select a solution
+	Given the User is presented with Catalogue Solutions available from their chosen Supplier
+	When the User chooses to go back
+	Then the Catalogue Solution dashboard is presented
