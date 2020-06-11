@@ -54,6 +54,15 @@ namespace OrderFormAcceptanceTests.Steps.Utils
             return string.Format(ConnectionString.GPitFutures, serverUrl, databaseName, dbUser, dbPassword);
         }
 
+        internal static string BapiDbConnectionString()
+        {
+            var (serverUrl, databaseName, dbUser, dbPassword) = DbConnectionDetails();
+
+            databaseName = Environment.GetEnvironmentVariable("BAPIDATABASENAME") ?? "buyingcatalogue";
+
+            return string.Format(ConnectionString.GPitFutures, serverUrl, databaseName, dbUser, dbPassword);
+        }
+
         private static string JsonConfigValues(string section, string defaultValue)
         {
             var path = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "Utils",

@@ -1,8 +1,10 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
+using OrderFormAcceptanceTests.TestData.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
 
@@ -124,17 +126,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the User selects a catalogue solution to add")]
         public void GivenTheUserSelectsACatalogueSolutionToAdd()
         {
-            Test.Pages.OrderForm.ClickRadioButton();
+            var solutionId = Test.Pages.OrderForm.ClickRadioButton();
+            Context.Add("ChosenSolutionId", solutionId);
         }
 
         [Then(@"all the available prices for that Catalogue Solution are presented")]
         public void ThenAllTheAvailablePricesForThatCatalogueSolutionArePresented()
         {
-            //get solution from DB
-            //get all prices for solution from DB
-            var expectedNumberOfPrices = 0;
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("List price").Should().BeTrue();
+            var SolutionId = (string)Context["ChosenSolutionId"];
+            var query = "Select count(*) FROM [dbo].[PurchasingModel] where [dbo].[PurchasingModel].SolutionId=@SolutionId";
+            var expectedNumberOfPrices = SqlExecutor.Execute<int>(Test.BapiConnectionString, query, new { SolutionId }).Single();
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
-            Context.Pending();
         }
 
         [Given(@"the User is presented with the prices for the selected Catalogue Solution")]
