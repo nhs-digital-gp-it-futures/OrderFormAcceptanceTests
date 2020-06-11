@@ -60,6 +60,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the User chooses not to add a Catalogue Solution")]
         [Given(@"no Catalogue Solution is selected")]
         [Given(@"no Catalogue Solution price is selected")]
+        [Given(@"no Service Recipient is selected")]
         public void DoNothing()
         {
             //do nothing
