@@ -93,3 +93,20 @@ Scenario: Catalogue Solutions - Go back from select price
 	Given the User is presented with the prices for the selected Catalogue Solution
 	When the User chooses to go back
 	Then they are presented with the Catalogue Solutions available from their chosen Supplier
+	@ignore
+Scenario: Catalogue Solutions - Select a Service Recipient
+	Given the User is presented with the prices for the selected Catalogue Solution
+	And the User selects a price
+	When they choose to continue 
+	Then they are presented with the Service Recipients saved in the Order
+	@ignore
+Scenario: Catalogue Solutions - No Service Recipient for the Catalogue Solution selected
+	Given the User is presented with the Service Recipients saved in the Order
+	And no Service Recipient is selected
+	When they choose to continue
+	Then the User is informed they have to select a Service Recipient
+	@ignore
+Scenario: Catalogue Solutions - Go back from select a service recipient
+	Given the User is presented with the Service Recipients saved in the Order
+	When the User chooses to go back
+	Then all the available prices for that Catalogue Solution are presented

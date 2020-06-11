@@ -94,6 +94,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"they can select one Catalogue Solution to add")]
         [Then(@"they can select a price for the Catalogue Solution")]
+        [Then(@"they are presented with the Service Recipients saved in the Order")]
         public void ThenTheyCanSelectOneRadioButton()
         {
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
@@ -147,6 +148,29 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             GivenTheUserSelectsACatalogueSolutionToAdd();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyCanSelectOneRadioButton();
+        }
+
+        [Given(@"the User selects a price")]
+        public void GivenTheUserSelectsAPrice()
+        {
+            Test.Pages.OrderForm.ClickRadioButton();
+        }
+
+        [Given(@"the User is presented with the Service Recipients saved in the Order")]
+        public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder()
+        {
+            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            GivenTheUserSelectsAPrice();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
+        }
+
+        [Then(@"the User is informed they have to select a Service Recipient")]
+        public void ThenTheUserIsInformedTheyHaveToSelectAServiceRecipient()
+        {
+            Test.Pages.OrderForm.ErrorSummaryDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectRecipient");
         }
     }
 }
