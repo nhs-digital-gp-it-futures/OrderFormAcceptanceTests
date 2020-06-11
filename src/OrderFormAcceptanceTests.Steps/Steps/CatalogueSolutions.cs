@@ -1,8 +1,10 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
+using OrderFormAcceptanceTests.TestData.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
 
@@ -91,7 +93,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"they can select one Catalogue Solution to add")]
-        public void ThenTheyCanSelectOneCatalogueSolutionToAdd()
+        [Then(@"they can select a price for the Catalogue Solution")]
+        public void ThenTheyCanSelectOneRadioButton()
         {
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
         }
@@ -112,5 +115,38 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectSolution");
         }
 
+        [Then(@"the User is informed they have to select a Catalogue Solution price")]
+        public void ThenTheUserIsInformedTheyHaveToSelectACatalogueSolutionPrice()
+        {
+            Test.Pages.OrderForm.ErrorSummaryDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectSolutionPrice");
+        }
+
+        [Given(@"the User selects a catalogue solution to add")]
+        public void GivenTheUserSelectsACatalogueSolutionToAdd()
+        {
+            var solutionId = Test.Pages.OrderForm.ClickRadioButton();
+            Context.Add("ChosenSolutionId", solutionId);
+        }
+
+        [Then(@"all the available prices for that Catalogue Solution are presented")]
+        public void ThenAllTheAvailablePricesForThatCatalogueSolutionArePresented()
+        {
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("List price").Should().BeTrue();
+            var SolutionId = (string)Context["ChosenSolutionId"];
+            var query = "Select count(*) FROM [dbo].[PurchasingModel] where SolutionId=@SolutionId";
+            var expectedNumberOfPrices = SqlExecutor.Execute<int>(Test.BapiConnectionString, query, new { SolutionId }).Single();
+            Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
+        }
+
+        [Given(@"the User is presented with the prices for the selected Catalogue Solution")]
+        public void GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution()
+        {
+            GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier();
+            GivenTheUserSelectsACatalogueSolutionToAdd();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
+        }
     }
 }

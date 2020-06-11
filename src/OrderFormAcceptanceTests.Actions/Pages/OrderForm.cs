@@ -528,10 +528,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElements(Pages.Common.RadioButton).Count;
 		}
 
-		public void ClickRadioButton(int index = 0)
+		public string ClickRadioButton(int index = 0)
 		{
 			Wait.Until(d => NumberOfRadioButtonsDisplayed() > index);
-			Driver.FindElements(Pages.Common.RadioButton)[index].Click();
+			var element = Driver.FindElements(Pages.Common.RadioButton)[index];
+			element.Click();
+			return element.GetAttribute("value");
 		}
 	}
 }

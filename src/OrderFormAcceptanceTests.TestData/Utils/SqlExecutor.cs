@@ -4,9 +4,9 @@ using System.Data.SqlClient;
 
 namespace OrderFormAcceptanceTests.TestData.Utils
 {
-    internal static class SqlExecutor
+    public static class SqlExecutor
     {
-        internal static IEnumerable<T> Execute<T>(string connectionString, string query, object param)
+        public static IEnumerable<T> Execute<T>(string connectionString, string query, object param)
         {
             IEnumerable<T> returnValue = null;
             using (var connection = new SqlConnection(connectionString))
@@ -18,7 +18,7 @@ namespace OrderFormAcceptanceTests.TestData.Utils
             return returnValue;
         }
 
-        internal static int ExecuteScalar(string connectionString, string query, object param)
+        public static int ExecuteScalar(string connectionString, string query, object param)
         {
             var result = 0;
             using (var connection = new SqlConnection(connectionString))

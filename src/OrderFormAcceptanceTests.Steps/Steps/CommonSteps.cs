@@ -59,6 +59,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Call Off Ordering Party is not selected")]
         [Given(@"the User chooses not to add a Catalogue Solution")]
         [Given(@"no Catalogue Solution is selected")]
+        [Given(@"no Catalogue Solution price is selected")]
         public void DoNothing()
         {
             //do nothing
