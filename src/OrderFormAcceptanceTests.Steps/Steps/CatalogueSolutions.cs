@@ -135,7 +135,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("List price").Should().BeTrue();
             var SolutionId = (string)Context["ChosenSolutionId"];
-            var query = "Select count(*) FROM [dbo].[PurchasingModel] where [dbo].[PurchasingModel].SolutionId=@SolutionId";
+            var query = "Select count(*) FROM [dbo].[PurchasingModel] where SolutionId=@SolutionId";
             var expectedNumberOfPrices = SqlExecutor.Execute<int>(Test.BapiConnectionString, query, new { SolutionId }).Single();
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
         }
@@ -147,13 +147,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             GivenTheUserSelectsACatalogueSolutionToAdd();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyCanSelectOneRadioButton();
-        }
-
-        [Then(@"the User's selected Catalogue Solution is selected")]
-        public void ThenTheUserSSelectedCatalogueSolutionIsSelected()
-        {
-            //radio button is selected?
-            Context.Pending();
         }
     }
 }

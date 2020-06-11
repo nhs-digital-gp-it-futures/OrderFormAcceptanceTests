@@ -93,4 +93,3 @@ Scenario: Catalogue Solutions - Go back from select price
 	Given the User is presented with the prices for the selected Catalogue Solution
 	When the User chooses to go back
 	Then they are presented with the Catalogue Solutions available from their chosen Supplier
-	And the User's selected Catalogue Solution is selected
