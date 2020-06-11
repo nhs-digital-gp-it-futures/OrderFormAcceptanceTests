@@ -91,7 +91,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"they can select one Catalogue Solution to add")]
-        public void ThenTheyCanSelectOneCatalogueSolutionToAdd()
+        [Then(@"they can select a price for the Catalogue Solution")]
+        public void ThenTheyCanSelectOneRadioButton()
         {
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
         }
@@ -112,5 +113,44 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectSolution");
         }
 
+        [Then(@"the User is informed they have to select a Catalogue Solution price")]
+        public void ThenTheUserIsInformedTheyHaveToSelectACatalogueSolutionPrice()
+        {
+            Test.Pages.OrderForm.ErrorSummaryDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectSolutionPrice");
+        }
+
+        [Given(@"the User selects a catalogue solution to add")]
+        public void GivenTheUserSelectsACatalogueSolutionToAdd()
+        {
+            Test.Pages.OrderForm.ClickRadioButton();
+        }
+
+        [Then(@"all the available prices for that Catalogue Solution are presented")]
+        public void ThenAllTheAvailablePricesForThatCatalogueSolutionArePresented()
+        {
+            //get solution from DB
+            //get all prices for solution from DB
+            var expectedNumberOfPrices = 0;
+            Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
+            Context.Pending();
+        }
+
+        [Given(@"the User is presented with the prices for the selected Catalogue Solution")]
+        public void GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution()
+        {
+            GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier();
+            GivenTheUserSelectsACatalogueSolutionToAdd();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
+        }
+
+        [Then(@"the User's selected Catalogue Solution is selected")]
+        public void ThenTheUserSSelectedCatalogueSolutionIsSelected()
+        {
+            //radio button is selected?
+            Context.Pending();
+        }
     }
 }

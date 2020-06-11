@@ -75,3 +75,22 @@ Scenario: Catalogue Solutions - Go back from select a solution
 	Given the User is presented with Catalogue Solutions available from their chosen Supplier
 	When the User chooses to go back
 	Then the Catalogue Solution dashboard is presented
+	@ignore
+Scenario: Catalogue Solutions - Select a price for the Catalogue Solution
+	Given the User is presented with Catalogue Solutions available from their chosen Supplier
+	And the User selects a catalogue solution to add
+	When they choose to continue
+	Then all the available prices for that Catalogue Solution are presented
+	And they can select a price for the Catalogue Solution
+	@ignore
+Scenario: Catalogue Solutions - No price for the Catalogue Solution selected
+	Given the User is presented with the prices for the selected Catalogue Solution 
+	And no Catalogue Solution price is selected
+	When they choose to continue
+	Then the User is informed they have to select a Catalogue Solution price
+	@ignore
+Scenario: Catalogue Solutions - Go back from select price
+	Given the User is presented with the prices for the selected Catalogue Solution
+	When the User chooses to go back
+	Then they are presented with the Catalogue Solutions available from their chosen Supplier
+	And the User's selected Catalogue Solution is selected
