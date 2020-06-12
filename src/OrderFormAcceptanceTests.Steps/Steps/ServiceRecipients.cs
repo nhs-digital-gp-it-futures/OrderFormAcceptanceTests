@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using System;
@@ -94,6 +95,30 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var serviceRecipientInDB = new ServiceRecipient().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
             Context.Add("CreatedServiceRecipient", serviceRecipientInDB);
             serviceRecipientInDB.Should().NotBeNull();            
+        }
+
+        [Then(@"the Service Recipient is deleted from the Order")]
+        [Then(@"all the Service Recipients are deleted from the Order")]
+        public void ThenTheServiceRecipientIsDeletedFromTheOrder()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var serviceRecipientInDB = new ServiceRecipient().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
+            serviceRecipientInDB.Should().BeNullOrEmpty();
+            serviceRecipientInDB = ((ServiceRecipient)Context["CreatedServiceRecipient"]).Retrieve(Test.ConnectionString);
+            serviceRecipientInDB.Should().BeNullOrEmpty();
+        }
+
+        [When(@"the User deselects a Service Recipient that have been previously saved in the Order")]
+        [StepDefinition(@"the User deselects all Service Recipients that have been previously saved in the Order")]
+        public void WhenTheUserDeselectsAServiceRecipientThatHaveBeenPreviouslySavedInTheOrder()
+        {
+            GivenTheUserChoosesToManageTheServiceRecipientsSection();
+            WhenTheUserChoosesToSelectAll();
+            ThenTheSelectAllButtonChangesToDeselectAll();
+            WhenTheUserChoosesToSelectAll();
+            ThenTheSelectedCallOffOrderingPartyPresentedIsDeselected();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            new OrderForm(Test, Context).ThenTheOrderIsSaved();
         }
 
     }

@@ -217,11 +217,31 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Remove("CreatedServiceRecipient");
         }
 
+        [Given(@"the Service Recipients section is complete")]
+        public void GivenTheServiceRecipientsSectionIsComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.ServiceRecipientsViewed = 1;
+            order.Update(Test.ConnectionString);
+
+            var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);
+            serviceRecipient.Create(Test.ConnectionString);
+            Context.Add("CreatedServiceRecipient", serviceRecipient);
+        }
+
         [Given(@"the Catalogue Solutions section is not complete")]
         public void GivenTheCatalogueSolutionsSectionIsNotComplete()
         {
             var order = (Order)Context["CreatedOrder"];
             order.CatalogueSolutionsViewed = 0;
+            order.Update(Test.ConnectionString);
+        }
+
+        [Given(@"the Catalogue Solution section is complete")]
+        public void GivenTheCatalogueSolutionSectionIsComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.CatalogueSolutionsViewed = 1;
             order.Update(Test.ConnectionString);
         }
 
