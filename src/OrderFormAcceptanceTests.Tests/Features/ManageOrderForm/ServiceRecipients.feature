@@ -56,3 +56,19 @@ Scenario: Service Recipients - Call Off Ordering Party is not selected
 	Then the Service Recipient section is not saved
 	And the content validation status of the service-recipients section is complete
 	And the Service Recipient section is saved in the DB
+
+Scenario: Service Recipients - Deselect a Service Recipient that do not have Catalogue Solution
+	Given the Service Recipients section is complete 
+	When the User deselects a Service Recipient that have been previously saved in the Order
+	Then the Service Recipient is deleted from the Order
+
+Scenario: Service Recipients - Deselect all Service Recipients that do not have Catalogue Solution
+	Given the Service Recipients section is complete 
+	And there are no Catalogue Solution items in the order
+	And the Catalogue Solution section is complete
+	And the User deselects all Service Recipients that have been previously saved in the Order
+	Then all the Service Recipients are deleted from the Order
+	And the content validation status of the service-recipients section is complete
+	And the Service Recipient section is saved in the DB
+	And the Catalogue Solution section is disabled
+	And the Catalogue Solution section is not complete

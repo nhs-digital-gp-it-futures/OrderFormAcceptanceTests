@@ -44,9 +44,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the User is not able to manage the Catalogue Solutions section")]
+        [Then(@"the Catalogue Solution section is disabled")]
         public void ThenTheUserIsNotAbleToManageTheCatalogueSolutionsSection()
         {
             Test.Pages.OrderForm.EditCatalogueSolutionsSectionIsEnabled().Should().BeFalse();
+        }
+
+        [Then(@"the Catalogue Solution section is not complete")]
+        public void ThenTheCatalogueSolutionSectionIsNotComplete()
+        {
+            Test.Pages.OrderForm.AssertThatEditCatalogueSolutionsSectionIsNotComplete();
         }
 
         [StepDefinition(@"the User has chosen to manage the Catalogue Solution section")]

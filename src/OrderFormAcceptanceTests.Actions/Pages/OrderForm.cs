@@ -286,6 +286,15 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).TagName == "a";
 		}
 
+		public void AssertThatEditCatalogueSolutionsSectionIsNotComplete()
+		{
+			var labelFound = Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions)
+				.FindElement(By.XPath("../.."))
+				.FindElements(Pages.OrderForm.SectionStatus).Count;
+
+			labelFound.Should().Be(0);
+		}
+
 		public void ClickEditCatalogueSolutions()
 		{
 			Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).Click();
