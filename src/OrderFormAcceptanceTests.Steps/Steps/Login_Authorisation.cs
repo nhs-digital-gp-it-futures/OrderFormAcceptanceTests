@@ -63,7 +63,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the User will be informed they cannot access that feature")]
         public void ThenTheUserWillBeInformedTheyCannotAccessThatFeature()
         {
-            Test.Pages.OrderForm.ErrorTitle().Should().ContainEquivalentOf("not authorised");
+            Test.Pages.OrderForm.ErrorTitle().Should().ContainEquivalentOf("not logged in");
         }
 
         [Then(@"the Public Browse homepage is presented")]
@@ -71,6 +71,5 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.Homepage.PageDisplayed();
         }
-
     }
 }
