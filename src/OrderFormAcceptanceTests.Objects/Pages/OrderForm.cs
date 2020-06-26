@@ -42,7 +42,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By SelectDeselectAll => CustomBy.DataTestId("select-deselect-button", "button");
 		public By ServiceRecipientName => By.CssSelector("[data-test-id^='organisation-name'] label");
 		public By ServiceRecipientOdsCode => By.CssSelector(".bc-c-service-recipients-table__ods");
-		public By AddSolution => CustomBy.DataTestId("add-solution-button", "a");
+		public By AddSolution => CustomBy.DataTestId("add-orderItem-button", "a");
 		public By NoSolutionsAdded => CustomBy.DataTestId("no-added-solutions");
 	}
 }
