@@ -12,13 +12,12 @@ namespace OrderFormAcceptanceTests.TestData
         public string OdsCode { get; set; }
 
 
-        public ServiceRecipient Generate(string orderId, string odsCode = "00C")
+        public ServiceRecipient Generate(string orderId, string odsCode = "00C", string name = "NHS Darlington CCG")
         {
-            var faker = new Faker();
             return new ServiceRecipient
             {
                 OrderId = orderId,
-                Name = faker.Name.FullName(),
+                Name = name,
                 OdsCode = odsCode
             };
         }
