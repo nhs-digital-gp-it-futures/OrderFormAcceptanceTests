@@ -565,6 +565,13 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElement(Pages.OrderForm.PriceInput).GetAttribute("value");
 		}
 
+		public void EnterPriceInputValue(string value)
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderForm.PriceInput).Count == 1);
+			Driver.FindElement(Pages.OrderForm.PriceInput).Clear();
+			Driver.FindElement(Pages.OrderForm.PriceInput).SendKeys(value);
+		}
+
 		public bool OrderUnitIsDisplayed()
 		{
 			return Driver.FindElements(Pages.OrderForm.OrderUnit).Count == 1;
@@ -574,12 +581,27 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			return Driver.FindElements(Pages.OrderForm.Quantity).Count == 1;
 		}
-		
+
+		public void EnterQuantity(string value)
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderForm.Quantity).Count == 1);
+			Driver.FindElement(Pages.OrderForm.Quantity).Clear();
+			Driver.FindElement(Pages.OrderForm.Quantity).SendKeys(value);
+		}
+
 		public bool ProposedDateInputIsDisplayed()
 		{
 			return Driver.FindElements(Pages.OrderForm.OrderDate).Count == 1;
 		}
-		
+
+		public void EnterProposedDate(DateTime dateTime)
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderForm.OrderDateDay).Count == 1);
+			Driver.FindElement(Pages.OrderForm.OrderDateDay).SendKeys(dateTime.Day.ToString());
+			Driver.FindElement(Pages.OrderForm.OrderDateMonth).SendKeys(dateTime.Month.ToString());
+			Driver.FindElement(Pages.OrderForm.OrderDateYear).SendKeys(dateTime.Year.ToString());
+		}
+
 		public bool EstimationPeriodIsDisplayed()
 		{
 			return Driver.FindElements(Pages.OrderForm.EstimationPeriod).Count == 1;

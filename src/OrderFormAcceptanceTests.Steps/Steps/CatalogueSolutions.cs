@@ -269,5 +269,49 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
         }
+
+        [Given(@"the proposed date is an invalid date")]
+        public void GivenTheProposedDateIsAnInvalidDate()
+        {
+            var thirtiethOfFebNextYar = new DateTime(new DateTime().AddYears(1).Year, 02, 30);
+            Test.Pages.OrderForm.EnterProposedDate(thirtiethOfFebNextYar);
+        }
+
+        [Given(@"the price has 4 decimal places")]
+        public void GivenThePriceHasDecimalPlaces()
+        {
+            Test.Pages.OrderForm.EnterPriceInputValue("1.1234");
+        }
+
+        [Given(@"the price is negative")]
+        public void GivenThePriceIsNegative()
+        {
+            Test.Pages.OrderForm.EnterPriceInputValue("-12.398");
+        }
+
+        [Given(@"the price contains characters")]
+        public void GivenThePriceContainsCharacters()
+        {
+            Test.Pages.OrderForm.EnterPriceInputValue("1point35");
+        }
+
+        [Given(@"the quantity contains characters")]
+        public void GivenTheQuantityContainsCharacters()
+        {
+            Test.Pages.OrderForm.EnterQuantity("seven");
+        }
+
+        [Given(@"the quanitity is a decimal")]
+        public void GivenTheQuanitityIsADecimal()
+        {
+            Test.Pages.OrderForm.EnterQuantity("3.142");
+        }
+
+        [Given(@"the quantity is negative")]
+        public void GivenTheQuantityIsNegative()
+        {
+            Test.Pages.OrderForm.EnterQuantity("-100");
+        }
+
     }
 }

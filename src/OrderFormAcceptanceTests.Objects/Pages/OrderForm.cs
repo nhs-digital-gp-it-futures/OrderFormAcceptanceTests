@@ -48,6 +48,9 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By OrderUnit => CustomBy.DataTestId("order-unit-id");
 		public By Quantity => By.Id("quantity");
 		public By OrderDate => CustomBy.DataTestId("date-field-input");
+		public By OrderDateDay => By.Id("plannedDeliveryDate-day");
+		public By OrderDateMonth => By.Id("plannedDeliveryDate-month");
+		public By OrderDateYear => By.Id("plannedDeliveryDate-year");
 		public By EstimationPeriod => CustomBy.DataTestId("question-selectEstimationPeriod");
 
 

@@ -134,24 +134,66 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Mandatory data mi
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
 	@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid
-Given the User has entered data into a field
-And the data type is not valid
-When they choose to save
-Then the Catalogue Solution is not saved
-And the reason is displayed
+Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - invalid date
+	Given the User is presented with the Catalogue Solution edit form
+	And the proposed date is an invalid date
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
 
-#Additional Information:
-#Date must be a valid date
-#Price must be to no more than 3 decimal places
-#Quantity must be an integer
-#Quantity cannot be negative
-#Price cannot be negative
+@ignore
+Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price with 4 decimal place
+	Given the User is presented with the Catalogue Solution edit form
+	And the price has 4 decimal places
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+
+@ignore
+Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price is negative
+	Given the User is presented with the Catalogue Solution edit form
+	And the price is negative
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+
+@ignore
+Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price does not allow characters
+	Given the User is presented with the Catalogue Solution edit form
+	And the price contains characters
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+
+@ignore
+Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow characters
+	Given the User is presented with the Catalogue Solution edit form
+	And the quantity contains characters
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+
+@ignore
+Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow decimals
+	Given the User is presented with the Catalogue Solution edit form
+	And the quanitity is a decimal
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+
+@ignore
+Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity can not be negative
+	Given the User is presented with the Catalogue Solution edit form
+	And the quantity is negative
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data exceeds the maximum length
 Given the User has entered data into a field
 And it exceeds the maximum length
-When they choose to save 
+When the User chooses to save
 Then the Catalogue Solution is not saved 
 And the reason is displayed
 @ignore
