@@ -44,5 +44,12 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By ServiceRecipientOdsCode => By.CssSelector(".bc-c-service-recipients-table__ods");
 		public By AddSolution => CustomBy.DataTestId("add-orderItem-button", "a");
 		public By NoSolutionsAdded => CustomBy.DataTestId("no-added-solutions");
+		public By PriceInput => By.Id("price-input-id");
+		public By OrderUnit => CustomBy.DataTestId("order-unit-id");
+		public By Quantity => By.Id("quantity");
+		public By OrderDate => CustomBy.DataTestId("date-field-input");
+		public By EstimationPeriod => CustomBy.DataTestId("question-selectEstimationPeriod");
+
+
 	}
 }

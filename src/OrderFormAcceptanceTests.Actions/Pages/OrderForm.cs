@@ -73,9 +73,9 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Split("Order")[1].Trim();
 		}
 
-		public bool CallOffIdDisplayedInPageTitle(string callOffAgreementId)
+		public bool TextDisplayedInPageTitle(string expectedValue)
 		{
-			return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains(callOffAgreementId);
+			return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains(expectedValue);
 		}
 
 		public bool TaskListDisplayed()
@@ -115,6 +115,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public bool DeleteOrderButtonIsDisabled()
 		{
 			return Driver.FindElement(Pages.OrderForm.DeleteOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
+		}
+
+		public bool DeleteSolutionButtonIsDisabled()
+		{
+			return Driver.FindElement(Pages.Common.DeleteButton).GetAttribute("aria-disabled") != null;
 		}
 
 		public bool PreviewOrderButtonIsDisabled()
@@ -298,6 +303,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public void ClickEditCatalogueSolutions()
 		{
 			Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).Click();
+		}
+
+		public bool SaveButtonDisplayed()
+		{
+			return Driver.FindElements(Pages.Common.SaveButton).Count == 1;
 		}
 
 		public void ClickSaveButton()
@@ -543,6 +553,36 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			var element = Driver.FindElements(Pages.Common.RadioButton)[index];
 			element.Click();
 			return element.GetAttribute("value");
+		}
+
+		public bool PriceInputIsDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.PriceInput).Count == 1;
+		}
+
+		public string GetPriceInputValue()
+		{
+			return Driver.FindElement(Pages.OrderForm.PriceInput).GetAttribute("value");
+		}
+
+		public bool OrderUnitIsDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.OrderUnit).Count == 1;
+		}
+			
+		public bool QuantityInputIsDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.Quantity).Count == 1;
+		}
+		
+		public bool ProposedDateInputIsDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.OrderDate).Count == 1;
+		}
+		
+		public bool EstimationPeriodIsDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.EstimationPeriod).Count == 1;
 		}
 	}
 }

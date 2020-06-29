@@ -163,6 +163,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickRadioButton();
         }
 
+        [Given(@"a Service Recipient is selected")]
+        public void GivenAServiceRecipientIsSelected()
+        {
+            var odsCode = Test.Pages.OrderForm.ClickRadioButton();
+            Context.Add("ChosenOdsCode", odsCode);
+        }
+
         [Given(@"the User is presented with the Service Recipients saved in the Order")]
         public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder()
         {
@@ -179,5 +186,79 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectRecipient");
         }
+
+        [Then(@"they are presented with the Catalogue Solution edit form")]
+        public void ThenTheyArePresentedWithTheCatalogueSolutionEditForm()
+        {
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("information for").Should().BeTrue();
+        }
+
+        [Then(@"the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form")]
+        public void ThenTheNameOfTheSelectedCatalogueSolutionIsDisplayedOnTheCatalogueSolutionEditForm()
+        {
+            var SolutionId = (string)Context["ChosenSolutionId"];
+            var query = "Select Name FROM [dbo].[CatalogueItem] where CatalogueItemId=@SolutionId";
+            var expectedSolutionName = SqlExecutor.Execute<string>(Test.BapiConnectionString, query, new { SolutionId }).Single();
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedSolutionName).Should().BeTrue();
+        }
+
+        [Then(@"the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form")]
+        public void ThenTheSelectedServiceRecipientWithTheirODSCodeIsDisplayedOnTheCatalogueSolutionEditForm()
+        {
+            var ChosenOdsCode = (string)Context["ChosenOdsCode"];
+            var query = "Select Name FROM [dbo].[Organisations] where OdsCode=@ChosenOdsCode";
+            var expectedOrganisationName = SqlExecutor.Execute<string>(Test.IsapiConnectionString, query, new { ChosenOdsCode }).Single();
+            var expectedFormattedValue = string.Format("{0} ({1})", expectedOrganisationName, ChosenOdsCode);
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedFormattedValue).Should().BeTrue();
+        }
+
+        [Then(@"the Catalogue Solution edit form contains an input for the price")]
+        public void ThenTheCatalogueSolutionEditFormContainsAnInputForThePrice()
+        {
+            Test.Pages.OrderForm.PriceInputIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the price input is autopopulated with the list price for the flat list price selected")]
+        public void ThenThePriceInputIsAutopopulatedWithTheListPriceForTheFlatListPriceSelected()
+        {
+            Test.Pages.OrderForm.GetPriceInputValue().Should().NotBeNullOrEmpty();            
+        }
+
+        [Then(@"the item on the Catalogue Solution edit form contains a unit of order")]
+        public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAUnitOfOrder()
+        {
+            Test.Pages.OrderForm.OrderUnitIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the item on the Catalogue Solution edit form contains an input for the quantity")]
+        public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAnInputForTheQuantity()
+        {
+            Test.Pages.OrderForm.QuantityInputIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the item on the Catalogue Solution edit form contains an input for date")]
+        public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAnInputForDate()
+        {
+            Test.Pages.OrderForm.ProposedDateInputIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the item on the Catalogue Solution edit form contains a selection for the quantity estimation period")]
+        public void ThenTheItemOnTheCatalogueSolutionEditFormContainsASelectionForTheQuantityEstimationPeriod()
+        {
+            Test.Pages.OrderForm.EstimationPeriodIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the delete button is disabled")]
+        public void ThenTheDeleteButtonIsDisabled()
+        {
+            Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeTrue();
+        }
+        
+        [Then(@"the save button is enabled")]
+        public void ThenTheSaveButtonIsEnabled()
+        {
+            Test.Pages.OrderForm.SaveButtonDisplayed().Should().BeTrue();            
+        }
+
     }
 }
