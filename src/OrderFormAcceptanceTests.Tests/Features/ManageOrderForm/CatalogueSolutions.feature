@@ -128,7 +128,8 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	And the save button is enabled
 	@ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Mandatory data missing
-	Given mandatory data are missing 
+	Given the User is presented with the Catalogue Solution edit form
+	And mandatory data are missing 
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed

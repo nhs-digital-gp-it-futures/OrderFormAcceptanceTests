@@ -260,5 +260,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.SaveButtonDisplayed().Should().BeTrue();            
         }
 
+
+        [Given(@"the User is presented with the Catalogue Solution edit form")]
+        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditForm()
+        {
+            GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder();
+            GivenAServiceRecipientIsSelected();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+        }
     }
 }
