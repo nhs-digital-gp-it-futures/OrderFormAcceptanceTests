@@ -273,8 +273,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the proposed date is an invalid date")]
         public void GivenTheProposedDateIsAnInvalidDate()
         {
-            var thirtiethOfFebNextYar = new DateTime(new DateTime().AddYears(1).Year, 02, 30);
-            Test.Pages.OrderForm.EnterProposedDate(thirtiethOfFebNextYar);
+            Test.Pages.OrderForm.EnterProposedDate(DateTime.Now.AddYears(1).Year.ToString(), "02", "30");
         }
 
         [Given(@"the price has 4 decimal places")]

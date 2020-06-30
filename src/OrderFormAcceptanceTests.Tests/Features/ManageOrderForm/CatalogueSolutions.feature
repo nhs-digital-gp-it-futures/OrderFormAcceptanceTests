@@ -140,7 +140,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not 
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
-
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price with 4 decimal place
 	Given the User is presented with the Catalogue Solution edit form
@@ -148,7 +147,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not 
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
-
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price is negative
 	Given the User is presented with the Catalogue Solution edit form
@@ -156,7 +154,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not 
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
-
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price does not allow characters
 	Given the User is presented with the Catalogue Solution edit form
@@ -164,7 +161,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not 
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
-
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow characters
 	Given the User is presented with the Catalogue Solution edit form
@@ -172,7 +168,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not 
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
-
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow decimals
 	Given the User is presented with the Catalogue Solution edit form
@@ -180,7 +175,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not 
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
-
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity can not be negative
 	Given the User is presented with the Catalogue Solution edit form
@@ -188,7 +182,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not 
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
-
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data exceeds the maximum length
 Given the User has entered data into a field
