@@ -68,7 +68,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheUserIsAbleToManageTheOrderDescriptionSection();
         }
 
-        [When(@"the User chooses to save")]
+        [StepDefinition(@"the User chooses to save")]
         [Given(@"the validation has been triggered")]
         public void WhenTheUserChoosesToSave()
         {

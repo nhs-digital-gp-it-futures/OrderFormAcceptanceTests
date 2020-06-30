@@ -54,7 +54,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Call Off Agreement ID is displayed in the page title")]
         public void ThenTheCallOffAgreementIDIsDisplayedInThePageTitle()
         {
-            Test.Pages.OrderForm.CallOffIdDisplayedInPageTitle(((Order)Context["CreatedOrder"]).OrderId).Should().BeTrue();
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(((Order)Context["CreatedOrder"]).OrderId).Should().BeTrue();
         }
 
         [Given(@"the user is managing the Call Off Ordering Party section")]

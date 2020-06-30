@@ -8,6 +8,7 @@ namespace OrderFormAcceptanceTests.Steps.Utils
     {
         internal string ConnectionString;
         internal string BapiConnectionString;
+        internal string IsapiConnectionString;
         internal IWebDriver Driver;
         internal PageActionCollection Pages;
         internal readonly string Url;
@@ -16,6 +17,7 @@ namespace OrderFormAcceptanceTests.Steps.Utils
         {
             ConnectionString = EnvironmentVariables.DbConnectionString();
             BapiConnectionString = EnvironmentVariables.BapiDbConnectionString();
+            IsapiConnectionString = EnvironmentVariables.IsapiDbConnectionString();
 
             Driver = new BrowserFactory().Driver;
             Pages = new PageActions(Driver).PageActionCollection;

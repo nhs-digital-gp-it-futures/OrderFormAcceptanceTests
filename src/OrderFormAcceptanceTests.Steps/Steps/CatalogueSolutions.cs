@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Bogus;
+using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Utils;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -63,7 +65,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheUserIsAbleToManageTheCatalogueSolutionsSection();
         }
 
-        [Then(@"the Catalogue Solution dashboard is presented")]
+        [StepDefinition(@"the Catalogue Solution dashboard is presented")]
         public void ThenTheCatalogueSolutionDashboardIsPresented()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Catalogue Solution").Should().BeTrue();
@@ -163,6 +165,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickRadioButton();
         }
 
+        [Given(@"a Service Recipient is selected")]
+        public void GivenAServiceRecipientIsSelected()
+        {
+            var odsCode = Test.Pages.OrderForm.ClickRadioButton();
+            Context.Add("ChosenOdsCode", odsCode);
+        }
+
         [Given(@"the User is presented with the Service Recipients saved in the Order")]
         public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder()
         {
@@ -179,5 +188,195 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectRecipient");
         }
+
+        [Then(@"they are presented with the Catalogue Solution edit form")]
+        public void ThenTheyArePresentedWithTheCatalogueSolutionEditForm()
+        {
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("information for").Should().BeTrue();
+        }
+
+        [Then(@"the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form")]
+        public void ThenTheNameOfTheSelectedCatalogueSolutionIsDisplayedOnTheCatalogueSolutionEditForm()
+        {
+            var SolutionId = (string)Context["ChosenSolutionId"];
+            var query = "Select Name FROM [dbo].[CatalogueItem] where CatalogueItemId=@SolutionId";
+            var expectedSolutionName = SqlExecutor.Execute<string>(Test.BapiConnectionString, query, new { SolutionId }).Single();
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedSolutionName).Should().BeTrue();
+        }
+
+        [Then(@"the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form")]
+        public void ThenTheSelectedServiceRecipientWithTheirODSCodeIsDisplayedOnTheCatalogueSolutionEditForm()
+        {
+            var ChosenOdsCode = (string)Context["ChosenOdsCode"];
+            var query = "Select Name FROM [dbo].[Organisations] where OdsCode=@ChosenOdsCode";
+            var expectedOrganisationName = SqlExecutor.Execute<string>(Test.IsapiConnectionString, query, new { ChosenOdsCode }).Single();
+            var expectedFormattedValue = string.Format("{0} ({1})", expectedOrganisationName, ChosenOdsCode);
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedFormattedValue).Should().BeTrue();
+        }
+
+        [Then(@"the Catalogue Solution edit form contains an input for the price")]
+        public void ThenTheCatalogueSolutionEditFormContainsAnInputForThePrice()
+        {
+            Test.Pages.OrderForm.PriceInputIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the price input is autopopulated with the list price for the flat list price selected")]
+        public void ThenThePriceInputIsAutopopulatedWithTheListPriceForTheFlatListPriceSelected()
+        {
+            Test.Pages.OrderForm.GetPriceInputValue().Should().NotBeNullOrEmpty();            
+        }
+
+        [Then(@"the item on the Catalogue Solution edit form contains a unit of order")]
+        public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAUnitOfOrder()
+        {
+            Test.Pages.OrderForm.OrderUnitIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the item on the Catalogue Solution edit form contains an input for the quantity")]
+        public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAnInputForTheQuantity()
+        {
+            Test.Pages.OrderForm.QuantityInputIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the item on the Catalogue Solution edit form contains an input for date")]
+        public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAnInputForDate()
+        {
+            Test.Pages.OrderForm.ProposedDateInputIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the item on the Catalogue Solution edit form contains a selection for the quantity estimation period")]
+        public void ThenTheItemOnTheCatalogueSolutionEditFormContainsASelectionForTheQuantityEstimationPeriod()
+        {
+            Test.Pages.OrderForm.EstimationPeriodIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the delete button is disabled")]
+        public void ThenTheDeleteButtonIsDisabled()
+        {
+            Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeTrue();
+        }
+        
+        [Then(@"the save button is enabled")]
+        public void ThenTheSaveButtonIsEnabled()
+        {
+            Test.Pages.OrderForm.SaveButtonDisplayed().Should().BeTrue();            
+        }
+
+
+        [Given(@"the User is presented with the Catalogue Solution edit form")]
+        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditForm()
+        {
+            GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder();
+            GivenAServiceRecipientIsSelected();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+        }
+
+        [Given(@"the proposed date is an invalid date")]
+        public void GivenTheProposedDateIsAnInvalidDate()
+        {
+            Test.Pages.OrderForm.EnterProposedDate(DateTime.Now.AddYears(1).Year.ToString(), "02", "30");
+        }
+
+        [Given(@"the User enters a Delivery Date that is equal to 183 weeks after the Commencement Date")]
+        public void GivenTheUserEntersADeliveryDateThatIsEqualToWeeksAfterTheCommencementDate()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var deliveryDate = order.CommencementDate.Value.AddDays(7 * 183);
+            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
+        }
+
+        [Given(@"the User enters a Delivery Date that is less than 183 weeks after the Commencement Date")]
+        public void GivenTheUserEntersADeliveryDateThatIsLessThanWeeksAfterTheCommencementDate()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var deliveryDate = order.CommencementDate.Value.AddDays(7 * 182);
+            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
+        }
+
+        [Given(@"the User enters a Delivery Date that is more than 183 weeks after the Commencement Date")]
+        public void GivenTheUserEntersADeliveryDateThatIsMoreThanWeeksAfterTheCommencementDate()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var deliveryDate = order.CommencementDate.Value.AddDays((7 * 183) + 1);
+            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
+        }
+
+        [Given(@"the User enters a Delivery Date that is before the Commencement Date")]
+        public void GivenTheUserEntersADeliveryDateThatIsBeforeTheCommencementDate()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var deliveryDate = order.CommencementDate.Value.AddDays(-1);
+            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
+        }
+
+        [Given(@"the price has 4 decimal places")]
+        public void GivenThePriceHasDecimalPlaces()
+        {
+            Test.Pages.OrderForm.EnterPriceInputValue("1.1234");
+        }
+
+        [Given(@"the price is negative")]
+        public void GivenThePriceIsNegative()
+        {
+            Test.Pages.OrderForm.EnterPriceInputValue("-12.398");
+        }
+
+        [Given(@"the price contains characters")]
+        public void GivenThePriceContainsCharacters()
+        {
+            Test.Pages.OrderForm.EnterPriceInputValue("1point35");
+        }
+
+        [Given(@"the price is over the max value")]
+        public void GivenThePriceIsOverTheMaxValue()
+        {
+            Test.Pages.OrderForm.EnterPriceInputValue("79,228,162,514,264,337,593,543,950,335.50");
+        }
+
+        [Then(@"the price is displayed to two decimal places")]
+        public void ThenThePriceIsDisplayedToTwoDecimalPlaces()
+        {
+            var actualPrice = Test.Pages.OrderForm.GetPriceInputValue();
+            Regex.Match(actualPrice, @"^[0-9]*\.[0-9]{2,3}$").Success.Should().BeTrue();
+        }
+
+
+        [Given(@"the quantity contains characters")]
+        public void GivenTheQuantityContainsCharacters()
+        {
+            Test.Pages.OrderForm.EnterQuantity("seven");
+        }
+
+        [Given(@"the quanitity is a decimal")]
+        public void GivenTheQuanitityIsADecimal()
+        {
+            Test.Pages.OrderForm.EnterQuantity("3.142");
+        }
+
+        [Given(@"the quantity is negative")]
+        public void GivenTheQuantityIsNegative()
+        {
+            Test.Pages.OrderForm.EnterQuantity("-100");
+        }
+
+        [Given(@"the quantity is over the max length")]
+        public void GivenTheQuantityIsOverTheMaxLength()
+        {
+            Test.Pages.OrderForm.EnterQuantity("2,147,483,648");
+        }
+
+        [Given(@"fills in the Catalogue Solution edit form with valid data")]
+        public void GivenFillsInTheCatalogueSolutionEditFormWithValidData()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var deliveryDate = order.CommencementDate.Value;
+            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
+
+            var f = new Faker();
+            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min:1).ToString());
+            Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
+        }
+
     }
 }
