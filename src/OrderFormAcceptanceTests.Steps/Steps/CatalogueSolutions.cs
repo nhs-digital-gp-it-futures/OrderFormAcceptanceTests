@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Bogus;
+using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Utils;
@@ -276,6 +277,38 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EnterProposedDate(DateTime.Now.AddYears(1).Year.ToString(), "02", "30");
         }
 
+        [Given(@"the User enters a Delivery Date that is equal to 183 weeks after the Commencement Date")]
+        public void GivenTheUserEntersADeliveryDateThatIsEqualToWeeksAfterTheCommencementDate()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var deliveryDate = order.CommencementDate.Value.AddDays(7 * 183);
+            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
+        }
+
+        [Given(@"the User enters a Delivery Date that is less than 183 weeks after the Commencement Date")]
+        public void GivenTheUserEntersADeliveryDateThatIsLessThanWeeksAfterTheCommencementDate()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var deliveryDate = order.CommencementDate.Value.AddDays(7 * 182);
+            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
+        }
+
+        [Given(@"the User enters a Delivery Date that is more than 183 weeks after the Commencement Date")]
+        public void GivenTheUserEntersADeliveryDateThatIsMoreThanWeeksAfterTheCommencementDate()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var deliveryDate = order.CommencementDate.Value.AddDays((7 * 183) + 1);
+            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
+        }
+
+        [Given(@"the User enters a Delivery Date that is before the Commencement Date")]
+        public void GivenTheUserEntersADeliveryDateThatIsBeforeTheCommencementDate()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var deliveryDate = order.CommencementDate.Value.AddDays(-1);
+            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
+        }
+
         [Given(@"the price has 4 decimal places")]
         public void GivenThePriceHasDecimalPlaces()
         {
@@ -294,6 +327,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EnterPriceInputValue("1point35");
         }
 
+        [Given(@"the price is over the max value")]
+        public void GivenThePriceIsOverTheMaxValue()
+        {
+            Test.Pages.OrderForm.EnterPriceInputValue("79,228,162,514,264,337,593,543,950,335.50");
+        }
+
         [Given(@"the quantity contains characters")]
         public void GivenTheQuantityContainsCharacters()
         {
@@ -310,6 +349,24 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheQuantityIsNegative()
         {
             Test.Pages.OrderForm.EnterQuantity("-100");
+        }
+
+        [Given(@"the quantity is over the max length")]
+        public void GivenTheQuantityIsOverTheMaxLength()
+        {
+            Test.Pages.OrderForm.EnterQuantity("2,147,483,648");
+        }
+
+        [Given(@"fills in the Catalogue Solution edit form with valid data")]
+        public void GivenFillsInTheCatalogueSolutionEditFormWithValidData()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var deliveryDate = order.CommencementDate.Value;
+            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
+
+            var f = new Faker();
+            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min:1).ToString());
+            Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
         }
 
     }

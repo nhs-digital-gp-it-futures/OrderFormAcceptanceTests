@@ -594,12 +594,20 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElements(Pages.OrderForm.OrderDate).Count == 1;
 		}
 
+		public void EnterProposedDate(DateTime value)
+		{
+			EnterProposedDate(value.Year.ToString(), value.Month.ToString(), value.Day.ToString());
+		}
+
 		public void EnterProposedDate(string year, string month, string day)
 		{
 			Wait.Until(d => d.FindElements(Pages.OrderForm.OrderDateDay).Count == 1);
-			Driver.FindElement(Pages.OrderForm.OrderDateDay).SendKeys(day);
-			Driver.FindElement(Pages.OrderForm.OrderDateMonth).SendKeys(month);
-			Driver.FindElement(Pages.OrderForm.OrderDateYear).SendKeys(year);
+			Driver.FindElement(Pages.OrderForm.OrderDateDay).Clear();
+			Driver.FindElement(Pages.OrderForm.OrderDateMonth).Clear();
+			Driver.FindElement(Pages.OrderForm.OrderDateYear).Clear();
+			Driver.EnterTextViaJs(Wait, Pages.OrderForm.OrderDateDay, day);
+			Driver.EnterTextViaJs(Wait, Pages.OrderForm.OrderDateMonth, month);
+			Driver.EnterTextViaJs(Wait, Pages.OrderForm.OrderDateYear, year);
 		}
 
 		public bool EstimationPeriodIsDisplayed()

@@ -183,41 +183,58 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not 
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
 @ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Data exceeds the maximum length
-Given the User has entered data into a field
-And it exceeds the maximum length
-When the User chooses to save
-Then the Catalogue Solution is not saved 
-And the reason is displayed
+Scenario: Catalogue Solutions - edit price screen - Flat price - quantity exceeds the maximum length
+	Given the User is presented with the Catalogue Solution edit form
+	And the quantity is over the max length
+	When the User chooses to save
+	Then the Catalogue Solution is not saved 
+	And the reason is displayed
+	@ignore
+Scenario: Catalogue Solutions - edit price screen - Flat price - price exceeds the maximum value
+	Given the User is presented with the Catalogue Solution edit form
+	And the price is over the max value
+	When the User chooses to save
+	Then the Catalogue Solution is not saved 
+	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Validation Error Message Anchors
-Given validation has been triggered
-When the user selects an error link in the Error Summary
-Then they will be navigated to the relevant part of the page
+	Given the User is presented with the Catalogue Solution edit form
+	And mandatory data are missing
+	And the validation has been triggered
+	When the user selects an error link in the Error Summary
+	Then they will be navigated to the relevant part of the page
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is equal to 183 weeks after commencement date
-Given there is a Commencement Date
-And the Delivery Date cannot be later than 183 weeks after the Commencement Date
-When the User enters a Delivery Date that is equal to 183 weeks after the Commencement Date
-Then the Delivery Date is valid
+	Given the User is presented with the Catalogue Solution edit form
+	And fills in the Catalogue Solution edit form with valid data
+	And the User enters a Delivery Date that is equal to 183 weeks after the Commencement Date
+	When the User chooses to save
+	Then the Catalogue Solution is saved
+	And the Catalogue Solution dashboard is presented
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is less than 183 weeks after commencement date
-Given there is a Commencement Date
-And the Delivery Date cannot be later than 183 weeks after the Commencement Date
-When the User enters a Delivery Date that is less than 183 weeks after the Commencement Date
-Then the Delivery Date is valid
+	Given the User is presented with the Catalogue Solution edit form
+	And fills in the Catalogue Solution edit form with valid data
+	And the User enters a Delivery Date that is less than 183 weeks after the Commencement Date
+	When the User chooses to save
+	Then the Catalogue Solution is saved
+	And the Catalogue Solution dashboard is presented
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is more than 183 weeks after commencement date
-Given there is a Commencement Date
-And the Delivery Date cannot be later than 183 weeks after the Commencement Date
-When the User enters a Delivery Date that is more than 183 weeks after the Commencement Date
-Then the Delivery Date is invalid
+	Given the User is presented with the Catalogue Solution edit form
+	And fills in the Catalogue Solution edit form with valid data
+	And the User enters a Delivery Date that is more than 183 weeks after the Commencement Date
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery Date cannot be before commencement date
-Given there is a Commencement Date
-And the Delivery Date cannot be before the Commencement Date
-When the User enters a Delivery Date that is before the Commencement Date
-Then the Delivery Date is invalid
+	Given the User is presented with the Catalogue Solution edit form
+	And fills in the Catalogue Solution edit form with valid data
+	And the User enters a Delivery Date that is before the Commencement Date
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price All data are valid
 Given all the data are valid
