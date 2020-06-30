@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -64,7 +65,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheUserIsAbleToManageTheCatalogueSolutionsSection();
         }
 
-        [Then(@"the Catalogue Solution dashboard is presented")]
+        [StepDefinition(@"the Catalogue Solution dashboard is presented")]
         public void ThenTheCatalogueSolutionDashboardIsPresented()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Catalogue Solution").Should().BeTrue();
@@ -332,6 +333,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.EnterPriceInputValue("79,228,162,514,264,337,593,543,950,335.50");
         }
+
+        [Then(@"the price is displayed to two decimal places")]
+        public void ThenThePriceIsDisplayedToTwoDecimalPlaces()
+        {
+            var actualPrice = Test.Pages.OrderForm.GetPriceInputValue();
+            Regex.Match(actualPrice, @"^[0-9]*\.[0-9]{2,3}$").Success.Should().BeTrue();
+        }
+
 
         [Given(@"the quantity contains characters")]
         public void GivenTheQuantityContainsCharacters()

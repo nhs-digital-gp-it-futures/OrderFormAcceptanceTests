@@ -55,7 +55,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@".* section is not saved")]
         [Then(@"the Catalogue Solution is not saved")]
-        [Then(@"the Catalogue Solution is saved")]
+        [StepDefinition(@"the Catalogue Solution is saved")]
         [Given(@"no Supplier is selected")]
         [Then("the Commencement Date information is not saved")]
         [Given(@"the Call Off Ordering Party is not selected")]

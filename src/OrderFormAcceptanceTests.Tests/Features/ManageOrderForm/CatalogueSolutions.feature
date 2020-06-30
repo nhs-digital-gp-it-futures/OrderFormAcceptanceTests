@@ -122,7 +122,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	And the item on the Catalogue Solution edit form contains a unit of order
 	And the item on the Catalogue Solution edit form contains an input for the quantity
 	And the item on the Catalogue Solution edit form contains an input for date
-	And the item on the Catalogue Solution edit form contains a selection for the quantity estimation period 
+	And the item on the Catalogue Solution edit form contains a selection for the quantity estimation period
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the delete button is disabled
 	And the save button is enabled
@@ -237,12 +237,32 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Delivery Date can
 	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price All data are valid
-Given all the data are valid
-When the User saves the Catalogue Solution
-Then the Catalogue Solution is saved
-And the content validation status of the Catalogue Solution is Complete
-And the section content validation status of Complete is displayed on the Orders dashboard
-And the delete button is enabled
+	Given the User is presented with the Catalogue Solution edit form
+	And fills in the Catalogue Solution edit form with valid data
+	When the User chooses to save
+	Then the Catalogue Solution is saved
+	And the Catalogue Solution dashboard is presented
+@ignore
+Scenario: Catalogue Solutions - edit price screen - section complete
+	Given the User is presented with the Catalogue Solution edit form
+	And fills in the Catalogue Solution edit form with valid data
+	And the User chooses to save
+	And the Catalogue Solution is saved
+	And the Catalogue Solution dashboard is presented
+	When the User chooses to go back
+	Then the Order dashboard is presented
+	And the content validation status of the catalogue-solutions section is complete
+
+@ignore
+Scenario: Catalogue Solutions - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places 
+	Given the User is presented with the Catalogue Solution edit form
+	Then the price is displayed to two decimal places
+@ignore
+Scenario: Catalogue Solutions - edit price screen - Flat price Go back before save
+	Given the User is presented with the Catalogue Solution edit form
+	When the User chooses to go back
+	Then they are presented with the Service Recipients saved in the Order
+
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price values populated after editing and saving
 Given that the User has amended a price
@@ -256,26 +276,11 @@ Then the price value will be populated with the value that was saved by the User
 And the quantity value will be populated with the value that was saved by the User
 And the period selection will be the value that was selected by the User
 And the date value will be the value that was saved by the User
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places 
-Given that a Price is to less than two decimal places
-When it is displayed
-Then it is displayed to two decimal places
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Go back before save
-Given the edit Catalogue Solution form for flat list price with variable (patient numbers) order type is presented
-And the User hasn't saved the Catalogue Solution
-When the User chooses to go back
-Then the select service recipient page is presented
-And the User's selected service recipient is selected
+And the delete button is enabled
+
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Go back post save
 Given the edit Catalogue Solution form for flat list price with variable (patient numbers) order type is presented
 And the User has saved the Catalogue Solution
 When the User chooses to go back
 Then the Catalogue Solution Dashboard is displayed
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Select quantity period
-Given the User can select a quantity period
-When estimating quantity
-Then the User can choose the quantity period as Per Year or Per Month
