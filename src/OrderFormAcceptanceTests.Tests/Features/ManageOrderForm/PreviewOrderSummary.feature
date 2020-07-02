@@ -24,17 +24,16 @@ Scenario: Preview Order Summary
 	And the total cost of ownership is displayed
 @ignore
 Scenario: Preview Order Summary - Data presented
-Given the Order Summary is displayed
-Then it displays the Call-off Agreement ID data
-And the Order description data saved in the order
-And the Call-off Ordering Party data saved in the order
-And the Call-off Ordering Party names are concatenated
-And the Supplier data saved in the order
-And the Supplier first name and last name are concatenated
-And the Commencement date data saved in the order
-And the Date Order Summary is produced is displayed 
+	Given the Order Summary is displayed
+	Then it displays the Call-off Agreement ID data
+	And the Order description data saved in the order
+	And the Call-off Ordering Party data saved in the order
+	And the Call-off Ordering Party names are concatenated
+	And the Supplier data saved in the order
+	And the Supplier first name and last name are concatenated
+	And the Commencement date data saved in the order
 @ignore
 Scenario: Preview Order Summary - Go back
-Given the Order Summary is displayed
-When the User chooses to go back
-Then the Order dashboard is presented
+	Given the Order Summary is displayed
+	When the User chooses to go back
+	Then the Order dashboard is presented
