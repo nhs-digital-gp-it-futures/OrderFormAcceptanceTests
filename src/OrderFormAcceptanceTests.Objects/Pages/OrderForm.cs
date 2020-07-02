@@ -53,6 +53,16 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By OrderDateYear => By.Id("plannedDeliveryDate-year");
 		public By EstimationPeriod => CustomBy.DataTestId("question-selectEstimationPeriod");
 
+		public By DateOrderSummaryCreated => CustomBy.DataTestId("date-summary-created");
+		public By CallOffOrderingPartyPreview => CustomBy.DataTestId("call-off-party");
+		public By SupplierPreview => CustomBy.DataTestId("supplier");
+		public By CommencementDate => CustomBy.DataTestId("commencement-date");
+		public By OneOffCostsTable => CustomBy.DataTestId("one-off-cost-table");
+		public By RecurringCostsTable => CustomBy.DataTestId("recurring-cost-table");
+		public By TotalOneOffCost => CustomBy.DataTestId("total-cost-value");
+		public By TotalAnnualCost => CustomBy.DataTestId("total-year-cost-value");
+		public By TotalMonthlyCost => CustomBy.DataTestId("total-monthly-cost-value");
+		public By TotalOwnershipCost => CustomBy.DataTestId("total-ownership-cost-value");
 
 	}
 }

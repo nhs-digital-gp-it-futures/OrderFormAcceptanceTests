@@ -75,7 +75,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
 		public bool TextDisplayedInPageTitle(string expectedValue)
 		{
-			return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains(expectedValue);
+			return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains(expectedValue, StringComparison.OrdinalIgnoreCase);
 		}
 
 		public bool TaskListDisplayed()
@@ -613,6 +613,62 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public bool EstimationPeriodIsDisplayed()
 		{
 			return Driver.FindElements(Pages.OrderForm.EstimationPeriod).Count == 1;
+		}
+
+		public void ClickPreviewOrderButton()
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderForm.PreviewOrderButton).Count == 1);
+			Driver.FindElement(Pages.OrderForm.PreviewOrderButton).Click();
+		}
+
+		public string GetDateOrderSummaryCreatedValue()
+        {
+			return Driver.FindElement(Pages.OrderForm.DateOrderSummaryCreated).Text;
+        }
+
+		public string GetCallOffOrderingPartyPreviewValue()
+        {
+			return Driver.FindElement(Pages.OrderForm.CallOffOrderingPartyPreview).Text;
+		}
+
+		public string GetSupplierPreviewValue()
+		{
+			return Driver.FindElement(Pages.OrderForm.SupplierPreview).Text;
+		}
+
+		public string GetCommencementDateValue()
+        {
+			return Driver.FindElement(Pages.OrderForm.CommencementDate).Text;
+		}
+
+		public bool OneOffCostsTableIsDiaplyed()
+        {
+			return Driver.FindElements(Pages.OrderForm.OneOffCostsTable).Count == 1;
+        }
+
+		public bool RecurringCostsTableIsDiaplyed()
+		{
+			return Driver.FindElements(Pages.OrderForm.RecurringCostsTable).Count == 1;
+		}
+
+		public string GetTotalOneOffCost()
+        {
+			return Driver.FindElement(Pages.OrderForm.TotalOneOffCost).Text;
+		}
+
+		public string GetTotalAnnualCost()
+		{
+			return Driver.FindElement(Pages.OrderForm.TotalAnnualCost).Text;
+		}
+
+		public string GetTotalMonthlyCost()
+		{
+			return Driver.FindElement(Pages.OrderForm.TotalMonthlyCost).Text;
+		}
+
+		public string GetTotalOwnershipCost()
+		{
+			return Driver.FindElement(Pages.OrderForm.TotalOwnershipCost).Text;
 		}
 	}
 }
