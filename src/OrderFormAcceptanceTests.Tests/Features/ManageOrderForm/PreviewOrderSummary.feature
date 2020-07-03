@@ -5,7 +5,7 @@
 
 Background: 
 	Given an unsubmitted order exists
-@ignore
+
 Scenario: Preview Order Summary
 	Given the Order Form for the existing order is presented
 	When the User chooses to preview the Order Summary
@@ -22,7 +22,7 @@ Scenario: Preview Order Summary
 	And the total monthly cost is displayed
 	And the total annual cost is displayed
 	And the total cost of ownership is displayed
-@ignore
+
 Scenario: Preview Order Summary - Data presented
 	Given the Order Summary is displayed
 	Then it displays the Call-off Agreement ID data
@@ -32,7 +32,7 @@ Scenario: Preview Order Summary - Data presented
 	And the Supplier data saved in the order
 	And the Supplier first name and last name are concatenated
 	And the Commencement date data saved in the order
-@ignore
+
 Scenario: Preview Order Summary - Go back
 	Given the Order Summary is displayed
 	When the User chooses to go back
