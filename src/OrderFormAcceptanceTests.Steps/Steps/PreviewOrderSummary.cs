@@ -42,8 +42,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var date = Test.Pages.OrderForm.GetDateOrderSummaryCreatedValue();
             date.Should().NotBeNullOrEmpty();
-            var expectedDate = DateTime.Now.ToString("dd MMM yyyy");
-            date.Should().BeEquivalentTo(expectedDate);
+            var expectedDate = DateTime.Now.ToString("d MMMM yyyy");
+            date.Should().EndWithEquivalent(expectedDate);
         }
 
         [Then(@"the Call Off Ordering Party information is displayed")]
@@ -74,7 +74,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context["CreatedOrder"];
             var createdAddress = (Address)Context["CreatedSupplierAddress"];
             var createdContact = (Contact)Context["CreatedSupplierContact"];
-            value.Should().ContainEquivalentOf(order.OrganisationName);
             value.Should().ContainEquivalentOf(createdAddress.Line1);
             value.Should().ContainEquivalentOf(createdAddress.Town);
             value.Should().ContainEquivalentOf(createdAddress.Postcode);
@@ -89,8 +88,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var date = Test.Pages.OrderForm.GetCommencementDateValue();
             date.Should().NotBeNullOrEmpty();
             var order = (Order)Context["CreatedOrder"];
-            var expectedDate = ((DateTime)order.CommencementDate).ToString("dd MMM yyyy");
-            date.Should().BeEquivalentTo(expectedDate);
+            var expectedDate = ((DateTime)order.CommencementDate).ToString("d MMMM yyyy");
+            date.Should().EndWithEquivalent(expectedDate);
         }
 
         [Then(@"Order items \(one-off cost\) table is displayed")]
@@ -138,7 +137,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context["CreatedOrder"];
             var id = Test.Pages.OrderForm.GetCallOffId();
-            id.Should().BeEquivalentTo(order.OrderId);
+            id.Should().EndWith(order.OrderId);
         }
 
         [Then(@"the Order description data saved in the order")]
