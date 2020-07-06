@@ -378,5 +378,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
         }
 
+        [StepDefinition(@"the Catalogue Solution is saved in the DB")]
+        public void GivenTheCatalogueSolutionIsSavedInTheDB()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var orderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
+            Context.Add("CreatedOrderItem", orderItem);
+            orderItem.Should().NotBeNull();
+        }
     }
 }

@@ -39,7 +39,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             if (Context.ContainsKey("CreatedSupplierAddress"))
             {
                 ((Address)Context["CreatedSupplierAddress"]).Delete(Test.ConnectionString);
-            }            
+            }
+            if (Context.ContainsKey("CreatedOrderItem"))
+            {
+                ((OrderItem)Context["CreatedOrderItem"]).Delete(Test.ConnectionString);
+            }
 
             Test.Driver?.Quit();
         }

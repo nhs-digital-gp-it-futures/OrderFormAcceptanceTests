@@ -5,6 +5,7 @@ using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
+using System;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -112,10 +113,30 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
             var order = (Order)Context["CreatedOrder"];
-            var orderItem = new OrderItem();
+            var orderItem = new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100000-001",
+                CatalogueItemTypeId = 1,
+                CatalogueItemName = "Write on Time",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 3,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "consultations",
+                PricingUnitName = "consultation",
+                PricingUnitDescription = "per consultation",
+                TimeUnitId = null,
+                CurrencyCode = "GBP",
+                Quantity = 1111,
+                EstimationPeriodId = 2,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 1001.010M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+            orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
-
 
         [StepDefinition(@"the Order Form for the existing order is presented")]
         public void WhenTheOrderFormForTheExistingOrderIsPresented()
