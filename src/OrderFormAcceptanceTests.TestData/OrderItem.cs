@@ -28,11 +28,10 @@ namespace OrderFormAcceptanceTests.TestData
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }
 
-        public void Create(string connectionString)
+        public int Create(string connectionString)
         {
-            var query = @"INSERT INTO [dbo].[Order](
-                         [OrderItemId]
-                        ,[OrderId]
+            var query = @"INSERT INTO [dbo].[OrderItem](
+                         [OrderId]
                         ,[CatalogueItemId]
                         ,[CatalogueItemTypeId]
                         ,[CatalogueItemName]
@@ -51,8 +50,7 @@ namespace OrderFormAcceptanceTests.TestData
                         ,[Created]
                         ,[LastUpdated]
                         )VALUES(
-                         @OrderItemId
-                        ,@OrderId
+                         @OrderId
                         ,@CatalogueItemId
                         ,@CatalogueItemTypeId
                         ,@CatalogueItemName
@@ -70,8 +68,11 @@ namespace OrderFormAcceptanceTests.TestData
                         ,@Price
                         ,@Created
                         ,@LastUpdated
-                        )";
-            SqlExecutor.Execute<Order>(connectionString, query, this);
+                        );
+
+                        SELECT OrderItemId = SCOPE_IDENTITY()";
+            this.OrderItemId = SqlExecutor.Execute<int>(connectionString, query, this).Single();
+            return this.OrderItemId;
         }
 
         public OrderItem RetrieveByOrderId(string connectionString, string OrderId)
@@ -105,13 +106,13 @@ namespace OrderFormAcceptanceTests.TestData
                         ,=LastUpdated@LastUpdated
                         WHERE OrderItemId=@OrderItemId";
 
-            SqlExecutor.Execute<Order>(connectionString, query, this);
+            SqlExecutor.Execute<OrderItem>(connectionString, query, this);
         }
 
         public void Delete(string connectionString)
         {
             var query = @"DELETE FROM [dbo].[OrderItem] WHERE OrderItemId=@OrderItemId";
-            SqlExecutor.Execute<Order>(connectionString, query, this);
+            SqlExecutor.Execute<OrderItem>(connectionString, query, this);
         }
 
     }

@@ -39,26 +39,25 @@ Scenario: Preview Order Summary - Go back
 	Then the Order dashboard is presented
 @ignore
 Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per year estimation period
-Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
-When the Order Summary is displayed
-Then the Order items (recurring cost) table is populated
-And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
-And the item ID of each item is displayed
-And the item name of each item is the Catalogue Solution name
-And the Price unit of order of each item is the concatenation "[Price] [unit]"
-And the Quantity of each item is the concatenation "[Quantity] [Estimation period]" i.e. [Quantity] per year
-And the Planned delivery date of each item is displayed
-And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
-
+	Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
+	When the Order Summary is displayed
+	Then the Order items (recurring cost) table is populated
+	And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
+	And the item ID of each item is displayed
+	And the item name of each item is the Catalogue Solution name
+	And the Price unit of order of each item is the concatenation "[Price] [unit]"
+	And the Quantity of each item is the concatenation "[Quantity] [Estimation period]" i.e. [Quantity] per year
+	And the Planned delivery date of each item is displayed
+	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
 @ignore
 Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per month estimation period
-Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per month is saved to the order
-When the Order Summary is displayed
-Then the Order items (recurring cost) table is populated
-And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
-And the item ID of each item is displayed
-And the item name of each item is the Catalogue Solution name
-And the Price unit of order of each item is the concatenation "[Price] [unit]"
-And the Quantity of each item is the concatenation "[Quantity] [Estimation period]" i.e. [Quantity] per month
-And the Planned delivery date of each item is displayed
-And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
+	Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per month is saved to the order
+	When the Order Summary is displayed
+	Then the Order items (recurring cost) table is populated
+	And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
+	And the item ID of each item is displayed
+	And the item name of each item is the Catalogue Solution name
+	And the Price unit of order of each item is the concatenation "[Price] [unit]"
+	And the Quantity of each item is the concatenation "[Quantity] [Estimation period]" i.e. [Quantity] per month
+	And the Planned delivery date of each item is displayed
+	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
