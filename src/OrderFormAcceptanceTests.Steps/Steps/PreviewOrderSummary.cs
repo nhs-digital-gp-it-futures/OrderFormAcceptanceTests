@@ -165,67 +165,64 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the item ID of each item is displayed")]
         public void ThenTheItemIDOfEachItemIsDisplayed()
         {
-            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var id = Test.Pages.OrderForm.GetItemId();
-            id.Should().NotBeNullOrEmpty();
-            // TODO: assert id equals expectedOrderItem.Id
+            id.Should().Be(expectedOrderItem.OrderItemId.ToString());
         }
 
         [Then(@"the item name of each item is the Catalogue Solution name")]
         public void ThenTheItemNameOfEachItemIsTheCatalogueSolutionName()
         {
-            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var name = Test.Pages.OrderForm.GetItemName();
-            name.Should().NotBeNullOrEmpty();
-            // TODO: assert name equals expectedOrderItem.name
+            name.Should().Be(expectedOrderItem.CatalogueItemName);
         }
 
         [Then(@"the Price unit of order of each item is the concatenation ""\[Price\] \[unit\]""")]
         public void ThenThePriceUnitOfOrderOfEachItemIsTheConcatenation()
         {
-            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
+            var expectedValue = string.Format("{0} {1}", expectedOrderItem.Price, expectedOrderItem.PricingUnitDescription);
             var price = Test.Pages.OrderForm.GetItemPrice();
-            price.Should().NotBeNullOrEmpty();
-            // TODO: assert price equals expectedOrderItem.price and unit description
+            price.Should().Be(expectedValue);
         }
 
         [Then(@"the Quantity of each item is the concatenation ""\[Quantity\] \[Estimation period\]"" i\.e\. \[Quantity] per year")]
         [Then(@"the Quantity of each item is the concatenation ""(.*)"" i\.e\. \[Quantity] per month")]
         public void ThenTheQuantityOfEachItemIsTheConcatenationI_E_QuantityPerPeriod()
         {
-            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
+            var expectedValue = string.Format("{0} {1}", expectedOrderItem.Quantity, expectedOrderItem.EstimationPeriodId);
             var quantity = Test.Pages.OrderForm.GetItemQuantity();
-            quantity.Should().NotBeNullOrEmpty();
-            // TODO: assert quantity equals expectedOrderItem.quantity and period
+            quantity.Should().Be(expectedValue);
         }
 
         [Then(@"the Planned delivery date of each item is displayed")]
         public void ThenThePlannedDeliveryDateOfEachItemIsDisplayed()
         {
-            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var date = Test.Pages.OrderForm.GetItemPlannedDate();
-            date.Should().NotBeNullOrEmpty();
-            // TODO: assert date equals expectedOrderItem.date
+            date.Should().Be(expectedOrderItem.DeliveryDate.ToString("d MMMM YYYY"));
         }
 
         [Then(@"the item year cost of each item is the result of the Flat calculation \[Price] \* \[Quantity] rounded up to two decimal places")]
         public void ThenTheItemYearCostOfEachItemIsTheResultOfTheFlatCalculationPriceQuantityRoundedUpToTwoDecimalPlaces()
         {
-            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
+            var expectedCost = expectedOrderItem.Price * expectedOrderItem.Quantity;
+            var expectedValue = Math.Round(expectedCost, 2);
             var cost = Test.Pages.OrderForm.GetItemCost();
-            cost.Should().NotBeNullOrEmpty();
-            // TODO: assert cost equals expectedOrderItem.price * expectedOrderItem.quantity rounded up to two decimal places
+            cost.Should().Be(expectedValue.ToString());
         }
 
         [Then(@"the item year cost of each item is the result of the Flat calculation \[Price] \* \[Quantity] \* 12 rounded up to two decimal places")]
         public void ThenTheItemYearCostOfEachItemIsTheResultOfTheFlatCalculationPriceQuantityTimes12RoundedUpToTwoDecimalPlaces()
         {
-            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
+            var expectedCost = expectedOrderItem.Price * expectedOrderItem.Quantity * 12;
+            var expectedValue = Math.Round(expectedCost, 2);
             var cost = Test.Pages.OrderForm.GetItemCost();
-            cost.Should().NotBeNullOrEmpty();
-            // TODO: assert cost equals expectedOrderItem.price * expectedOrderItem.quantity * 12 rounded up to two decimal places
+            cost.Should().Be(expectedValue.ToString());
         }
-
-
     }
 }

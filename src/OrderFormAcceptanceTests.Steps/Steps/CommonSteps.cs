@@ -112,7 +112,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
             var order = (Order)Context["CreatedOrder"];
-            var orderItem = "To be replaced by a catalogue solution";
+            var orderItem = new OrderItem();
             Context.Add("CreatedOrderItem", orderItem);
         }
 
