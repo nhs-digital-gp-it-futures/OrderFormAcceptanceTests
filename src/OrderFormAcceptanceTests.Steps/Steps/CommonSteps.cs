@@ -99,13 +99,23 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.CommencementDate = new Faker().Date.Future();
 
             var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);            
-            order.ServiceRecipientsViewed = 1;
+            order.ServiceRecipientsViewed = 1;            
 
             order.Create(Test.ConnectionString);
             Context.Add("CreatedOrder", order);
             serviceRecipient.Create(Test.ConnectionString);
             Context.Add("CreatedServiceRecipient", serviceRecipient);
+            
         }
+
+        [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
+        public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var orderItem = "To be replaced by a catalogue solution";
+            Context.Add("CreatedOrderItem", orderItem);
+        }
+
 
         [StepDefinition(@"the Order Form for the existing order is presented")]
         public void WhenTheOrderFormForTheExistingOrderIsPresented()

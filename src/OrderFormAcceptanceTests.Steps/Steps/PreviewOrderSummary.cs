@@ -29,7 +29,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.TextDisplayedInPageTitle("Order summary").Should().BeTrue();
         }
 
-        [Given(@"the Order Summary is displayed")]
+        [StepDefinition(@"the Order Summary is displayed")]
         public void GivenTheOrderSummaryIsDisplayed()
         {
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
@@ -70,8 +70,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheSupplierInformationIsDisplayed()
         {
             var value = Test.Pages.OrderForm.GetSupplierPreviewValue();
-            value.Should().NotBeNullOrEmpty();
-            var order = (Order)Context["CreatedOrder"];
+            value.Should().NotBeNullOrEmpty();;
             var createdAddress = (Address)Context["CreatedSupplierAddress"];
             var createdContact = (Contact)Context["CreatedSupplierContact"];
             value.Should().ContainEquivalentOf(createdAddress.Line1);
@@ -147,6 +146,86 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var actualValue = Test.Pages.OrderForm.GetOrderDescription();
             actualValue.Should().BeEquivalentTo(order.Description);
         }
+
+        [Then(@"the Order items \(recurring cost\) table is populated")]
+        public void ThenTheOrderItemsRecurringCostTableIsPopulated()
+        {
+            Test.Pages.OrderForm.RecurringCostsTableIsPopulated().Should().BeTrue();
+        }
+
+        [Then(@"the Recipient name \(ODS code\) of each item is the concatenation ""\[Service Recipient name\] \[\(ODS code\)\]""")]
+        public void ThenTheRecipientNameODSCodeOfEachItemIsTheConcatenation()
+        {
+            var name = Test.Pages.OrderForm.GetItemRecipientName();
+            var expectedServiceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
+            var expectedValue = string.Format("{0} ({1})", expectedServiceRecipient.Name, expectedServiceRecipient.OdsCode);
+            name.Should().Be(expectedValue);
+        }
+
+        [Then(@"the item ID of each item is displayed")]
+        public void ThenTheItemIDOfEachItemIsDisplayed()
+        {
+            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var id = Test.Pages.OrderForm.GetItemId();
+            id.Should().NotBeNullOrEmpty();
+            // TODO: assert id equals expectedOrderItem.Id
+        }
+
+        [Then(@"the item name of each item is the Catalogue Solution name")]
+        public void ThenTheItemNameOfEachItemIsTheCatalogueSolutionName()
+        {
+            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var name = Test.Pages.OrderForm.GetItemName();
+            name.Should().NotBeNullOrEmpty();
+            // TODO: assert name equals expectedOrderItem.name
+        }
+
+        [Then(@"the Price unit of order of each item is the concatenation ""\[Price\] \[unit\]""")]
+        public void ThenThePriceUnitOfOrderOfEachItemIsTheConcatenation()
+        {
+            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var price = Test.Pages.OrderForm.GetItemPrice();
+            price.Should().NotBeNullOrEmpty();
+            // TODO: assert price equals expectedOrderItem.price and unit description
+        }
+
+        [Then(@"the Quantity of each item is the concatenation ""\[Quantity\] \[Estimation period\]"" i\.e\. \[Quantity] per year")]
+        [Then(@"the Quantity of each item is the concatenation ""(.*)"" i\.e\. \[Quantity] per month")]
+        public void ThenTheQuantityOfEachItemIsTheConcatenationI_E_QuantityPerPeriod()
+        {
+            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var quantity = Test.Pages.OrderForm.GetItemQuantity();
+            quantity.Should().NotBeNullOrEmpty();
+            // TODO: assert quantity equals expectedOrderItem.quantity and period
+        }
+
+        [Then(@"the Planned delivery date of each item is displayed")]
+        public void ThenThePlannedDeliveryDateOfEachItemIsDisplayed()
+        {
+            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var date = Test.Pages.OrderForm.GetItemPlannedDate();
+            date.Should().NotBeNullOrEmpty();
+            // TODO: assert date equals expectedOrderItem.date
+        }
+
+        [Then(@"the item year cost of each item is the result of the Flat calculation \[Price] \* \[Quantity] rounded up to two decimal places")]
+        public void ThenTheItemYearCostOfEachItemIsTheResultOfTheFlatCalculationPriceQuantityRoundedUpToTwoDecimalPlaces()
+        {
+            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var cost = Test.Pages.OrderForm.GetItemCost();
+            cost.Should().NotBeNullOrEmpty();
+            // TODO: assert cost equals expectedOrderItem.price * expectedOrderItem.quantity rounded up to two decimal places
+        }
+
+        [Then(@"the item year cost of each item is the result of the Flat calculation \[Price] \* \[Quantity] \* 12 rounded up to two decimal places")]
+        public void ThenTheItemYearCostOfEachItemIsTheResultOfTheFlatCalculationPriceQuantityTimes12RoundedUpToTwoDecimalPlaces()
+        {
+            var expectedOrderItem = (string)Context["CreatedOrderItem"];
+            var cost = Test.Pages.OrderForm.GetItemCost();
+            cost.Should().NotBeNullOrEmpty();
+            // TODO: assert cost equals expectedOrderItem.price * expectedOrderItem.quantity * 12 rounded up to two decimal places
+        }
+
 
     }
 }
