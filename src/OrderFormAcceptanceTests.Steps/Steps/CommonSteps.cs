@@ -5,6 +5,7 @@ using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
+using System;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -99,12 +100,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.CommencementDate = new Faker().Date.Future();
 
             var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);            
-            order.ServiceRecipientsViewed = 1;
+            order.ServiceRecipientsViewed = 1;            
 
             order.Create(Test.ConnectionString);
             Context.Add("CreatedOrder", order);
             serviceRecipient.Create(Test.ConnectionString);
             Context.Add("CreatedServiceRecipient", serviceRecipient);
+            
         }
 
         [StepDefinition(@"the Order Form for the existing order is presented")]

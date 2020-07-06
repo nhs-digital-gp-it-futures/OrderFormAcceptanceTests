@@ -211,6 +211,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is 
 	When the User chooses to save
 	Then the Catalogue Solution is saved
 	And the Catalogue Solution dashboard is presented
+	And the Catalogue Solution is saved in the DB
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is less than 183 weeks after commencement date
 	Given the User is presented with the Catalogue Solution edit form
@@ -219,6 +220,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is 
 	When the User chooses to save
 	Then the Catalogue Solution is saved
 	And the Catalogue Solution dashboard is presented
+	And the Catalogue Solution is saved in the DB
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is more than 183 weeks after commencement date
 	Given the User is presented with the Catalogue Solution edit form
@@ -242,6 +244,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price All data are vali
 	When the User chooses to save
 	Then the Catalogue Solution is saved
 	And the Catalogue Solution dashboard is presented
+	And the Catalogue Solution is saved in the DB
 @ignore
 Scenario: Catalogue Solutions - edit price screen - section complete
 	Given the User is presented with the Catalogue Solution edit form
@@ -249,6 +252,7 @@ Scenario: Catalogue Solutions - edit price screen - section complete
 	And the User chooses to save
 	And the Catalogue Solution is saved
 	And the Catalogue Solution dashboard is presented
+	And the Catalogue Solution is saved in the DB
 	When the User chooses to go back
 	Then the Order dashboard is presented
 	And the content validation status of the catalogue-solutions section is complete

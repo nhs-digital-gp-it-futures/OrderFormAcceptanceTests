@@ -646,9 +646,56 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElements(Pages.OrderForm.OneOffCostsTable).Count == 1;
         }
 
+		public bool OneOffCostsTableIsPopulated()
+		{
+			return Driver.FindElement(Pages.OrderForm.OneOffCostsTable)
+				.FindElements(Pages.OrderForm.TableRowX(0))
+				.Count > 0;
+		}
+
 		public bool RecurringCostsTableIsDiaplyed()
 		{
 			return Driver.FindElements(Pages.OrderForm.RecurringCostsTable).Count == 1;
+		}
+
+		public bool RecurringCostsTableIsPopulated()
+        {
+			return Driver.FindElement(Pages.OrderForm.RecurringCostsTable)
+				.FindElements(Pages.OrderForm.TableRowX(0))
+				.Count > 0;
+		}
+
+		public string GetItemRecipientName()
+        {
+			return Driver.FindElement(Pages.OrderForm.ItemRecipientName).Text;
+		}
+
+		public string GetItemId()
+		{
+			return Driver.FindElement(Pages.OrderForm.ItemId).Text;
+		}
+		public string GetItemName()
+		{
+			return Driver.FindElement(Pages.OrderForm.ItemName).Text;
+		}
+
+		public string GetItemPrice()
+		{
+			return Driver.FindElement(Pages.OrderForm.ItemPrice).Text;
+		}
+		public string GetItemQuantity()
+		{
+			return Driver.FindElement(Pages.OrderForm.ItemQuantity).Text;
+		}
+
+		public string GetItemPlannedDate()
+		{
+			return Driver.FindElement(Pages.OrderForm.ItemPlannedDate).Text;
+		}
+
+		public string GetItemCost()
+		{
+			return Driver.FindElement(Pages.OrderForm.ItemCost).Text;
 		}
 
 		public string GetTotalOneOffCost()
