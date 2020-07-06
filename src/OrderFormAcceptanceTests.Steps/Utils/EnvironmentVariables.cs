@@ -39,10 +39,10 @@ namespace OrderFormAcceptanceTests.Steps.Utils
 
         internal static (string serverUrl, string databaseName, string dbUser, string dbPassword) DbConnectionDetails()
         {
-            var serverUrl = Environment.GetEnvironmentVariable("SERVERURL") ?? "tcp:gpitfutures-dev-sql-pri.database.windows.net,1433";
-            var databaseName = Environment.GetEnvironmentVariable("DATABASENAME") ?? "bc-feature-8122-previewordersummary-ordapi";
-            var dbUser = JsonConfigValues("user", "gpitfbcadmin");
-            var dbPassword = JsonConfigValues("password", "mzwtabxensk5o7cGgf6ydirvj0luphq");
+            var serverUrl = Environment.GetEnvironmentVariable("SERVERURL") ?? "127.0.0.1,1450";
+            var databaseName = Environment.GetEnvironmentVariable("DATABASENAME") ?? "CatalogueOrdering";
+            var dbUser = JsonConfigValues("user", "SA");
+            var dbPassword = JsonConfigValues("password", "8VSKwQ8xgk35qWFm8VSKwQ8xgk35qWFm!");
 
             return (serverUrl, databaseName, dbUser, dbPassword);
         }
@@ -58,7 +58,7 @@ namespace OrderFormAcceptanceTests.Steps.Utils
         {
             var (serverUrl, databaseName, dbUser, dbPassword) = DbConnectionDetails();
 
-            databaseName = Environment.GetEnvironmentVariable("BAPIDATABASENAME") ?? "bc-feature-8122-previewordersummary-bapi";
+            databaseName = Environment.GetEnvironmentVariable("BAPIDATABASENAME") ?? "buyingcatalogue";
 
             return string.Format(ConnectionString.GPitFutures, serverUrl, databaseName, dbUser, dbPassword);
         }
@@ -67,7 +67,7 @@ namespace OrderFormAcceptanceTests.Steps.Utils
         {
             var (serverUrl, databaseName, dbUser, dbPassword) = DbConnectionDetails();
 
-            databaseName = Environment.GetEnvironmentVariable("ISAPIDATABASENAME") ?? "bc-feature-8122-previewordersummary-isapi";
+            databaseName = Environment.GetEnvironmentVariable("ISAPIDATABASENAME") ?? "CatalogueUsers";
 
             return string.Format(ConnectionString.GPitFutures, serverUrl, databaseName, dbUser, dbPassword);
         }
@@ -112,7 +112,7 @@ namespace OrderFormAcceptanceTests.Steps.Utils
 
         private static string DefaultUri()
         {
-            var uri = "https://feature-8122-previewordersummary-dev.buyingcatalogue.digital.nhs.uk";
+            var uri = "https://host.docker.internal";
 
             return uri;
         }
