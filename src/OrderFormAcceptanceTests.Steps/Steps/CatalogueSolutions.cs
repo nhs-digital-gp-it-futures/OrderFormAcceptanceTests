@@ -45,14 +45,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheCatalogueSolutionDashboardIsPresented();
         }
 
-        [Then(@"the User is able to manage the Additional Services section")]
-        public void ThenTheUserIsAbleToManageTheAdditionalServicesSection()
-        {
-            Test.Pages.OrderForm.ClickEditAdditionalServices();
-            
-        }
-
-
         [Then(@"the User is not able to manage the Catalogue Solutions section")]
         [Then(@"the Catalogue Solution section is disabled")]
         public void ThenTheUserIsNotAbleToManageTheCatalogueSolutionsSection()
