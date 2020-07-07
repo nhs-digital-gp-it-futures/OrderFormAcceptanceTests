@@ -562,6 +562,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return countOfNames == countOfLinks;
 		}
 
+		public void ClickAddedSolution(int index = 0)
+        {
+			Driver.FindElements(Pages.OrderForm.AddedSolutionName)[index].Click();
+		}
+
 		public string GetAddedSolutionServiceRecipient()
 		{
 			return Driver.FindElement(Pages.OrderForm.AddedSolutionServiceRecipient).Text;
@@ -578,6 +583,13 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			var element = Driver.FindElements(Pages.Common.RadioButton)[index];
 			element.Click();
 			return element.GetAttribute("value");
+		}
+
+		public string GetSelectedRadioButton()
+        {
+			Wait.Until(d => NumberOfRadioButtonsDisplayed() > 0);
+			var value = Driver.FindElements(Pages.Common.RadioButton).Where(e => e.GetProperty("checked") == "checked").Select(s => s.GetAttribute("value")).Single();
+			return value;
 		}
 
 		public bool PriceInputIsDisplayed()
@@ -614,6 +626,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElement(Pages.OrderForm.Quantity).SendKeys(value);
 		}
 
+		public string GetQuantity()
+        {
+			Wait.Until(d => d.FindElements(Pages.OrderForm.Quantity).Count == 1);
+			return Driver.FindElement(Pages.OrderForm.Quantity).Text;
+		}
+
 		public bool ProposedDateInputIsDisplayed()
 		{
 			return Driver.FindElements(Pages.OrderForm.OrderDate).Count == 1;
@@ -633,6 +651,15 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.EnterTextViaJs(Wait, Pages.OrderForm.OrderDateDay, day);
 			Driver.EnterTextViaJs(Wait, Pages.OrderForm.OrderDateMonth, month);
 			Driver.EnterTextViaJs(Wait, Pages.OrderForm.OrderDateYear, year);
+		}
+
+		public string GetProposedDate()
+		{
+			Wait.Until(d => d.FindElements(Pages.OrderForm.OrderDateDay).Count == 1);
+			var day = Driver.FindElement(Pages.OrderForm.OrderDateDay).Text;
+			var month = Driver.FindElement(Pages.OrderForm.OrderDateMonth).Text;
+			var year = Driver.FindElement(Pages.OrderForm.OrderDateYear).Text;
+			return string.Join(" ", day, month, year);
 		}
 
 		public bool EstimationPeriodIsDisplayed()

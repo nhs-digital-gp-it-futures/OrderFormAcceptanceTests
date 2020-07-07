@@ -48,7 +48,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By AddedSolutionName => By.CssSelector("[data-test-id$='-solutionName']");
 		public By AddedSolutionServiceRecipient => By.CssSelector("[data-test-id$='-serviceRecipient']");
 		public By PriceInput => By.Id("price");
-		public By OrderUnit => CustomBy.DataTestId("order-unit-id");
+		public By OrderUnit => CustomBy.DataTestId("unit-of-order");
 		public By Quantity => By.Id("quantity");
 		public By OrderDate => CustomBy.DataTestId("date-field-input");
 		public By OrderDateDay => By.Id("deliveryDate-day");

@@ -203,7 +203,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Validation Error 
 	And the validation has been triggered
 	When the user selects an error link in the Error Summary
 	Then they will be navigated to the relevant part of the page
-@ignore
+
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is equal to 183 weeks after commencement date
 	Given the User is presented with the Catalogue Solution edit form
 	And fills in the Catalogue Solution edit form with valid data
@@ -212,7 +212,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is 
 	Then the Catalogue Solution is saved
 	And the Catalogue Solution dashboard is presented
 	And the Catalogue Solution is saved in the DB
-@ignore
+
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is less than 183 weeks after commencement date
 	Given the User is presented with the Catalogue Solution edit form
 	And fills in the Catalogue Solution edit form with valid data
@@ -237,7 +237,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Delivery Date can
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
-@ignore
+
 Scenario: Catalogue Solutions - edit price screen - Flat price All data are valid
 	Given the User is presented with the Catalogue Solution edit form
 	And fills in the Catalogue Solution edit form with valid data
@@ -245,17 +245,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price All data are vali
 	Then the Catalogue Solution is saved
 	And the Catalogue Solution dashboard is presented
 	And the Catalogue Solution is saved in the DB
-@ignore
-Scenario: Catalogue Solutions - edit price screen - section complete
-	Given the User is presented with the Catalogue Solution edit form
-	And fills in the Catalogue Solution edit form with valid data
-	And the User chooses to save
-	And the Catalogue Solution is saved
-	And the Catalogue Solution dashboard is presented
-	And the Catalogue Solution is saved in the DB
-	When the User chooses to go back
-	Then the Order dashboard is presented
-	And the content validation status of the catalogue-solutions section is complete
 
 Scenario: Catalogue Solutions - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places 
 	Given the User is presented with the Catalogue Solution edit form
@@ -284,22 +273,8 @@ Scenario: Catalogue Solutions - Catalogue Solution added section complete
 	And the content validation status of the catalogue-solutions section is complete
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price values populated after editing and saving
-Given that the User has amended a price
-And entered a quantity
-And selected a period
-And saved the Solution
-And entered a date
-And navigated away from the Catalogue Solution
-When the User re-visits the Catalogue Solution
-Then the price value will be populated with the value that was saved by the User
-And the quantity value will be populated with the value that was saved by the User
-And the period selection will be the value that was selected by the User
-And the date value will be the value that was saved by the User
-And the delete button is enabled
-
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Go back post save
-Given the edit Catalogue Solution form for flat list price with variable (patient numbers) order type is presented
-And the User has saved the Catalogue Solution
-When the User chooses to go back
-Then the Catalogue Solution Dashboard is displayed
+	Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
+	And the User amends the existing catalogue solution details
+	When the User re-visits the Catalogue Solution
+	Then the values will be populated with the values that was saved by the User
+	And the delete button is enabled
