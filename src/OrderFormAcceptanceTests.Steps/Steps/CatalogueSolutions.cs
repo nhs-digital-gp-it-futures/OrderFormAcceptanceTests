@@ -382,9 +382,45 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheCatalogueSolutionIsSavedInTheDB()
         {
             var order = (Order)Context["CreatedOrder"];
-            var orderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
+            var orderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId).First();
             Context.Add("CreatedOrderItem", orderItem);
             orderItem.Should().NotBeNull();
         }
+
+        [Given(@"there is one or more Catalogue Solutions added to the order")]
+        public void GivenThereIsOneOrMoreCatalogueSolutionsAddedToTheOrder()
+        {
+            GivenTheUserIsPresentedWithTheCatalogueSolutionEditForm();
+            GivenFillsInTheCatalogueSolutionEditFormWithValidData();
+            new OrderForm(Test, Context).WhenTheUserChoosesToSave();
+            GivenTheCatalogueSolutionIsSavedInTheDB();
+        }
+
+        [Then(@"the Catalogue Solutions are presented")]
+        public void ThenTheCatalogueSolutionsArePresented()
+        {
+            Test.Pages.OrderForm.AddedSolutionsTableIsPopulated().Should().BeTrue();
+        }
+
+        [Then(@"the name of the Catalogue Solution is displayed")]
+        public void ThenTheNameOfTheCatalogueSolutionIsDisplayed()
+        {
+            Test.Pages.OrderForm.AddedSolutionNameIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the Service Recipient Name and Service Recipient ODS code are concatenated into a Presentation Name using the format ""(.*)""")]
+        public void ThenTheServiceRecipientNameAndServiceRecipientODSCodeAreConcatenatedIntoAPresentationNameUsingTheFormat(string p0)
+        {
+            var serviceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
+            var expectedFormattedValue = string.Format("{0} ({1})", serviceRecipient.Name, serviceRecipient.OdsCode);
+            Test.Pages.OrderForm.GetAddedSolutionServiceRecipient().Should().Be(expectedFormattedValue);
+        }
+
+        [Then(@"there is a control to edit each Catalogue Solution")]
+        public void ThenThereIsAControlToEditEachCatalogueSolution()
+        {
+            Test.Pages.OrderForm.AddedSolutionNamesAreLinks().Should().BeTrue();
+        }
+
     }
 }

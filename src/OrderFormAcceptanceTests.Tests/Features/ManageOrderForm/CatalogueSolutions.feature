@@ -257,7 +257,6 @@ Scenario: Catalogue Solutions - edit price screen - section complete
 	Then the Order dashboard is presented
 	And the content validation status of the catalogue-solutions section is complete
 
-@ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places 
 	Given the User is presented with the Catalogue Solution edit form
 	Then the price is displayed to two decimal places
@@ -267,6 +266,22 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Go back before sa
 	When the User chooses to go back
 	Then they are presented with the Service Recipients saved in the Order
 
+Scenario: Catalogue Solutions - View Added Catalogue Solutions
+	Given there is one or more Catalogue Solutions added to the order
+	When the Catalogue Solution dashboard is presented
+	Then the Catalogue Solutions are presented
+	And the name of the Catalogue Solution is displayed
+	And the Service Recipient Name and Service Recipient ODS code are concatenated into a Presentation Name using the format "name (code)" 
+	And there is a control to add a Catalogue Solution
+	And there is a control to continue
+	And there is a control to edit each Catalogue Solution
+
+Scenario: Catalogue Solutions - Catalogue Solution added section complete
+	Given there is one or more Catalogue Solutions added to the order
+	And the Catalogue Solution dashboard is presented
+	When the User chooses to continue
+	Then the Order dashboard is presented
+	And the content validation status of the catalogue-solutions section is complete
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price values populated after editing and saving
 Given that the User has amended a price

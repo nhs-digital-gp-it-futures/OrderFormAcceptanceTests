@@ -542,6 +542,31 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElements(Pages.OrderForm.NoSolutionsAdded).Count == 1;
 		}
 
+		public bool AddedSolutionsTableIsPopulated()
+		{
+			return Driver.FindElement(Pages.OrderForm.AddedSolutionsTable)
+				.FindElements(Pages.OrderForm.TableRowX(0))
+				.Count > 0;
+		}
+
+		public bool AddedSolutionNameIsDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.AddedSolutionName).Count == 1;
+		}
+
+		public bool AddedSolutionNamesAreLinks()
+		{
+			var names = Driver.FindElements(Pages.OrderForm.AddedSolutionName);
+			var countOfNames = names.Count;
+			var countOfLinks = names.Select(n => n.GetAttribute("href")).Count();
+			return countOfNames == countOfLinks;
+		}
+
+		public string GetAddedSolutionServiceRecipient()
+		{
+			return Driver.FindElement(Pages.OrderForm.AddedSolutionServiceRecipient).Text;
+		}
+
 		public int NumberOfRadioButtonsDisplayed()
 		{
 			return Driver.FindElements(Pages.Common.RadioButton).Count;

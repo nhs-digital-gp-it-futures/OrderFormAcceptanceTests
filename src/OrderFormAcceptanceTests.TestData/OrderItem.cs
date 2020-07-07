@@ -75,10 +75,10 @@ namespace OrderFormAcceptanceTests.TestData
             return this.OrderItemId;
         }
 
-        public OrderItem RetrieveByOrderId(string connectionString, string OrderId)
+        public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId)
         {
             var query = "SELECT * from [dbo].[OrderItem] WHERE OrderId=@orderId";
-            return SqlExecutor.Execute<OrderItem>(connectionString, query, new { OrderId }).Single();
+            return SqlExecutor.Execute<OrderItem>(connectionString, query, new { OrderId });
         }
 
         public void Update(string connectionString)
