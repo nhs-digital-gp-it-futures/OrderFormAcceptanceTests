@@ -46,13 +46,16 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By ServiceRecipientOdsCode => By.CssSelector(".bc-c-service-recipients-table__ods");
 		public By AddSolution => CustomBy.DataTestId("add-orderItem-button", "a");
 		public By NoSolutionsAdded => CustomBy.DataTestId("no-added-solutions");
-		public By PriceInput => By.Id("price-input-id");
-		public By OrderUnit => CustomBy.DataTestId("order-unit-id");
+		public By AddedSolutionsTable => CustomBy.DataTestId("added-orderItems");
+		public By AddedSolutionName => By.CssSelector("[data-test-id$='-solutionName']");
+		public By AddedSolutionServiceRecipient => By.CssSelector("[data-test-id$='-serviceRecipient']");
+		public By PriceInput => By.Id("price");
+		public By OrderUnit => CustomBy.DataTestId("unit-of-order");
 		public By Quantity => By.Id("quantity");
 		public By OrderDate => CustomBy.DataTestId("date-field-input");
-		public By OrderDateDay => By.Id("plannedDeliveryDate-day");
-		public By OrderDateMonth => By.Id("plannedDeliveryDate-month");
-		public By OrderDateYear => By.Id("plannedDeliveryDate-year");
+		public By OrderDateDay => By.Id("deliveryDate-day");
+		public By OrderDateMonth => By.Id("deliveryDate-month");
+		public By OrderDateYear => By.Id("deliveryDate-year");
 		public By EstimationPeriod => CustomBy.DataTestId("question-selectEstimationPeriod");
 
 		public By DateOrderSummaryCreated => CustomBy.DataTestId("date-summary-created");

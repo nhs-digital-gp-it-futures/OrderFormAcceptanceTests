@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Bogus.Extensions;
 using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
@@ -162,7 +163,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the User selects a price")]
         public void GivenTheUserSelectsAPrice()
         {
-            Test.Pages.OrderForm.ClickRadioButton();
+            Test.Pages.OrderForm.ClickRadioButton(2);
         }
 
         [Given(@"a Service Recipient is selected")]
@@ -255,7 +256,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeTrue();
         }
-        
+
+        [Then(@"the delete button is enabled")]
+        public void ThenTheDeleteButtonIsEnabled()
+        {
+            Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeFalse();
+        }
+
         [Then(@"the save button is enabled")]
         public void ThenTheSaveButtonIsEnabled()
         {
@@ -373,6 +380,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var deliveryDate = order.CommencementDate.Value;
             Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
 
+            if (Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed() == 2)
+            {
+                Test.Pages.OrderForm.ClickRadioButton(1);
+            }
+
             var f = new Faker();
             Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min:1).ToString());
             Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
@@ -382,9 +394,99 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheCatalogueSolutionIsSavedInTheDB()
         {
             var order = (Order)Context["CreatedOrder"];
-            var orderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
+            var orderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId).First();
             Context.Add("CreatedOrderItem", orderItem);
             orderItem.Should().NotBeNull();
         }
+
+        [Given(@"there is one or more Catalogue Solutions added to the order")]
+        public void GivenThereIsOneOrMoreCatalogueSolutionsAddedToTheOrder()
+        {
+            GivenTheUserIsPresentedWithTheCatalogueSolutionEditForm();
+            GivenFillsInTheCatalogueSolutionEditFormWithValidData();
+            new OrderForm(Test, Context).WhenTheUserChoosesToSave();
+            GivenTheCatalogueSolutionIsSavedInTheDB();
+        }
+
+        [Then(@"the Catalogue Solutions are presented")]
+        public void ThenTheCatalogueSolutionsArePresented()
+        {
+            Test.Pages.OrderForm.AddedSolutionsTableIsPopulated().Should().BeTrue();
+        }
+
+        [Then(@"the name of the Catalogue Solution is displayed")]
+        public void ThenTheNameOfTheCatalogueSolutionIsDisplayed()
+        {
+            Test.Pages.OrderForm.AddedSolutionNameIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the Service Recipient Name and Service Recipient ODS code are concatenated into a Presentation Name using the format ""(.*)""")]
+        public void ThenTheServiceRecipientNameAndServiceRecipientODSCodeAreConcatenatedIntoAPresentationNameUsingTheFormat(string p0)
+        {
+            var serviceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
+            var expectedFormattedValue = string.Format("{0} ({1})", serviceRecipient.Name, serviceRecipient.OdsCode);
+            Test.Pages.OrderForm.GetAddedSolutionServiceRecipient().Should().Be(expectedFormattedValue);
+        }
+
+        [Then(@"there is a control to edit each Catalogue Solution")]
+        public void ThenThereIsAControlToEditEachCatalogueSolution()
+        {
+            Test.Pages.OrderForm.AddedSolutionNamesAreLinks().Should().BeTrue();
+        }
+
+        [Given(@"the User amends the existing catalogue solution details")]
+        public void GivenTheUserAmendsTheExistingCatalogueSolutionDetails()
+        {
+            WhenTheUserHasChosenToManageTheCatalogueSolutionSection();
+            ThenTheCatalogueSolutionsArePresented();
+            Test.Pages.OrderForm.ClickAddedSolution();
+            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+
+            var order = (Order)Context["CreatedOrder"];
+            var deliveryDate = order.CommencementDate.Value.AddMonths(6).AddYears(1);
+            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
+            
+            var estimatedPeriod = Test.Pages.OrderForm.ClickRadioButton();            
+
+            var f = new Faker();
+            var quantity = f.Random.Number(min: 1).ToString();
+            var price = f.Random.Number(min: 1).ToString();
+            Test.Pages.OrderForm.EnterQuantity(quantity);
+            Test.Pages.OrderForm.EnterPriceInputValue(price);
+
+            Context.Add("AmendedDeliveryDate", deliveryDate);
+            Context.Add("AmendedEstimatedPeriod", estimatedPeriod);
+            Context.Add("AmendedQuantity", quantity);
+            Context.Add("AmendedPrice", price);
+            new OrderForm(Test, Context).WhenTheUserChoosesToSave();
+            ThenTheCatalogueSolutionsArePresented();
+        }
+
+        [When(@"the User re-visits the Catalogue Solution")]
+        public void WhenTheUserRe_VisitsTheCatalogueSolution()
+        {
+            Test.Pages.OrderForm.ClickAddedSolution();
+            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+        }
+
+        [Then(@"the values will be populated with the values that was saved by the User")]
+        public void ThenTheValuesWillBePopulatedWithTheValuesThatWasSavedByTheUser()
+        {
+            var dateValueFromPage = Test.Pages.OrderForm.GetProposedDate();
+            var periodFromPage = Test.Pages.OrderForm.GetSelectedRadioButton();
+            var quantityFromPage = Test.Pages.OrderForm.GetQuantity();
+            var priceFromPage = Test.Pages.OrderForm.GetPriceInputValue();
+
+            var expectedDate = (DateTime)Context["AmendedDeliveryDate"];
+            var expectedPeriod = (string)Context["AmendedEstimatedPeriod"];
+            var expectedQuantity = (string)Context["AmendedQuantity"];
+            var expectedPrice = (string)Context["AmendedPrice"];
+
+            dateValueFromPage.Should().Be(expectedDate.ToString("d MMMM yyyy"));
+            periodFromPage.Should().Be(expectedPeriod);
+            quantityFromPage.Should().Be(expectedQuantity);
+            priceFromPage.Should().Be(expectedPrice);
+        }
+
     }
 }
