@@ -3,14 +3,15 @@
 	I want to manage the Additional Services of Order Form
 	So that I can ensure the information is correct
 
+Background:
+	Given an unsubmitted order exists
+
 Scenario: Additional Services - Sections presented
-Given an unsubmitted order exists
 When the Order Form for the existing order is presented
 Then there is the Additional Service section
 And the User is able to manage the Additional Services section
 
 Scenario: Additional Services - Catalogue Solution now complete, >= 1 Service Recipient, >=1 Catalogue Solution
-Given an unsubmitted order exists
 When the Order Form for the existing order is presented
 Then the Call Off Agreement ID is displayed
 And there is the Order description section
@@ -24,8 +25,7 @@ And the Delete order button is enabled
 And the Submit order button is disabled
 
 Scenario: Additional Services - Catalogue Solution now complete, >= 1 Service Recipient, 0 Catalogue Solution
-Given an unsubmitted order exists
-And the Catalogue Solutions section is not complete
+Given the Catalogue Solutions section is not complete
 When the Order Form for the existing order is presented
 Then the Call Off Agreement ID is displayed
 And the Order description section is enabled
