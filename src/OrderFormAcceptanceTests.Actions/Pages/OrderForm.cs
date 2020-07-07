@@ -73,9 +73,27 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Split("Order")[1].Trim();
 		}
 
+		public void ClickEditAdditionalServices()
+		{
+			Driver.FindElement(Pages.OrderForm.EditAdditionalServices).Click();
+		}
+
 		public bool TextDisplayedInPageTitle(string expectedValue)
 		{
 			return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains(expectedValue, StringComparison.OrdinalIgnoreCase);
+		}
+
+		public bool EditAdditionalServicesSectionDisplayed()
+		{
+			try
+			{
+				Wait.Until(d => d.FindElements(Pages.OrderForm.EditAdditionalServices).Count == 1);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		public bool TaskListDisplayed()
@@ -420,6 +438,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 				Postcode = Driver.FindElement(Pages.OrderForm.AddressPostcode).Text,
 				Country = Driver.FindElement(Pages.OrderForm.AddressCountry).Text
 			};
+		}
+
+		public bool ServiceRecipientSectionEnabled()
+		{
+			return Driver.FindElement(Pages.OrderForm.EditServiceRecipients).TagName == "a";
 		}
 
 		public void EnterContact(Contact contact)
