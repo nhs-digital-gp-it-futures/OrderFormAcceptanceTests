@@ -19,6 +19,8 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By EditCommencementDate => CustomBy.DataTestId("task-2-item-0-description");
 		public By EditServiceRecipients => CustomBy.DataTestId("task-3-item-0-description");
 		public By EditCatalogueSolutions => CustomBy.DataTestId("task-4-item-0-description");
+
+		public By EditAdditionalServices => CustomBy.DataTestId("task-5-item-0-description");
 		public By GenericSection(string sectionHrefRoute) {
 			return By.CssSelector(string.Format("[href$='{0}']", sectionHrefRoute));
 		}
@@ -73,5 +75,6 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By TotalMonthlyCost => CustomBy.DataTestId("total-monthly-cost-value");
 		public By TotalOwnershipCost => CustomBy.DataTestId("total-ownership-cost-value");
 
+		
 	}
 }

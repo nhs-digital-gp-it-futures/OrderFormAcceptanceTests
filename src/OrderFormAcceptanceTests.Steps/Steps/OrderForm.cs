@@ -52,6 +52,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditCatalogueSolutionsSectionDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is the Additional Service section")]
+        public void ThenThereIsTheAdditionalServiceSection()
+        {
+            Test.Pages.OrderForm.EditAdditionalServicesSectionDisplayed().Should().BeTrue();
+        }
+
+
         [Then(@"the user is able to manage the Order Description section")]
         public void ThenTheUserIsAbleToManageTheOrderDescriptionSection()
         {
@@ -251,6 +258,43 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickBackLink();
             Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
         }
+
+        [Then(@"the Order description section is enabled")]
+        public void ThenTheOrderDescriptionSectionIsEnabled()
+        {
+            Test.Pages.OrderForm.OrderDescriptionEnabled().Should().BeTrue();
+        }
+
+        [Then(@"the Call-off Ordering Party section is enabled")]
+        public void ThenTheCall_OffOrderingPartySectionIsEnabled()
+        {
+            Test.Pages.OrderForm.CallOffOrderingPartyEnabled().Should().BeTrue();
+        }
+
+        [Then(@"the Supplier section is enabled")]
+        public void ThenTheSupplierSectionIsEnabled()
+        {
+            Test.Pages.OrderForm.SupplierInformationEnabled().Should().BeTrue();
+        }
+
+        [Then(@"the Commencement date section is enabled")]
+        public void ThenTheCommencementDateSectionIsEnabled()
+        {
+            Test.Pages.OrderForm.CommencementDateEnabled().Should().BeTrue();
+        }
+
+        [Then(@"the Service Recipient section is enabled")]
+        public void ThenTheServiceRecipientSectionIsEnabled()
+        {
+            Test.Pages.OrderForm.ServiceRecipientSectionEnabled().Should().BeTrue();
+        }
+
+        [Then(@"the Catalogue Solution section is enabled")]
+        public void ThenTheCatalogueSolutionSectionIsEnabled()
+        {
+            Test.Pages.OrderForm.EditCatalogueSolutionsSectionIsEnabled().Should().BeTrue();
+        }
+
 
     }
 }
