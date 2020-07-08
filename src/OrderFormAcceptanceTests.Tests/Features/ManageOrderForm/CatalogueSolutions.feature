@@ -257,7 +257,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - <ProvisioningType> F
 
 @ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - invalid date
-	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And the proposed date is an invalid date
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
@@ -270,7 +270,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Data type is not val
 
 @ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - price with 3 decimal place
-	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And the price has 4 decimal places
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
@@ -283,7 +283,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Data type is not val
 
 @ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - price is negative
-	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And the price is negative
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
@@ -296,7 +296,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Data type is not val
 
 @ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - price does not allow characters
-	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And the price contains characters
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
@@ -310,7 +310,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Data type is not val
 
 @ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - quantity does not allow characters
-	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And the quantity contains characters
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
@@ -323,7 +323,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Data type is not val
 
 @ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - quantity does not allow decimals
-	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And the quanitity is a decimal
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
@@ -336,7 +336,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Data type is not val
 
 @ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - quantity can not be negative
-	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And the quantity is negative
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
@@ -349,7 +349,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Data type is not val
 
 @ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - quantity exceeds the maximum length
-	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And the quantity is over the max length
 	When the User chooses to save
 	Then the Catalogue Solution is not saved 
@@ -362,7 +362,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Data type is not val
 
 @ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - price exceeds the maximum value
-	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And the price is over the max value
 	When the User chooses to save
 	Then the Catalogue Solution is not saved 
