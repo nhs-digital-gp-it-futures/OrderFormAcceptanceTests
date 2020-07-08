@@ -278,3 +278,20 @@ Scenario: Catalogue Solutions - edit price screen - Flat price values populated 
 	When the User re-visits the Catalogue Solution
 	Then the values will be populated with the values that was saved by the User
 	And the delete button is enabled
+
+@ignore
+Scenario: Catalogue Solutions - edit price screen - Flat price with declarative  order type selected
+	Given the supplier added to the order has a solution with a declarative flat price
+	And the User is presented with the Service Recipients saved in the Order after selecting the declarative flat price
+	And a Service Recipient is selected
+	When they choose to continue
+	Then they are presented with the Catalogue Solution edit form
+	And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
+	And the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form
+	And the Catalogue Solution edit form contains an input for the price
+	And the item on the Catalogue Solution edit form contains a unit of order
+	And the item on the Catalogue Solution edit form contains an input for the quantity
+	And the item on the Catalogue Solution edit form contains an input for date
+	And the price input is autopopulated with the list price for the flat list price selected
+	And the delete button is disabled
+	And the save button is enabled

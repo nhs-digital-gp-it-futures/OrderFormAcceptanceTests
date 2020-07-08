@@ -488,5 +488,23 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             priceFromPage.Should().Be(expectedPrice);
         }
 
+        [Given(@"the supplier added to the order has a solution with a declarative flat price")]
+        public void GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = 100003;
+            order.SupplierName = "Avatar Solutions";
+            order.Update(Test.ConnectionString);
+        }
+
+        [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the declarative flat price")]
+        public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingTheDeclarativeFlatPrice()
+        {
+            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            Test.Pages.OrderForm.ClickRadioButton(0);
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
+        }
+
     }
 }
