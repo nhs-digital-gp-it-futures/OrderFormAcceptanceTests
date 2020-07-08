@@ -140,6 +140,18 @@ namespace OrderFormAcceptanceTests.TestData
             SqlExecutor.Execute<Order>(connectionString, query, this);
         }
 
+        public void DeleteAllOrderItemsForOrderId(string connectionString)
+		{
+            var query = @"DELETE FROM [dbo].[OrderItem] WHERE OrderId=@orderId";
+            SqlExecutor.Execute<Order>(connectionString, query, this);
+		}
+
+        public void DeleteAllServiceRecipientsForOrderId(string connectionString)
+        {
+            var query = @"DELETE FROM [dbo].[ServiceRecipient] WHERE OrderId=@orderId";
+            SqlExecutor.Execute<Order>(connectionString, query, this);
+        }
+
         private string GenerateRandomCallOffId()
         {
             var randomNum = new Faker().Random.Number(max: 99999).ToString("D5");

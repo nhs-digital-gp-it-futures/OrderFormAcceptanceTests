@@ -65,6 +65,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"no Catalogue Solution price is selected")]
         [Given(@"no Service Recipient is selected")]
         [Given(@"there are no Catalogue Solution items in the order")]
+        [When(@"there is no Additional Service added to the order")]
         public void DoNothing()
         {
             //do nothing
@@ -100,14 +101,25 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.CommencementDate = new Faker().Date.Future();
 
             var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);            
-            order.ServiceRecipientsViewed = 1;            
+            order.ServiceRecipientsViewed = 1;
 
             order.Create(Test.ConnectionString);
             Context.Add("CreatedOrder", order);
             serviceRecipient.Create(Test.ConnectionString);
-            Context.Add("CreatedServiceRecipient", serviceRecipient);
-            
+            Context.Add("CreatedServiceRecipient", serviceRecipient);            
         }
+
+        [Given(@"an unsubmited order with catalogue items exists")]
+        public void GivenAnUnsubmittedOrderWithCatalogueItemsExists()
+		{
+            GivenAnUnsubmittedOrderExists();
+            var order = (Order)Context["CreatedOrder"];
+            order.CatalogueSolutionsViewed = 1;
+            order.Update(Test.ConnectionString);
+            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand(order);
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+		}
 
         [StepDefinition(@"the Order Form for the existing order is presented")]
         public void WhenTheOrderFormForTheExistingOrderIsPresented()

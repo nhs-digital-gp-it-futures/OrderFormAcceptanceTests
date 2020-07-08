@@ -16,16 +16,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             if (Context.ContainsKey("CreatedOrder"))
             {
-                var OIs = new OrderItem().RetrieveByOrderId(Test.ConnectionString, ((Order)Context["CreatedOrder"]).OrderId);
-                foreach (OrderItem oi in OIs)
-                {
-                    oi.Delete(Test.ConnectionString);
-                }
-                var SRs = new ServiceRecipient().RetrieveByOrderId(Test.ConnectionString, ((Order)Context["CreatedOrder"]).OrderId);
-                foreach (ServiceRecipient sr in SRs)
-                {
-                    sr.Delete(Test.ConnectionString);
-                }
+                var order = (Order)Context["CreatedOrder"];
+                order.DeleteAllOrderItemsForOrderId(Test.ConnectionString);
+
+                order.DeleteAllServiceRecipientsForOrderId(Test.ConnectionString);
 
                 ((Order)Context["CreatedOrder"]).Delete(Test.ConnectionString);
             }

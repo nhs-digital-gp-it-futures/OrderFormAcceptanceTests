@@ -14,7 +14,8 @@ namespace OrderFormAcceptanceTests.Objects
                 Common = new Common(),
                 OrganisationsOrdersDashboard = new OrganisationsOrdersDashboard(),
                 OrderForm = new OrderForm(),
-                CommencementDate = new CommencementDate()
+                CommencementDate = new CommencementDate(),
+                AdditionalServices = new AdditionalServices()
             };
         }
         public PageCollection Pages { get; set; }
