@@ -415,5 +415,18 @@ Scenario Outline: Catalogue Solutions - edit price screen - Go back before save
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
+	| per patient      |
+	
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Go back after save
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
+	And fills in the Catalogue Solution edit form with valid data
+	When the User chooses to save
+	When the User chooses to go back
+	Then they are presented with the Service Recipients saved in the Order
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
 	| per patient      | 
 
