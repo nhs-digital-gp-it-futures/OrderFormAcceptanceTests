@@ -270,10 +270,35 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
 
-        [Given(@"the User is presented with the Catalogue Solution edit form")]
-        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditForm()
+        [Given(@"the User is presented with the Catalogue Solution edit form for a variable flat price")]
+        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormVariableFlatPrice()
         {
             GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder();
+            GivenAServiceRecipientIsSelected();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+        }
+
+        [Given(@"the User is presented with the Catalogue Solution edit form for a declarative flat price")]
+        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormDeclarativeFlatPrice()
+        {
+            GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
+            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            Test.Pages.OrderForm.ClickRadioButton(0);
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
+            GivenAServiceRecipientIsSelected();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+        }
+
+        [Given(@"the User is presented with the Catalogue Solution edit form for a per patient flat price")]
+        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormPerPatientFlatPrice()
+        {
+            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            Test.Pages.OrderForm.ClickRadioButton(0);
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
@@ -402,7 +427,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"there is one or more Catalogue Solutions added to the order")]
         public void GivenThereIsOneOrMoreCatalogueSolutionsAddedToTheOrder()
         {
-            GivenTheUserIsPresentedWithTheCatalogueSolutionEditForm();
+            GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormVariableFlatPrice();
             GivenFillsInTheCatalogueSolutionEditFormWithValidData();
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();
             GivenTheCatalogueSolutionIsSavedInTheDB();

@@ -280,7 +280,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price values populated 
 	And the delete button is enabled
 
 @ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price with declarative  order type selected
+Scenario: Catalogue Solutions - edit price screen - Flat price with declarative order type selected
 	Given the supplier added to the order has a solution with a declarative flat price
 	And the User is presented with the Service Recipients saved in the Order after selecting the declarative flat price
 	And a Service Recipient is selected
@@ -295,3 +295,16 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with declarative 
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the delete button is disabled
 	And the save button is enabled
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - <ProvisioningType> Flat price Mandatory data missing
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
+	And mandatory data are missing 
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      |
