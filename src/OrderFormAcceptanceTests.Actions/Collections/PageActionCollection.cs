@@ -9,5 +9,6 @@ namespace OrderFormAcceptanceTests.Actions.Collections
 		public OrderForm OrderForm { get; set; }
 		public OrganisationsOrdersDashboard OrganisationsOrdersDashboard { get; set; }
 		public CommencementDate CommencementDate { get; set; }
+		public AdditionalServices AdditionalServices { get; set; }
 	}
 }

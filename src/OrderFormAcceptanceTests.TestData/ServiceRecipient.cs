@@ -68,5 +68,11 @@ namespace OrderFormAcceptanceTests.TestData
             var query = @"DELETE FROM [dbo].[ServiceRecipient] WHERE OrderId=@OrderId";
             SqlExecutor.Execute<Order>(connectionString, query, this);
         }
+
+        public void DeleteAllServiceRecipientsForOrderId(string connectionString, string orderId)
+        {
+            var query = @"DELETE FROM [dbo].[ServiceRecipient] WHERE OrderId=@orderId";
+            SqlExecutor.Execute<Order>(connectionString, query, new { orderId });
+        }
     }
 }
