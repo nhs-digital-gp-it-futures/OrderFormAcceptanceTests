@@ -38,7 +38,7 @@ Scenario: Additional Services - Catalogue Solution now complete, >= 1 Service Re
 	And the Delete order button is enabled
 	And the Submit order button is disabled
 
-Scenario: Additional Service dashboard
+Scenario: Additional Services - Additional Service dashboard
 	When the Order Form for the existing order is presented
 	And the User has chosen to manage the Additional Service section
 	Then the Additional Service dashboard is presented
@@ -46,21 +46,21 @@ Scenario: Additional Service dashboard
 	And there is a control to add a Additional Service
 	And there is a control to continue
 
-Scenario: No Additional Service added
-	When the Order Form for the existing order is presented
-	And the User has chosen to manage the Additional Service section
-	And there is no Additional Service added to the order
+Scenario: Additional Services - No Additional Service added
+	Given the Order Form for the existing order is presented
+	And the User is able to manage the Additional Services section
+	When there is no Additional Service added to the order
 	Then there is content indicating there is no Additional Service added
 
-Scenario: User chooses not to add Additional Service
-	When the Order Form for the existing order is presented
-	And the User has chosen to manage the Additional Service section
+Scenario: Additional Services - User chooses not to add Additional Service
+	Given the Order Form for the existing order is presented
+	And the User is able to manage the Additional Services section
 	And there is no Additional Service added to the order
 	When they choose to continue	
 	Then the content validation status of the additional-services section is complete
 
-Scenario: Go back
-	When the Order Form for the existing order is presented
-	And the User has chosen to manage the Additional Service section
-	And the User chooses to go back
+Scenario: Additional Services - Go back
+	Given the Order Form for the existing order is presented
+	And the User is able to manage the Additional Services section
+	When the User chooses to go back
 	Then the Order dashboard is presented
