@@ -127,40 +127,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	And the delete button is disabled
 	And the save button is enabled
 
-Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is equal to 183 weeks after commencement date
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And fills in the Catalogue Solution edit form with valid data
-	And the User enters a Delivery Date that is equal to 183 weeks after the Commencement Date
-	When the User chooses to save
-	Then the Catalogue Solution is saved
-	And the Catalogue Solution dashboard is presented
-	And the Catalogue Solution is saved in the DB
-
-Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is less than 183 weeks after commencement date
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And fills in the Catalogue Solution edit form with valid data
-	And the User enters a Delivery Date that is less than 183 weeks after the Commencement Date
-	When the User chooses to save
-	Then the Catalogue Solution is saved
-	And the Catalogue Solution dashboard is presented
-	And the Catalogue Solution is saved in the DB
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is more than 183 weeks after commencement date
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And fills in the Catalogue Solution edit form with valid data
-	And the User enters a Delivery Date that is more than 183 weeks after the Commencement Date
-	When the User chooses to save
-	Then the Catalogue Solution is not saved
-	And the reason is displayed
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Delivery Date cannot be before commencement date
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And fills in the Catalogue Solution edit form with valid data
-	And the User enters a Delivery Date that is before the Commencement Date
-	When the User chooses to save
-	Then the Catalogue Solution is not saved
-	And the reason is displayed
-
 Scenario: Catalogue Solutions - edit price screen - Flat price All data are valid
 	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And fills in the Catalogue Solution edit form with valid data
@@ -379,5 +345,60 @@ Scenario Outline: Catalogue Solutions - edit price screen - Validation Error Mes
 	| variable         |
 	| per patient      | 
 
+Scenario Outline: Catalogue Solutions - edit price screen - Delivery date validation - date is equal to 183 weeks after commencement date
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
+	And fills in the Catalogue Solution edit form with valid data
+	And the User enters a Delivery Date that is equal to 183 weeks after the Commencement Date
+	When the User chooses to save
+	Then the Catalogue Solution is saved
+	And the Catalogue Solution dashboard is presented
+	And the Catalogue Solution is saved in the DB
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+Scenario Outline: Catalogue Solutions - edit price screen - Delivery date validation - date is less than 183 weeks after commencement date
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
+	And fills in the Catalogue Solution edit form with valid data
+	And the User enters a Delivery Date that is less than 183 weeks after the Commencement Date
+	When the User chooses to save
+	Then the Catalogue Solution is saved
+	And the Catalogue Solution dashboard is presented
+	And the Catalogue Solution is saved in the DB
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Delivery date validation - date is more than 183 weeks after commencement date
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
+	And fills in the Catalogue Solution edit form with valid data
+	And the User enters a Delivery Date that is more than 183 weeks after the Commencement Date
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Delivery date validation - date cannot be before commencement date
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
+	And fills in the Catalogue Solution edit form with valid data
+	And the User enters a Delivery Date that is before the Commencement Date
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
 
 
