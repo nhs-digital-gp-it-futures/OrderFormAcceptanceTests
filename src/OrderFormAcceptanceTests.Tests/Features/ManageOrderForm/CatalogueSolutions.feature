@@ -127,9 +127,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	And the delete button is disabled
 	And the save button is enabled
 
-Scenario: Catalogue Solutions - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places 
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	Then the price is displayed to two decimal places
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Go back before save
 	Given the User is presented with the Catalogue Solution edit form for a variable flat price
@@ -406,4 +403,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - All data are valid
 	| variable         |
 	| per patient      | 
 
-
+Scenario Outline: Catalogue Solutions - edit price screen - Price is displayed to a minimum of 2 decimal places 
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
+	Then the price is displayed to two decimal places
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
