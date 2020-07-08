@@ -128,84 +128,84 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	And the save button is enabled
 	@ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Mandatory data missing
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And mandatory data are missing 
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
 	@ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - invalid date
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And the proposed date is an invalid date
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price with 4 decimal place
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And the price has 4 decimal places
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price is negative
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And the price is negative
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price does not allow characters
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And the price contains characters
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow characters
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And the quantity contains characters
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow decimals
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And the quanitity is a decimal
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity can not be negative
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And the quantity is negative
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price - quantity exceeds the maximum length
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And the quantity is over the max length
 	When the User chooses to save
 	Then the Catalogue Solution is not saved 
 	And the reason is displayed
 	@ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price - price exceeds the maximum value
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And the price is over the max value
 	When the User chooses to save
 	Then the Catalogue Solution is not saved 
 	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Validation Error Message Anchors
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And mandatory data are missing
 	And the validation has been triggered
 	When the user selects an error link in the Error Summary
 	Then they will be navigated to the relevant part of the page
 
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is equal to 183 weeks after commencement date
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And fills in the Catalogue Solution edit form with valid data
 	And the User enters a Delivery Date that is equal to 183 weeks after the Commencement Date
 	When the User chooses to save
@@ -214,7 +214,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is 
 	And the Catalogue Solution is saved in the DB
 
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is less than 183 weeks after commencement date
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And fills in the Catalogue Solution edit form with valid data
 	And the User enters a Delivery Date that is less than 183 weeks after the Commencement Date
 	When the User chooses to save
@@ -223,7 +223,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is 
 	And the Catalogue Solution is saved in the DB
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is more than 183 weeks after commencement date
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And fills in the Catalogue Solution edit form with valid data
 	And the User enters a Delivery Date that is more than 183 weeks after the Commencement Date
 	When the User chooses to save
@@ -231,7 +231,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is 
 	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery Date cannot be before commencement date
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And fills in the Catalogue Solution edit form with valid data
 	And the User enters a Delivery Date that is before the Commencement Date
 	When the User chooses to save
@@ -239,7 +239,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price Delivery Date can
 	And the reason is displayed
 
 Scenario: Catalogue Solutions - edit price screen - Flat price All data are valid
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	And fills in the Catalogue Solution edit form with valid data
 	When the User chooses to save
 	Then the Catalogue Solution is saved
@@ -247,11 +247,11 @@ Scenario: Catalogue Solutions - edit price screen - Flat price All data are vali
 	And the Catalogue Solution is saved in the DB
 
 Scenario: Catalogue Solutions - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places 
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	Then the price is displayed to two decimal places
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Go back before save
-	Given the User is presented with the Catalogue Solution edit form
+	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	When the User chooses to go back
 	Then they are presented with the Service Recipients saved in the Order
 
