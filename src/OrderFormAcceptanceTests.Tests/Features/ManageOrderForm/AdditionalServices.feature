@@ -39,10 +39,10 @@ Scenario: Additional Services - Catalogue Solution now complete, >= 1 Service Re
 	And the Submit order button is disabled
 
 Scenario: Additional Services - Additional Service dashboard
-	When the Order Form for the existing order is presented
-	And the User has chosen to manage the Additional Service section
-	Then the Additional Service dashboard is presented
-	And the Order description is displayed
+	Given the Order Form for the existing order is presented
+	And the User is able to manage the Additional Services section
+	When the Additional Service dashboard is presented
+	Then the Order description is displayed
 	And there is a control to add a Additional Service
 	And there is a control to continue
 

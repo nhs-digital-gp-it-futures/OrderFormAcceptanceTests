@@ -18,7 +18,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 			Test.Pages.OrderForm.ClickEditAdditionalServices();
 		}
 
-		[Then(@"the Additional Service dashboard is presented")]
+		[StepDefinition(@"the Additional Service dashboard is presented")]
 		public void ThenTheAdditionalServiceDashboardIsPresented()
 		{
 			Test.Pages.AdditionalServices.PageDisplayed();
