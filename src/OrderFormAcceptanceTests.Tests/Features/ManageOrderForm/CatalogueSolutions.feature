@@ -101,18 +101,18 @@ Scenario: Catalogue Solutions - Select a Service Recipient
 	Then they are presented with the Service Recipients saved in the Order
 
 Scenario: Catalogue Solutions - No Service Recipient for the Catalogue Solution selected
-	Given the User is presented with the Service Recipients saved in the Order
+	Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
 	And no Service Recipient is selected
 	When they choose to continue
 	Then the User is informed they have to select a Service Recipient
 
 Scenario: Catalogue Solutions - Go back from select a service recipient
-	Given the User is presented with the Service Recipients saved in the Order
+	Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
 	When the User chooses to go back
 	Then all the available prices for that Catalogue Solution are presented
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price with variable order type selected
-	Given the User is presented with the Service Recipients saved in the Order
+	Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
 	And a Service Recipient is selected
 	When they choose to continue
 	Then they are presented with the Catalogue Solution edit form
@@ -126,76 +126,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the delete button is disabled
 	And the save button is enabled
-	@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Mandatory data missing
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And mandatory data are missing 
-	When the User chooses to save
-	Then the Catalogue Solution is not saved
-	And the reason is displayed
-	@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - invalid date
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And the proposed date is an invalid date
-	When the User chooses to save
-	Then the Catalogue Solution is not saved
-	And the reason is displayed
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price with 4 decimal place
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And the price has 4 decimal places
-	When the User chooses to save
-	Then the Catalogue Solution is not saved
-	And the reason is displayed
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price is negative
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And the price is negative
-	When the User chooses to save
-	Then the Catalogue Solution is not saved
-	And the reason is displayed
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price does not allow characters
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And the price contains characters
-	When the User chooses to save
-	Then the Catalogue Solution is not saved
-	And the reason is displayed
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow characters
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And the quantity contains characters
-	When the User chooses to save
-	Then the Catalogue Solution is not saved
-	And the reason is displayed
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow decimals
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And the quanitity is a decimal
-	When the User chooses to save
-	Then the Catalogue Solution is not saved
-	And the reason is displayed
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity can not be negative
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And the quantity is negative
-	When the User chooses to save
-	Then the Catalogue Solution is not saved
-	And the reason is displayed
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price - quantity exceeds the maximum length
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And the quantity is over the max length
-	When the User chooses to save
-	Then the Catalogue Solution is not saved 
-	And the reason is displayed
-	@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price - price exceeds the maximum value
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And the price is over the max value
-	When the User chooses to save
-	Then the Catalogue Solution is not saved 
-	And the reason is displayed
 @ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price Validation Error Message Anchors
 	Given the User is presented with the Catalogue Solution edit form for a variable flat price
@@ -280,6 +210,22 @@ Scenario: Catalogue Solutions - edit price screen - Flat price values populated 
 	And the delete button is enabled
 
 @ignore
+Scenario: Catalogue Solutions - edit price screen - Flat price with per patient order type selected
+	Given the User is presented with the Service Recipients saved in the Order after selecting the per patient flat price
+	And a Service Recipient is selected
+	When they choose to continue
+	Then they are presented with the Catalogue Solution edit form
+	And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
+	And the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form
+	And the Catalogue Solution edit form contains an input for the price
+	And the item on the Catalogue Solution edit form contains a unit of order
+	And the item on the Catalogue Solution edit form contains an input for the quantity
+	And the item on the Catalogue Solution edit form contains an input for date
+	And the price input is autopopulated with the list price for the flat list price selected
+	#And the delete button is disabled
+	And the save button is enabled
+
+@ignore
 Scenario: Catalogue Solutions - edit price screen - Flat price with declarative order type selected
 	Given the supplier added to the order has a solution with a declarative flat price
 	And the User is presented with the Service Recipients saved in the Order after selecting the declarative flat price
@@ -307,4 +253,124 @@ Scenario Outline: Catalogue Solutions - edit price screen - <ProvisioningType> F
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-	| per patient      |
+	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - invalid date
+	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	And the proposed date is an invalid date
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - price with 3 decimal place
+	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	And the price has 4 decimal places
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - price is negative
+	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	And the price is negative
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - price does not allow characters
+	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	And the price contains characters
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - quantity does not allow characters
+	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	And the quantity contains characters
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - quantity does not allow decimals
+	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	And the quanitity is a decimal
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - quantity can not be negative
+	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	And the quantity is negative
+	When the User chooses to save
+	Then the Catalogue Solution is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - quantity exceeds the maximum length
+	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	And the quantity is over the max length
+	When the User chooses to save
+	Then the Catalogue Solution is not saved 
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - price exceeds the maximum value
+	Given the User is presented with the Service Recipients saved in the Order after selecting the <ProvisioningType> flat price
+	And the price is over the max value
+	When the User chooses to save
+	Then the Catalogue Solution is not saved 
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+

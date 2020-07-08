@@ -242,6 +242,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedOrderItem", orderItem);
         }
 
+
+        [Given(@"a catalogue solution with a flat price variable \(Per-Patient\) order type is saved to the order")]
+        public void GivenACatalogueSolutionWithAFlatPriceVariablePer_PatientOrderTypeIsSavedToTheOrder()
+        {
+            var orderItem = GenerateOrderItemWithFlatPricedVariablePerPatient();
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+        }
+
         private OrderItem GenerateOrderItemWithFlatPricedVariableOnDemand()
         {
             var order = (Order)Context["CreatedOrder"];
@@ -268,5 +277,29 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             };
         }
 
+        private OrderItem GenerateOrderItemWithFlatPricedVariablePerPatient()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100000-001",
+                CatalogueItemTypeId = 1,
+                CatalogueItemName = "Write on Time",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 1,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "patients",
+                PricingUnitName = "patient",
+                PricingUnitDescription = "per patient",
+                TimeUnitId = null,
+                CurrencyCode = "GBP",
+                Quantity = 1111,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 99.99M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
     }
 }
