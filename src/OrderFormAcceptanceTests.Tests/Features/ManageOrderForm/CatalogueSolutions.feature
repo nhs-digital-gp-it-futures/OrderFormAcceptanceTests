@@ -127,12 +127,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	And the delete button is disabled
 	And the save button is enabled
 
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Go back before save
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	When the User chooses to go back
-	Then they are presented with the Service Recipients saved in the Order
-
 Scenario: Catalogue Solutions - View Added Catalogue Solutions
 	Given there is one or more Catalogue Solutions added to the order
 	When the Catalogue Solution dashboard is presented
@@ -411,3 +405,15 @@ Scenario Outline: Catalogue Solutions - edit price screen - Price is displayed t
 	| declarative      |
 	| variable         |
 	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Go back before save
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
+	When the User chooses to go back
+	Then they are presented with the Service Recipients saved in the Order
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
