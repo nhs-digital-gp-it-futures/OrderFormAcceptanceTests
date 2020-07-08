@@ -127,14 +127,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	And the delete button is disabled
 	And the save button is enabled
 
-Scenario: Catalogue Solutions - edit price screen - Flat price All data are valid
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And fills in the Catalogue Solution edit form with valid data
-	When the User chooses to save
-	Then the Catalogue Solution is saved
-	And the Catalogue Solution dashboard is presented
-	And the Catalogue Solution is saved in the DB
-
 Scenario: Catalogue Solutions - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places 
 	Given the User is presented with the Catalogue Solution edit form for a variable flat price
 	Then the price is displayed to two decimal places
@@ -395,6 +387,19 @@ Scenario Outline: Catalogue Solutions - edit price screen - Delivery date valida
 	When the User chooses to save
 	Then the Catalogue Solution is not saved
 	And the reason is displayed
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
+Scenario Outline: Catalogue Solutions - edit price screen - All data are valid
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
+	And fills in the Catalogue Solution edit form with valid data
+	When the User chooses to save
+	Then the Catalogue Solution is saved
+	And the Catalogue Solution dashboard is presented
+	And the Catalogue Solution is saved in the DB
 	Examples:
 	| ProvisioningType |
 	| declarative      |
