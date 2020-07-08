@@ -17,9 +17,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             if (Context.ContainsKey("CreatedOrder"))
             {
                 var order = (Order)Context["CreatedOrder"];
-                order.DeleteAllOrderItemsForOrderId(Test.ConnectionString);
+                new OrderItem().DeleteAllOrderItemsForOrderId(Test.ConnectionString, order.OrderId);
 
-                order.DeleteAllServiceRecipientsForOrderId(Test.ConnectionString);
+                new ServiceRecipient().DeleteAllServiceRecipientsForOrderId(Test.ConnectionString, order.OrderId);
 
                 ((Order)Context["CreatedOrder"]).Delete(Test.ConnectionString);
             }

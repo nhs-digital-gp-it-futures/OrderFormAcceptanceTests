@@ -138,5 +138,11 @@ namespace OrderFormAcceptanceTests.TestData
             var query = @"DELETE FROM [dbo].[OrderItem] WHERE OrderItemId=@OrderItemId";
             SqlExecutor.Execute<OrderItem>(connectionString, query, this);
         }
+
+        public void DeleteAllOrderItemsForOrderId(string connectionString, string orderId)
+        {
+            var query = @"DELETE FROM [dbo].[OrderItem] WHERE OrderId=@orderId";
+            SqlExecutor.Execute<Order>(connectionString, query, new { orderId });
+        }
     }
 }
