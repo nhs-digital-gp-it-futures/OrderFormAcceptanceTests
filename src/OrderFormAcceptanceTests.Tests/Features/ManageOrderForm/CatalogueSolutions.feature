@@ -126,13 +126,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the delete button is disabled
 	And the save button is enabled
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price Validation Error Message Anchors
-	Given the User is presented with the Catalogue Solution edit form for a variable flat price
-	And mandatory data are missing
-	And the validation has been triggered
-	When the user selects an error link in the Error Summary
-	Then they will be navigated to the relevant part of the page
 
 Scenario: Catalogue Solutions - edit price screen - Flat price Delivery date is equal to 183 weeks after commencement date
 	Given the User is presented with the Catalogue Solution edit form for a variable flat price
@@ -372,5 +365,19 @@ Scenario Outline: Catalogue Solutions - edit price screen - Data type is not val
 	| declarative      |
 	| variable         |
 	| per patient      | 
+
+@ignore
+Scenario Outline: Catalogue Solutions - edit price screen - Validation Error Message Anchors
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
+	And mandatory data are missing
+	And the validation has been triggered
+	When the user selects an error link in the Error Summary
+	Then they will be navigated to the relevant part of the page
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      | 
+
 
 
