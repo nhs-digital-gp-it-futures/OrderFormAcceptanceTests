@@ -264,7 +264,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedOrderItem", orderItem);
         }
 
-
         private static string FormatDecimal(decimal price)
         {
             return price.ToString("#,0.00", new NumberFormatInfo { NumberGroupSeparator = "," });
