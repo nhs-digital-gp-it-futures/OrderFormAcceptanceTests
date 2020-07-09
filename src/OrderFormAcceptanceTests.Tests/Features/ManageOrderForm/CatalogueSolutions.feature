@@ -110,7 +110,7 @@ Scenario: Catalogue Solutions - Go back from select a service recipient
 	Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
 	When the User chooses to go back
 	Then all the available prices for that Catalogue Solution are presented
-@ignore
+
 Scenario: Catalogue Solutions - edit price screen - Flat price with variable order type selected
 	Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
 	And a Service Recipient is selected
@@ -402,6 +402,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back a
 	And fills in the Catalogue Solution edit form with valid data
 	And the User chooses to save
 	And the Catalogue Solution is saved
+	And the Catalogue Solution dashboard is presented
 	When the User chooses to go back
 	Then the Order dashboard is presented
 	And the Catalogue Solution is saved in the DB
@@ -427,7 +428,7 @@ Scenario: Catalogue Solutions - Catalogue Solution added section complete
 	When the User chooses to continue
 	Then the Order dashboard is presented
 	And the content validation status of the catalogue-solutions section is complete
-@ignore
+
 Scenario: Catalogue Solutions - edit price screen - Flat price values populated after editing and saving
 	Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
 	And the User amends the existing catalogue solution details

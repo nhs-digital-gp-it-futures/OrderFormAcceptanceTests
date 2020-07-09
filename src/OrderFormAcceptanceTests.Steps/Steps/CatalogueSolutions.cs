@@ -516,7 +516,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedQuantity = (string)Context["AmendedQuantity"];
             var expectedPrice = (string)Context["AmendedPrice"];
 
-            dateValueFromPage.Should().Be(expectedDate.ToString("d MMMM yyyy"));
+            dateValueFromPage.Should().Be(expectedDate.ToString("dd MM yyyy"));
             periodFromPage.Should().Be(expectedPeriod);
             quantityFromPage.Should().Be(expectedQuantity);
             priceFromPage.Should().Be(expectedPrice);
