@@ -228,7 +228,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
         public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
-            var orderItem = GenerateOrderItemWithFlatPricedVariableOnDemand();
+            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
@@ -236,7 +236,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per month is saved to the order")]
         public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
         {
-            var orderItem = GenerateOrderItemWithFlatPricedVariableOnDemand();
+            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.EstimationPeriodId = 1;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
