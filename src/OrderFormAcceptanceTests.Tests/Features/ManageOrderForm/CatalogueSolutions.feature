@@ -421,9 +421,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Go back before save
 Scenario Outline: Catalogue Solutions - edit price screen - Go back after save
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data
-	When the User chooses to save
+	And the User chooses to save
+	And the Catalogue Solution is saved
 	When the User chooses to go back
-	Then they are presented with the Service Recipients saved in the Order
+	Then the Order dashboard is presented
+	And the Catalogue Solution is saved in the DB
 	Examples:
 	| ProvisioningType |
 	| declarative      |
