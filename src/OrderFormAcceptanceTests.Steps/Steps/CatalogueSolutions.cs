@@ -372,7 +372,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the price is over the max value")]
         public void GivenThePriceIsOverTheMaxValue()
         {
-            Test.Pages.OrderForm.EnterPriceInputValue("79,228,162,514,264,337,593,543,950,335.50");
+            Test.Pages.OrderForm.EnterPriceInputValue("79228162514264337593543950335.50");
         }
 
         [Then(@"the price is displayed to two decimal places")]
@@ -404,7 +404,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the quantity is over the max length")]
         public void GivenTheQuantityIsOverTheMaxLength()
         {
-            Test.Pages.OrderForm.EnterQuantity("2,147,483,648");
+            Test.Pages.OrderForm.EnterQuantity("2147483648");
         }
 
         [Given(@"fills in the Catalogue Solution edit form with valid data")]
