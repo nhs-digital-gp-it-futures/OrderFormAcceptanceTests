@@ -611,9 +611,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public string GetSelectedRadioButton()
         {
 			Wait.Until(d => NumberOfRadioButtonsDisplayed() > 0);
-			var buttons = Driver.FindElements(Pages.Common.RadioButton);
-			var where = buttons.Where(e => e.GetProperty("checked") == "True");
-			var selected = where.Select(s => s.GetAttribute("value")).Single();
 			var value = Driver.FindElements(Pages.Common.RadioButton).Where(e => e.GetProperty("checked") == "True").Select(s => s.GetAttribute("value")).Single();
 			return value;
 		}
