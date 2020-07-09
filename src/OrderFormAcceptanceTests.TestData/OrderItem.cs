@@ -76,6 +76,31 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
+        public OrderItem GenerateOrderItemWithFlatPricedVariableDeclarative(Order order)
+        {
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100006-001",
+                CatalogueItemTypeId = 1,
+                CatalogueItemName = "Paperlite",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 3,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "SMS",
+                PricingUnitName = "sms",
+                PricingUnitDescription = "per SMS",
+                TimeUnitId = null,
+                CurrencyCode = "GBP",
+                EstimationPeriodId = 1,
+                Quantity = 1111,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 7.00M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
+
         public int Create(string connectionString)
         {
             var query = @"INSERT INTO [dbo].[OrderItem](
