@@ -242,7 +242,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedOrderItem", orderItem);
         }
 
-        
 
+        [Given(@"a catalogue solution with a flat price variable \(Per-Patient\) order type is saved to the order")]
+        public void GivenACatalogueSolutionWithAFlatPriceVariablePer_PatientOrderTypeIsSavedToTheOrder()
+        {
+            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient((Order)Context["CreatedOrder"]);
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+        }
     }
 }

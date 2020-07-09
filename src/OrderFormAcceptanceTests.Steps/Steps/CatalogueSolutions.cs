@@ -173,11 +173,20 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("ChosenOdsCode", odsCode);
         }
 
-        [Given(@"the User is presented with the Service Recipients saved in the Order")]
+        [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the variable flat price")]
         public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder()
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             GivenTheUserSelectsAPrice();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
+        }
+
+        [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the per patient flat price")]
+        public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingThePerPatientFlatPrice()
+        {
+            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            Test.Pages.OrderForm.ClickRadioButton();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyCanSelectOneRadioButton();
         }
@@ -270,10 +279,35 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
 
-        [Given(@"the User is presented with the Catalogue Solution edit form")]
-        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditForm()
+        [Given(@"the User is presented with the Catalogue Solution edit form for a variable flat price")]
+        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormVariableFlatPrice()
         {
             GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder();
+            GivenAServiceRecipientIsSelected();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+        }
+
+        [Given(@"the User is presented with the Catalogue Solution edit form for a declarative flat price")]
+        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormDeclarativeFlatPrice()
+        {
+            GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
+            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            Test.Pages.OrderForm.ClickRadioButton(0);
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
+            GivenAServiceRecipientIsSelected();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+        }
+
+        [Given(@"the User is presented with the Catalogue Solution edit form for a per patient flat price")]
+        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormPerPatientFlatPrice()
+        {
+            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            Test.Pages.OrderForm.ClickRadioButton(0);
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
@@ -402,7 +436,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"there is one or more Catalogue Solutions added to the order")]
         public void GivenThereIsOneOrMoreCatalogueSolutionsAddedToTheOrder()
         {
-            GivenTheUserIsPresentedWithTheCatalogueSolutionEditForm();
+            GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormVariableFlatPrice();
             GivenFillsInTheCatalogueSolutionEditFormWithValidData();
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();
             GivenTheCatalogueSolutionIsSavedInTheDB();
@@ -488,5 +522,22 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             priceFromPage.Should().Be(expectedPrice);
         }
 
+        [Given(@"the supplier added to the order has a solution with a declarative flat price")]
+        public void GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = 100003;
+            order.SupplierName = "Avatar Solutions";
+            order.Update(Test.ConnectionString);
+        }
+
+        [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the declarative flat price")]
+        public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingTheDeclarativeFlatPrice()
+        {
+            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            Test.Pages.OrderForm.ClickRadioButton(0);
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
+        }
     }
 }

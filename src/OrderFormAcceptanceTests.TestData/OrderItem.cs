@@ -52,6 +52,30 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
+        public OrderItem GenerateOrderItemWithFlatPricedVariablePerPatient(Order order)
+        {
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100000-001",
+                CatalogueItemTypeId = 1,
+                CatalogueItemName = "Write on Time",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 1,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "patients",
+                PricingUnitName = "patient",
+                PricingUnitDescription = "per patient",
+                TimeUnitId = null,
+                CurrencyCode = "GBP",
+                Quantity = 1111,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 99.99M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
+
         public int Create(string connectionString)
         {
             var query = @"INSERT INTO [dbo].[OrderItem](
