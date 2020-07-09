@@ -99,6 +99,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.SupplierName = "Really Kool Corporation";
 
             order.CommencementDate = new Faker().Date.Future();
+            order.CommencementDate = new DateTime(order.CommencementDate.Value.Year, order.CommencementDate.Value.Month, order.CommencementDate.Value.Day);
 
             var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);            
             order.ServiceRecipientsViewed = 1;
