@@ -164,7 +164,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with per patient 
 	And the item on the Catalogue Solution edit form contains an input for the quantity
 	And the item on the Catalogue Solution edit form contains an input for date
 	And the price input is autopopulated with the list price for the flat list price selected
-	#And the delete button is disabled
+	And the delete button is disabled
 	And the save button is enabled
 
 @ignore
@@ -211,7 +211,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Data type is not val
 	| per patient      | 
 
 @ignore
-Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - price with 3 decimal place
+Scenario Outline: Catalogue Solutions - edit price screen - Data type is not valid - price with 4 decimal place
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And the price has 4 decimal places
 	When the User chooses to save
@@ -328,6 +328,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Validation Error Mes
 	| variable         |
 	| per patient      | 
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Delivery date validation - date is equal to 183 weeks after commencement date
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data
@@ -342,6 +343,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Delivery date valida
 	| variable         |
 	| per patient      | 
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Delivery date validation - date is less than 183 weeks after commencement date
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data
@@ -384,6 +386,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Delivery date valida
 	| variable         |
 	| per patient      | 
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - All data are valid
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data

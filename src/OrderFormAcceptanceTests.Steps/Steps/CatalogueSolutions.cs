@@ -411,7 +411,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenFillsInTheCatalogueSolutionEditFormWithValidData()
         {
             var order = (Order)Context["CreatedOrder"];
-            var deliveryDate = order.CommencementDate.Value.AddDays(7);
+            var deliveryDate = order.CommencementDate.Value;
             Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
 
             if (Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed() == 2)
