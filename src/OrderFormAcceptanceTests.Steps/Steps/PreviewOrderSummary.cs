@@ -2,8 +2,7 @@
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -53,7 +52,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var value = Test.Pages.OrderForm.GetCallOffOrderingPartyPreviewValue();
             value.Should().NotBeNullOrEmpty();
-            var order = (Order)Context["CreatedOrder"];            
+            var order = (Order)Context["CreatedOrder"];
             var createdAddress = (Address)Context["CreatedAddress"];
             var createdContact = (Contact)Context["CreatedContact"];
             value.Should().ContainEquivalentOf(order.OrganisationName);
@@ -70,7 +69,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheSupplierInformationIsDisplayed()
         {
             var value = Test.Pages.OrderForm.GetSupplierPreviewValue();
-            value.Should().NotBeNullOrEmpty();;
+            value.Should().NotBeNullOrEmpty();
             var createdAddress = (Address)Context["CreatedSupplierAddress"];
             var createdContact = (Contact)Context["CreatedSupplierContact"];
             value.Should().ContainEquivalentOf(createdAddress.Line1);
@@ -166,8 +165,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheItemIDOfEachItemIsDisplayed()
         {
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
+            var expectedId = $"{expectedOrderItem.OrderId}-{expectedOrderItem.OdsCode}-{expectedOrderItem.OrderItemId}";
             var id = Test.Pages.OrderForm.GetItemId();
-            id.Should().Be(expectedOrderItem.OrderItemId.ToString());
+            id.Should().Be(expectedId);
         }
 
         [Then(@"the item name of each item is the Catalogue Solution name")]
@@ -182,19 +182,32 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenThePriceUnitOfOrderOfEachItemIsTheConcatenation()
         {
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
-            var expectedValue = string.Format("{0} {1}", expectedOrderItem.Price, expectedOrderItem.PricingUnitDescription);
+            var expectedValue = $"{FormatDecimal(expectedOrderItem.Price)} {expectedOrderItem.PricingUnitDescription}";
+
             var price = Test.Pages.OrderForm.GetItemPrice();
             price.Should().Be(expectedValue);
         }
 
+        [Then(@"the Quantity of each item is the concatenation ""\[Quantity\] \[Estimation period\]"" i\.e\. \[Quantity] per month")]
         [Then(@"the Quantity of each item is the concatenation ""\[Quantity\] \[Estimation period\]"" i\.e\. \[Quantity] per year")]
-        [Then(@"the Quantity of each item is the concatenation ""(.*)"" i\.e\. \[Quantity] per month")]
         public void ThenTheQuantityOfEachItemIsTheConcatenationI_E_QuantityPerPeriod()
         {
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
-            var expectedValue = string.Format("{0} {1}", expectedOrderItem.Quantity, expectedOrderItem.EstimationPeriodId);
+            var expectedPeriod = expectedOrderItem.GetEstimationPeriod(Test.ConnectionString);
+            var expectedValue = $"{FormatInt(expectedOrderItem.Quantity)} {expectedPeriod}";
+            
             var quantity = Test.Pages.OrderForm.GetItemQuantity();
             quantity.Should().Be(expectedValue);
+        }
+
+        [Then(@"the Quantity of each item is the concatenation \[Quantity\] per month")]
+        public void ThenTheQuantityOfEachItemIsTheConcatenationOfQuantityAndPerMonth()
+        {
+            var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
+            var expectedQuantityValue = $"{FormatInt(expectedOrderItem.Quantity)} per month";
+
+            var actualQuantity = Test.Pages.OrderForm.GetItemQuantity();
+            actualQuantity.Should().Be(expectedQuantityValue);
         }
 
         [Then(@"the Planned delivery date of each item is displayed")]
@@ -249,6 +262,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
+        }
+
+
+        private static string FormatDecimal(decimal price)
+        {
+            return price.ToString("#,0.00", new NumberFormatInfo { NumberGroupSeparator = "," });
+        }
+
+        private static string FormatInt(int quantity)
+        {
+            return quantity.ToString("#,0", new NumberFormatInfo { NumberGroupSeparator = "," });
         }
     }
 }

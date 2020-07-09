@@ -168,5 +168,11 @@ namespace OrderFormAcceptanceTests.TestData
             var query = @"DELETE FROM [dbo].[OrderItem] WHERE OrderId=@orderId";
             SqlExecutor.Execute<Order>(connectionString, query, new { orderId });
         }
+        
+        public string GetEstimationPeriod(string connectionString)
+        {
+            const string query = @"Select [Description] FROM [dbo].[TimeUnit] WHERE TimeUnitId=@EstimationPeriodId";
+            return SqlExecutor.Execute<string>(connectionString, query, this).FirstOrDefault();
+        }
     }
 }
