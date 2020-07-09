@@ -246,60 +246,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"a catalogue solution with a flat price variable \(Per-Patient\) order type is saved to the order")]
         public void GivenACatalogueSolutionWithAFlatPriceVariablePer_PatientOrderTypeIsSavedToTheOrder()
         {
-            var orderItem = GenerateOrderItemWithFlatPricedVariablePerPatient();
+            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
-        }
-
-        private OrderItem GenerateOrderItemWithFlatPricedVariableOnDemand()
-        {
-            var order = (Order)Context["CreatedOrder"];
-            return new OrderItem
-            {
-                OrderId = order.OrderId,
-                CatalogueItemId = "100000-001",
-                CatalogueItemTypeId = 1,
-                CatalogueItemName = "Write on Time",
-                OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 3,
-                CataloguePriceTypeId = 1,
-                PricingUnitTierName = "consultations",
-                PricingUnitName = "consultation",
-                PricingUnitDescription = "per consultation",
-                TimeUnitId = null,
-                CurrencyCode = "GBP",
-                Quantity = 1111,
-                EstimationPeriodId = 2,
-                DeliveryDate = DateTime.Now.AddYears(1),
-                Price = 1001.010M,
-                Created = DateTime.Now,
-                LastUpdated = DateTime.Now
-            };
-        }
-
-        private OrderItem GenerateOrderItemWithFlatPricedVariablePerPatient()
-        {
-            var order = (Order)Context["CreatedOrder"];
-            return new OrderItem
-            {
-                OrderId = order.OrderId,
-                CatalogueItemId = "100000-001",
-                CatalogueItemTypeId = 1,
-                CatalogueItemName = "Write on Time",
-                OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 1,
-                CataloguePriceTypeId = 1,
-                PricingUnitTierName = "patients",
-                PricingUnitName = "patient",
-                PricingUnitDescription = "per patient",
-                TimeUnitId = null,
-                CurrencyCode = "GBP",
-                Quantity = 1111,
-                DeliveryDate = DateTime.Now.AddYears(1),
-                Price = 99.99M,
-                Created = DateTime.Now,
-                LastUpdated = DateTime.Now
-            };
         }
     }
 }
