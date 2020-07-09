@@ -173,11 +173,20 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("ChosenOdsCode", odsCode);
         }
 
-        [Given(@"the User is presented with the Service Recipients saved in the Order")]
+        [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the variable flat price")]
         public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder()
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             GivenTheUserSelectsAPrice();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
+        }
+
+        [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the per patient flat price")]
+        public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingThePerPatientFlatPrice()
+        {
+            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            Test.Pages.OrderForm.ClickRadioButton();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyCanSelectOneRadioButton();
         }
@@ -530,6 +539,5 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyCanSelectOneRadioButton();
         }
-
     }
 }
