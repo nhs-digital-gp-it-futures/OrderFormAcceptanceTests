@@ -66,13 +66,13 @@ Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per 
 
 @ignore
 Scenario: Preview Order Summary - Flat with Variable (Per-Patient) order type
-Given a catalogue solution with a flat price variable (Per-Patient) order type is saved to the order
-When the Order Summary is displayed
-Then the Order items (recurring cost) table is populated
-And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
-And the item ID of each item is displayed
-And the item name of each item is the Catalogue Solution name
-And the Price unit of order of each item is the concatenation "[Price] [unit]"
-And the Quantity of each item is the concatenation [Quantity] per month
-And the Planned delivery date of each item is displayed
-And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
+	Given a catalogue solution with a flat price variable (Per-Patient) order type is saved to the order
+	When the Order Summary is displayed
+	Then the Order items (recurring cost) table is populated
+	And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
+	And the item ID of each item is displayed
+	And the item name of each item is the Catalogue Solution name
+	And the Price unit of order of each item is the concatenation "[Price] [unit]"
+	And the Quantity of each item is the concatenation [Quantity] per month
+	And the Planned delivery date of each item is displayed
+	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
