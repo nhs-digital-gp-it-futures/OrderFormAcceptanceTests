@@ -611,7 +611,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public string GetSelectedRadioButton()
         {
 			Wait.Until(d => NumberOfRadioButtonsDisplayed() > 0);
-			var value = Driver.FindElements(Pages.Common.RadioButton).Where(e => e.GetProperty("checked") == "checked").Select(s => s.GetAttribute("value")).Single();
+			var value = Driver.FindElements(Pages.Common.RadioButton).Where(e => e.GetProperty("checked") == "True").Select(s => s.GetAttribute("value")).Single();
 			return value;
 		}
 
@@ -652,7 +652,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public string GetQuantity()
         {
 			Wait.Until(d => d.FindElements(Pages.OrderForm.Quantity).Count == 1);
-			return Driver.FindElement(Pages.OrderForm.Quantity).Text;
+			return Driver.FindElement(Pages.OrderForm.Quantity).GetAttribute("value");
 		}
 
 		public bool ProposedDateInputIsDisplayed()
@@ -679,9 +679,9 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public string GetProposedDate()
 		{
 			Wait.Until(d => d.FindElements(Pages.OrderForm.OrderDateDay).Count == 1);
-			var day = Driver.FindElement(Pages.OrderForm.OrderDateDay).Text;
-			var month = Driver.FindElement(Pages.OrderForm.OrderDateMonth).Text;
-			var year = Driver.FindElement(Pages.OrderForm.OrderDateYear).Text;
+			var day = Driver.FindElement(Pages.OrderForm.OrderDateDay).GetAttribute("value");
+			var month = Driver.FindElement(Pages.OrderForm.OrderDateMonth).GetAttribute("value");
+			var year = Driver.FindElement(Pages.OrderForm.OrderDateYear).GetAttribute("value");
 			return string.Join(" ", day, month, year);
 		}
 
