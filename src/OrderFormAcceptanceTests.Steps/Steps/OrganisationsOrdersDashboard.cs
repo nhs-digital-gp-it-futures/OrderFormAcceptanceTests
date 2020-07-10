@@ -114,12 +114,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrganisationsOrdersDashboard.SubmittedOrdersTableDisplayed().Should().BeTrue();
         }
 
-        [Then(@"there is a control to nominate an organisation to buy on my behalf")]
-        public void ThenThereIsAControlToNominateAnOrganisationToBuyOnMyBehalf()
-        {
-            Test.Pages.OrganisationsOrdersDashboard.NominateProxyDisplayed().Should().BeTrue();
-        }
-
         [Then(@"there is a control to go back to the homepage")]
         public void ThenThereIsAControlToGoBackToTheHomepage()
         {
