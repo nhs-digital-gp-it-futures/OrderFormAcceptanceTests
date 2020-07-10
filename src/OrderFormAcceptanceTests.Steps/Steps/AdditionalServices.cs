@@ -36,6 +36,30 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 			Test.Pages.AdditionalServices.NoAddedOrderItemsDisplayed().Should().BeTrue();
 		}
 
+        [When(@"the User chooses to add a single Additional Service")]
+        public void WhenTheUserChoosesToAddASingleAdditionalService()
+        {
+            Test.Pages.OrderForm.ClickAddSolutionButton();
+        }
 
-	}
+        [Then(@"they are presented with the Additional Service available from their chosen Supplier")]
+        public void ThenTheyArePresentedWithTheAdditionalServiceAvailableFromTheirChosenSupplier()
+        {
+			Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Additional Service").Should().BeTrue();
+        }
+
+        [Then(@"they can select one Additional Service to add")]
+        public void ThenTheyCanSelectOneAdditionalServiceToAdd()
+        {
+			Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
+        }
+
+        [Given(@"the User is presented with Additional Services available from their chosen Supplier")]
+        public void GivenTheUserIsPresentedWithAdditionalServicesAvailableFromTheirChosenSupplier()
+        {
+            ThenTheUserIsAbleToManageTheAdditionalServicesSection();
+            WhenTheUserChoosesToAddASingleAdditionalService();
+            ThenTheyArePresentedWithTheAdditionalServiceAvailableFromTheirChosenSupplier();
+        }
+    }
 }
