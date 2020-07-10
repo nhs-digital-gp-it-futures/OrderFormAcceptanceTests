@@ -66,11 +66,35 @@ namespace OrderFormAcceptanceTests.TestData
                 PricingUnitTierName = "patients",
                 PricingUnitName = "patient",
                 PricingUnitDescription = "per patient",
-                TimeUnitId = null,
+                TimeUnitId = 2,
                 CurrencyCode = "GBP",
                 Quantity = 1111,
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 99.99M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
+
+        public OrderItem GenerateOrderItemWithFlatPricedVariableDeclarative(Order order)
+        {
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100006-001",
+                CatalogueItemTypeId = 1,
+                CatalogueItemName = "Paperlite",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 3,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "SMS",
+                PricingUnitName = "sms",
+                PricingUnitDescription = "per SMS",
+                TimeUnitId = 1,
+                CurrencyCode = "GBP",
+                Quantity = 1111,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 7.00M,
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now
             };
@@ -172,6 +196,12 @@ namespace OrderFormAcceptanceTests.TestData
         public string GetEstimationPeriod(string connectionString)
         {
             const string query = @"Select [Description] FROM [dbo].[TimeUnit] WHERE TimeUnitId=@EstimationPeriodId";
+            return SqlExecutor.Execute<string>(connectionString, query, this).FirstOrDefault();
+        }
+
+        public string GetTimeUnitPeriod(string connectionString)
+        {
+            const string query = @"Select [Description] FROM [dbo].[TimeUnit] WHERE TimeUnitId=@TimeUnitId";
             return SqlExecutor.Execute<string>(connectionString, query, this).FirstOrDefault();
         }
     }
