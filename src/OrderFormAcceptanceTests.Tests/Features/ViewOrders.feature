@@ -14,7 +14,6 @@ Scenario: View Orders
 	And each item includes the date it was created
 	And there is a table titled Unsubmitted orders
 	And there is a table titled Submitted orders
-	And there is a control to nominate an organisation to buy on my behalf
 	And there is a control to go back to the homepage 
 	And there is a control to create a new order
 

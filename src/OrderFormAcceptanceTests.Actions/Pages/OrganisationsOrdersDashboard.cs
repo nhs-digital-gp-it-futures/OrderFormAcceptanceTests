@@ -83,10 +83,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             return Driver.FindElements(Pages.OrganisationsOrdersDashboard.SubmittedOrdersTable).Count == 1;
         }
-        public bool NominateProxyDisplayed()
-        {
-            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.NominateProxy).Count == 1;
-        }
+
         public bool BackLinkDisplayed()
         {
             return Driver.FindElements(Pages.Common.BackLink).Count == 1;

@@ -17,6 +17,5 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By GenericExistingOrderCreatedDate => By.CssSelector("[data-test-id$='-dateCreated']");
 		public By UnsubmittedOrdersTable => CustomBy.DataTestId("unsubmitted-orders-table");
 		public By SubmittedOrdersTable => CustomBy.DataTestId("submitted-orders-table");
-		public By NominateProxy => CustomBy.DataTestId("proxy-link", "a");
 	}
 }
