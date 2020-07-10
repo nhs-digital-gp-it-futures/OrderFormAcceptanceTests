@@ -1,8 +1,10 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
+using OrderFormAcceptanceTests.TestData.Utils;
 using System;
 using System.Globalization;
+using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -180,9 +182,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the Price unit of order of each item is the concatenation ""\[Price\] \[unit\]""")]
         public void ThenThePriceUnitOfOrderOfEachItemIsTheConcatenation()
-        {
+        {            
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
-            var expectedValue = $"{FormatDecimal(expectedOrderItem.Price)} {expectedOrderItem.PricingUnitDescription}";
+            var timeDescription = expectedOrderItem.GetTimeUnitPeriod(Test.ConnectionString);
+            var expectedValue = $"{FormatDecimal(expectedOrderItem.Price)} {expectedOrderItem.PricingUnitDescription}{timeDescription}".Trim();
 
             var price = Test.Pages.OrderForm.GetItemPrice();
             price.Should().Be(expectedValue);
@@ -195,7 +198,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var expectedPeriod = expectedOrderItem.GetEstimationPeriod(Test.ConnectionString);
             var expectedValue = $"{FormatInt(expectedOrderItem.Quantity)} {expectedPeriod}";
-            
+
             var quantity = Test.Pages.OrderForm.GetItemQuantity();
             quantity.Should().Be(expectedValue);
         }
@@ -223,7 +226,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var expectedCost = expectedOrderItem.Price * expectedOrderItem.Quantity;
-            var expectedValue = Math.Round(expectedCost, 2);
+            var expectedValue = FormatDecimal(Math.Round(expectedCost, 2));
             var cost = Test.Pages.OrderForm.GetItemCost();
             cost.Should().Be(expectedValue.ToString());
         }
@@ -233,7 +236,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var expectedCost = expectedOrderItem.Price * expectedOrderItem.Quantity * 12;
-            var expectedValue = Math.Round(expectedCost, 2);
+            var expectedValue = FormatDecimal(Math.Round(expectedCost, 2));
             var cost = Test.Pages.OrderForm.GetItemCost();
             cost.Should().Be(expectedValue.ToString());
         }
@@ -241,7 +244,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
         public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
+            SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem.EstimationPeriodId = 2;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
@@ -249,6 +254,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per month is saved to the order")]
         public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
         {
+            SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.EstimationPeriodId = 1;
             orderItem.Create(Test.ConnectionString);
@@ -259,6 +265,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"a catalogue solution with a flat price variable \(Per-Patient\) order type is saved to the order")]
         public void GivenACatalogueSolutionWithAFlatPriceVariablePer_PatientOrderTypeIsSavedToTheOrder()
         {
+            SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
@@ -267,6 +274,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"a catalogue solution with a flat price variable \(Declarative\) order type is saved to the order")]
         public void GivenACatalogueSolutionWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder()
         {
+            SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
@@ -280,6 +288,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         private static string FormatInt(int quantity)
         {
             return quantity.ToString("#,0", new NumberFormatInfo { NumberGroupSeparator = "," });
+        }
+
+        private void SetOrderCatalogueSectionToComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.CatalogueSolutionsViewed = 1;
+            order.Update(Test.ConnectionString);
         }
     }
 }

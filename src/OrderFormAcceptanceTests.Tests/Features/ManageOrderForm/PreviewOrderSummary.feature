@@ -77,7 +77,7 @@ Scenario: Preview Order Summary - Flat with Variable (Per-Patient) order type
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
 
-#@ignore
+@ignore
 Scenario: Preview Order Summary - Flat with Variable (Declarative) order type
 	Given a catalogue solution with a flat price variable (Declarative) order type is saved to the order
 	When the Order Summary is displayed
@@ -88,5 +88,4 @@ Scenario: Preview Order Summary - Flat with Variable (Declarative) order type
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
 	And the Quantity of each item is the concatenation [Quantity] per year
 	And the Planned delivery date of each item is displayed
-	And the item cost per year of each item is the result of the Flat calculation * 12
-	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
+	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places

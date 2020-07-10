@@ -66,7 +66,7 @@ namespace OrderFormAcceptanceTests.TestData
                 PricingUnitTierName = "patients",
                 PricingUnitName = "patient",
                 PricingUnitDescription = "per patient",
-                TimeUnitId = null,
+                TimeUnitId = 2,
                 CurrencyCode = "GBP",
                 Quantity = 1111,
                 DeliveryDate = DateTime.Now.AddYears(1),
@@ -90,9 +90,8 @@ namespace OrderFormAcceptanceTests.TestData
                 PricingUnitTierName = "SMS",
                 PricingUnitName = "sms",
                 PricingUnitDescription = "per SMS",
-                TimeUnitId = null,
+                TimeUnitId = 1,
                 CurrencyCode = "GBP",
-                EstimationPeriodId = 1,
                 Quantity = 1111,
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 7.00M,
@@ -197,6 +196,12 @@ namespace OrderFormAcceptanceTests.TestData
         public string GetEstimationPeriod(string connectionString)
         {
             const string query = @"Select [Description] FROM [dbo].[TimeUnit] WHERE TimeUnitId=@EstimationPeriodId";
+            return SqlExecutor.Execute<string>(connectionString, query, this).FirstOrDefault();
+        }
+
+        public string GetTimeUnitPeriod(string connectionString)
+        {
+            const string query = @"Select [Description] FROM [dbo].[TimeUnit] WHERE TimeUnitId=@TimeUnitId";
             return SqlExecutor.Execute<string>(connectionString, query, this).FirstOrDefault();
         }
     }
