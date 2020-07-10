@@ -64,3 +64,25 @@ Scenario: Additional Services - Go back
 	And the User is able to manage the Additional Services section
 	When the User chooses to go back
 	Then the Order dashboard is presented
+
+Scenario: Additional Services - Select a single Additional Service to add
+	Given the Order Form for the existing order is presented
+	And the User is able to manage the Additional Services section
+	When the User chooses to add a single Additional Service
+	Then they are presented with the Additional Service available from their chosen Supplier
+	And they can select one Additional Service to add
+	And the Call Off Agreement ID is displayed in the page title
+
+Scenario: Additional Services - No Additional Service selected, produces relevant error message
+	Given the Order Form for the existing order is presented
+	Given the User is presented with Additional Services available from their chosen Supplier
+	And no Additional Service is selected
+	When they choose to continue
+	When the user selects an error link in the Error Summary
+	Then they will be navigated to the relevant part of the page
+
+Scenario: Additional Services - Go back from select an additional service
+	Given the Order Form for the existing order is presented
+	Given the User is presented with Additional Services available from their chosen Supplier
+	When the User chooses to go back
+	Then the Additional Service dashboard is presented

@@ -1,11 +1,9 @@
 ﻿using Bogus;
-using Bogus.DataSets;
 using FluentAssertions;
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
-using System;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -65,6 +63,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"no Catalogue Solution price is selected")]
         [Given(@"no Service Recipient is selected")]
         [Given(@"there are no Catalogue Solution items in the order")]
+        [Given(@"no Additional Service is selected")]
         [StepDefinition(@"there is no Additional Service added to the order")]
         public void DoNothing()
         {
