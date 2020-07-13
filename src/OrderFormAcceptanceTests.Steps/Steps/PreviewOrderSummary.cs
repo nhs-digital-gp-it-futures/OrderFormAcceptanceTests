@@ -185,7 +185,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {            
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var timeDescription = expectedOrderItem.GetTimeUnitPeriod(Test.ConnectionString);
-            var expectedValue = $"{FormatDecimal(expectedOrderItem.Price)} {expectedOrderItem.PricingUnitDescription}{timeDescription}".Trim();
+            var expectedValue = $"{FormatDecimal(expectedOrderItem.Price)} {expectedOrderItem.PricingUnitDescription} {timeDescription}".Trim();
 
             var price = Test.Pages.OrderForm.GetItemPrice();
             price.Should().Be(expectedValue);
@@ -218,7 +218,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var date = Test.Pages.OrderForm.GetItemPlannedDate();
-            date.Should().Be(expectedOrderItem.DeliveryDate.ToString("d MMMM YYYY"));
+            date.Should().Be(expectedOrderItem.DeliveryDate.ToString("d MMMM yyyy"));
         }
 
         [Then(@"the item year cost of each item is the result of the Flat calculation \[Price] \* \[Quantity] rounded up to two decimal places")]
@@ -275,6 +275,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenACatalogueSolutionWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
+            new CatalogueSolutions(Test, Context).GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
