@@ -38,7 +38,6 @@ Scenario: Preview Order Summary - Go back
 	When the User chooses to go back
 	Then the Order dashboard is presented
 
-@ignore
 Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per year estimation period
 	Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
 	When the Order Summary is displayed
@@ -51,7 +50,6 @@ Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per 
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
 
-@ignore
 Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per month estimation period
 	Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per month is saved to the order
 	When the Order Summary is displayed
@@ -64,7 +62,6 @@ Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per 
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 
-@ignore
 Scenario: Preview Order Summary - Flat with Variable (Per-Patient) order type
 	Given a catalogue solution with a flat price variable (Per-Patient) order type is saved to the order
 	When the Order Summary is displayed
@@ -77,7 +74,6 @@ Scenario: Preview Order Summary - Flat with Variable (Per-Patient) order type
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
 
-@ignore
 Scenario: Preview Order Summary - Flat with Variable (Declarative) order type
 	Given a catalogue solution with a flat price variable (Declarative) order type is saved to the order
 	When the Order Summary is displayed
