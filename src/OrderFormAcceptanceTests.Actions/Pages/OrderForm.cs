@@ -83,19 +83,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains(expectedValue, StringComparison.OrdinalIgnoreCase);
 		}
 
-		public bool EditAdditionalServicesSectionDisplayed()
-		{
-			try
-			{
-				Wait.Until(d => d.FindElements(Pages.OrderForm.EditAdditionalServices).Count == 1);
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
-		}
-
 		public bool TaskListDisplayed()
 		{
 			try
@@ -307,6 +294,36 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public bool EditCatalogueSolutionsSectionIsEnabled()
 		{
 			return Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).TagName == "a";
+		}
+		public bool EditAdditionalServicesSectionDisplayed()
+		{
+			try
+			{
+				Wait.Until(d => d.FindElements(Pages.OrderForm.EditAdditionalServices).Count == 1);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public bool EditAssociatedServicesSectionDisplayed()
+		{
+			try
+			{
+				Wait.Until(d => d.FindElements(Pages.OrderForm.EditAssociatedServices).Count == 1);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public void ClickEditAssociatedServices()
+		{
+			Driver.FindElement(Pages.OrderForm.EditAssociatedServices).Click();
 		}
 
 		public void AssertThatEditCatalogueSolutionsSectionIsNotComplete()

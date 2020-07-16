@@ -58,6 +58,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditAdditionalServicesSectionDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is the Associated Services section")]
+        public void ThenThereIsTheAssociatedServicesSection()
+        {
+            Test.Pages.OrderForm.EditAssociatedServicesSectionDisplayed().Should().BeTrue();
+        }
 
         [Then(@"the user is able to manage the Order Description section")]
         public void ThenTheUserIsAbleToManageTheOrderDescriptionSection()
@@ -251,6 +256,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.CatalogueSolutionsViewed = 1;
             order.Update(Test.ConnectionString);
         }
+
+        [Given(@"the Associated Services section is not complete")]
+        public void GivenTheAssociatedServicesSectionIsNotComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            //do something when model is updated
+            order.Update(Test.ConnectionString);
+        }
+
 
         [When(@"the User navigates back to the Organisation's Orders dashboard")]
         public void WhenTheUserNavigatesBackToTheOrganisationSOrdersDashboard()
