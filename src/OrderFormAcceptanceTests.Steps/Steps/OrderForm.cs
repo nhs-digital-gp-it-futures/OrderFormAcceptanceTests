@@ -309,6 +309,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditCatalogueSolutionsSectionIsEnabled().Should().BeTrue();
         }
 
+        [Then(@"the Associated Service section is enabled")]
+        public void ThenTheAssociatedServiceSectionIsEnabled()
+        {
+            Test.Pages.OrderForm.EditAssociatedServicesSectionIsEnabled().Should().BeTrue();
+        }
 
     }
 }
