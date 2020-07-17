@@ -22,6 +22,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 			searchedOrderItem.Should().BeNull();
 		}
 
+		[Given(@"an Additional Service is added to the order")]
+		public void GivenAnAdditionalServiceIsAddedToTheOrder()
+		{
+			new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
+			var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient((Order)Context["CreatedOrder"]);
+			orderItem.Create(Test.ConnectionString);
+			Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+		}
+
 		[StepDefinition(@"the User is able to manage the Additional Services section")]
 		[When(@"the User has chosen to manage the Additional Service section")]
 		public void ThenTheUserIsAbleToManageTheAdditionalServicesSection()
