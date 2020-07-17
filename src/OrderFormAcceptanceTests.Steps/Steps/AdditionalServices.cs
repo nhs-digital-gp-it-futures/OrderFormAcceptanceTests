@@ -12,6 +12,24 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 		{
 		}
 
+		[Given(@"there are no Additional Services in the order")]
+		public void GivenThereAreNoAdditionalServicesInTheOrder()
+		{
+            Context.Should().NotContainKey("CreatedAdditionalServiceOrderItem");
+            var order = (Order)Context["CreatedOrder"];
+			var searchedOrderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 2);
+            searchedOrderItem.Should().BeEmpty();
+		}
+
+		[Given(@"an Additional Service is added to the order")]
+		public void GivenAnAdditionalServiceIsAddedToTheOrder()
+		{
+			new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
+			var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient((Order)Context["CreatedOrder"]);
+			orderItem.Create(Test.ConnectionString);
+			Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+		}
+
 		[StepDefinition(@"the User is able to manage the Additional Services section")]
 		[When(@"the User has chosen to manage the Additional Service section")]
 		public void ThenTheUserIsAbleToManageTheAdditionalServicesSection()

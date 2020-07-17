@@ -19,13 +19,13 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By EditCommencementDate => CustomBy.DataTestId("task-2-item-0-description");
 		public By EditServiceRecipients => CustomBy.DataTestId("task-3-item-0-description");
 		public By EditCatalogueSolutions => CustomBy.DataTestId("task-4-item-0-description");
-
 		public By EditAdditionalServices => CustomBy.DataTestId("task-5-item-0-description");
+		public By EditAssociatedServices => CustomBy.DataTestId("task-6-item-0-description");
 		public By GenericSection(string sectionHrefRoute) {
 			return By.CssSelector(string.Format("[href$='{0}']", sectionHrefRoute));
 		}
 
-		public By OrderDescription => CustomBy.DataTestId("order-description");
+		public By OrderDescription => By.CssSelector("[data-test-id$=order-description");
 		public By OrganisationName => CustomBy.DataTestId("organisation-name");
 		public By OrganisationOdsCode => CustomBy.DataTestId("organisation-ods-code");
 		public Func<int, By> AddressLineX => (LineNumber) => By.CssSelector(string.Format("[data-test-id$=-address-{0}]", LineNumber.ToString()));

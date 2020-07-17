@@ -39,6 +39,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Remove("CreatedServiceRecipient");
         }
 
+        [Given(@"there is no Catalogue Solution in the order")]
+        public void GivenThereIsNoCatalogueSolutionInTheOrder()
+        {
+
+            Context.Should().NotContainKey("CreatedOrderItem");
+
+            var order = (Order)Context["CreatedOrder"];
+            var searchedOrderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
+            searchedOrderItem.Should().BeEmpty();
+        }
+
         [Then(@"the User is able to manage the Catalogue Solutions section")]
         public void ThenTheUserIsAbleToManageTheCatalogueSolutionsSection()
         {

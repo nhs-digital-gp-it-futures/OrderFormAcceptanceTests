@@ -102,6 +102,31 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
+        public OrderItem GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient(Order order)
+        {
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100000-001-A01",
+                CatalogueItemTypeId = 2,
+                CatalogueItemName = "Write on Time additional service",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 1,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "patients",
+                PricingUnitName = "patient",
+                PricingUnitDescription = "per patient",
+                TimeUnitId = 1,
+                CurrencyCode = "GBP",
+                Quantity = 305,
+                EstimationPeriodId = 1,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 199.990M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
+
         public int Create(string connectionString)
         {
             var query = @"INSERT INTO [dbo].[OrderItem](
@@ -149,10 +174,10 @@ namespace OrderFormAcceptanceTests.TestData
             return this.OrderItemId;
         }
 
-        public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId)
+        public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
         {
-            var query = "SELECT * from [dbo].[OrderItem] WHERE OrderId=@orderId";
-            return SqlExecutor.Execute<OrderItem>(connectionString, query, new { OrderId });
+            var query = "SELECT * from [dbo].[OrderItem] WHERE OrderId=@orderId AND CatalogueItemTypeId=@catalogueItemTypeId";
+            return SqlExecutor.Execute<OrderItem>(connectionString, query, new { OrderId, CatalogueItemTypeId });
         }
 
         public void Update(string connectionString)
