@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -9,6 +10,25 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 	{
 		public AdditionalServices(UITest test, ScenarioContext context) : base(test, context)
 		{
+		}
+
+		[Given(@"there are no Additional Services in the order")]
+		public void GivenThereAreNoAdditionalServicesInTheOrder()
+		{
+			var orderItem = (OrderItem)Context["CreatedAdditionalServiceOrderItem"];
+			orderItem.Should().BeNull();
+			var order = (Order)Context["CreatedOrder"];
+			var searchedOrderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 2);
+			searchedOrderItem.Should().BeNull();
+		}
+
+		[Given(@"an Additional Service is added to the order")]
+		public void GivenAnAdditionalServiceIsAddedToTheOrder()
+		{
+			new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
+			var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient((Order)Context["CreatedOrder"]);
+			orderItem.Create(Test.ConnectionString);
+			Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
 		}
 
 		[StepDefinition(@"the User is able to manage the Additional Services section")]

@@ -121,5 +121,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new OrderForm(Test, Context).ThenTheOrderIsSaved();
         }
 
+        [When(@"the User adds a Service Recipient to the Service Recipient section")]
+        public void WhenTheUserAddsAServiceRecipientToTheServiceRecipientSection()
+        {
+            ThenTheUserIsAbleToManageTheServiceRecipientsSection();
+            GivenTheCallOffOrderingPartyIsSelected();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            new OrderForm(Test, Context).ThenTheOrderIsSaved();
+        }
     }
 }

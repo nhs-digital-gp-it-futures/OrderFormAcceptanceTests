@@ -58,6 +58,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditAdditionalServicesSectionDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is the Associated Services section")]
+        public void ThenThereIsTheAssociatedServicesSection()
+        {
+            Test.Pages.OrderForm.EditAssociatedServicesSectionDisplayed().Should().BeTrue();
+        }
 
         [Then(@"the user is able to manage the Order Description section")]
         public void ThenTheUserIsAbleToManageTheOrderDescriptionSection()
@@ -252,6 +257,31 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Update(Test.ConnectionString);
         }
 
+        [Given(@"the Additional Services section is complete")]
+        public void GivenTheAdditionalServicesSectionIsComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.AdditionalServicesViewed = 1;
+            order.Update(Test.ConnectionString);
+        }
+
+        [Given(@"the Additional Services section is not complete")]
+        public void GivenTheAdditionalServicesSectionIsNotComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.AdditionalServicesViewed = 0;
+            order.Update(Test.ConnectionString);
+        }
+
+        [Given(@"the Associated Services section is not complete")]
+        public void GivenTheAssociatedServicesSectionIsNotComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            //do something when model is updated
+            order.Update(Test.ConnectionString);
+        }
+
+
         [When(@"the User navigates back to the Organisation's Orders dashboard")]
         public void WhenTheUserNavigatesBackToTheOrganisationSOrdersDashboard()
         {
@@ -293,6 +323,30 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheCatalogueSolutionSectionIsEnabled()
         {
             Test.Pages.OrderForm.EditCatalogueSolutionsSectionIsEnabled().Should().BeTrue();
+        }
+
+        [Then(@"the Additional Service section is enabled")]
+        public void ThenTheAdditionalServiceSectionIsEnabled()
+        {
+            Test.Pages.OrderForm.EditAdditionalServicesSectionIsEnabled().Should().BeTrue();
+        }
+
+        [Then(@"the Additional Service section is not enabled")]
+        public void ThenTheAdditionalServiceSectionIsNotEnabled()
+        {
+            Test.Pages.OrderForm.EditAdditionalServicesSectionIsEnabled().Should().BeFalse();
+        }
+
+        [Then(@"the Associated Service section is enabled")]
+        public void ThenTheAssociatedServiceSectionIsEnabled()
+        {
+            Test.Pages.OrderForm.EditAssociatedServicesSectionIsEnabled().Should().BeTrue();
+        }
+
+        [Then(@"the Associated Service section is not enabled")]
+        public void ThenTheAssociatedServiceSectionIsNotEnabled()
+        {
+            Test.Pages.OrderForm.EditAssociatedServicesSectionIsEnabled().Should().BeFalse();
         }
 
 
