@@ -241,6 +241,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             cost.Should().Be(expectedValue.ToString());
         }
 
+        [Given(@"a Catalogue Solution is added to the order")]
         [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
         public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {

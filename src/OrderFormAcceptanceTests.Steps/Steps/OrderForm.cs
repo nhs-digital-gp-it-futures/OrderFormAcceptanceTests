@@ -257,6 +257,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Update(Test.ConnectionString);
         }
 
+        [Given(@"the Additional Services section is not complete")]
+        public void GivenTheAdditionalServicesSectionIsNotComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.AdditionalServicesViewed = 0;
+            order.Update(Test.ConnectionString);
+        }
+
         [Given(@"the Associated Services section is not complete")]
         public void GivenTheAssociatedServicesSectionIsNotComplete()
         {
@@ -309,11 +317,30 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditCatalogueSolutionsSectionIsEnabled().Should().BeTrue();
         }
 
+        [Then(@"the Additional Service section is enabled")]
+        public void ThenTheAdditionalServiceSectionIsEnabled()
+        {
+            Test.Pages.OrderForm.EditAdditionalServicesSectionIsEnabled().Should().BeTrue();
+        }
+
+        [Then(@"the Additional Service section is not enabled")]
+        public void ThenTheAdditionalServiceSectionIsNotEnabled()
+        {
+            Test.Pages.OrderForm.EditAdditionalServicesSectionIsEnabled().Should().BeFalse();
+        }
+
         [Then(@"the Associated Service section is enabled")]
         public void ThenTheAssociatedServiceSectionIsEnabled()
         {
             Test.Pages.OrderForm.EditAssociatedServicesSectionIsEnabled().Should().BeTrue();
         }
+
+        [Then(@"the Associated Service section is not enabled")]
+        public void ThenTheAssociatedServiceSectionIsNotEnabled()
+        {
+            Test.Pages.OrderForm.EditAssociatedServicesSectionIsEnabled().Should().BeFalse();
+        }
+
 
     }
 }

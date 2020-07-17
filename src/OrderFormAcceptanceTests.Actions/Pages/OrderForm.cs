@@ -691,6 +691,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			}
 		}
 
+		public bool EditAdditionalServicesSectionIsEnabled()
+		{
+			return Driver.FindElement(Pages.OrderForm.EditAdditionalServices).TagName == "a";
+		}
+
 		public bool EditAssociatedServicesSectionDisplayed()
 		{
 			try
