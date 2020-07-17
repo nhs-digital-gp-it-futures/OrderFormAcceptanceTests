@@ -32,5 +32,10 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			return Driver.FindElements(Pages.AdditionalServices.NoAddedOrderItemsMessage).Count == 1;
 		}
+
+		public string PricePageTitle()
+		{
+			return Driver.FindElement(Pages.AdditionalServices.PricePageTitle).Text;
+		}
 	}
 }

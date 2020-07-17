@@ -155,6 +155,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElement(Pages.OrderForm.DeleteOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
 		}
 
+		public bool IsRadioButtonSelected(int index = 0)
+		{
+			Wait.Until(d => NumberOfRadioButtonsDisplayed() > index);
+			return Driver.FindElements(Pages.Common.RadioButton)[index].GetProperty("checked") != null;
+		}
+
 		public void PreviewOrderButtonHasAltTest()
 		{
 			Driver.FindElement(Pages.OrderForm.PreviewOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
