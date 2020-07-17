@@ -1,6 +1,8 @@
 ﻿using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
@@ -36,6 +38,16 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public string PricePageTitle()
 		{
 			return Driver.FindElement(Pages.AdditionalServices.PricePageTitle).Text;
+		}
+
+		public string ServiceRecipientsTitle()
+		{
+			return Driver.FindElement(Pages.AdditionalServices.ServiceRecipientsTitle).Text;
+		}
+
+		public List<string> ServiceRecipientNames()
+		{
+			return Driver.FindElements(Pages.Common.RadioButtonLabel).Select(s => s.Text).ToList();
 		}
 	}
 }

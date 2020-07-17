@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -109,6 +109,28 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheUserSSelectedAdditionalServiceIsSelected()
         {
             Test.Pages.OrderForm.IsRadioButtonSelected().Should().BeTrue();
+        }
+
+        [Given(@"the User has selected a Additional Service price")]
+        public void GivenTheUserHasSelectedAAdditionalServicePrice()
+        {
+            Test.Pages.AdditionalServices.PricePageTitle().Should().ContainEquivalentOf("List price");
+            Test.Pages.OrderForm.ClickRadioButton();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+        }
+
+        [Then(@"the Additional Service name is displayed")]
+        public void ThenTheAdditionalServiceNameIsDisplayed()
+        {
+            Test.Pages.AdditionalServices.ServiceRecipientsTitle().Should().MatchRegex("Service Recipient for .*");
+        }
+
+        [Then(@"the Service Recipients are presented in ascending alphabetical order by Presentation Name")]
+        public void ThenTheServiceRecipientsArePresentedInAscendingAlphabeticalOrderByPresentationName()
+        {
+            var displayedRecipients = Test.Pages.AdditionalServices.ServiceRecipientNames();
+
+            displayedRecipients.Should().BeInAscendingOrder();
         }
     }
 }
