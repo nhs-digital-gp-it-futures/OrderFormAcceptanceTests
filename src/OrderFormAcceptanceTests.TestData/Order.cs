@@ -100,7 +100,7 @@ namespace OrderFormAcceptanceTests.TestData
                                 ,@SupplierAddressId
                                 ,@SupplierContactId,
                                  @CatalogueSolutionsViewed,
-                                 @AdditionalServicesViewed
+                                 @AdditionalServicesViewed,
                                  @CommencementDate,
                                  @Created,
                                  @LastUpdated,

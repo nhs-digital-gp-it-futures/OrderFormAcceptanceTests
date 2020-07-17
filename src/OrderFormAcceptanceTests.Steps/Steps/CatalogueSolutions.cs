@@ -42,12 +42,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"there is no Catalogue Solution in the order")]
         public void GivenThereIsNoCatalogueSolutionInTheOrder()
         {
-            var orderItem = (OrderItem)Context["CreatedOrderItem"];
-            orderItem.Should().BeNull();
+
+            Context.Should().NotContainKey("CreatedOrderItem");
 
             var order = (Order)Context["CreatedOrder"];
             var searchedOrderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
-            searchedOrderItem.Should().BeNull();
+            searchedOrderItem.Should().BeEmpty();
         }
 
         [Then(@"the User is able to manage the Catalogue Solutions section")]

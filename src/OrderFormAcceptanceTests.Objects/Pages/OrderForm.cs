@@ -25,7 +25,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 			return By.CssSelector(string.Format("[href$='{0}']", sectionHrefRoute));
 		}
 
-		public By OrderDescription => CustomBy.DataTestId("order-description");
+		public By OrderDescription => By.CssSelector("[data-test-id$=order-description");
 		public By OrganisationName => CustomBy.DataTestId("organisation-name");
 		public By OrganisationOdsCode => CustomBy.DataTestId("organisation-ods-code");
 		public Func<int, By> AddressLineX => (LineNumber) => By.CssSelector(string.Format("[data-test-id$=-address-{0}]", LineNumber.ToString()));
