@@ -86,3 +86,23 @@ Scenario: Additional Services - Go back from select an additional service
 	Given the User is presented with Additional Services available from their chosen Supplier
 	When the User chooses to go back
 	Then the Additional Service dashboard is presented
+
+Scenario: Additional Services - Select a price for the Additional Service
+	Given the Order Form for the existing order is presented
+	And the User has selected an Additional Service to add
+	When they choose to continue
+	Then all the available prices for that Additional Service are presented
+
+Scenario: Additional Services - No price for the Additional Service selected
+	Given the Order Form for the existing order is presented
+	And the available prices for the selected Additional Service are presented  
+	When they choose to continue
+	Then the Additional Service price is not saved
+	And the reason is displayed
+
+Scenario: Additional Services - Go back from select price
+	Given the Order Form for the existing order is presented
+	And the available prices for the selected Additional Service are presented 
+	When the User chooses to go back
+	Then the Additional Services of the Catalogue Solutions in the order is displayed
+	And the User's selected Additional Service is selected

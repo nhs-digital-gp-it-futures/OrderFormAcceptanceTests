@@ -65,6 +65,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"there are no Catalogue Solution items in the order")]
         [Given(@"no Additional Service is selected")]
         [StepDefinition(@"there is no Additional Service added to the order")]
+        [Then("the Additional Service price is not saved")]
         public void DoNothing()
         {
             //do nothing

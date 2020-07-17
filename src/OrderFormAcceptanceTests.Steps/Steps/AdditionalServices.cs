@@ -43,12 +43,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"they are presented with the Additional Service available from their chosen Supplier")]
+        [Then(@"the Additional Services of the Catalogue Solutions in the order is displayed")]
         public void ThenTheyArePresentedWithTheAdditionalServiceAvailableFromTheirChosenSupplier()
         {
 			Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Additional Service").Should().BeTrue();
         }
 
-        [Then(@"they can select one Additional Service to add")]
+        [Then(@"they can select one Additional Service to add")]        
         public void ThenTheyCanSelectOneAdditionalServiceToAdd()
         {
 			Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
@@ -60,6 +61,35 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
             WhenTheUserChoosesToAddASingleAdditionalService();
             ThenTheyArePresentedWithTheAdditionalServiceAvailableFromTheirChosenSupplier();
+        }
+
+        [Given(@"the User has selected an Additional Service to add")]
+        public void GivenTheUserHasSelectedAnAdditionalServiceToAdd()
+        {
+            ThenTheUserIsAbleToManageTheAdditionalServicesSection();
+            WhenTheUserChoosesToAddASingleAdditionalService();
+            ThenTheyArePresentedWithTheAdditionalServiceAvailableFromTheirChosenSupplier();
+            Test.Pages.OrderForm.ClickRadioButton();            
+        }
+
+        [Then(@"all the available prices for that Additional Service are presented")]
+        public void ThenAllTheAvailablePricesForThatAdditionalServiceArePresented()
+        {
+            Test.Pages.AdditionalServices.PricePageTitle().Should().ContainEquivalentOf("List price");
+            ThenTheyCanSelectOneAdditionalServiceToAdd();            
+        }
+
+        [Given(@"the available prices for the selected Additional Service are presented")]
+        public void GivenTheAvailablePricesForTheSelectedAdditionalServiceArePresented()
+        {
+            GivenTheUserHasSelectedAnAdditionalServiceToAdd();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+        }
+
+        [Then(@"the User's selected Additional Service is selected")]
+        public void ThenTheUserSSelectedAdditionalServiceIsSelected()
+        {
+            Test.Pages.OrderForm.IsRadioButtonSelected().Should().BeTrue();
         }
     }
 }
