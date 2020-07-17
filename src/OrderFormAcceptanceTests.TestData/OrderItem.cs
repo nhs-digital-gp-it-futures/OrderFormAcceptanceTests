@@ -149,10 +149,10 @@ namespace OrderFormAcceptanceTests.TestData
             return this.OrderItemId;
         }
 
-        public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId)
+        public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
         {
-            var query = "SELECT * from [dbo].[OrderItem] WHERE OrderId=@orderId";
-            return SqlExecutor.Execute<OrderItem>(connectionString, query, new { OrderId });
+            var query = "SELECT * from [dbo].[OrderItem] WHERE OrderId=@orderId AND CatalogueItemTypeId=@catalogueItemTypeId";
+            return SqlExecutor.Execute<OrderItem>(connectionString, query, new { OrderId, CatalogueItemTypeId });
         }
 
         public void Update(string connectionString)

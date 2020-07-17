@@ -257,6 +257,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Update(Test.ConnectionString);
         }
 
+        [Given(@"the Additional Services section is complete")]
+        public void GivenTheAdditionalServicesSectionIsComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.AdditionalServicesViewed = 1;
+            order.Update(Test.ConnectionString);
+        }
+
         [Given(@"the Additional Services section is not complete")]
         public void GivenTheAdditionalServicesSectionIsNotComplete()
         {
