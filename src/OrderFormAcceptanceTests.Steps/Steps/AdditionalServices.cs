@@ -15,11 +15,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 		[Given(@"there are no Additional Services in the order")]
 		public void GivenThereAreNoAdditionalServicesInTheOrder()
 		{
-			var orderItem = (OrderItem)Context["CreatedAdditionalServiceOrderItem"];
-			orderItem.Should().BeNull();
-			var order = (Order)Context["CreatedOrder"];
+            Context.Should().NotContainKey("CreatedAdditionalServiceOrderItem");
+            var order = (Order)Context["CreatedOrder"];
 			var searchedOrderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 2);
-			searchedOrderItem.Should().BeNull();
+            searchedOrderItem.Should().BeEmpty();
 		}
 
 		[Given(@"an Additional Service is added to the order")]

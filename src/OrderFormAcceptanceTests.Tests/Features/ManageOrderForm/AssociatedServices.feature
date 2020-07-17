@@ -6,12 +6,13 @@
 Background: 
 	Given an unsubmitted order exists
 	And the Associated Services section is not complete
-	@ignore
+
 Scenario: Associated Services - Sections presented
+	Given the Catalogue Solution section is complete
 	When the Order Form for the existing order is presented
 	Then there is the Associated Services section
 	And the User is able to manage the Associated Services section
-	@ignore
+
 Scenario: Associated Services - Service Recipient now complete, 0 Service Recipient
 	Given there are no Service Recipients in the order
 	And the Catalogue Solutions section is not complete
@@ -26,7 +27,7 @@ Scenario: Associated Services - Service Recipient now complete, 0 Service Recipi
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled
-@ignore
+
 Scenario: Associated Services - Catalogue Solution now complete, >= 1 Service Recipient, 0 Catalogue Solution
 	Given there are one or more Service Recipients in the order
 	And the Catalogue Solution section is complete
@@ -78,7 +79,7 @@ Scenario: Associated Services - >= 1 Service Recipient, >=1 Catalogue Solution, 
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled
-@ignore
+
 Scenario: Associated Services - Additional Service now complete, >= 1 Service Recipient, >=1 Catalogue Solution, 0 Additional Services
 	Given a Catalogue Solution is added to the order
 	And the Additional Services section is complete
@@ -96,7 +97,7 @@ Scenario: Associated Services - Additional Service now complete, >= 1 Service Re
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled
-@ignore
+
 Scenario: Associated Services - Additional Service now complete, >= 1 Service Recipient, >=1 Catalogue Solution, =>1 Additional Service
 	Given a Catalogue Solution is added to the order
 	And an Additional Service is added to the order
