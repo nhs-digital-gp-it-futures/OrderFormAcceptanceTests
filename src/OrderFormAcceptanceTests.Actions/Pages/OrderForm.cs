@@ -827,5 +827,10 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			return Driver.FindElement(Pages.OrderForm.TotalOwnershipCost).Text;
 		}
+
+		public bool AddAssociatedServiceButtonDisplayed()
+		{
+			return Driver.FindElements(Pages.OrderForm.AddSolution).Count == 1;
+		}
 	}
 }

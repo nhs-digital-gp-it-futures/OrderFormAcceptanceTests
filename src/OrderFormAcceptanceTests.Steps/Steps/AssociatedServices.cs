@@ -19,7 +19,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheUserIsAbleToManageTheAssociatedServicesSection()
         {
             Test.Pages.OrderForm.ClickEditAssociatedServices();
-            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Associated Services").Should().BeTrue();
+            ThenTheAssociatedServicesDashboardIsPresented();
         }
 
         [Given(@"an Associated Service is added to the order")]
@@ -27,6 +27,25 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             //dev work to update data model needs completing
             Context.Pending();
+        }
+
+        [When(@"the User has chosen to manage the Associated Service section")]
+        public void WhenTheUserHasChosenToManageTheAssociatedServiceSection()
+        {
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
+            ThenTheUserIsAbleToManageTheAssociatedServicesSection();
+        }
+
+        [Then(@"the Associated Services dashboard is presented")]
+        public void ThenTheAssociatedServicesDashboardIsPresented()
+        {
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Associated Services").Should().BeTrue();
+        }
+
+        [Then(@"there is a control to add an Associated Service")]
+        public void ThenThereIsAControlToAddAnAssociatedService()
+        {
+            Test.Pages.OrderForm.AddAssociatedServiceButtonDisplayed().Should().BeTrue();
         }
 
     }
