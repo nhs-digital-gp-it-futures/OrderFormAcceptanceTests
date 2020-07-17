@@ -106,3 +106,28 @@ Scenario: Additional Services - Go back from select price
 	When the User chooses to go back
 	Then the Additional Services of the Catalogue Solutions in the order is displayed
 	And the User's selected Additional Service is selected
+
+Scenario: Additional Services - Select service recipient - Select a Service Recipient
+	Given the Order Form for the existing order is presented
+	And the available prices for the selected Additional Service are presented
+	And the User has selected a Additional Service price
+	When they choose to continue 
+	Then they are presented with the Service Recipients saved in the Order
+	And the Additional Service name is displayed	
+	And the Service Recipients are presented in ascending alphabetical order by Presentation Name
+
+Scenario: Additional Services - Select service recipient - No Service Recipient for the Additional Service selected
+	Given the Order Form for the existing order is presented
+	And the available prices for the selected Additional Service are presented
+	And the User has selected a Additional Service price
+	And the User chooses to continue
+	When no Service Recipient is selected
+	And they choose to continue
+	Then the User is informed they have to select a Service Recipient
+
+Scenario: Additional Services - Select service recipient - Go back 
+	Given the Order Form for the existing order is presented
+	And the available prices for the selected Additional Service are presented
+	And the User has selected a Additional Service price
+	When the User chooses to go back
+	Then all the available prices for that Additional Service are presented

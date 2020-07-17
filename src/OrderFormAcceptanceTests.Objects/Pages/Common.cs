@@ -18,6 +18,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By TextField => By.ClassName("nhsuk-input");
 		public By Checkbox => By.ClassName("nhsuk-checkboxes__input");
 		public By RadioButton => By.ClassName("nhsuk-radios__input");
+		public By RadioButtonLabel => By.CssSelector("div.nhsuk-radios__item label.nhsuk-radios__label");
 		public By Footer => By.Id("nhsuk-footer");
 		public By Header => CustomBy.DataTestId("header-banner");
 		public By BetaBanner => CustomBy.DataTestId("beta-banner");
