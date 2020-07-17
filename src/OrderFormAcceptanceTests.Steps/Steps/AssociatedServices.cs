@@ -22,5 +22,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Associated Services").Should().BeTrue();
         }
 
+        [Given(@"an Associated Service is added to the order")]
+        public void GivenAnAssociatedServiceIsAddedToTheOrder()
+        {
+            //dev work to update data model needs completing
+            Context.Pending();
+        }
+
     }
 }

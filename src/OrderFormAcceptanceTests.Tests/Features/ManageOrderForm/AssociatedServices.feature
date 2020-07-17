@@ -113,3 +113,11 @@ Scenario: Associated Services - Additional Service now complete, >= 1 Service Re
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled
+@ignore
+Scenario: Associated Services - Select no Service Recipients and then go back and add service recipients
+	Given there are no Service Recipients in the order
+	And the Catalogue Solutions section is not complete
+	And an Associated Service is added to the order
+	And the Order Form for the existing order is presented
+	When the User adds a Service Recipient to the Service Recipient section
+	Then the Associated Service section is enabled 
