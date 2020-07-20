@@ -29,7 +29,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Pending();
         }
 
-        [When(@"the User has chosen to manage the Associated Service section")]
+        [StepDefinition(@"the User has chosen to manage the Associated Service section")]
         public void WhenTheUserHasChosenToManageTheAssociatedServiceSection()
         {
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
@@ -39,7 +39,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Associated Services dashboard is presented")]
         public void ThenTheAssociatedServicesDashboardIsPresented()
         {
-            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Associated Services").Should().BeTrue();
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Associated Service").Should().BeTrue();
         }
 
         [Then(@"there is a control to add an Associated Service")]
@@ -47,6 +47,5 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.AddAssociatedServiceButtonDisplayed().Should().BeTrue();
         }
-
     }
 }

@@ -96,6 +96,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"there is content indicating there is no Catalogue Solution added")]
+        [Then(@"there is content indicating there is no Associated Service added")]
         public void ThenThereIsContentIndicatingThereIsNoCatalogueSolutionAdded()
         {
             Test.Pages.OrderForm.NoSolutionsAddedDisplayed().Should().BeTrue();
