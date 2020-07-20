@@ -50,13 +50,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 			Test.Pages.AdditionalServices.AddAdditionalServiceButtonDisplayed().Should().BeTrue();
 		}
 
-		[Then(@"there is content indicating there is no Additional Service added")]
-        [Then(@"the User is informed that there are no Associated Services to select")]
-		public void ThenThereIsContentIndicatingThereIsNoAdditionalServiceAdded()
-		{
-			Test.Pages.AdditionalServices.NoAddedOrderItemsDisplayed().Should().BeTrue();
-		}
-
         [When(@"the User chooses to add a single Additional Service")]
         public void WhenTheUserChoosesToAddASingleAdditionalService()
         {

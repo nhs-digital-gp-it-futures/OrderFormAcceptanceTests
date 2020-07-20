@@ -146,5 +146,47 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.ClickContinueButton();
         }
+
+        [Then(@"there is content indicating there is no Additional Service added")]
+        [Then(@"the User is informed that there are no Associated Services to select")]
+        public void ThenThereIsContentIndicatingThereIsNoOrderItemeAdded()
+        {
+            Test.Pages.AdditionalServices.NoAddedOrderItemsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"there is content indicating there is no Catalogue Solution added")]
+        [Then(@"there is content indicating there is no Associated Service added")]
+        public void ThenThereIsContentIndicatingThereIsNoCatalogueSolutionAdded()
+        {
+            Test.Pages.OrderForm.NoSolutionsAddedDisplayed().Should().BeTrue();
+        }
+
+        [When(@"the User chooses to add a single Catalogue Solution")]
+        [When(@"the User has chosen to Add a single Associated Service")]
+        public void WhenTheUserChoosesToAddASingleCatalogueSolution()
+        {
+            Test.Pages.OrderForm.ClickAddSolutionButton();
+        }
+
+        [Then(@"there is a control to continue")]
+        public void ThenThereIsAControlToContinue()
+        {
+            Test.Pages.OrderForm.ContinueButtonDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"there is no Continue button")]
+        public void ThenThereIsNoButton()
+        {
+            Test.Pages.OrderForm.ContinueButtonDisplayed().Should().BeFalse();
+        }
+
+        [Then(@"they can select one Catalogue Solution to add")]
+        [Then(@"they can select a price for the Catalogue Solution")]
+        [Then(@"they are presented with the Service Recipients saved in the Order")]
+        [Then(@"they can select one Associated Service to add")]
+        public void ThenTheyCanSelectOneRadioButton()
+        {
+            Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
+        }
     }
 }
