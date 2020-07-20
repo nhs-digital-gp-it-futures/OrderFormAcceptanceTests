@@ -137,7 +137,7 @@ Scenario: Associated Service dashboard - No Associated Services added
 	And the User has chosen to manage the Associated Service section
 	When there is no Associated Service added to the order
 	Then there is content indicating there is no Associated Service added
-@ignore
+#@ignore
 Scenario: Associated Service dashboard - User chooses not to add Associated Service
 	Given there are no Service Recipients in the order
 	And the User has chosen to manage the Associated Service section
