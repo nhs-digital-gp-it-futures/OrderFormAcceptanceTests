@@ -122,3 +122,32 @@ Scenario: Associated Services - Select no Service Recipients and then go back an
 	And the Order Form for the existing order is presented
 	When the User adds a Service Recipient to the Service Recipient section
 	Then the Associated Service section is enabled 
+
+Scenario: Associated Service dashboard
+	Given there are no Service Recipients in the order
+	When the User has chosen to manage the Associated Service section
+	Then the Associated Services dashboard is presented
+	And the Call Off Agreement ID is displayed in the page title
+	And the Order description is displayed
+	And there is a control to add an Associated Service
+	And there is a control to continue
+
+Scenario: Associated Service dashboard - No Associated Services added
+	Given there are no Service Recipients in the order
+	And the User has chosen to manage the Associated Service section
+	When there is no Associated Service added to the order
+	Then there is content indicating there is no Associated Service added
+@ignore
+Scenario: Associated Service dashboard - User chooses not to add Associated Service
+	Given there are no Service Recipients in the order
+	And the User has chosen to manage the Associated Service section
+	And the User chooses not to add an Associated Service
+	When they choose to continue
+	Then the Order is saved
+	And the content validation status of the associated-services section is complete
+
+Scenario: Associated Service dashboard - Go back
+	Given there are no Service Recipients in the order
+	And the User has chosen to manage the Associated Service section
+	When the User chooses to go back
+	Then the Order dashboard is presented

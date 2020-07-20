@@ -45,7 +45,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By ServiceRecipientName => By.CssSelector("[data-test-id^='organisation-name'] label");
 		public By ServiceRecipientOdsCode => By.CssSelector(".bc-c-service-recipients-table__ods");
 		public By AddSolution => CustomBy.DataTestId("add-orderItem-button", "a");
-		public By NoSolutionsAdded => CustomBy.DataTestId("no-added-solutions");
+		public By NoSolutionsAdded => CustomBy.DataTestId("no-added-orderItems");
 		public By AddedSolutionsTable => CustomBy.DataTestId("added-orderItems");
 		public By AddedSolutionName => By.CssSelector("[data-test-id$='-solutionName']");
 		public By AddedSolutionServiceRecipient => By.CssSelector("[data-test-id$='-serviceRecipient']");
