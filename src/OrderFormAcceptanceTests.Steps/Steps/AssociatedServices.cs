@@ -39,7 +39,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Associated Services dashboard is presented")]
         public void ThenTheAssociatedServicesDashboardIsPresented()
         {
-            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Associated Service").Should().BeTrue();
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Associated Services").Should().BeTrue();
         }
 
         [Then(@"there is a control to add an Associated Service")]
