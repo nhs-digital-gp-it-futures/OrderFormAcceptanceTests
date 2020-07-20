@@ -95,6 +95,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ContinueButtonDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is no Continue button")]
+        public void ThenThereIsNoButton(string p0)
+        {
+            Test.Pages.OrderForm.ContinueButtonDisplayed().Should().BeFalse();
+        }
+
         [Then(@"there is content indicating there is no Catalogue Solution added")]
         [Then(@"there is content indicating there is no Associated Service added")]
         public void ThenThereIsContentIndicatingThereIsNoCatalogueSolutionAdded()
@@ -536,6 +542,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             priceFromPage.Should().Be(expectedPrice);
         }
 
+        [Given(@"that the Supplier in the order has no associated services")]
         [Given(@"the supplier added to the order has a solution with a declarative flat price")]
         public void GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice()
         {

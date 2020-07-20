@@ -151,8 +151,7 @@ Scenario: Associated Service dashboard - Go back
 	And the User has chosen to manage the Associated Service section
 	When the User chooses to go back
 	Then the Order dashboard is presented
-
-
+@ignore
 Scenario: Select Associated Service - Select a single Associated Service to add
 	Given there are no Service Recipients in the order
 	And the User has chosen to manage the Associated Service section
@@ -167,7 +166,7 @@ Scenario: Select Associated Service - No Associated Service selected
 	And no Associated Service is selected
 	When they choose to continue
 	Then the User is informed they have to select an Associated Service
-
+@ignore
 Scenario: Select Associated Service - Go back
 	Given there are no Service Recipients in the order
 	And the User is presented with Associated Services available from their chosen Supplier
@@ -175,7 +174,9 @@ Scenario: Select Associated Service - Go back
 	Then the Associated Services dashboard is presented
 @ignore
 Scenario: Select Associated Service - Display 'no associated services' message
-Given that the Supplier in the order has no associated services
-When the User is adding an Associated Service to the Order
-Then the User is informed that there are no Associated Services to select
-and there will be no 'Continue' button
+	Given that the Supplier in the order has no associated services
+	And there are no Service Recipients in the order
+	And the User has chosen to manage the Associated Service section
+	When the User has chosen to Add a single Associated Service
+	Then the User is informed that there are no Associated Services to select
+	And there is no Continue button

@@ -51,6 +51,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 		}
 
 		[Then(@"there is content indicating there is no Additional Service added")]
+        [Then(@"the User is informed that there are no Associated Services to select")]
 		public void ThenThereIsContentIndicatingThereIsNoAdditionalServiceAdded()
 		{
 			Test.Pages.AdditionalServices.NoAddedOrderItemsDisplayed().Should().BeTrue();

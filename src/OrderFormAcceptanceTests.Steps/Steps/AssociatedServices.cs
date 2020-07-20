@@ -51,7 +51,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"they are presented with the Associated Services available from their chosen Supplier")]
         public void ThenTheyArePresentedWithTheAssociatedServicesAvailableFromTheirChosenSupplier()
         {
-            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Associated Services").Should().BeTrue();
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Associated Service").Should().BeTrue();
         }
 
         [Given(@"the User is presented with Associated Services available from their chosen Supplier")]
@@ -69,6 +69,5 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectAssociatedService");
         }
-
     }
 }
