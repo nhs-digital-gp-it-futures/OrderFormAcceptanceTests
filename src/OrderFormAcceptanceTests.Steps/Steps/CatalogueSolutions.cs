@@ -103,6 +103,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [When(@"the User chooses to add a single Catalogue Solution")]
+        [When(@"the User has chosen to Add a single Associated Service")]
         public void WhenTheUserChoosesToAddASingleCatalogueSolution()
         {
             Test.Pages.OrderForm.ClickAddSolutionButton();
@@ -117,6 +118,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"they can select one Catalogue Solution to add")]
         [Then(@"they can select a price for the Catalogue Solution")]
         [Then(@"they are presented with the Service Recipients saved in the Order")]
+        [Then(@"they can select one Associated Service to add")]
         public void ThenTheyCanSelectOneRadioButton()
         {
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);

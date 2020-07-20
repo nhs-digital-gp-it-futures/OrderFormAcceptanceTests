@@ -47,5 +47,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.AddAssociatedServiceButtonDisplayed().Should().BeTrue();
         }
+
+        [Then(@"they are presented with the Associated Services available from their chosen Supplier")]
+        public void ThenTheyArePresentedWithTheAssociatedServicesAvailableFromTheirChosenSupplier()
+        {
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Associated Services").Should().BeTrue();
+        }
+
     }
 }

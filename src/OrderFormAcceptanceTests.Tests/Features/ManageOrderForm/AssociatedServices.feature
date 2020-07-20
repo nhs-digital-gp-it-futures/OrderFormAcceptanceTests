@@ -137,7 +137,7 @@ Scenario: Associated Service dashboard - No Associated Services added
 	And the User has chosen to manage the Associated Service section
 	When there is no Associated Service added to the order
 	Then there is content indicating there is no Associated Service added
-#@ignore
+
 Scenario: Associated Service dashboard - User chooses not to add Associated Service
 	Given there are no Service Recipients in the order
 	And the User has chosen to manage the Associated Service section
@@ -151,3 +151,29 @@ Scenario: Associated Service dashboard - Go back
 	And the User has chosen to manage the Associated Service section
 	When the User chooses to go back
 	Then the Order dashboard is presented
+
+
+Scenario: Select Associated Service - Select a single Associated Service to add
+	Given there are no Service Recipients in the order
+	And the User has chosen to manage the Associated Service section
+	When the User has chosen to Add a single Associated Service
+	Then they are presented with the Associated Services available from their chosen Supplier
+	And the Call Off Agreement ID is displayed in the page title
+	And they can select one Associated Service to add
+@ignore
+Scenario: Select Associated Service - No Associated Service selected
+Given the User is presented with Associated Services available from their chosen Supplier
+And no Associated Service is selected
+When they choose to continue
+Then the User is informed they have to select an Associated Service
+@ignore
+Scenario: Select Associated Service - Go back
+Given the Associated Services available from the User's chosen Supplier are presented
+When the User chooses to go back
+Then the Associated Service dashboard is presented
+@ignore
+Scenario: Select Associated Service - Display 'no associated services' message
+Given that the Supplier in the order has no associated services
+When the User is adding an Associated Service to the Order
+Then the User is informed that there are no Associated Services to select
+and there will be no 'Continue' button
