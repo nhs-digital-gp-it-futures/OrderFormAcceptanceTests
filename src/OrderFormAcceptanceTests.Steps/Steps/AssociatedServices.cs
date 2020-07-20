@@ -54,5 +54,21 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Associated Services").Should().BeTrue();
         }
 
+        [Given(@"the User is presented with Associated Services available from their chosen Supplier")]
+        public void GivenTheUserIsPresentedWithAssociatedServicesAvailableFromTheirChosenSupplier()
+        {
+            WhenTheUserHasChosenToManageTheAssociatedServiceSection();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            ThenTheyArePresentedWithTheAssociatedServicesAvailableFromTheirChosenSupplier();
+        }
+
+        [Then(@"the User is informed they have to select an Associated Service")]
+        public void ThenTheUserIsInformedTheyHaveToSelectAnAssociatedService()
+        {
+            Test.Pages.OrderForm.ErrorSummaryDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectAssociatedService");
+        }
+
     }
 }

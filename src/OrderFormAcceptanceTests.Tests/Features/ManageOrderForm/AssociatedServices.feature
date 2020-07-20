@@ -162,15 +162,17 @@ Scenario: Select Associated Service - Select a single Associated Service to add
 	And they can select one Associated Service to add
 @ignore
 Scenario: Select Associated Service - No Associated Service selected
-Given the User is presented with Associated Services available from their chosen Supplier
-And no Associated Service is selected
-When they choose to continue
-Then the User is informed they have to select an Associated Service
-@ignore
+	Given there are no Service Recipients in the order
+	And the User is presented with Associated Services available from their chosen Supplier
+	And no Associated Service is selected
+	When they choose to continue
+	Then the User is informed they have to select an Associated Service
+
 Scenario: Select Associated Service - Go back
-Given the Associated Services available from the User's chosen Supplier are presented
-When the User chooses to go back
-Then the Associated Service dashboard is presented
+	Given there are no Service Recipients in the order
+	And the User is presented with Associated Services available from their chosen Supplier
+	When the User chooses to go back
+	Then the Associated Services dashboard is presented
 @ignore
 Scenario: Select Associated Service - Display 'no associated services' message
 Given that the Supplier in the order has no associated services
