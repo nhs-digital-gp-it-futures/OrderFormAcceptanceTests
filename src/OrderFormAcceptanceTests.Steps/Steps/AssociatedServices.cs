@@ -1,10 +1,8 @@
-﻿using FluentAssertions;
+﻿using Bogus;
+using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData.Utils;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -144,6 +142,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CatalogueSolutions(Test, Context).ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
+        [Given(@"fills in the Associated Service edit form with valid data")]
+        public void GivenFillsInTheAssociatedServiceEditFormWithValidData()
+        {
+            if (Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed() == 2)
+            {
+                Test.Pages.OrderForm.ClickRadioButton(1);
+            }
+
+            var f = new Faker();
+            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1).ToString());
+            Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
+        }
 
     }
 }

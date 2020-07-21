@@ -230,3 +230,107 @@ Scenario Outline: Associated Service - edit price screen - Flat price Mandatory 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
+
+Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price with 4 decimal place
+	Given there are no Service Recipients in the order
+	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
+	And fills in the Associated Service edit form with valid data
+	And the price has 4 decimal places
+	When the User chooses to save
+	Then the Associated Service is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+
+Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price is negative
+	Given there are no Service Recipients in the order
+	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
+	And fills in the Associated Service edit form with valid data
+	And the price is negative
+	When the User chooses to save
+	Then the Associated Service is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+
+Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price does not allow characters
+	Given there are no Service Recipients in the order
+	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
+	And fills in the Associated Service edit form with valid data
+	And the price contains characters
+	When the User chooses to save
+	Then the Associated Service is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+
+Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity does not allow characters
+	Given there are no Service Recipients in the order
+	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
+	And fills in the Associated Service edit form with valid data
+	And the quantity contains characters
+	When the User chooses to save
+	Then the Associated Service is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+
+Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity does not allow decimals
+	Given there are no Service Recipients in the order
+	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
+	And fills in the Associated Service edit form with valid data
+	And the quanitity is a decimal
+	When the User chooses to save
+	Then the Associated Service is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+
+Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity can not be negative
+	Given there are no Service Recipients in the order
+	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
+	And fills in the Associated Service edit form with valid data
+	And the quantity is negative
+	When the User chooses to save
+	Then the Associated Service is not saved
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+
+Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity exceeds the maximum length
+	Given there are no Service Recipients in the order
+	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
+	And fills in the Associated Service edit form with valid data
+	And the quantity is over the max length
+	When the User chooses to save
+	Then the Associated Service is not saved 
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+
+Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price exceeds the maximum value
+	Given there are no Service Recipients in the order
+	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
+	And fills in the Associated Service edit form with valid data
+	And the price is over the max value
+	When the User chooses to save
+	Then the Associated Service is not saved 
+	And the reason is displayed
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
