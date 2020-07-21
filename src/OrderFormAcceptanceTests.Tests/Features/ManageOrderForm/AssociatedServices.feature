@@ -202,3 +202,18 @@ Scenario: Associated Service - Select price - Go back
 	When the User chooses to go back
 	Then they are presented with the Associated Services available from their chosen Supplier
 	And the User's selected Associated Service is selected
+@ignore
+Scenario: Associated Service - edit price screen - Flat variable price selected
+	Given there are no Service Recipients in the order
+	And the User is presented with the prices for the selected Associated Service 
+	And the User selects the flat variable price type
+	When they choose to continue
+	Then they are presented with the Associated Service edit form
+	And the name of the selected Associated Service is displayed on the Associated Service edit form
+	And the Associated Service edit form contains an input for the price
+	And the item on the Associated Service edit form contains a unit of order
+	And the item on the Associated Service edit form contains an input for the quantity
+	And the item on the Associated Service edit form contains a selection for the quantity estimation period
+	And the price input is autopopulated with the list price for the flat list price selected
+	And the delete button is disabled
+	And the save button is enabled

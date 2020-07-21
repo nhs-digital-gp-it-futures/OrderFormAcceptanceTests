@@ -95,6 +95,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("ChosenItemId", itemId);
         }
 
+        [Given(@"the User selects the flat variable price type")]
+        public void GivenTheUserSelectsTheFlatVariablePriceType()
+        {
+            Test.Pages.OrderForm.ClickRadioButton(1);
+        }
+
         [Then(@"all the available prices for that Associated Service are presented")]
         public void ThenAllTheAvailablePricesForThatAssociatedServiceArePresented()
         {
@@ -105,6 +111,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
         }
 
+        [Then(@"the name of the selected Associated Service is displayed on the Associated Service edit form")]
+        public void ThenTheNameOfTheSelectedAssociatedServiceIsDisplayedOnTheAssociatedServiceEditForm()
+        {
+            var itemId = (string)Context["ChosenItemId"];
+            var query = "Select Name FROM [dbo].[CatalogueItem] where CatalogueItemId=@itemId";
+            var expectedSolutionName = SqlExecutor.Execute<string>(Test.BapiConnectionString, query, new { itemId }).Single();
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedSolutionName).Should().BeTrue();
+        }
 
     }
 }

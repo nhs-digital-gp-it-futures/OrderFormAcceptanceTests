@@ -181,6 +181,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectRecipient");
         }
 
+        [Then(@"they are presented with the Associated Service edit form")]
         [Then(@"they are presented with the Catalogue Solution edit form")]
         public void ThenTheyArePresentedWithTheCatalogueSolutionEditForm()
         {
@@ -206,6 +207,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedFormattedValue).Should().BeTrue();
         }
 
+        [Then(@"the Associated Service edit form contains an input for the price")]
         [Then(@"the Catalogue Solution edit form contains an input for the price")]
         public void ThenTheCatalogueSolutionEditFormContainsAnInputForThePrice()
         {
@@ -218,12 +220,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.GetPriceInputValue().Should().NotBeNullOrEmpty();            
         }
 
+        [Then(@"the item on the Associated Service edit form contains a unit of order")]
         [Then(@"the item on the Catalogue Solution edit form contains a unit of order")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAUnitOfOrder()
         {
             Test.Pages.OrderForm.OrderUnitIsDisplayed().Should().BeTrue();
         }
 
+        [Then(@"the item on the Associated Service edit form contains an input for the quantity")]
         [Then(@"the item on the Catalogue Solution edit form contains an input for the quantity")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAnInputForTheQuantity()
         {
@@ -236,6 +240,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ProposedDateInputIsDisplayed().Should().BeTrue();
         }
 
+        [Then(@"the item on the Associated Service edit form contains a selection for the quantity estimation period")]
         [Then(@"the item on the Catalogue Solution edit form contains a selection for the quantity estimation period")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsASelectionForTheQuantityEstimationPeriod()
         {
