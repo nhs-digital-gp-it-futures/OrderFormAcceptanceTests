@@ -217,3 +217,16 @@ Scenario: Associated Service - edit price screen - Flat variable price selected
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the delete button is disabled
 	And the save button is enabled
+@ignore
+Scenario Outline: Associated Service - edit price screen - Flat price Mandatory data missing
+	Given there are no Service Recipients in the order
+	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
+	And mandatory data are missing 
+	When the User chooses to save
+	Then the Associated Service is not saved
+	And the reason is displayed
+	And the delete button is disabled
+	Examples: 
+	| ProvisioningType |
+	| declarative      |
+	| variable         |

@@ -101,6 +101,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickRadioButton(1);
         }
 
+        [Given(@"the User selects the flat declarative price type")]
+        public void GivenTheUserSelectsTheFlatDeclarativePriceType()
+        {
+            Test.Pages.OrderForm.ClickRadioButton(0);
+        }
+
         [Then(@"all the available prices for that Associated Service are presented")]
         public void ThenAllTheAvailablePricesForThatAssociatedServiceArePresented()
         {
@@ -119,6 +125,25 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedSolutionName = SqlExecutor.Execute<string>(Test.BapiConnectionString, query, new { itemId }).Single();
             Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedSolutionName).Should().BeTrue();
         }
+
+        [Given(@"the User is presented with the Associated Service edit form for a variable flat price")]
+        public void GivenTheUserIsPresentedWithTheAssociatedServiceEditFormForAVariableFlatPrice()
+        {
+            GivenTheUserIsPresentedWithThePricesForTheSelectedAssociatedService();
+            GivenTheUserSelectsTheFlatVariablePriceType();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            new CatalogueSolutions(Test, Context).ThenTheyArePresentedWithTheOrderItemPriceEditForm();
+        }
+
+        [Given(@"the User is presented with the Associated Service edit form for a declarative flat price")]
+        public void GivenTheUserIsPresentedWithTheAssociatedServiceEditFormForADeclarativeFlatPrice()
+        {
+            GivenTheUserIsPresentedWithThePricesForTheSelectedAssociatedService();
+            GivenTheUserSelectsTheFlatVariablePriceType();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            new CatalogueSolutions(Test, Context).ThenTheyArePresentedWithTheOrderItemPriceEditForm();
+        }
+
 
     }
 }

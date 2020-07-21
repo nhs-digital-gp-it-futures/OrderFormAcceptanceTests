@@ -183,7 +183,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"they are presented with the Associated Service edit form")]
         [Then(@"they are presented with the Catalogue Solution edit form")]
-        public void ThenTheyArePresentedWithTheCatalogueSolutionEditForm()
+        public void ThenTheyArePresentedWithTheOrderItemPriceEditForm()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("information for").Should().BeTrue();
         }
@@ -272,7 +272,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+            ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
         [Given(@"the User is presented with the Catalogue Solution edit form for a declarative flat price")]
@@ -284,7 +284,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+            ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
         [Given(@"the User is presented with the Catalogue Solution edit form for a per patient flat price")]
@@ -295,7 +295,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+            ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
         [Given(@"the proposed date is an invalid date")]
@@ -459,7 +459,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             WhenTheUserHasChosenToManageTheCatalogueSolutionSection();
             ThenTheCatalogueSolutionsArePresented();
             Test.Pages.OrderForm.ClickAddedSolution();
-            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+            ThenTheyArePresentedWithTheOrderItemPriceEditForm();
 
             var order = (Order)Context["CreatedOrder"];
             var deliveryDate = order.CommencementDate.Value.AddMonths(6).AddYears(1);
@@ -485,7 +485,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void WhenTheUserRe_VisitsTheCatalogueSolution()
         {
             Test.Pages.OrderForm.ClickAddedSolution();
-            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+            ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
         [Then(@"the values will be populated with the values that was saved by the User")]

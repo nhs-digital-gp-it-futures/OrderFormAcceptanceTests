@@ -52,6 +52,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             }
         }
 
+        [Then(@"the Associated Service is not saved")]
         [Given(@"no Associated Service price is selected")]
         [Then(@".* section is not saved")]
         [Then(@"the Catalogue Solution is not saved")]
