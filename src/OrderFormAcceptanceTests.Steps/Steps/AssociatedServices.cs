@@ -38,7 +38,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheUserIsAbleToManageTheAssociatedServicesSection();
         }
 
-        [Then(@"the Associated Services dashboard is presented")]
+        [StepDefinition(@"the Associated Services dashboard is presented")]
         public void ThenTheAssociatedServicesDashboardIsPresented()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Associated Services").Should().BeTrue();
