@@ -359,3 +359,20 @@ Scenario Outline: Associated Service - edit price screen - Flat price All data a
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
+
+Scenario Outline: Associated Service - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places 
+	Given there are no Service Recipients in the order
+	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
+	Then the price is displayed to two decimal places
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+
+Scenario: Associated Service - edit price screen - Flat price values populated after editing and saving
+	Given there are no Service Recipients in the order
+	Given an Associated Service with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
+	And the User amends the existing Associated Service details
+	When the User re-visits the Associated Service
+	Then the values will be populated with the values that was saved by the User
+	And the delete button is enabled

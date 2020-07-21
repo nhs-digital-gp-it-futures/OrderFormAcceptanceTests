@@ -579,7 +579,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return countOfNames == countOfLinks;
 		}
 
-		public void ClickAddedSolution(int index = 0)
+		public void ClickAddedCatalogueItem(int index = 0)
         {
 			Driver.FindElements(Pages.OrderForm.AddedSolutionName)[index].Click();
 		}

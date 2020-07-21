@@ -459,7 +459,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             WhenTheUserHasChosenToManageTheCatalogueSolutionSection();
             ThenTheCatalogueSolutionsArePresented();
-            Test.Pages.OrderForm.ClickAddedSolution();
+            Test.Pages.OrderForm.ClickAddedCatalogueItem();
             ThenTheyArePresentedWithTheOrderItemPriceEditForm();
 
             var order = (Order)Context["CreatedOrder"];
@@ -482,10 +482,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheCatalogueSolutionsArePresented();
         }
 
+        [When(@"the User re-visits the Associated Service")]
         [When(@"the User re-visits the Catalogue Solution")]
         public void WhenTheUserRe_VisitsTheCatalogueSolution()
         {
-            Test.Pages.OrderForm.ClickAddedSolution();
+            Test.Pages.OrderForm.ClickAddedCatalogueItem();
             ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
