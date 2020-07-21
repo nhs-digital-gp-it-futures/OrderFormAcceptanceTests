@@ -98,13 +98,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserHasSelectedAnAdditionalServiceToAdd();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-        }
-
-        [Then(@"the User's selected Additional Service is selected")]
-        public void ThenTheUserSSelectedAdditionalServiceIsSelected()
-        {
-            Test.Pages.OrderForm.IsRadioButtonSelected().Should().BeTrue();
-        }
+        }        
 
         [Given(@"the User has selected a Additional Service price")]
         public void GivenTheUserHasSelectedAAdditionalServicePrice()

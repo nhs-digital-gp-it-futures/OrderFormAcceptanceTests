@@ -180,3 +180,25 @@ Scenario: Select Associated Service - Display 'no associated services' message
 	When the User has chosen to Add a single Associated Service
 	Then the User is informed that there are no Associated Services to select
 	And there is no Continue button
+@ignore
+Scenario: Associated Service - Select price - Select a price for the Associated Service
+	Given there are no Service Recipients in the order
+	And the User is presented with Associated Services available from their chosen Supplier
+	And the User selects an Associated Service to add
+	When they choose to continue
+	Then all the available prices for that Associated Service are presented
+	And they can select a price for the Associated Service
+@ignore
+Scenario: Associated Service - Select price - No price for the Associated Service selected
+	Given there are no Service Recipients in the order
+	And the User is presented with the prices for the selected Associated Service 
+	And no Associated Service price is selected
+	When they choose to continue
+	Then the User is informed they have to select a Associated Service price
+@ignore
+Scenario: Associated Service - Select price - Go back 
+	Given there are no Service Recipients in the order
+	And the User is presented with the prices for the selected Associated Service 
+	When the User chooses to go back
+	Then they are presented with the Associated Services available from their chosen Supplier
+	And the User's selected Associated Service is selected

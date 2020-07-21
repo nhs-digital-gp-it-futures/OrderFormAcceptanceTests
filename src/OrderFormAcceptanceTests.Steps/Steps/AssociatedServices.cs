@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
 
@@ -62,6 +64,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheyArePresentedWithTheAssociatedServicesAvailableFromTheirChosenSupplier();
         }
 
+        [Given(@"the User is presented with the prices for the selected Associated Service")]
+        public void GivenTheUserIsPresentedWithThePricesForTheSelectedAssociatedService()
+        {
+            GivenTheUserIsPresentedWithAssociatedServicesAvailableFromTheirChosenSupplier();
+            Test.Pages.OrderForm.ClickRadioButton(0);
+            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
+        }
+
         [Then(@"the User is informed they have to select an Associated Service")]
         public void ThenTheUserIsInformedTheyHaveToSelectAnAssociatedService()
         {
@@ -69,5 +79,32 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectAssociatedService");
         }
+
+        [Then(@"the User is informed they have to select a Associated Service price")]
+        public void ThenTheUserIsInformedTheyHaveToSelectAAssociatedServicePrice()
+        {
+            Test.Pages.OrderForm.ErrorSummaryDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectAssociatedServicePrice");
+        }
+
+        [Given(@"the User selects an Associated Service to add")]
+        public void GivenTheUserSelectsAnAssociatedServiceToAdd()
+        {
+            var itemId = Test.Pages.OrderForm.ClickRadioButton();
+            Context.Add("ChosenItemId", itemId);
+        }
+
+        [Then(@"all the available prices for that Associated Service are presented")]
+        public void ThenAllTheAvailablePricesForThatAssociatedServiceArePresented()
+        {
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("List price").Should().BeTrue();
+            var itemId = (string)Context["ChosenItemId"];
+            var query = "Select count(*) FROM [dbo].[CataloguePrice] where CatalogueItemId=@itemId";
+            var expectedNumberOfPrices = SqlExecutor.Execute<int>(Test.BapiConnectionString, query, new { itemId }).Single();
+            Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
+        }
+
+
     }
 }
