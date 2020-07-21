@@ -52,6 +52,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             }
         }
 
+        [Given(@"no Associated Service price is selected")]
         [Then(@".* section is not saved")]
         [Then(@"the Catalogue Solution is not saved")]
         [StepDefinition(@"the Catalogue Solution is saved")]
@@ -180,6 +181,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ContinueButtonDisplayed().Should().BeFalse();
         }
 
+        [Then(@"they can select a price for the Associated Service")]
         [Then(@"they can select one Catalogue Solution to add")]
         [Then(@"they can select a price for the Catalogue Solution")]
         [Then(@"they are presented with the Service Recipients saved in the Order")]
@@ -187,6 +189,19 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheyCanSelectOneRadioButton()
         {
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
+        }
+
+        [Then(@"the User's selected Associated Service is selected")]
+        [Then(@"the User's selected Additional Service is selected")]
+        public void ThenARadioOptiionIsSelected()
+        {
+            Test.Pages.OrderForm.IsRadioButtonSelected().Should().BeTrue();
+        }
+
+        public void ContinueAndWaitForRadioButtons()
+        {
+            WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneRadioButton();
         }
     }
 }

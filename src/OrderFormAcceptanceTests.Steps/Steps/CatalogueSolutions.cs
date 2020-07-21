@@ -141,7 +141,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier();
             GivenTheUserSelectsACatalogueSolutionToAdd();
-            ContinueAndWaitForRadioButtons();
+            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
         }
 
         [Given(@"the User selects a price")]
@@ -162,7 +162,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             GivenTheUserSelectsAPrice();
-            ContinueAndWaitForRadioButtons();
+            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
         }
 
         [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the per patient flat price")]
@@ -170,7 +170,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton();
-            ContinueAndWaitForRadioButtons();
+            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
         }
 
         [Then(@"the User is informed they have to select a Service Recipient")]
@@ -276,7 +276,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
-            ContinueAndWaitForRadioButtons();
+            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
@@ -287,7 +287,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
-            ContinueAndWaitForRadioButtons();
+            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
@@ -517,13 +517,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
-            ContinueAndWaitForRadioButtons();
+            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
         }
-        private void ContinueAndWaitForRadioButtons()
-        {
-            var cs = new CommonSteps(Test, Context);
-            cs.WhenTheyChooseToContinue();
-            cs.ThenTheyCanSelectOneRadioButton();
-        }
+        
     }
 }
