@@ -409,6 +409,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
         }
 
+        [StepDefinition(@"the Associated Service is saved in the DB")]
         [StepDefinition(@"the Catalogue Solution is saved in the DB")]
         public void GivenTheCatalogueSolutionIsSavedInTheDB()
         {
