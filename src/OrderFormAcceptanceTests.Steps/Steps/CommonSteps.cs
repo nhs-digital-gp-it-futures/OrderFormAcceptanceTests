@@ -52,6 +52,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             }
         }
 
+        [StepDefinition(@"the Associated Service is saved")]
+        [Then(@"the Associated Service is not saved")]
         [Given(@"no Associated Service price is selected")]
         [Then(@".* section is not saved")]
         [Then(@"the Catalogue Solution is not saved")]
@@ -191,6 +193,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
         }
 
+        [Then(@"the User's selected price is selected")]
         [Then(@"the User's selected Associated Service is selected")]
         [Then(@"the User's selected Additional Service is selected")]
         public void ThenARadioOptiionIsSelected()

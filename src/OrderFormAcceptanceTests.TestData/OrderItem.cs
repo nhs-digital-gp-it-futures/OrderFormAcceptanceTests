@@ -127,6 +127,31 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
+        public OrderItem GenerateAssociatedServiceWithFlatPricedVariableOnDemand(Order order)
+        {
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100000-S-001",
+                CatalogueItemTypeId = 3,
+                CatalogueItemName = "Really Kool associated service",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 3,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "half days",
+                PricingUnitName = "halfDay",
+                PricingUnitDescription = "per half day",
+                TimeUnitId = null,
+                CurrencyCode = "GBP",
+                Quantity = 9,
+                EstimationPeriodId = 2,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 150.000M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
+
         public int Create(string connectionString)
         {
             var query = @"INSERT INTO [dbo].[OrderItem](

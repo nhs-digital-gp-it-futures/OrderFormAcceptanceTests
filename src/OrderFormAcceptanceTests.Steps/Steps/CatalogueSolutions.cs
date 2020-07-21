@@ -181,8 +181,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectRecipient");
         }
 
+        [Then(@"they are presented with the Associated Service edit form")]
         [Then(@"they are presented with the Catalogue Solution edit form")]
-        public void ThenTheyArePresentedWithTheCatalogueSolutionEditForm()
+        public void ThenTheyArePresentedWithTheOrderItemPriceEditForm()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("information for").Should().BeTrue();
         }
@@ -206,6 +207,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedFormattedValue).Should().BeTrue();
         }
 
+        [Then(@"the Associated Service edit form contains an input for the price")]
         [Then(@"the Catalogue Solution edit form contains an input for the price")]
         public void ThenTheCatalogueSolutionEditFormContainsAnInputForThePrice()
         {
@@ -218,12 +220,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.GetPriceInputValue().Should().NotBeNullOrEmpty();            
         }
 
+        [Then(@"the item on the Associated Service edit form contains a unit of order")]
         [Then(@"the item on the Catalogue Solution edit form contains a unit of order")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAUnitOfOrder()
         {
             Test.Pages.OrderForm.OrderUnitIsDisplayed().Should().BeTrue();
         }
 
+        [Then(@"the item on the Associated Service edit form contains an input for the quantity")]
         [Then(@"the item on the Catalogue Solution edit form contains an input for the quantity")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAnInputForTheQuantity()
         {
@@ -236,6 +240,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ProposedDateInputIsDisplayed().Should().BeTrue();
         }
 
+        [Then(@"the item on the Associated Service edit form contains a selection for the quantity estimation period")]
         [Then(@"the item on the Catalogue Solution edit form contains a selection for the quantity estimation period")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsASelectionForTheQuantityEstimationPeriod()
         {
@@ -267,7 +272,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+            ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
         [Given(@"the User is presented with the Catalogue Solution edit form for a declarative flat price")]
@@ -279,7 +284,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+            ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
         [Given(@"the User is presented with the Catalogue Solution edit form for a per patient flat price")]
@@ -290,7 +295,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+            ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
         [Given(@"the proposed date is an invalid date")]
@@ -404,6 +409,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
         }
 
+        [StepDefinition(@"the Associated Service is saved in the DB")]
         [StepDefinition(@"the Catalogue Solution is saved in the DB")]
         public void GivenTheCatalogueSolutionIsSavedInTheDB()
         {
@@ -453,8 +459,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             WhenTheUserHasChosenToManageTheCatalogueSolutionSection();
             ThenTheCatalogueSolutionsArePresented();
-            Test.Pages.OrderForm.ClickAddedSolution();
-            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+            Test.Pages.OrderForm.ClickAddedCatalogueItem();
+            ThenTheyArePresentedWithTheOrderItemPriceEditForm();
 
             var order = (Order)Context["CreatedOrder"];
             var deliveryDate = order.CommencementDate.Value.AddMonths(6).AddYears(1);
@@ -476,11 +482,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheCatalogueSolutionsArePresented();
         }
 
+        [When(@"the User re-visits the Associated Service")]
         [When(@"the User re-visits the Catalogue Solution")]
         public void WhenTheUserRe_VisitsTheCatalogueSolution()
         {
-            Test.Pages.OrderForm.ClickAddedSolution();
-            ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
+            Test.Pages.OrderForm.ClickAddedCatalogueItem();
+            ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
         [Then(@"the values will be populated with the values that was saved by the User")]

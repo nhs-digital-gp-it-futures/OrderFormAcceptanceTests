@@ -25,6 +25,7 @@ namespace OrderFormAcceptanceTests.TestData
         public int? SupplierContactId { get; set; }
         public int CatalogueSolutionsViewed { get; set; }
         public int AdditionalServicesViewed { get; set; }
+        public int AssociatedServicesViewed { get; set; }
         public DateTime? CommencementDate { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }
@@ -52,6 +53,7 @@ namespace OrderFormAcceptanceTests.TestData
                 OrderStatusId = 2,
                 CatalogueSolutionsViewed = 0,
                 AdditionalServicesViewed = 0,
+                AssociatedServicesViewed = 0,
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now,
                 LastUpdatedBy = Guid.Parse("BC0A6D7B-B44B-436D-8916-1E64EBCAAE64"),
@@ -78,6 +80,7 @@ namespace OrderFormAcceptanceTests.TestData
                                 ,SupplierContactId,
                                  CatalogueSolutionsViewed,
                                  AdditionalServicesViewed,
+                                 AssociatedServicesViewed,
                                  CommencementDate,
                                  Created,
                                  LastUpdated,
@@ -101,6 +104,7 @@ namespace OrderFormAcceptanceTests.TestData
                                 ,@SupplierContactId,
                                  @CatalogueSolutionsViewed,
                                  @AdditionalServicesViewed,
+                                 @AssociatedServicesViewed,
                                  @CommencementDate,
                                  @Created,
                                  @LastUpdated,
@@ -130,6 +134,7 @@ namespace OrderFormAcceptanceTests.TestData
                            ,SupplierContactId=@SupplierContactId,
                             CatalogueSolutionsViewed=@CatalogueSolutionsViewed,
                             AdditionalServicesViewed=@AdditionalServicesViewed,
+                            AssociatedServicesViewed=@AssociatedServicesViewed,
                             CommencementDate=@CommencementDate,
                             Created=@created,
                             LastUpdated=@lastUpdated,

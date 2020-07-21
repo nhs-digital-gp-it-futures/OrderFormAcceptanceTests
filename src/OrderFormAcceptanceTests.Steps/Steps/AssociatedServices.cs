@@ -1,10 +1,10 @@
-﻿using FluentAssertions;
+﻿using Bogus;
+using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Utils;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -38,7 +38,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheUserIsAbleToManageTheAssociatedServicesSection();
         }
 
-        [Then(@"the Associated Services dashboard is presented")]
+        [StepDefinition(@"the Associated Services dashboard is presented")]
         public void ThenTheAssociatedServicesDashboardIsPresented()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Associated Services").Should().BeTrue();
@@ -95,6 +95,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("ChosenItemId", itemId);
         }
 
+        [Given(@"the User selects the flat variable price type")]
+        public void GivenTheUserSelectsTheFlatVariablePriceType()
+        {
+            Test.Pages.OrderForm.ClickRadioButton(1);
+        }
+
+        [Given(@"the User selects the flat declarative price type")]
+        public void GivenTheUserSelectsTheFlatDeclarativePriceType()
+        {
+            Test.Pages.OrderForm.ClickRadioButton(0);
+        }
+
         [Then(@"all the available prices for that Associated Service are presented")]
         public void ThenAllTheAvailablePricesForThatAssociatedServiceArePresented()
         {
@@ -105,6 +117,85 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
         }
 
+        [Then(@"the name of the selected Associated Service is displayed on the Associated Service edit form")]
+        public void ThenTheNameOfTheSelectedAssociatedServiceIsDisplayedOnTheAssociatedServiceEditForm()
+        {
+            var itemId = (string)Context["ChosenItemId"];
+            var query = "Select Name FROM [dbo].[CatalogueItem] where CatalogueItemId=@itemId";
+            var expectedSolutionName = SqlExecutor.Execute<string>(Test.BapiConnectionString, query, new { itemId }).Single();
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedSolutionName).Should().BeTrue();
+        }
 
+        [Given(@"the User is presented with the Associated Service edit form for a variable flat price")]
+        public void GivenTheUserIsPresentedWithTheAssociatedServiceEditFormForAVariableFlatPrice()
+        {
+            GivenTheUserIsPresentedWithThePricesForTheSelectedAssociatedService();
+            GivenTheUserSelectsTheFlatVariablePriceType();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            new CatalogueSolutions(Test, Context).ThenTheyArePresentedWithTheOrderItemPriceEditForm();
+        }
+
+        [Given(@"the User is presented with the Associated Service edit form for a declarative flat price")]
+        public void GivenTheUserIsPresentedWithTheAssociatedServiceEditFormForADeclarativeFlatPrice()
+        {
+            GivenTheUserIsPresentedWithThePricesForTheSelectedAssociatedService();
+            GivenTheUserSelectsTheFlatVariablePriceType();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            new CatalogueSolutions(Test, Context).ThenTheyArePresentedWithTheOrderItemPriceEditForm();
+        }
+
+        [Given(@"fills in the Associated Service edit form with valid data")]
+        public void GivenFillsInTheAssociatedServiceEditFormWithValidData()
+        {
+            if (Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed() == 2)
+            {
+                Test.Pages.OrderForm.ClickRadioButton(1);
+            }
+
+            var f = new Faker();
+            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1).ToString());
+            Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
+        }
+
+        [Given(@"an Associated Service with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
+        public void GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
+        {
+            SetOrderAssociatedServicesSectionToComplete();
+            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem.EstimationPeriodId = 2;
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+        }
+
+        [Given(@"the User amends the existing Associated Service details")]
+        public void GivenTheUserAmendsTheExistingAssociatedServiceDetails()
+        {
+            var catalogueSolutionSteps = new CatalogueSolutions(Test, Context);
+            WhenTheUserHasChosenToManageTheAssociatedServiceSection();
+            catalogueSolutionSteps.ThenTheCatalogueSolutionsArePresented();
+            Test.Pages.OrderForm.ClickAddedCatalogueItem();
+            catalogueSolutionSteps.ThenTheyArePresentedWithTheOrderItemPriceEditForm();
+
+            var estimatedPeriod = Test.Pages.OrderForm.ClickRadioButton();
+
+            var f = new Faker();
+            var quantity = f.Random.Number(min: 1).ToString();
+            var price = f.Random.Number(min: 1).ToString();
+            Test.Pages.OrderForm.EnterQuantity(quantity);
+            Test.Pages.OrderForm.EnterPriceInputValue(price);
+
+            Context.Add("AmendedEstimatedPeriod", estimatedPeriod);
+            Context.Add("AmendedQuantity", quantity);
+            Context.Add("AmendedPrice", price);
+            new OrderForm(Test, Context).WhenTheUserChoosesToSave();
+            catalogueSolutionSteps.ThenTheCatalogueSolutionsArePresented();
+        }
+
+        private void SetOrderAssociatedServicesSectionToComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.AssociatedServicesViewed = 1;
+            order.Update(Test.ConnectionString);
+        }
     }
 }
