@@ -334,3 +334,15 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
+
+Scenario Outline: Associated Service - edit price screen - Flat price Validation Error Message Anchors
+	Given there are no Service Recipients in the order
+	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
+	And mandatory data are missing
+	And the validation has been triggered
+	When the user selects an error link in the Error Summary
+	Then they will be navigated to the relevant part of the page
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
