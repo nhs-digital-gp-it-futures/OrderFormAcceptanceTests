@@ -89,44 +89,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.AddSolutionButtonDisplayed().Should().BeTrue();
         }
 
-        [Then(@"there is a control to continue")]
-        public void ThenThereIsAControlToContinue()
-        {
-            Test.Pages.OrderForm.ContinueButtonDisplayed().Should().BeTrue();
-        }
-
-        [Then(@"there is content indicating there is no Catalogue Solution added")]
-        [Then(@"there is content indicating there is no Associated Service added")]
-        public void ThenThereIsContentIndicatingThereIsNoCatalogueSolutionAdded()
-        {
-            Test.Pages.OrderForm.NoSolutionsAddedDisplayed().Should().BeTrue();
-        }
-
-        [When(@"the User chooses to add a single Catalogue Solution")]
-        public void WhenTheUserChoosesToAddASingleCatalogueSolution()
-        {
-            Test.Pages.OrderForm.ClickAddSolutionButton();
-        }
-
         [Then(@"they are presented with the Catalogue Solutions available from their chosen Supplier")]
         public void ThenTheyArePresentedWithTheCatalogueSolutionsAvailableFromTheirChosenSupplier()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Catalogue Solution").Should().BeTrue();
         }
 
-        [Then(@"they can select one Catalogue Solution to add")]
-        [Then(@"they can select a price for the Catalogue Solution")]
-        [Then(@"they are presented with the Service Recipients saved in the Order")]
-        public void ThenTheyCanSelectOneRadioButton()
-        {
-            Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
-        }
-
         [Given(@"the User is presented with Catalogue Solutions available from their chosen Supplier")]
         public void GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier()
         {
             WhenTheUserHasChosenToManageTheCatalogueSolutionSection();
-            WhenTheUserChoosesToAddASingleCatalogueSolution();
+            new CommonSteps(Test, Context).WhenTheUserChoosesToAddASingleCatalogueSolution();
             ThenTheyArePresentedWithTheCatalogueSolutionsAvailableFromTheirChosenSupplier();
         }
 
@@ -168,8 +141,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier();
             GivenTheUserSelectsACatalogueSolutionToAdd();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyCanSelectOneRadioButton();
+            ContinueAndWaitForRadioButtons();
         }
 
         [Given(@"the User selects a price")]
@@ -190,8 +162,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             GivenTheUserSelectsAPrice();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyCanSelectOneRadioButton();
+            ContinueAndWaitForRadioButtons();
         }
 
         [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the per patient flat price")]
@@ -199,8 +170,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyCanSelectOneRadioButton();
+            ContinueAndWaitForRadioButtons();
         }
 
         [Then(@"the User is informed they have to select a Service Recipient")]
@@ -306,8 +276,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyCanSelectOneRadioButton();
+            ContinueAndWaitForRadioButtons();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
@@ -318,8 +287,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyCanSelectOneRadioButton();
+            ContinueAndWaitForRadioButtons();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyArePresentedWithTheCatalogueSolutionEditForm();
@@ -534,6 +502,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             priceFromPage.Should().Be(expectedPrice);
         }
 
+        [Given(@"that the Supplier in the order has no associated services")]
         [Given(@"the supplier added to the order has a solution with a declarative flat price")]
         public void GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice()
         {
@@ -548,8 +517,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            ThenTheyCanSelectOneRadioButton();
+            ContinueAndWaitForRadioButtons();
+        }
+        private void ContinueAndWaitForRadioButtons()
+        {
+            var cs = new CommonSteps(Test, Context);
+            cs.WhenTheyChooseToContinue();
+            cs.ThenTheyCanSelectOneRadioButton();
         }
     }
 }
