@@ -14,15 +14,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
 		public bool AddAdditionalServiceButtonDisplayed()
 		{
-			try
-			{
-				Wait.Until(d => d.FindElements(Pages.AdditionalServices.AddAdditionalServices).Count == 1);
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
+			return Driver.ElementVisible(Pages.AdditionalServices.AddAdditionalServices);
 		}
 
 		public void PageDisplayed()
@@ -83,21 +75,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public int AdditionalServicesAddedTableRowsCount()
 		{
 			return Driver.FindElements(Pages.Common.TableRows).Count;
-		}
-
-		public void EditSavedAdditionalService()
-		{
-			Driver.FindElement(Pages.OrderForm.TableRowX(0)).FindElement(By.TagName("a")).Click();
-		}
-
-		public string GetQuantity()
-		{
-			return Driver.FindElement(Pages.AdditionalServices.QuantityInput).GetAttribute("value");
-		}
-
-		public string GetPrice()
-		{
-			return Driver.FindElement(Pages.AdditionalServices.PriceInput).GetAttribute("value");
 		}
 	}
 }

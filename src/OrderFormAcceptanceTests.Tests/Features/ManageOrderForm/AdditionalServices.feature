@@ -136,9 +136,9 @@ Scenario: Additional Services - Flat price with variable order type selected
 	Given the User is on the Edit Price form
 	Then they are presented with the Additional Service edit form for flat list price
 	And the form contains one item
-	And the item contains an input for the price
-	And the item contains a unit of order
-	And the item contains an input for the quantity
+	And the Additional Service edit form contains an input for the price
+	And the Additional Service edit form contains a unit of order
+	And the Additional Service edit form contains an input for the quantity
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the delete button is disabled
 	And the save button is enabled
@@ -167,7 +167,7 @@ Scenario: Additional Services - All data are valid
 	When all data is complete and valid
 	And the User chooses to save	
 	Then the Additional Service is saved
-	And the section content validation status of the Additional Service is Complete
+	And the content validation status of the additional-services section is complete
 	And the delete button is enabled
 
 Scenario: Additional Services - Go back before save

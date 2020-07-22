@@ -559,7 +559,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElements(Pages.OrderForm.NoSolutionsAdded).Count == 1;
 		}
 
-		public bool AddedSolutionsTableIsPopulated()
+		public bool AddedCatalogueItemsTableIsPopulated()
 		{
 			return Driver.FindElement(Pages.OrderForm.AddedSolutionsTable)
 				.FindElements(Pages.OrderForm.TableRowX(0))

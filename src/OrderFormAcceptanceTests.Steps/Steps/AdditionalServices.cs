@@ -148,7 +148,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the form contains one item")]
         public void ThenTheFormContainsOneItem()
-        {
+        {   
             Test.Pages.AdditionalServices.GetTableRowsCount().Should().Be(1);
         }
 
@@ -192,7 +192,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheAdditionalServiceIsSaved()
         {
             ThenTheAdditionalServiceDashboardIsPresented();
-            Test.Pages.AdditionalServices.AdditionalServicesAddedTableRowsCount().Should().Be(1);
+            Test.Pages.OrderForm.AddedCatalogueItemsTableIsPopulated().Should().BeTrue();
         }
 
         [Then(@"the section content validation status of the Additional Service is Complete")]
@@ -214,7 +214,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"the User chooses to edit the saved Additional service")]
         public void GivenTheUserChoosesToEditTheSavedAdditionalService()
         {
-            Test.Pages.AdditionalServices.EditSavedAdditionalService();
+            Test.Pages.OrderForm.ClickAddedCatalogueItem();
         }
 
         [Then(@"the pricing values will be populated with the values that was saved by the User")]

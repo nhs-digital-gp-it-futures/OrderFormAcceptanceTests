@@ -209,6 +209,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the Associated Service edit form contains an input for the price")]
         [Then(@"the Catalogue Solution edit form contains an input for the price")]
+        [Then(@"the Additional Service edit form contains an input for the price")]
         public void ThenTheCatalogueSolutionEditFormContainsAnInputForThePrice()
         {
             Test.Pages.OrderForm.PriceInputIsDisplayed().Should().BeTrue();
@@ -222,6 +223,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the item on the Associated Service edit form contains a unit of order")]
         [Then(@"the item on the Catalogue Solution edit form contains a unit of order")]
+        [Then(@"the Additional Service edit form contains a unit of order")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAUnitOfOrder()
         {
             Test.Pages.OrderForm.OrderUnitIsDisplayed().Should().BeTrue();
@@ -229,6 +231,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the item on the Associated Service edit form contains an input for the quantity")]
         [Then(@"the item on the Catalogue Solution edit form contains an input for the quantity")]
+        [Then(@"the Additional Service edit form contains an input for the quantity")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAnInputForTheQuantity()
         {
             Test.Pages.OrderForm.QuantityInputIsDisplayed().Should().BeTrue();
@@ -431,7 +434,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Catalogue Solutions are presented")]
         public void ThenTheCatalogueSolutionsArePresented()
         {
-            Test.Pages.OrderForm.AddedSolutionsTableIsPopulated().Should().BeTrue();
+            Test.Pages.OrderForm.AddedCatalogueItemsTableIsPopulated().Should().BeTrue();
         }
 
         [Then(@"the name of the Catalogue Solution is displayed")]
