@@ -121,5 +121,74 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
             displayedRecipients.Should().BeInAscendingOrder();
         }
+
+        [Given(@"the User has selected a price for the Additional Service")]
+        public void GivenTheUserHasSelectedAPriceForTheAdditionalService()
+        {
+            Test.Pages.OrderForm.ClickRadioButton();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+        }
+
+        [Then(@"they are presented with the Additional Service edit form for flat list price")]
+        public void ThenTheyArePresentedWithTheAdditionalServiceEditFormForFlatListPrice()
+        {
+            Test.Driver.Url.Should().Contain("additional-services/neworderitem");
+        }
+
+        [Then(@"the form contains one item")]
+        public void ThenTheFormContainsOneItem()
+        {
+            Test.Pages.AdditionalServices.GetTableRowsCount().Should().Be(1);
+        }
+
+        [Then(@"the item contains an input for the price")]
+        public void ThenTheItemContainsAnInputForThePrice()
+        {
+            Test.Pages.AdditionalServices.PriceInputDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the item contains a unit of order")]
+        public void ThenTheItemContainsAUnitOfOrder()
+        {
+            Test.Pages.AdditionalServices.PriceUnitDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"the item contains an input for the quantity")]
+        public void ThenTheItemContainsAnInputForTheQuantity()
+        {
+            Test.Pages.AdditionalServices.QuantityInputDisplayed().Should().BeTrue();
+        }
+
+        [Given(@"the User has selected a Service Recipient")]
+        public void GivenTheUserHasSelectedAServiceRecipient()
+        {
+            Test.Pages.OrderForm.ClickRadioButton();
+        }
+
+        [When(@"the quantity is above the max value")]
+        public void WhenTheQuantityIsAboveTheMaxValue()
+        {
+            Test.Pages.AdditionalServices.SetQuantityAboveMax();
+        }
+
+        [When(@"all data is complete and valid")]
+        public void WhenAllDataIsCompleteAndValid()
+        {
+            Test.Pages.AdditionalServices.SetQuantity();
+        }
+
+        [Then(@"the Additional Service is saved")]
+        public void ThenTheAdditionalServiceIsSaved()
+        {
+            ThenTheAdditionalServiceDashboardIsPresented();
+            Test.Pages.AdditionalServices.AdditionalServicesAddedTableRowsCount().Should().Be(1);
+        }
+
+        [Then(@"the section content validation status of the Additional Service is Complete")]
+        public void ThenTheSectionContentValidationStatusOfTheAdditionalServiceIsComplete()
+        {
+            new CommonSteps(Test, Context).WhenTheUserChoosesToGoBack();
+            new OrderForm(Test, Context).ThenTheContentValidationStatusOfTheSectionIsComplete("additional-services");
+        }
     }
 }

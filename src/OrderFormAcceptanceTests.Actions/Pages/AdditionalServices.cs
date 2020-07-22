@@ -49,5 +49,40 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			return Driver.FindElements(Pages.Common.RadioButtonLabel).Select(s => s.Text).ToList();
 		}
+
+		public object GetTableRowsCount()
+		{
+			return Driver.FindElements(Pages.Common.TableRows).Count;
+		}
+
+		public bool PriceInputDisplayed()
+		{
+			return Driver.ElementVisible(Pages.AdditionalServices.PriceInput);
+		}
+
+		public bool PriceUnitDisplayed()
+		{
+			return Driver.ElementVisible(Pages.AdditionalServices.PriceUnit);
+		}
+
+		public bool QuantityInputDisplayed()
+		{
+			return Driver.ElementVisible(Pages.AdditionalServices.QuantityInput);
+		}
+
+		public void SetQuantityAboveMax()
+		{
+			SetQuantity("2147483648");
+		}
+
+		public void SetQuantity(string value = "1000")
+		{
+			Driver.FindElement(Pages.AdditionalServices.QuantityInput).SendKeys(value);
+		}
+
+		public int AdditionalServicesAddedTableRowsCount()
+		{
+			return Driver.FindElements(Pages.Common.TableRows).Count;
+		}
 	}
 }

@@ -131,3 +131,89 @@ Scenario: Additional Services - Select service recipient - Go back
 	And the User has selected a Additional Service price
 	When the User chooses to go back
 	Then all the available prices for that Additional Service are presented
+
+Scenario: Additional Services - Flat price with variable order type selected
+	Given the Order Form for the existing order is presented
+	And the available prices for the selected Additional Service are presented
+	And the User has selected a Additional Service price
+	And the User has selected a Service Recipient
+	When they choose to continue
+	Then they are presented with the Additional Service edit form for flat list price
+	And the form contains one item
+	And the item contains an input for the price
+	And the item contains a unit of order
+	And the item contains an input for the quantity
+	And the price input is autopopulated with the list price for the flat list price selected
+	And the delete button is disabled
+	And the save button is enabled
+
+Scenario: Additional Services - Mandatory data missing
+	Given the Order Form for the existing order is presented
+	And the available prices for the selected Additional Service are presented
+	And the User has selected a Additional Service price
+	And the User has selected a Service Recipient
+	When they choose to continue
+	And the User chooses to save
+	Then the Additional Service is not saved
+	And the reason is displayed
+
+Scenario: Additional Services - Data exceeds the maximum length
+	Given the Order Form for the existing order is presented
+	And the available prices for the selected Additional Service are presented
+	And the User has selected a Additional Service price
+	And the User has selected a Service Recipient
+	When they choose to continue
+	And the quantity is above the max value
+	And the User chooses to save
+	Then the Additional Service is not saved 
+	And the reason is displayed
+
+Scenario: Additional Services - Validation Error Message Anchors
+	Given the Order Form for the existing order is presented
+	And the available prices for the selected Additional Service are presented
+	And the User has selected a Additional Service price
+	And the User has selected a Service Recipient
+	When they choose to continue
+	And the User chooses to save
+	And the user selects an error link in the Error Summary
+	Then they will be navigated to the relevant part of the page
+
+Scenario: Additional Services - All data are valid
+	Given the Order Form for the existing order is presented
+	And the available prices for the selected Additional Service are presented
+	And the User has selected a Additional Service price
+	And the User has selected a Service Recipient
+	When they choose to continue
+	And all data is complete and valid
+	And the User chooses to save	
+	Then the Additional Service is saved
+	And the section content validation status of the Additional Service is Complete
+	And the delete button is enabled
+
+Scenario: Additional Services - Go back before save
+	Given the Order Form for the existing order is presented
+	And the available prices for the selected Additional Service are presented
+	And the User has selected a Additional Service price
+	And the User has selected a Service Recipient
+	When they choose to continue
+	And the User chooses to go back
+	Then they are presented with the Service Recipients saved in the Order
+
+@ignore
+Scenario: Additional Services - Go back post save
+	Given the edit Additional Service form for flat list price with variable (patient numbers) order type is presented
+	And the User has saved the Additional Service
+	When the User chooses to go back
+	Then the Additional Service Dashboard is displayed
+
+@ignore
+Scenario: Additional Services - Values populated after editing and saving
+	Given that the User has amended a price
+	And entered a quantity
+	And selected a period
+	And saved the Solution
+	And navigated away from the Additional service
+	When the User re-visits the Additional service
+	Then the price value will be populated with the value that was saved by the User
+	And the quantity value will be populated with the value that was saved by the User
+	And the period selection will be the value that was selected by the User
