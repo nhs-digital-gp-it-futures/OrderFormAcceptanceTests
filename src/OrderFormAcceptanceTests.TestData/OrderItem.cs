@@ -127,6 +127,56 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
+        public OrderItem GenerateAdditionalServiceWithFlatPricedVariableOnDemand(Order order)
+        {
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100000-S-001",
+                CatalogueItemTypeId = 2,
+                CatalogueItemName = "Really Kool additional service",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 3,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "half days",
+                PricingUnitName = "halfDay",
+                PricingUnitDescription = "per half day",
+                TimeUnitId = null,
+                CurrencyCode = "GBP",
+                Quantity = 9,
+                EstimationPeriodId = 2,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 150.000M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
+
+        public OrderItem GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient(Order order)
+        {
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100000-S-001",
+                CatalogueItemTypeId = 2,
+                CatalogueItemName = "Write on Time patient additional service",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 1,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "patients",
+                PricingUnitName = "patient",
+                PricingUnitDescription = "per patient",
+                TimeUnitId = 2,
+                CurrencyCode = "GBP",
+                Quantity = 1111,
+                EstimationPeriodId = 1,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 99.99M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
+
         public OrderItem GenerateAssociatedServiceWithFlatPricedVariableOnDemand(Order order)
         {
             return new OrderItem
@@ -224,7 +274,7 @@ namespace OrderFormAcceptanceTests.TestData
             return this.OrderItemId;
         }
 
-        public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
+		public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
         {
             var query = "SELECT * from [dbo].[OrderItem] WHERE OrderId=@orderId AND CatalogueItemTypeId=@catalogueItemTypeId";
             return SqlExecutor.Execute<OrderItem>(connectionString, query, new { OrderId, CatalogueItemTypeId });

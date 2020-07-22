@@ -22,5 +22,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By Footer => By.Id("nhsuk-footer");
 		public By Header => CustomBy.DataTestId("header-banner");
 		public By BetaBanner => CustomBy.DataTestId("beta-banner");
+
+		public By TableRows => By.CssSelector("[data-test-id^=table-row-]");
 	}
 }
