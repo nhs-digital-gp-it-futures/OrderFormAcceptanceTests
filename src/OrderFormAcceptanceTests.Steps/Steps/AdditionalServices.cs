@@ -129,6 +129,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
         }
 
+        [Given("the User is on the Edit Price form")]
+        public void GivenIAmOnTheEditPriceForm()
+		{
+            var common = new CommonSteps(Test, Context);
+            common.WhenTheOrderFormForTheExistingOrderIsPresented();
+            GivenTheAvailablePricesForTheSelectedAdditionalServiceArePresented();
+            GivenTheUserHasSelectedAAdditionalServicePrice();
+            GivenTheUserHasSelectedAServiceRecipient();
+            common.WhenTheyChooseToContinue();
+        }
+
         [Then(@"they are presented with the Additional Service edit form for flat list price")]
         public void ThenTheyArePresentedWithTheAdditionalServiceEditFormForFlatListPrice()
         {
