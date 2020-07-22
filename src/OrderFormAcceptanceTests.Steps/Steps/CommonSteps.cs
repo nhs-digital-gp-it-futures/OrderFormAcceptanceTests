@@ -72,6 +72,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [When(@"there is no Associated Service added to the order")]
         [Given(@"the User chooses not to add an Associated Service")]
         [Given(@"no Associated Service is selected")]
+        [Then("the Additional Service is not saved")]
         public void DoNothing()
         {
             //do nothing
