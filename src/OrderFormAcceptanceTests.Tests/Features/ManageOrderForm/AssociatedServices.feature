@@ -218,6 +218,20 @@ Scenario: Associated Service - edit price screen - Flat variable price selected
 	And the delete button is disabled
 	And the save button is enabled
 @ignore
+Scenario: Associated Service - edit price screen - Flat declarative price selected
+	Given there are no Service Recipients in the order
+	And the User is presented with the prices for the selected Associated Service 
+	And the User selects the flat declarative price type
+	When they choose to continue
+	Then they are presented with the Associated Service edit form
+	And the name of the selected Associated Service is displayed on the Associated Service edit form
+	And the Associated Service edit form contains an input for the price
+	And the item on the Associated Service edit form contains a unit of order
+	And the item on the Associated Service edit form contains an input for the quantity
+	And the price input is autopopulated with the list price for the flat list price selected
+	And the delete button is disabled
+	And the save button is enabled
+@ignore
 Scenario Outline: Associated Service - edit price screen - Flat price Mandatory data missing
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -369,9 +383,17 @@ Scenario Outline: Associated Service - edit price screen - Flat price Price is d
 	| declarative      |
 	| variable         |
 @ignore
-Scenario: Associated Service - edit price screen - Flat price values populated after editing and saving
+Scenario: Associated Service - edit price screen - Flat variable price values populated after editing and saving
 	Given there are no Service Recipients in the order
 	Given an Associated Service with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
+	And the User amends the existing Associated Service details
+	When the User re-visits the Associated Service
+	Then the values will be populated with the values that was saved by the User
+	And the delete button is enabled
+@ignore
+Scenario: Associated Service - edit price screen - Flat declarative price values populated after editing and saving
+	Given there are no Service Recipients in the order
+	Given an Associated Service with a flat price declarative order type is saved to the order
 	And the User amends the existing Associated Service details
 	When the User re-visits the Associated Service
 	Then the values will be populated with the values that was saved by the User
