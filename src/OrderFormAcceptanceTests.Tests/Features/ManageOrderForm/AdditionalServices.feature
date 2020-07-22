@@ -199,21 +199,18 @@ Scenario: Additional Services - Go back before save
 	And the User chooses to go back
 	Then they are presented with the Service Recipients saved in the Order
 
-@ignore
 Scenario: Additional Services - Go back post save
 	Given the edit Additional Service form for flat list price with variable (patient numbers) order type is presented
-	And the User has saved the Additional Service
+	And the Order Form for the existing order is presented
+	And the User is able to manage the Additional Services section
+	And the User chooses to edit the saved Additional service
 	When the User chooses to go back
-	Then the Additional Service Dashboard is displayed
+	Then the Additional Service dashboard is presented
 
-@ignore
 Scenario: Additional Services - Values populated after editing and saving
-	Given that the User has amended a price
-	And entered a quantity
-	And selected a period
-	And saved the Solution
-	And navigated away from the Additional service
-	When the User re-visits the Additional service
-	Then the price value will be populated with the value that was saved by the User
-	And the quantity value will be populated with the value that was saved by the User
-	And the period selection will be the value that was selected by the User
+	Given the edit Additional Service form for flat list price with variable (patient numbers) order type is presented
+	And the Order Form for the existing order is presented
+	And the User is able to manage the Additional Services section
+	When the User chooses to edit the saved Additional service	
+	Then the Quantity is populated
+	And the Price is populated

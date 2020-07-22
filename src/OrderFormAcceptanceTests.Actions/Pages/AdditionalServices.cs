@@ -84,5 +84,20 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		{
 			return Driver.FindElements(Pages.Common.TableRows).Count;
 		}
+
+		public void EditSavedAdditionalService()
+		{
+			Driver.FindElement(Pages.OrderForm.TableRowX(0)).FindElement(By.TagName("a")).Click();
+		}
+
+		public string GetQuantity()
+		{
+			return Driver.FindElement(Pages.AdditionalServices.QuantityInput).GetAttribute("value");
+		}
+
+		public string GetPrice()
+		{
+			return Driver.FindElement(Pages.AdditionalServices.PriceInput).GetAttribute("value");
+		}
 	}
 }

@@ -190,5 +190,33 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).WhenTheUserChoosesToGoBack();
             new OrderForm(Test, Context).ThenTheContentValidationStatusOfTheSectionIsComplete("additional-services");
         }
+
+        [Given(@"the edit Additional Service form for flat list price with variable \(patient numbers\) order type is presented")]
+        public void GivenTheEditAdditionalServiceFormForFlatListPriceWithVariablePatientNumbersOrderTypeIsPresented()
+        {
+            new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
+            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context["CreatedOrder"]);
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+        }
+
+        [StepDefinition(@"the User chooses to edit the saved Additional service")]
+        public void GivenTheUserChoosesToEditTheSavedAdditionalService()
+        {
+            Test.Pages.AdditionalServices.EditSavedAdditionalService();
+        }
+
+        [Then(@"the Quantity is populated")]
+        public void ThenTheQuantityIsPopulated()
+        {
+            Test.Pages.AdditionalServices.GetQuantity().Should().NotBeNullOrEmpty();
+        }
+
+        [Then(@"the Price is populated")]
+        public void ThenThePriceIsPopulated()
+        {
+            Test.Pages.AdditionalServices.GetPrice().Should().NotBeNullOrEmpty();
+        }
+
     }
 }
