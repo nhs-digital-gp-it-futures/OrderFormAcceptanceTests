@@ -559,19 +559,19 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElements(Pages.OrderForm.NoSolutionsAdded).Count == 1;
 		}
 
-		public bool AddedSolutionsTableIsPopulated()
+		public bool AddedOrderItemsTableIsPopulated()
 		{
 			return Driver.FindElement(Pages.OrderForm.AddedSolutionsTable)
 				.FindElements(Pages.OrderForm.TableRowX(0))
 				.Count > 0;
 		}
 
-		public bool AddedSolutionNameIsDisplayed()
+		public bool AddedOrderItemNameIsDisplayed()
 		{
 			return Driver.FindElements(Pages.OrderForm.AddedSolutionName).Count == 1;
 		}
 
-		public bool AddedSolutionNamesAreLinks()
+		public bool AddedOrderItemNamesAreLinks()
 		{
 			var names = Driver.FindElements(Pages.OrderForm.AddedSolutionName);
 			var countOfNames = names.Count;

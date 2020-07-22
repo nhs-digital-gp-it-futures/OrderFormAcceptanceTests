@@ -429,15 +429,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the Catalogue Solutions are presented")]
-        public void ThenTheCatalogueSolutionsArePresented()
+        [Then(@"the Associated Services are presented")]
+        public void ThenTheOrderItemsArePresented()
         {
-            Test.Pages.OrderForm.AddedSolutionsTableIsPopulated().Should().BeTrue();
+            Test.Pages.OrderForm.AddedOrderItemsTableIsPopulated().Should().BeTrue();
         }
 
+        [Then(@"the name of each Associated Service is displayed")]
         [Then(@"the name of the Catalogue Solution is displayed")]
-        public void ThenTheNameOfTheCatalogueSolutionIsDisplayed()
+        public void ThenTheNameOfTheOrderItemIsDisplayed()
         {
-            Test.Pages.OrderForm.AddedSolutionNameIsDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.AddedOrderItemNameIsDisplayed().Should().BeTrue();
         }
 
         [Then(@"the Service Recipient Name and Service Recipient ODS code are concatenated into a Presentation Name using the format ""(.*)""")]
@@ -448,17 +450,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.GetAddedSolutionServiceRecipient().Should().Be(expectedFormattedValue);
         }
 
+        [Then(@"they are able to manage each Associated Service")]
         [Then(@"there is a control to edit each Catalogue Solution")]
-        public void ThenThereIsAControlToEditEachCatalogueSolution()
+        public void ThenThereIsAControlToEditEachCatalogueItem()
         {
-            Test.Pages.OrderForm.AddedSolutionNamesAreLinks().Should().BeTrue();
+            Test.Pages.OrderForm.AddedOrderItemNamesAreLinks().Should().BeTrue();
         }
 
         [Given(@"the User amends the existing catalogue solution details")]
         public void GivenTheUserAmendsTheExistingCatalogueSolutionDetails()
         {
             WhenTheUserHasChosenToManageTheCatalogueSolutionSection();
-            ThenTheCatalogueSolutionsArePresented();
+            ThenTheOrderItemsArePresented();
             Test.Pages.OrderForm.ClickAddedCatalogueItem();
             ThenTheyArePresentedWithTheOrderItemPriceEditForm();
 
@@ -479,7 +482,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("AmendedQuantity", quantity);
             Context.Add("AmendedPrice", price);
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();
-            ThenTheCatalogueSolutionsArePresented();
+            ThenTheOrderItemsArePresented();
         }
 
         [When(@"the User re-visits the Associated Service")]

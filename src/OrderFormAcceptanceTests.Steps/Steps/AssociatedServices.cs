@@ -24,13 +24,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheAssociatedServicesDashboardIsPresented();
         }
 
-        [Given(@"an Associated Service is added to the order")]
-        public void GivenAnAssociatedServiceIsAddedToTheOrder()
-        {
-            //dev work to update data model needs completing
-            Context.Pending();
-        }
-
         [StepDefinition(@"the User has chosen to manage the Associated Service section")]
         public void WhenTheUserHasChosenToManageTheAssociatedServiceSection()
         {
@@ -181,7 +174,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var catalogueSolutionSteps = new CatalogueSolutions(Test, Context);
             WhenTheUserHasChosenToManageTheAssociatedServiceSection();
-            catalogueSolutionSteps.ThenTheCatalogueSolutionsArePresented();
+            catalogueSolutionSteps.ThenTheOrderItemsArePresented();
             Test.Pages.OrderForm.ClickAddedCatalogueItem();
             catalogueSolutionSteps.ThenTheyArePresentedWithTheOrderItemPriceEditForm();
 
@@ -200,7 +193,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("AmendedQuantity", quantity);
             Context.Add("AmendedPrice", price);
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();
-            catalogueSolutionSteps.ThenTheCatalogueSolutionsArePresented();
+            catalogueSolutionSteps.ThenTheOrderItemsArePresented();
         }
 
         private void SetOrderAssociatedServicesSectionToComplete()
