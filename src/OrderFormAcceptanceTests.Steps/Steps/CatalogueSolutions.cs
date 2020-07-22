@@ -493,18 +493,26 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the values will be populated with the values that was saved by the User")]
         public void ThenTheValuesWillBePopulatedWithTheValuesThatWasSavedByTheUser()
         {
-            var dateValueFromPage = Test.Pages.OrderForm.GetProposedDate();
-            var periodFromPage = Test.Pages.OrderForm.GetSelectedRadioButton();
+            if(Context.ContainsKey("AmendedDeliveryDate"))
+            {
+                var expectedDate = (DateTime)Context["AmendedDeliveryDate"];
+                var dateValueFromPage = Test.Pages.OrderForm.GetProposedDate();
+                dateValueFromPage.Should().Be(expectedDate.ToString("dd MM yyyy"));
+            }
+
+            if(Context.ContainsKey("AmendedEstimatedPeriod"))
+            {
+                var expectedPeriod = (string)Context["AmendedEstimatedPeriod"];
+                var periodFromPage = Test.Pages.OrderForm.GetSelectedRadioButton();
+                periodFromPage.Should().Be(expectedPeriod);
+            }
+                        
             var quantityFromPage = Test.Pages.OrderForm.GetQuantity();
-            var priceFromPage = Test.Pages.OrderForm.GetPriceInputValue();
-
-            var expectedDate = (DateTime)Context["AmendedDeliveryDate"];
-            var expectedPeriod = (string)Context["AmendedEstimatedPeriod"];
+            var priceFromPage = Test.Pages.OrderForm.GetPriceInputValue();            
+            
             var expectedQuantity = (string)Context["AmendedQuantity"];
-            var expectedPrice = (string)Context["AmendedPrice"];
-
-            dateValueFromPage.Should().Be(expectedDate.ToString("dd MM yyyy"));
-            periodFromPage.Should().Be(expectedPeriod);
+            var expectedPrice = (string)Context["AmendedPrice"];           
+            
             quantityFromPage.Should().Be(expectedQuantity);
             priceFromPage.Should().Be(expectedPrice);
         }

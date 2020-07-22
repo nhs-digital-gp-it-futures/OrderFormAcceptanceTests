@@ -139,7 +139,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheUserIsPresentedWithTheAssociatedServiceEditFormForADeclarativeFlatPrice()
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedAssociatedService();
-            GivenTheUserSelectsTheFlatVariablePriceType();
+            GivenTheUserSelectsTheFlatDeclarativePriceType();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             new CatalogueSolutions(Test, Context).ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
@@ -161,8 +161,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
             SetOrderAssociatedServicesSectionToComplete();
-            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.EstimationPeriodId = 2;
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+        }
+
+        [Given(@"an Associated Service with a flat price declarative order type is saved to the order")]
+        public void GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder()
+        {
+            SetOrderAssociatedServicesSectionToComplete();
+            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
@@ -176,15 +185,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickAddedCatalogueItem();
             catalogueSolutionSteps.ThenTheyArePresentedWithTheOrderItemPriceEditForm();
 
-            var estimatedPeriod = Test.Pages.OrderForm.ClickRadioButton();
+            if (Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed() == 2)
+            {
+                var estimatedPeriod = Test.Pages.OrderForm.ClickRadioButton();
+                Context.Add("AmendedEstimatedPeriod", estimatedPeriod);
+            }
 
             var f = new Faker();
             var quantity = f.Random.Number(min: 1).ToString();
             var price = f.Random.Number(min: 1).ToString();
             Test.Pages.OrderForm.EnterQuantity(quantity);
             Test.Pages.OrderForm.EnterPriceInputValue(price);
-
-            Context.Add("AmendedEstimatedPeriod", estimatedPeriod);
+            
             Context.Add("AmendedQuantity", quantity);
             Context.Add("AmendedPrice", price);
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();
