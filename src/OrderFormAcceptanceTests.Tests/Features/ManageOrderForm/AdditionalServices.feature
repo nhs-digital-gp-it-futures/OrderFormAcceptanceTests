@@ -188,5 +188,4 @@ Scenario: Additional Services - Values populated after editing and saving
 	And the Order Form for the existing order is presented
 	And the User is able to manage the Additional Services section
 	When the User chooses to edit the saved Additional service	
-	Then the Quantity is populated
-	And the Price is populated
+	Then the pricing values will be populated with the values that was saved by the User

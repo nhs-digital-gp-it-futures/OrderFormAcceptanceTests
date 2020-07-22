@@ -217,17 +217,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.AdditionalServices.EditSavedAdditionalService();
         }
 
-        [Then(@"the Quantity is populated")]
-        public void ThenTheQuantityIsPopulated()
-        {
-            Test.Pages.AdditionalServices.GetQuantity().Should().NotBeNullOrEmpty();
-        }
+        [Then(@"the pricing values will be populated with the values that was saved by the User")]
+        public void ThenThePricingValuesWillBePopulatedWithTheValuesThatWasSavedByTheUser()
+        {   
+            var quantityFromPage = Test.Pages.OrderForm.GetQuantity();
+            var priceFromPage = Test.Pages.OrderForm.GetPriceInputValue();
 
-        [Then(@"the Price is populated")]
-        public void ThenThePriceIsPopulated()
-        {
-            Test.Pages.AdditionalServices.GetPrice().Should().NotBeNullOrEmpty();
-        }
+            var orderItem = (OrderItem)Context["CreatedAdditionalServiceOrderItem"];            
 
+            quantityFromPage.Should().Be(orderItem.Quantity.ToString());
+            priceFromPage.Should().Be(orderItem.Price.ToString());
+        }
     }
 }
