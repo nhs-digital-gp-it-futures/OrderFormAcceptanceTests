@@ -53,7 +53,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheUserIsPresentedWithAssociatedServicesAvailableFromTheirChosenSupplier()
         {
             WhenTheUserHasChosenToManageTheAssociatedServiceSection();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            new CommonSteps(Test, Context).WhenTheUserChoosesToAddAOrderItem();
             ThenTheyArePresentedWithTheAssociatedServicesAvailableFromTheirChosenSupplier();
         }
 
@@ -194,6 +194,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("AmendedPrice", price);
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();
             catalogueSolutionSteps.ThenTheOrderItemsArePresented();
+        }
+
+        [Then(@"the User is informed that there are no Associated Services to select")]
+        public void ThenThereIsContentIndicatingThereIsNoAdditionalServicesToSelect()
+        {
+            Test.Pages.OrderForm.ErrorTitle().Should().BeEquivalentTo("No Associated Services found");
+        }
+
+        [Then(@"there is content indicating there is no Additional Service added")]
+        public void ThenThereIsContentIndicatingThereIsNoOrderItemeAdded()
+        {
+            Test.Pages.AdditionalServices.NoAddedOrderItemsDisplayed().Should().BeTrue();
         }
 
         private void SetOrderAssociatedServicesSectionToComplete()
