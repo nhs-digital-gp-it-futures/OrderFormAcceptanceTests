@@ -209,12 +209,40 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
+            ThenTheUserIsAbleToManageTheAdditionalServicesSection();
+            GivenTheUserChoosesToEditTheSavedAdditionalService();
         }
+
+        [Given(@"the edit Additional Service form for flat list price with declarative order type is presented")]
+        public void GivenTheEditAdditionalServiceFormForFlatListPriceWithDeclarativeOrderTypeIsPresented()
+        {
+            new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
+            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context["CreatedOrder"]);
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
+            ThenTheUserIsAbleToManageTheAdditionalServicesSection();
+            GivenTheUserChoosesToEditTheSavedAdditionalService();
+        }
+
+        [Given(@"the edit Additional Service form for flat list price with variable \(on demand\) order type is presented")]
+        public void GivenTheEditAdditionalServiceFormForFlatListPriceWithVariableOnDemandOrderTypeIsPresented()
+        {
+            new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
+            var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
+            ThenTheUserIsAbleToManageTheAdditionalServicesSection();
+            GivenTheUserChoosesToEditTheSavedAdditionalService();
+        }
+
 
         [StepDefinition(@"the User chooses to edit the saved Additional service")]
         public void GivenTheUserChoosesToEditTheSavedAdditionalService()
         {
-            Test.Pages.OrderForm.ClickAddedCatalogueItem();
+            Test.Pages.OrderForm.ClickTableRowLink();
         }
 
         [Then(@"the pricing values will be populated with the values that was saved by the User")]
@@ -225,8 +253,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
             var orderItem = (OrderItem)Context["CreatedAdditionalServiceOrderItem"];            
 
-            quantityFromPage.Should().Be(orderItem.Quantity.ToString());
-            priceFromPage.Should().Be(orderItem.Price.ToString());
+            quantityFromPage.Should().Be(orderItem.Quantity.ToString());            
+            priceFromPage.Should().Be(orderItem.Price.ToString("F")); // ToString("F") does a financial rounding on a decimal, including adding .00 if a round number
         }
     }
 }
