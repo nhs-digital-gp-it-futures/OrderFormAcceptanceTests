@@ -61,7 +61,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheUserIsPresentedWithThePricesForTheSelectedAssociatedService()
         {
             GivenTheUserIsPresentedWithAssociatedServicesAvailableFromTheirChosenSupplier();
-            Test.Pages.OrderForm.ClickRadioButton(0);
+            var itemId = Test.Pages.OrderForm.ClickRadioButton(0);
+            Context.Add("ChosenItemId", itemId);
             new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
         }
 
@@ -164,7 +165,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder()
         {
             SetOrderAssociatedServicesSectionToComplete();
-            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
@@ -206,6 +207,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenThereIsContentIndicatingThereIsNoOrderItemeAdded()
         {
             Test.Pages.AdditionalServices.NoAddedOrderItemsDisplayed().Should().BeTrue();
+        }
+
+        [StepDefinition(@"the Associated Service is saved in the DB")]
+        public void GivenTheAssociatedServiceIsSavedInTheDB()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var orderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 3).First();
+            Context.Add("CreatedOrderItem", orderItem);
+            orderItem.Should().NotBeNull();
         }
 
         private void SetOrderAssociatedServicesSectionToComplete()
