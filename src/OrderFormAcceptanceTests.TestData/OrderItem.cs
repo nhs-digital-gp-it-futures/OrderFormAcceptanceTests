@@ -127,6 +127,81 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
+        public OrderItem GenerateAdditionalServiceOrderItemWithFlatPricedDeclarative(Order order)
+        {
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100004-001-A01",
+                CatalogueItemTypeId = 2,
+                CatalogueItemName = "Diagnostics XYZ additional service",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 2,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "beds",
+                PricingUnitName = "bed",
+                PricingUnitDescription = "per bed",
+                TimeUnitId = 1,
+                CurrencyCode = "GBP",
+                Quantity = 2,
+                EstimationPeriodId = 2,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 499.990M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
+
+        public OrderItem GenerateAdditionalServiceOrderItemWithFlatPricedVariablePatient(Order order)
+        {
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100007-002-A01",
+                CatalogueItemTypeId = 2,
+                CatalogueItemName = "Addition to Boston Dynamics",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 1,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "patients",
+                PricingUnitName = "patient",
+                PricingUnitDescription = "per patient",
+                TimeUnitId = 2,
+                CurrencyCode = "GBP",
+                Quantity = 2,
+                EstimationPeriodId = 1,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 599.990M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
+
+        public OrderItem GenerateAdditionalServiceOrderItemWithFlatPricedVariableOnDemand(Order order)
+        {
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100006-001-A01",
+                CatalogueItemTypeId = 2,
+                CatalogueItemName = "Addition to Paperlite",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 3,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "licences",
+                PricingUnitName = "licence",
+                PricingUnitDescription = "per licence",
+                TimeUnitId = 2,
+                CurrencyCode = "GBP",
+                Quantity = 2,
+                EstimationPeriodId = 2,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 499.990M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
+
         public OrderItem GenerateAssociatedServiceWithFlatPricedVariableOnDemand(Order order)
         {
             return new OrderItem
