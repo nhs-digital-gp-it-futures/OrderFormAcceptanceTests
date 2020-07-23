@@ -114,14 +114,6 @@ Scenario: Associated Services - Additional Service now complete, >= 1 Service Re
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled
-@ignore
-Scenario: Associated Services - Select no Service Recipients and then go back and add service recipients
-	Given there are no Service Recipients in the order
-	And the Catalogue Solutions section is not complete
-	And an Associated Service is added to the order
-	And the Order Form for the existing order is presented
-	When the User adds a Service Recipient to the Service Recipient section
-	Then the Associated Service section is enabled 
 
 Scenario: Associated Service dashboard
 	Given there are no Service Recipients in the order
@@ -393,7 +385,7 @@ Scenario: Associated Service - edit price screen - Flat variable price values po
 @ignore
 Scenario: Associated Service - edit price screen - Flat declarative price values populated after editing and saving
 	Given there are no Service Recipients in the order
-	Given an Associated Service with a flat price declarative order type is saved to the order
+	And an Associated Service with a flat price declarative order type is saved to the order
 	And the User amends the existing Associated Service details
 	When the User re-visits the Associated Service
 	Then the values will be populated with the values that was saved by the User
@@ -424,3 +416,29 @@ Scenario Outline: Associated Service - edit price screen - Flat price Go back af
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
+@ignore
+Scenario: Associated Service added - View Associated Services
+	Given there are no Service Recipients in the order
+	And an Associated Service with a flat price declarative order type is saved to the order
+	And the User has chosen to manage the Associated Service section
+	When the Associated Services dashboard is presented
+	Then the Associated Services are presented
+	And the name of each Associated Service is displayed
+	And they are able to manage each Associated Service 
+@ignore
+Scenario: Associated Service added - section marked as complete
+	Given there are no Service Recipients in the order
+	And an Associated Service with a flat price declarative order type is saved to the order
+	And the User has chosen to manage the Associated Service section
+	And the Associated Services dashboard is presented
+	When the User chooses to continue
+	Then the Order dashboard is presented
+	And the content validation status of the associtated-services section is complete
+@ignore
+Scenario: Associated Service added - Select no Service Recipients and then go back and add service recipients
+	Given there are no Service Recipients in the order
+	And the Catalogue Solutions section is not complete
+	And an Associated Service with a flat price declarative order type is saved to the order
+	And the Order Form for the existing order is presented
+	When the User adds a Service Recipient to the Service Recipient section
+	Then the Associated Service section is enabled 

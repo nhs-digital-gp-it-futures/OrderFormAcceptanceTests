@@ -192,7 +192,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheAdditionalServiceIsSaved()
         {
             ThenTheAdditionalServiceDashboardIsPresented();
-            Test.Pages.OrderForm.AddedCatalogueItemsTableIsPopulated().Should().BeTrue();
+            Test.Pages.OrderForm.AddedOrderItemsTableIsPopulated().Should().BeTrue();
         }
 
         [Then(@"the section content validation status of the Additional Service is Complete")]
