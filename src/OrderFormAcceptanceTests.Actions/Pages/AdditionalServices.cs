@@ -14,15 +14,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
 		public bool AddAdditionalServiceButtonDisplayed()
 		{
-			try
-			{
-				Wait.Until(d => d.FindElements(Pages.AdditionalServices.AddAdditionalServices).Count == 1);
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
+			return Driver.ElementVisible(Pages.AdditionalServices.AddAdditionalServices);
 		}
 
 		public void PageDisplayed()
@@ -48,6 +40,41 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 		public List<string> ServiceRecipientNames()
 		{
 			return Driver.FindElements(Pages.Common.RadioButtonLabel).Select(s => s.Text).ToList();
+		}
+
+		public object GetTableRowsCount()
+		{
+			return Driver.FindElements(Pages.Common.TableRows).Count;
+		}
+
+		public bool PriceInputDisplayed()
+		{
+			return Driver.ElementVisible(Pages.AdditionalServices.PriceInput);
+		}
+
+		public bool PriceUnitDisplayed()
+		{
+			return Driver.ElementVisible(Pages.AdditionalServices.PriceUnit);
+		}
+
+		public bool QuantityInputDisplayed()
+		{
+			return Driver.ElementVisible(Pages.AdditionalServices.QuantityInput);
+		}
+
+		public void SetQuantityAboveMax()
+		{
+			SetQuantity("2147483648");
+		}
+
+		public void SetQuantity(string value = "1000")
+		{
+			Driver.FindElement(Pages.AdditionalServices.QuantityInput).SendKeys(value);
+		}
+
+		public int AdditionalServicesAddedTableRowsCount()
+		{
+			return Driver.FindElements(Pages.Common.TableRows).Count;
 		}
 	}
 }

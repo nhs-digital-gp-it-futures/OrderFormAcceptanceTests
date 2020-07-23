@@ -114,14 +114,6 @@ Scenario: Associated Services - Additional Service now complete, >= 1 Service Re
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled
-@ignore
-Scenario: Associated Services - Select no Service Recipients and then go back and add service recipients
-	Given there are no Service Recipients in the order
-	And the Catalogue Solutions section is not complete
-	And an Associated Service is added to the order
-	And the Order Form for the existing order is presented
-	When the User adds a Service Recipient to the Service Recipient section
-	Then the Associated Service section is enabled 
 
 Scenario: Associated Service dashboard
 	Given there are no Service Recipients in the order
@@ -151,7 +143,7 @@ Scenario: Associated Service dashboard - Go back
 	And the User has chosen to manage the Associated Service section
 	When the User chooses to go back
 	Then the Order dashboard is presented
-@ignore
+
 Scenario: Select Associated Service - Select a single Associated Service to add
 	Given there are no Service Recipients in the order
 	And the User has chosen to manage the Associated Service section
@@ -159,20 +151,20 @@ Scenario: Select Associated Service - Select a single Associated Service to add
 	Then they are presented with the Associated Services available from their chosen Supplier
 	And the Call Off Agreement ID is displayed in the page title
 	And they can select one Associated Service to add
-@ignore
+
 Scenario: Select Associated Service - No Associated Service selected
 	Given there are no Service Recipients in the order
 	And the User is presented with Associated Services available from their chosen Supplier
 	And no Associated Service is selected
 	When they choose to continue
 	Then the User is informed they have to select an Associated Service
-@ignore
+
 Scenario: Select Associated Service - Go back
 	Given there are no Service Recipients in the order
 	And the User is presented with Associated Services available from their chosen Supplier
 	When the User chooses to go back
 	Then the Associated Services dashboard is presented
-@ignore
+
 Scenario: Select Associated Service - Display 'no associated services' message
 	Given that the Supplier in the order has no associated services
 	And there are no Service Recipients in the order
@@ -180,7 +172,7 @@ Scenario: Select Associated Service - Display 'no associated services' message
 	When the User has chosen to Add a single Associated Service
 	Then the User is informed that there are no Associated Services to select
 	And there is no Continue button
-@ignore
+
 Scenario: Associated Service - Select price - Select a price for the Associated Service
 	Given there are no Service Recipients in the order
 	And the User is presented with Associated Services available from their chosen Supplier
@@ -188,21 +180,21 @@ Scenario: Associated Service - Select price - Select a price for the Associated 
 	When they choose to continue
 	Then all the available prices for that Associated Service are presented
 	And they can select a price for the Associated Service
-@ignore
+
 Scenario: Associated Service - Select price - No price for the Associated Service selected
 	Given there are no Service Recipients in the order
 	And the User is presented with the prices for the selected Associated Service 
 	And no Associated Service price is selected
 	When they choose to continue
 	Then the User is informed they have to select a Associated Service price
-@ignore
+
 Scenario: Associated Service - Select price - Go back 
 	Given there are no Service Recipients in the order
 	And the User is presented with the prices for the selected Associated Service 
 	When the User chooses to go back
 	Then they are presented with the Associated Services available from their chosen Supplier
 	And the User's selected Associated Service is selected
-@ignore
+
 Scenario: Associated Service - edit price screen - Flat variable price selected
 	Given there are no Service Recipients in the order
 	And the User is presented with the prices for the selected Associated Service 
@@ -217,7 +209,7 @@ Scenario: Associated Service - edit price screen - Flat variable price selected
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the delete button is disabled
 	And the save button is enabled
-@ignore
+
 Scenario: Associated Service - edit price screen - Flat declarative price selected
 	Given there are no Service Recipients in the order
 	And the User is presented with the prices for the selected Associated Service 
@@ -231,7 +223,7 @@ Scenario: Associated Service - edit price screen - Flat declarative price select
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the delete button is disabled
 	And the save button is enabled
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Mandatory data missing
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -244,7 +236,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Mandatory 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price with 4 decimal place
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -257,7 +249,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price is negative
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -270,7 +262,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price does not allow characters
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -283,7 +275,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity does not allow characters
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -296,7 +288,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity does not allow decimals
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -309,7 +301,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity can not be negative
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -322,7 +314,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity exceeds the maximum length
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -335,7 +327,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price exceeds the maximum value
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -348,7 +340,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Validation Error Message Anchors
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -360,7 +352,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Validation
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price All data are valid
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -373,7 +365,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price All data a
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places 
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -393,12 +385,12 @@ Scenario: Associated Service - edit price screen - Flat variable price values po
 @ignore
 Scenario: Associated Service - edit price screen - Flat declarative price values populated after editing and saving
 	Given there are no Service Recipients in the order
-	Given an Associated Service with a flat price declarative order type is saved to the order
+	And an Associated Service with a flat price declarative order type is saved to the order
 	And the User amends the existing Associated Service details
 	When the User re-visits the Associated Service
 	Then the values will be populated with the values that was saved by the User
 	And the delete button is enabled
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Go back before save
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -409,7 +401,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Go back be
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Go back after save
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -424,3 +416,29 @@ Scenario Outline: Associated Service - edit price screen - Flat price Go back af
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
+
+Scenario: Associated Service added - View Associated Services
+	Given there are no Service Recipients in the order
+	And an Associated Service with a flat price declarative order type is saved to the order
+	And the User has chosen to manage the Associated Service section
+	When the Associated Services dashboard is presented
+	Then the Associated Services are presented
+	And the name of each Associated Service is displayed
+	And they are able to manage each Associated Service 
+
+Scenario: Associated Service added - section marked as complete
+	Given there are no Service Recipients in the order
+	And an Associated Service with a flat price declarative order type is saved to the order
+	And the User has chosen to manage the Associated Service section
+	And the Associated Services dashboard is presented
+	When the User chooses to continue
+	Then the Order dashboard is presented
+	And the content validation status of the associated-services section is complete
+
+Scenario: Associated Service added - Select no Service Recipients and then go back and add service recipients
+	Given there are no Service Recipients in the order
+	And the Catalogue Solutions section is not complete
+	And an Associated Service with a flat price declarative order type is saved to the order
+	And the Order Form for the existing order is presented
+	When the User adds a Service Recipient to the Service Recipient section
+	Then the Associated Service section is enabled 

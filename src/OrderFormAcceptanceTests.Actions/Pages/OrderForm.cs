@@ -559,21 +559,21 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			return Driver.FindElements(Pages.OrderForm.NoSolutionsAdded).Count == 1;
 		}
 
-		public bool AddedSolutionsTableIsPopulated()
+		public bool AddedOrderItemsTableIsPopulated()
 		{
-			return Driver.FindElement(Pages.OrderForm.AddedSolutionsTable)
+			return Driver.FindElement(Pages.OrderForm.AddedOrderItemsTable)
 				.FindElements(Pages.OrderForm.TableRowX(0))
 				.Count > 0;
 		}
 
-		public bool AddedSolutionNameIsDisplayed()
+		public bool AddedOrderItemNameIsDisplayed()
 		{
-			return Driver.FindElements(Pages.OrderForm.AddedSolutionName).Count == 1;
+			return Driver.FindElements(Pages.OrderForm.AddedOrderItemName).Count == 1;
 		}
 
-		public bool AddedSolutionNamesAreLinks()
+		public bool AddedOrderItemNamesAreLinks()
 		{
-			var names = Driver.FindElements(Pages.OrderForm.AddedSolutionName);
+			var names = Driver.FindElements(Pages.OrderForm.AddedOrderItemName);
 			var countOfNames = names.Count;
 			var countOfLinks = names.Select(n => n.GetAttribute("href")).Count();
 			return countOfNames == countOfLinks;
@@ -581,7 +581,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
 		public void ClickAddedCatalogueItem(int index = 0)
         {
-			Driver.FindElements(Pages.OrderForm.AddedSolutionName)[index].Click();
+			Driver.FindElements(Pages.OrderForm.AddedOrderItemName)[index].Click();
+		}
+
+		public void ClickTableRowLink(int index = 0)
+		{
+			Driver.FindElements(Pages.Common.TableRows)[0].FindElement(By.TagName("a")).Click();
 		}
 
 		public string GetAddedSolutionServiceRecipient()

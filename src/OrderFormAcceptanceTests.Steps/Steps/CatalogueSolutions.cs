@@ -99,7 +99,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier()
         {
             WhenTheUserHasChosenToManageTheCatalogueSolutionSection();
-            new CommonSteps(Test, Context).WhenTheUserChoosesToAddASingleCatalogueSolution();
+            new CommonSteps(Test, Context).WhenTheUserChoosesToAddAOrderItem();
             ThenTheyArePresentedWithTheCatalogueSolutionsAvailableFromTheirChosenSupplier();
         }
 
@@ -209,6 +209,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the Associated Service edit form contains an input for the price")]
         [Then(@"the Catalogue Solution edit form contains an input for the price")]
+        [Then(@"the Additional Service edit form contains an input for the price")]
         public void ThenTheCatalogueSolutionEditFormContainsAnInputForThePrice()
         {
             Test.Pages.OrderForm.PriceInputIsDisplayed().Should().BeTrue();
@@ -222,6 +223,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the item on the Associated Service edit form contains a unit of order")]
         [Then(@"the item on the Catalogue Solution edit form contains a unit of order")]
+        [Then(@"the Additional Service edit form contains a unit of order")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAUnitOfOrder()
         {
             Test.Pages.OrderForm.OrderUnitIsDisplayed().Should().BeTrue();
@@ -229,6 +231,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the item on the Associated Service edit form contains an input for the quantity")]
         [Then(@"the item on the Catalogue Solution edit form contains an input for the quantity")]
+        [Then(@"the Additional Service edit form contains an input for the quantity")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAnInputForTheQuantity()
         {
             Test.Pages.OrderForm.QuantityInputIsDisplayed().Should().BeTrue();
@@ -364,7 +367,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenThePriceIsDisplayedToTwoDecimalPlaces()
         {
             var actualPrice = Test.Pages.OrderForm.GetPriceInputValue();
-            Regex.Match(actualPrice, @"^[0-9]*\.[0-9]{2,3}$").Success.Should().BeTrue();
+            var match2Decimals = Regex.Match(actualPrice, @"^[0-9]*\.[0-9]{2,3}$").Success;
+            var match0Decimals = Regex.Match(actualPrice, @"^[0-9]*$").Success;
+            if (!match2Decimals && !match0Decimals)
+            {
+                false.Should().BeTrue("Expecting either 2 decimal places or 0 decimal places");
+            }
+
         }
 
 
@@ -409,7 +418,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
         }
 
-        [StepDefinition(@"the Associated Service is saved in the DB")]
         [StepDefinition(@"the Catalogue Solution is saved in the DB")]
         public void GivenTheCatalogueSolutionIsSavedInTheDB()
         {
@@ -429,15 +437,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the Catalogue Solutions are presented")]
-        public void ThenTheCatalogueSolutionsArePresented()
+        [Then(@"the Associated Services are presented")]
+        public void ThenTheOrderItemsArePresented()
         {
-            Test.Pages.OrderForm.AddedSolutionsTableIsPopulated().Should().BeTrue();
+            Test.Pages.OrderForm.AddedOrderItemsTableIsPopulated().Should().BeTrue();
         }
 
+        [Then(@"the name of each Associated Service is displayed")]
         [Then(@"the name of the Catalogue Solution is displayed")]
-        public void ThenTheNameOfTheCatalogueSolutionIsDisplayed()
+        public void ThenTheNameOfTheOrderItemIsDisplayed()
         {
-            Test.Pages.OrderForm.AddedSolutionNameIsDisplayed().Should().BeTrue();
+            Test.Pages.OrderForm.AddedOrderItemNameIsDisplayed().Should().BeTrue();
         }
 
         [Then(@"the Service Recipient Name and Service Recipient ODS code are concatenated into a Presentation Name using the format ""(.*)""")]
@@ -448,17 +458,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.GetAddedSolutionServiceRecipient().Should().Be(expectedFormattedValue);
         }
 
+        [Then(@"they are able to manage each Associated Service")]
         [Then(@"there is a control to edit each Catalogue Solution")]
-        public void ThenThereIsAControlToEditEachCatalogueSolution()
+        public void ThenThereIsAControlToEditEachCatalogueItem()
         {
-            Test.Pages.OrderForm.AddedSolutionNamesAreLinks().Should().BeTrue();
+            Test.Pages.OrderForm.AddedOrderItemNamesAreLinks().Should().BeTrue();
         }
 
         [Given(@"the User amends the existing catalogue solution details")]
         public void GivenTheUserAmendsTheExistingCatalogueSolutionDetails()
         {
             WhenTheUserHasChosenToManageTheCatalogueSolutionSection();
-            ThenTheCatalogueSolutionsArePresented();
+            ThenTheOrderItemsArePresented();
             Test.Pages.OrderForm.ClickAddedCatalogueItem();
             ThenTheyArePresentedWithTheOrderItemPriceEditForm();
 
@@ -479,7 +490,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("AmendedQuantity", quantity);
             Context.Add("AmendedPrice", price);
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();
-            ThenTheCatalogueSolutionsArePresented();
+            ThenTheOrderItemsArePresented();
         }
 
         [When(@"the User re-visits the Associated Service")]

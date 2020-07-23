@@ -12,6 +12,7 @@ namespace OrderFormAcceptanceTests.TestData
         public string CatalogueItemId { get; set; }
         public int CatalogueItemTypeId { get; set; }
         public string CatalogueItemName { get; set; }
+        public string ParentCatalogueItemId { get; set; }
         public string OdsCode { get; set; }
         public int ProvisioningTypeId { get; set; }
         public int CataloguePriceTypeId { get; set; }
@@ -22,7 +23,7 @@ namespace OrderFormAcceptanceTests.TestData
         public string CurrencyCode { get; set; }
         public int Quantity { get; set; }
         public int? EstimationPeriodId { get; set; }
-        public DateTime DeliveryDate { get; set; }
+        public DateTime? DeliveryDate { get; set; }
         public decimal Price { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }
@@ -127,76 +128,76 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
-        public OrderItem GenerateAdditionalServiceOrderItemWithFlatPricedDeclarative(Order order)
+        public OrderItem GenerateAdditionalServiceWithFlatPricedVariableOnDemand(Order order)
         {
             return new OrderItem
             {
                 OrderId = order.OrderId,
-                CatalogueItemId = "100004-001-A01",
+                CatalogueItemId = "100000-S-001",
                 CatalogueItemTypeId = 2,
-                CatalogueItemName = "Diagnostics XYZ additional service",
+                CatalogueItemName = "Really Kool additional service",
                 OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 2,
+                ProvisioningTypeId = 3,
                 CataloguePriceTypeId = 1,
-                PricingUnitTierName = null,
-                PricingUnitName = "bed",
-                PricingUnitDescription = "per bed",
-                TimeUnitId = 1,
+                PricingUnitTierName = "half days",
+                PricingUnitName = "halfDay",
+                PricingUnitDescription = "per half day",
+                TimeUnitId = null,
                 CurrencyCode = "GBP",
-                Quantity = 2,
+                Quantity = 9,
                 EstimationPeriodId = 2,
                 DeliveryDate = DateTime.Now.AddYears(1),
-                Price = 499.990M,
+                Price = 150.030M,
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now
             };
         }
 
-        public OrderItem GenerateAdditionalServiceOrderItemWithFlatPricedVariablePatient(Order order)
+        public OrderItem GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient(Order order)
         {
             return new OrderItem
             {
                 OrderId = order.OrderId,
-                CatalogueItemId = "100007-002-A01",
+                CatalogueItemId = "100000-S-001",
                 CatalogueItemTypeId = 2,
-                CatalogueItemName = "Addition to Boston Dynamics",
+                CatalogueItemName = "Write on Time patient additional service",
                 OdsCode = order.OrganisationOdsCode,
                 ProvisioningTypeId = 1,
                 CataloguePriceTypeId = 1,
-                PricingUnitTierName = null,
+                PricingUnitTierName = "patients",
                 PricingUnitName = "patient",
                 PricingUnitDescription = "per patient",
                 TimeUnitId = 2,
                 CurrencyCode = "GBP",
-                Quantity = 2,
+                Quantity = 1111,
                 EstimationPeriodId = 1,
                 DeliveryDate = DateTime.Now.AddYears(1),
-                Price = 599.990M,
+                Price = 99.99M,
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now
             };
         }
 
-        public OrderItem GenerateAdditionalServiceOrderItemWithFlatPricedVariableOnDemand(Order order)
+        public OrderItem GenerateAdditionalServiceOrderItemWithDeclarative(Order order)
         {
             return new OrderItem
             {
                 OrderId = order.OrderId,
-                CatalogueItemId = "100006-001-A01",
+                CatalogueItemId = "100000-S-001",
                 CatalogueItemTypeId = 2,
-                CatalogueItemName = "Addition to Paperlite",
+                CatalogueItemName = "Really Kool additional service",
                 OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 3,
+                ProvisioningTypeId = 2,
                 CataloguePriceTypeId = 1,
-                PricingUnitTierName = null,
-                PricingUnitName = "licence",
-                PricingUnitDescription = "per licence",
-                TimeUnitId = 2,
+                PricingUnitTierName = "appointments",
+                PricingUnitName = "appointments",
+                PricingUnitDescription = "per appointment",
+                TimeUnitId = null,
                 CurrencyCode = "GBP",
-                Quantity = 2,
+                Quantity = 9,
                 EstimationPeriodId = 2,
                 DeliveryDate = DateTime.Now.AddYears(1),
-                Price = 499.990M,
+                Price = 150.100M,
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now
             };
@@ -245,7 +246,7 @@ namespace OrderFormAcceptanceTests.TestData
                 CurrencyCode = "GBP",
                 Quantity = 9,
                 EstimationPeriodId = 2,
-                DeliveryDate = DateTime.Now.AddYears(1),
+                DeliveryDate = null,
                 Price = 150.000M,
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now
@@ -259,6 +260,7 @@ namespace OrderFormAcceptanceTests.TestData
                         ,[CatalogueItemId]
                         ,[CatalogueItemTypeId]
                         ,[CatalogueItemName]
+                        ,[ParentCatalogueItemId]
                         ,[OdsCode]
                         ,[ProvisioningTypeId]
                         ,[CataloguePriceTypeId]
@@ -278,6 +280,7 @@ namespace OrderFormAcceptanceTests.TestData
                         ,@CatalogueItemId
                         ,@CatalogueItemTypeId
                         ,@CatalogueItemName
+                        ,@ParentCatalogueItemId
                         ,@OdsCode
                         ,@ProvisioningTypeId
                         ,@CataloguePriceTypeId
@@ -299,7 +302,9 @@ namespace OrderFormAcceptanceTests.TestData
             return this.OrderItemId;
         }
 
-        public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
+		
+
+		public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
         {
             var query = "SELECT * from [dbo].[OrderItem] WHERE OrderId=@orderId AND CatalogueItemTypeId=@catalogueItemTypeId";
             return SqlExecutor.Execute<OrderItem>(connectionString, query, new { OrderId, CatalogueItemTypeId });
@@ -314,6 +319,7 @@ namespace OrderFormAcceptanceTests.TestData
                         ,CatalogueItemId=@CatalogueItemId
                         ,CatalogueItemTypeId=@CatalogueItemTypeId
                         ,CatalogueItemName=@CatalogueItemName
+                        ,ParentCatalogueItem=@ParentCatalogueItemId
                         ,OdsCode=@OdsCode
                         ,ProvisioningTypeId=@ProvisioningTypeId
                         ,CataloguePriceTypeId=@CataloguePriceTypeId

@@ -72,6 +72,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [When(@"there is no Associated Service added to the order")]
         [Given(@"the User chooses not to add an Associated Service")]
         [Given(@"no Associated Service is selected")]
+        [Then("the Additional Service is not saved")]
         public void DoNothing()
         {
             //do nothing
@@ -150,13 +151,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickContinueButton();
         }
 
-        [Then(@"there is content indicating there is no Additional Service added")]
-        [Then(@"the User is informed that there are no Associated Services to select")]
-        public void ThenThereIsContentIndicatingThereIsNoOrderItemeAdded()
-        {
-            Test.Pages.AdditionalServices.NoAddedOrderItemsDisplayed().Should().BeTrue();
-        }
-
         [Then(@"there is content indicating there is no Catalogue Solution added")]
         [Then(@"there is content indicating there is no Associated Service added")]
         public void ThenThereIsContentIndicatingThereIsNoCatalogueSolutionAdded()
@@ -166,7 +160,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [When(@"the User chooses to add a single Catalogue Solution")]
         [When(@"the User has chosen to Add a single Associated Service")]
-        public void WhenTheUserChoosesToAddASingleCatalogueSolution()
+        public void WhenTheUserChoosesToAddAOrderItem()
         {
             Test.Pages.OrderForm.ClickAddSolutionButton();
         }

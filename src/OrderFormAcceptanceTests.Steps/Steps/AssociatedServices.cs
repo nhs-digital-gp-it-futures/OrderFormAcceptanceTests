@@ -24,13 +24,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheAssociatedServicesDashboardIsPresented();
         }
 
-        [Given(@"an Associated Service is added to the order")]
-        public void GivenAnAssociatedServiceIsAddedToTheOrder()
-        {
-            //dev work to update data model needs completing
-            Context.Pending();
-        }
-
         [StepDefinition(@"the User has chosen to manage the Associated Service section")]
         public void WhenTheUserHasChosenToManageTheAssociatedServiceSection()
         {
@@ -60,7 +53,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheUserIsPresentedWithAssociatedServicesAvailableFromTheirChosenSupplier()
         {
             WhenTheUserHasChosenToManageTheAssociatedServiceSection();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            new CommonSteps(Test, Context).WhenTheUserChoosesToAddAOrderItem();
             ThenTheyArePresentedWithTheAssociatedServicesAvailableFromTheirChosenSupplier();
         }
 
@@ -68,7 +61,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheUserIsPresentedWithThePricesForTheSelectedAssociatedService()
         {
             GivenTheUserIsPresentedWithAssociatedServicesAvailableFromTheirChosenSupplier();
-            Test.Pages.OrderForm.ClickRadioButton(0);
+            var itemId = Test.Pages.OrderForm.ClickRadioButton(0);
+            Context.Add("ChosenItemId", itemId);
             new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
         }
 
@@ -171,7 +165,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder()
         {
             SetOrderAssociatedServicesSectionToComplete();
-            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
@@ -181,7 +175,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var catalogueSolutionSteps = new CatalogueSolutions(Test, Context);
             WhenTheUserHasChosenToManageTheAssociatedServiceSection();
-            catalogueSolutionSteps.ThenTheCatalogueSolutionsArePresented();
+            catalogueSolutionSteps.ThenTheOrderItemsArePresented();
             Test.Pages.OrderForm.ClickAddedCatalogueItem();
             catalogueSolutionSteps.ThenTheyArePresentedWithTheOrderItemPriceEditForm();
 
@@ -200,7 +194,28 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("AmendedQuantity", quantity);
             Context.Add("AmendedPrice", price);
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();
-            catalogueSolutionSteps.ThenTheCatalogueSolutionsArePresented();
+            catalogueSolutionSteps.ThenTheOrderItemsArePresented();
+        }
+
+        [Then(@"the User is informed that there are no Associated Services to select")]
+        public void ThenThereIsContentIndicatingThereIsNoAdditionalServicesToSelect()
+        {
+            Test.Pages.OrderForm.ErrorTitle().Should().BeEquivalentTo("No Associated Services found");
+        }
+
+        [Then(@"there is content indicating there is no Additional Service added")]
+        public void ThenThereIsContentIndicatingThereIsNoOrderItemeAdded()
+        {
+            Test.Pages.AdditionalServices.NoAddedOrderItemsDisplayed().Should().BeTrue();
+        }
+
+        [StepDefinition(@"the Associated Service is saved in the DB")]
+        public void GivenTheAssociatedServiceIsSavedInTheDB()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var orderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 3).First();
+            Context.Add("CreatedOrderItem", orderItem);
+            orderItem.Should().NotBeNull();
         }
 
         private void SetOrderAssociatedServicesSectionToComplete()
