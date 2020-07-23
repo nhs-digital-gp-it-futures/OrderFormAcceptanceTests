@@ -287,7 +287,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             new AdditionalServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithADeclarativeFlatPrice();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
@@ -296,7 +296,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAdditionalServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.EstimationPeriodId = 2;
             orderItem.TimeUnitId = 2;
             orderItem.Create(Test.ConnectionString);
@@ -307,7 +307,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAdditionalServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.EstimationPeriodId = 1;
             orderItem.TimeUnitId = 1;
             orderItem.Create(Test.ConnectionString);
@@ -319,7 +319,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             new AdditionalServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAPatientFlatPrice();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithFlatPricedVariablePatient((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }

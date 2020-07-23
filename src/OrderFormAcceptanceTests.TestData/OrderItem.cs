@@ -192,7 +192,7 @@ namespace OrderFormAcceptanceTests.TestData
                 PricingUnitTierName = "appointments",
                 PricingUnitName = "appointments",
                 PricingUnitDescription = "per appointment",
-                TimeUnitId = null,
+                TimeUnitId = 1,
                 CurrencyCode = "GBP",
                 Quantity = 9,
                 EstimationPeriodId = 2,
