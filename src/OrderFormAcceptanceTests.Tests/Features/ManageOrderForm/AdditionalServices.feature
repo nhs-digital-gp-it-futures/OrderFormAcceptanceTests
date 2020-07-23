@@ -183,8 +183,22 @@ Scenario: Additional Services - Go back post save
 	When the User chooses to go back
 	Then the Additional Service dashboard is presented
 
-Scenario: Additional Services - Values populated after editing and saving
+Scenario: Additional Services - Values populated after editing and saving - Flat List Price Variable (Patient Numbers)
 	Given the edit Additional Service form for flat list price with variable (patient numbers) order type is presented
+	And the Order Form for the existing order is presented
+	And the User is able to manage the Additional Services section
+	When the User chooses to edit the saved Additional service	
+	Then the pricing values will be populated with the values that was saved by the User
+
+Scenario: Additional Services - Values populated after editing and saving - Flat List Price Declarative
+	Given the edit Additional Service form for flat list price with declarative order type is presented
+	And the Order Form for the existing order is presented
+	And the User is able to manage the Additional Services section
+	When the User chooses to edit the saved Additional service	
+	Then the pricing values will be populated with the values that was saved by the User
+
+Scenario: Additional Services - Values populated after editing and saving - Flat List Price Variable (On Demand)
+	Given the edit Additional Service form for flat list price with variable (on demand) order type is presented
 	And the Order Form for the existing order is presented
 	And the User is able to manage the Additional Services section
 	When the User chooses to edit the saved Additional service	

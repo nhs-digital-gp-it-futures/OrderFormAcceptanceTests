@@ -146,7 +146,7 @@ namespace OrderFormAcceptanceTests.TestData
                 Quantity = 9,
                 EstimationPeriodId = 2,
                 DeliveryDate = DateTime.Now.AddYears(1),
-                Price = 150.000M,
+                Price = 150.030M,
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now
             };
@@ -172,6 +172,31 @@ namespace OrderFormAcceptanceTests.TestData
                 EstimationPeriodId = 1,
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 99.99M,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+        }
+
+        public OrderItem GenerateAdditionalServiceOrderItemWithDeclarative(Order order)
+        {
+            return new OrderItem
+            {
+                OrderId = order.OrderId,
+                CatalogueItemId = "100000-S-001",
+                CatalogueItemTypeId = 2,
+                CatalogueItemName = "Really Kool additional service",
+                OdsCode = order.OrganisationOdsCode,
+                ProvisioningTypeId = 2,
+                CataloguePriceTypeId = 1,
+                PricingUnitTierName = "appointments",
+                PricingUnitName = "appointments",
+                PricingUnitDescription = "per appointment",
+                TimeUnitId = null,
+                CurrencyCode = "GBP",
+                Quantity = 9,
+                EstimationPeriodId = 2,
+                DeliveryDate = DateTime.Now.AddYears(1),
+                Price = 150.100M,
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now
             };
@@ -273,6 +298,8 @@ namespace OrderFormAcceptanceTests.TestData
             this.OrderItemId = SqlExecutor.Execute<int>(connectionString, query, this).Single();
             return this.OrderItemId;
         }
+
+		
 
 		public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
         {

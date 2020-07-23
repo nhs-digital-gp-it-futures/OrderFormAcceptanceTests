@@ -584,6 +584,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 			Driver.FindElements(Pages.OrderForm.AddedSolutionName)[index].Click();
 		}
 
+		public void ClickTableRowLink(int index = 0)
+		{
+			Driver.FindElements(Pages.Common.TableRows)[0].FindElement(By.TagName("a")).Click();
+		}
+
 		public string GetAddedSolutionServiceRecipient()
 		{
 			return Driver.FindElement(Pages.OrderForm.AddedSolutionServiceRecipient).Text;
