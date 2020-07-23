@@ -256,5 +256,32 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             quantityFromPage.Should().Be(orderItem.Quantity.ToString());            
             priceFromPage.Should().Be(orderItem.Price.ToString("F")); // ToString("F") does a financial rounding on a decimal, including adding .00 if a round number
         }
+
+        [Given(@"the supplier added to the order has an additional service with a declarative flat price")]
+        public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithADeclarativeFlatPrice()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = 100004;
+            order.SupplierName = "Catterpillar Medworks";
+            order.Update(Test.ConnectionString);
+        }
+
+        [Given(@"the supplier added to the order has an additional service with a patient flat price")]
+        public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAPatientFlatPrice()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = 100007;
+            order.SupplierName = "Doc Lightning";
+            order.Update(Test.ConnectionString);
+        }
+
+        [Given(@"the supplier added to the order has an additional service with an on demand flat price")]
+        public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAnOnDemandFlatPrice()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = 100006;
+            order.SupplierName = "Clinical Raptor";
+            order.Update(Test.ConnectionString);
+        }
     }
 }
