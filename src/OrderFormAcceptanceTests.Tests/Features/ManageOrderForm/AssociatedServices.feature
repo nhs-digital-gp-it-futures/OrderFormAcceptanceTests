@@ -416,7 +416,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Go back af
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario: Associated Service added - View Associated Services
 	Given there are no Service Recipients in the order
 	And an Associated Service with a flat price declarative order type is saved to the order
@@ -425,7 +425,7 @@ Scenario: Associated Service added - View Associated Services
 	Then the Associated Services are presented
 	And the name of each Associated Service is displayed
 	And they are able to manage each Associated Service 
-@ignore
+
 Scenario: Associated Service added - section marked as complete
 	Given there are no Service Recipients in the order
 	And an Associated Service with a flat price declarative order type is saved to the order
@@ -433,8 +433,8 @@ Scenario: Associated Service added - section marked as complete
 	And the Associated Services dashboard is presented
 	When the User chooses to continue
 	Then the Order dashboard is presented
-	And the content validation status of the associtated-services section is complete
-@ignore
+	And the content validation status of the associated-services section is complete
+
 Scenario: Associated Service added - Select no Service Recipients and then go back and add service recipients
 	Given there are no Service Recipients in the order
 	And the Catalogue Solutions section is not complete
