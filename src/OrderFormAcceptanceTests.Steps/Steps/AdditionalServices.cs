@@ -209,6 +209,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
+            ThenTheUserIsAbleToManageTheAdditionalServicesSection();
+            GivenTheUserChoosesToEditTheSavedAdditionalService();
         }
 
         [Given(@"the edit Additional Service form for flat list price with declarative order type is presented")]
@@ -218,6 +221,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
+            ThenTheUserIsAbleToManageTheAdditionalServicesSection();
+            GivenTheUserChoosesToEditTheSavedAdditionalService();
         }
 
         [Given(@"the edit Additional Service form for flat list price with variable \(on demand\) order type is presented")]
@@ -227,6 +233,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
+            ThenTheUserIsAbleToManageTheAdditionalServicesSection();
+            GivenTheUserChoosesToEditTheSavedAdditionalService();
         }
 
 
