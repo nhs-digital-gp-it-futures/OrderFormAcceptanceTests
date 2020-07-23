@@ -99,7 +99,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier()
         {
             WhenTheUserHasChosenToManageTheCatalogueSolutionSection();
-            new CommonSteps(Test, Context).WhenTheUserChoosesToAddASingleCatalogueSolution();
+            new CommonSteps(Test, Context).WhenTheUserChoosesToAddAOrderItem();
             ThenTheyArePresentedWithTheCatalogueSolutionsAvailableFromTheirChosenSupplier();
         }
 
