@@ -367,7 +367,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenThePriceIsDisplayedToTwoDecimalPlaces()
         {
             var actualPrice = Test.Pages.OrderForm.GetPriceInputValue();
-            Regex.Match(actualPrice, @"^[0-9]*\.[0-9]{2,3}$").Success.Should().BeTrue();
+            var match2Decimals = Regex.Match(actualPrice, @"^[0-9]*\.[0-9]{2,3}$").Success;
+            var match0Decimals = Regex.Match(actualPrice, @"^[0-9]*$").Success;
+            if (!match2Decimals && !match0Decimals)
+            {
+                false.Should().BeTrue("Expecting either 2 decimal places or 0 decimal places");
+            }
+
         }
 
 
@@ -412,7 +418,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
         }
 
-        [StepDefinition(@"the Associated Service is saved in the DB")]
         [StepDefinition(@"the Catalogue Solution is saved in the DB")]
         public void GivenTheCatalogueSolutionIsSavedInTheDB()
         {

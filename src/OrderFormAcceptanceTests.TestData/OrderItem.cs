@@ -12,6 +12,7 @@ namespace OrderFormAcceptanceTests.TestData
         public string CatalogueItemId { get; set; }
         public int CatalogueItemTypeId { get; set; }
         public string CatalogueItemName { get; set; }
+        public string ParentCatalogueItemId { get; set; }
         public string OdsCode { get; set; }
         public int ProvisioningTypeId { get; set; }
         public int CataloguePriceTypeId { get; set; }
@@ -22,7 +23,7 @@ namespace OrderFormAcceptanceTests.TestData
         public string CurrencyCode { get; set; }
         public int Quantity { get; set; }
         public int? EstimationPeriodId { get; set; }
-        public DateTime DeliveryDate { get; set; }
+        public DateTime? DeliveryDate { get; set; }
         public decimal Price { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }
@@ -213,7 +214,7 @@ namespace OrderFormAcceptanceTests.TestData
                 OdsCode = order.OrganisationOdsCode,
                 ProvisioningTypeId = 3,
                 CataloguePriceTypeId = 1,
-                PricingUnitTierName = "half days",
+                PricingUnitTierName = null,
                 PricingUnitName = "halfDay",
                 PricingUnitDescription = "per half day",
                 TimeUnitId = null,
@@ -238,14 +239,14 @@ namespace OrderFormAcceptanceTests.TestData
                 OdsCode = order.OrganisationOdsCode,
                 ProvisioningTypeId = 2,
                 CataloguePriceTypeId = 1,
-                PricingUnitTierName = "courses",
+                PricingUnitTierName = null,
                 PricingUnitName = "course",
                 PricingUnitDescription = "per course",
                 TimeUnitId = null,
                 CurrencyCode = "GBP",
                 Quantity = 9,
                 EstimationPeriodId = 2,
-                DeliveryDate = DateTime.Now.AddYears(1),
+                DeliveryDate = null,
                 Price = 150.000M,
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now
@@ -259,6 +260,7 @@ namespace OrderFormAcceptanceTests.TestData
                         ,[CatalogueItemId]
                         ,[CatalogueItemTypeId]
                         ,[CatalogueItemName]
+                        ,[ParentCatalogueItemId]
                         ,[OdsCode]
                         ,[ProvisioningTypeId]
                         ,[CataloguePriceTypeId]
@@ -278,6 +280,7 @@ namespace OrderFormAcceptanceTests.TestData
                         ,@CatalogueItemId
                         ,@CatalogueItemTypeId
                         ,@CatalogueItemName
+                        ,@ParentCatalogueItemId
                         ,@OdsCode
                         ,@ProvisioningTypeId
                         ,@CataloguePriceTypeId
@@ -316,6 +319,7 @@ namespace OrderFormAcceptanceTests.TestData
                         ,CatalogueItemId=@CatalogueItemId
                         ,CatalogueItemTypeId=@CatalogueItemTypeId
                         ,CatalogueItemName=@CatalogueItemName
+                        ,ParentCatalogueItem=@ParentCatalogueItemId
                         ,OdsCode=@OdsCode
                         ,ProvisioningTypeId=@ProvisioningTypeId
                         ,CataloguePriceTypeId=@CataloguePriceTypeId

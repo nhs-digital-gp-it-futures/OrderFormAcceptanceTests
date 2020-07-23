@@ -194,7 +194,7 @@ Scenario: Associated Service - Select price - Go back
 	When the User chooses to go back
 	Then they are presented with the Associated Services available from their chosen Supplier
 	And the User's selected Associated Service is selected
-@ignore
+
 Scenario: Associated Service - edit price screen - Flat variable price selected
 	Given there are no Service Recipients in the order
 	And the User is presented with the prices for the selected Associated Service 
@@ -209,7 +209,7 @@ Scenario: Associated Service - edit price screen - Flat variable price selected
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the delete button is disabled
 	And the save button is enabled
-@ignore
+
 Scenario: Associated Service - edit price screen - Flat declarative price selected
 	Given there are no Service Recipients in the order
 	And the User is presented with the prices for the selected Associated Service 
@@ -223,7 +223,7 @@ Scenario: Associated Service - edit price screen - Flat declarative price select
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the delete button is disabled
 	And the save button is enabled
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Mandatory data missing
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -236,7 +236,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Mandatory 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price with 4 decimal place
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -249,7 +249,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price is negative
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -262,7 +262,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price does not allow characters
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -275,7 +275,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity does not allow characters
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -288,7 +288,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity does not allow decimals
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -301,7 +301,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity can not be negative
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -314,7 +314,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity exceeds the maximum length
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -327,7 +327,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price exceeds the maximum value
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -340,7 +340,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Validation Error Message Anchors
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -352,7 +352,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Validation
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price All data are valid
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -365,7 +365,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price All data a
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places 
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -390,7 +390,7 @@ Scenario: Associated Service - edit price screen - Flat declarative price values
 	When the User re-visits the Associated Service
 	Then the values will be populated with the values that was saved by the User
 	And the delete button is enabled
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Go back before save
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
@@ -401,7 +401,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Go back be
 	| ProvisioningType |
 	| declarative      |
 	| variable         |
-@ignore
+
 Scenario Outline: Associated Service - edit price screen - Flat price Go back after save
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price

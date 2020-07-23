@@ -218,7 +218,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var date = Test.Pages.OrderForm.GetItemPlannedDate();
-            date.Should().Be(expectedOrderItem.DeliveryDate.ToString("d MMMM yyyy"));
+            date.Should().Be(expectedOrderItem.DeliveryDate.Value.ToString("d MMMM yyyy"));
         }
 
         [Then(@"the item year cost of each item is the result of the Flat calculation \[Price] \* \[Quantity] rounded up to two decimal places")]
