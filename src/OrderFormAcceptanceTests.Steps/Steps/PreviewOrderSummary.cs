@@ -172,6 +172,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             id.Should().Be(expectedId);
         }
 
+        [Then(@"the item name of each item is the Additional Service name")]
         [Then(@"the item name of each item is the Catalogue Solution name")]
         public void ThenTheItemNameOfEachItemIsTheCatalogueSolutionName()
         {
@@ -262,7 +263,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedOrderItem", orderItem);
         }
 
-
         [Given(@"a catalogue solution with a flat price variable \(Per-Patient\) order type is saved to the order")]
         public void GivenACatalogueSolutionWithAFlatPriceVariablePer_PatientOrderTypeIsSavedToTheOrder()
         {
@@ -278,6 +278,48 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             SetOrderCatalogueSectionToComplete();
             new CatalogueSolutions(Test, Context).GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableDeclarative((Order)Context["CreatedOrder"]);
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+        }
+
+        [Given(@"an additional service with a flat price variable \(Declarative\) order type is saved to the order")]
+        public void GivenAnAdditionalServiceWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder()
+        {
+            SetOrderCatalogueSectionToComplete();
+            new AdditionalServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithADeclarativeFlatPrice();
+            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context["CreatedOrder"]);
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+        }
+
+        [Given(@"an additional service with a flat price variable \(On-Demand\) order type with the quantity period per year is saved to the order")]
+        public void GivenAnAdditionalServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
+        {
+            SetOrderCatalogueSectionToComplete();
+            var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem.EstimationPeriodId = 2;
+            orderItem.TimeUnitId = 2;
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+        }
+
+        [Given(@"an additional service with a flat price variable \(On-Demand\) order type with the quantity period per month is saved to the order")]
+        public void GivenAnAdditionalServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
+        {
+            SetOrderCatalogueSectionToComplete();
+            var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem.EstimationPeriodId = 1;
+            orderItem.TimeUnitId = 1;
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+        }
+
+        [Given(@"an additional service with a flat price variable \(Patient\) order type is saved to the order")]
+        public void GivenAnAdditionalServiceWithAFlatPriceVariablePatientOrderTypeIsSavedToTheOrder()
+        {
+            SetOrderCatalogueSectionToComplete();
+            new AdditionalServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAPatientFlatPrice();
+            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
