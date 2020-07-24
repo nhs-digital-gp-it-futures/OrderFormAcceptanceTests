@@ -191,3 +191,19 @@ Scenario: Additional Services - Values populated after editing and saving - Flat
 Scenario: Additional Services - Values populated after editing and saving - Flat List Price Variable (On Demand)
 	Given the edit Additional Service form for flat list price with variable (on demand) order type is presented
 	Then the pricing values will be populated with the values that was saved by the User
+
+Scenario: Additional Services added - View Additional Services
+	Given there is one or more Additional Services added to the order
+	And the User has chosen to manage the Additional Services section
+	When the Additional Services dashboard is presented
+	Then the Additional Services are presented
+	And the name of each Additional Service is displayed
+	And they are able to manage each Additional Service 
+
+Scenario: Additional Services added - section marked as complete
+	Given there is one or more Additional Services added to the order
+	And the User has chosen to manage the Additional Services section
+	And the Additional Services dashboard is presented
+	When the User chooses to continue
+	Then the Order dashboard is presented
+	And the content validation status of the additional-services section is complete

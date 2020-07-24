@@ -438,12 +438,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the Catalogue Solutions are presented")]
         [Then(@"the Associated Services are presented")]
+        [Then(@"the Additional Services are presented")]
         public void ThenTheOrderItemsArePresented()
         {
             Test.Pages.OrderForm.AddedOrderItemsTableIsPopulated().Should().BeTrue();
         }
 
         [Then(@"the name of each Associated Service is displayed")]
+        [Then(@"the name of each Additional Service is displayed")]
         [Then(@"the name of the Catalogue Solution is displayed")]
         public void ThenTheNameOfTheOrderItemIsDisplayed()
         {
@@ -459,6 +461,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"they are able to manage each Associated Service")]
+        [Then(@"they are able to manage each Additional Service")]
         [Then(@"there is a control to edit each Catalogue Solution")]
         public void ThenThereIsAControlToEditEachCatalogueItem()
         {
