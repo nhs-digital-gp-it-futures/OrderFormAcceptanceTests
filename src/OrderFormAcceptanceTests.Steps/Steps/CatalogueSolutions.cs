@@ -50,6 +50,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             searchedOrderItem.Should().BeEmpty();
         }
 
+        [Given(@"there is no Catalogue Solution in the order but the section is complete")]
+        public void SetCatalogueSolutionSectionToCompleteWith0SolutionsAdded()
+        {
+            new OrderForm(Test, Context).GivenTheCatalogueSolutionSectionIsComplete();
+            GivenThereIsNoCatalogueSolutionInTheOrder();
+        }
+
         [Then(@"the User is able to manage the Catalogue Solutions section")]
         public void ThenTheUserIsAbleToManageTheCatalogueSolutionsSection()
         {
