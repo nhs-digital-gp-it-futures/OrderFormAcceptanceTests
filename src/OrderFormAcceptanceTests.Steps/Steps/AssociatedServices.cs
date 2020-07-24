@@ -156,7 +156,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderAssociatedServicesSectionToComplete();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
-            orderItem.EstimationPeriodId = 2;
+            orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }

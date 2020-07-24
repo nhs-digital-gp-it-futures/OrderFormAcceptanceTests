@@ -10,11 +10,11 @@ namespace OrderFormAcceptanceTests.TestData
         public int OrderItemId { get; set; }
         public string OrderId { get; set; }
         public string CatalogueItemId { get; set; }
-        public int CatalogueItemTypeId { get; set; }
+        public CatalogueItemType CatalogueItemTypeId { get; set; }
         public string CatalogueItemName { get; set; }
         public string ParentCatalogueItemId { get; set; }
         public string OdsCode { get; set; }
-        public int ProvisioningTypeId { get; set; }
+        public ProvisioningType ProvisioningTypeId { get; set; }
         public int CataloguePriceTypeId { get; set; }
         public string PricingUnitTierName { get; set; }
         public string PricingUnitName { get; set; }
@@ -22,22 +22,22 @@ namespace OrderFormAcceptanceTests.TestData
         public int? TimeUnitId { get; set; }
         public string CurrencyCode { get; set; }
         public int Quantity { get; set; }
-        public int? EstimationPeriodId { get; set; }
+        public TimeUnit? EstimationPeriodId { get; set; }
         public DateTime? DeliveryDate { get; set; }
         public decimal Price { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }
 
         public OrderItem GenerateOrderItemWithFlatPricedVariableOnDemand(Order order)
-        {   
+        {
             return new OrderItem
             {
                 OrderId = order.OrderId,
                 CatalogueItemId = "100000-001",
-                CatalogueItemTypeId = 1,
+                CatalogueItemTypeId = CatalogueItemType.Solution,
                 CatalogueItemName = "Write on Time",
                 OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 3,
+                ProvisioningTypeId = ProvisioningType.OnDemand,
                 CataloguePriceTypeId = 1,
                 PricingUnitTierName = null,
                 PricingUnitName = "consultation",
@@ -45,7 +45,7 @@ namespace OrderFormAcceptanceTests.TestData
                 TimeUnitId = null,
                 CurrencyCode = "GBP",
                 Quantity = 1111,
-                EstimationPeriodId = 2,
+                EstimationPeriodId = TimeUnit.Year,
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 1001.010M,
                 Created = DateTime.Now,
@@ -59,10 +59,10 @@ namespace OrderFormAcceptanceTests.TestData
             {
                 OrderId = order.OrderId,
                 CatalogueItemId = "100000-001",
-                CatalogueItemTypeId = 1,
+                CatalogueItemTypeId = CatalogueItemType.Solution,
                 CatalogueItemName = "Write on Time",
                 OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 1,
+                ProvisioningTypeId = ProvisioningType.Patient,
                 CataloguePriceTypeId = 1,
                 PricingUnitTierName = null,
                 PricingUnitName = "patient",
@@ -70,7 +70,7 @@ namespace OrderFormAcceptanceTests.TestData
                 TimeUnitId = 2,
                 CurrencyCode = "GBP",
                 Quantity = 1111,
-                EstimationPeriodId = 1,
+                EstimationPeriodId = TimeUnit.Month,
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 99.99M,
                 Created = DateTime.Now,
@@ -84,10 +84,10 @@ namespace OrderFormAcceptanceTests.TestData
             {
                 OrderId = order.OrderId,
                 CatalogueItemId = "100003-001",
-                CatalogueItemTypeId = 1,
+                CatalogueItemTypeId = CatalogueItemType.Solution,
                 CatalogueItemName = "Intellidoc Comms",
                 OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 2,
+                ProvisioningTypeId = ProvisioningType.Declarative,
                 CataloguePriceTypeId = 1,
                 PricingUnitTierName = null,
                 PricingUnitName = "bed",
@@ -95,7 +95,7 @@ namespace OrderFormAcceptanceTests.TestData
                 TimeUnitId = 1,
                 CurrencyCode = "GBP",
                 Quantity = 1111,
-                EstimationPeriodId = 2,
+                EstimationPeriodId = TimeUnit.Year,
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 7.00M,
                 Created = DateTime.Now,
@@ -109,10 +109,10 @@ namespace OrderFormAcceptanceTests.TestData
             {
                 OrderId = order.OrderId,
                 CatalogueItemId = "100000-001-A01",
-                CatalogueItemTypeId = 2,
+                CatalogueItemTypeId = CatalogueItemType.AdditionalService,
                 CatalogueItemName = "Write on Time additional service",
                 OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 1,
+                ProvisioningTypeId = ProvisioningType.Patient,
                 CataloguePriceTypeId = 1,
                 PricingUnitTierName = null,
                 PricingUnitName = "patient",
@@ -120,7 +120,7 @@ namespace OrderFormAcceptanceTests.TestData
                 TimeUnitId = 1,
                 CurrencyCode = "GBP",
                 Quantity = 305,
-                EstimationPeriodId = 1,
+                EstimationPeriodId = TimeUnit.Month,
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 199.990M,
                 Created = DateTime.Now,
@@ -134,10 +134,10 @@ namespace OrderFormAcceptanceTests.TestData
             {
                 OrderId = order.OrderId,
                 CatalogueItemId = "100000-S-001",
-                CatalogueItemTypeId = 2,
+                CatalogueItemTypeId = CatalogueItemType.AdditionalService,
                 CatalogueItemName = "Really Kool additional service",
                 OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 3,
+                ProvisioningTypeId = ProvisioningType.OnDemand,
                 CataloguePriceTypeId = 1,
                 PricingUnitTierName = "half days",
                 PricingUnitName = "halfDay",
@@ -145,7 +145,7 @@ namespace OrderFormAcceptanceTests.TestData
                 TimeUnitId = null,
                 CurrencyCode = "GBP",
                 Quantity = 9,
-                EstimationPeriodId = 2,
+                EstimationPeriodId = TimeUnit.Year,
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 150.030M,
                 Created = DateTime.Now,
@@ -159,10 +159,10 @@ namespace OrderFormAcceptanceTests.TestData
             {
                 OrderId = order.OrderId,
                 CatalogueItemId = "100000-S-001",
-                CatalogueItemTypeId = 2,
+                CatalogueItemTypeId = CatalogueItemType.AdditionalService,
                 CatalogueItemName = "Write on Time patient additional service",
                 OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 1,
+                ProvisioningTypeId = ProvisioningType.Patient,
                 CataloguePriceTypeId = 1,
                 PricingUnitTierName = "patients",
                 PricingUnitName = "patient",
@@ -170,7 +170,7 @@ namespace OrderFormAcceptanceTests.TestData
                 TimeUnitId = 2,
                 CurrencyCode = "GBP",
                 Quantity = 1111,
-                EstimationPeriodId = 1,
+                EstimationPeriodId = TimeUnit.Month,
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 99.99M,
                 Created = DateTime.Now,
@@ -184,10 +184,10 @@ namespace OrderFormAcceptanceTests.TestData
             {
                 OrderId = order.OrderId,
                 CatalogueItemId = "100000-S-001",
-                CatalogueItemTypeId = 2,
+                CatalogueItemTypeId = CatalogueItemType.AdditionalService,
                 CatalogueItemName = "Really Kool additional service",
                 OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 2,
+                ProvisioningTypeId = ProvisioningType.Declarative,
                 CataloguePriceTypeId = 1,
                 PricingUnitTierName = "appointments",
                 PricingUnitName = "appointments",
@@ -195,7 +195,7 @@ namespace OrderFormAcceptanceTests.TestData
                 TimeUnitId = 1,
                 CurrencyCode = "GBP",
                 Quantity = 9,
-                EstimationPeriodId = 2,
+                EstimationPeriodId = TimeUnit.Year,
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 150.100M,
                 Created = DateTime.Now,
@@ -209,10 +209,10 @@ namespace OrderFormAcceptanceTests.TestData
             {
                 OrderId = order.OrderId,
                 CatalogueItemId = "100000-S-001",
-                CatalogueItemTypeId = 3,
+                CatalogueItemTypeId = CatalogueItemType.AssociatedService,
                 CatalogueItemName = "Really Kool associated service",
                 OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 3,
+                ProvisioningTypeId = ProvisioningType.OnDemand,
                 CataloguePriceTypeId = 1,
                 PricingUnitTierName = null,
                 PricingUnitName = "halfDay",
@@ -220,7 +220,7 @@ namespace OrderFormAcceptanceTests.TestData
                 TimeUnitId = null,
                 CurrencyCode = "GBP",
                 Quantity = 9,
-                EstimationPeriodId = 2,
+                EstimationPeriodId = TimeUnit.Year,
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 150.000M,
                 Created = DateTime.Now,
@@ -234,10 +234,10 @@ namespace OrderFormAcceptanceTests.TestData
             {
                 OrderId = order.OrderId,
                 CatalogueItemId = "100000-S-001",
-                CatalogueItemTypeId = 3,
+                CatalogueItemTypeId = CatalogueItemType.AssociatedService,
                 CatalogueItemName = "Really Kool associated service",
                 OdsCode = order.OrganisationOdsCode,
-                ProvisioningTypeId = 2,
+                ProvisioningTypeId = ProvisioningType.Declarative,
                 CataloguePriceTypeId = 1,
                 PricingUnitTierName = null,
                 PricingUnitName = "course",
@@ -245,7 +245,7 @@ namespace OrderFormAcceptanceTests.TestData
                 TimeUnitId = null,
                 CurrencyCode = "GBP",
                 Quantity = 9,
-                EstimationPeriodId = 2,
+                EstimationPeriodId = TimeUnit.Year,
                 DeliveryDate = null,
                 Price = 150.000M,
                 Created = DateTime.Now,
@@ -302,9 +302,7 @@ namespace OrderFormAcceptanceTests.TestData
             return this.OrderItemId;
         }
 
-		
-
-		public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
+        public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
         {
             var query = "SELECT * from [dbo].[OrderItem] WHERE OrderId=@orderId AND CatalogueItemTypeId=@catalogueItemTypeId";
             return SqlExecutor.Execute<OrderItem>(connectionString, query, new { OrderId, CatalogueItemTypeId });
@@ -350,7 +348,7 @@ namespace OrderFormAcceptanceTests.TestData
             var query = @"DELETE FROM [dbo].[OrderItem] WHERE OrderId=@orderId";
             SqlExecutor.Execute<Order>(connectionString, query, new { orderId });
         }
-        
+
         public string GetEstimationPeriod(string connectionString)
         {
             const string query = @"Select [Description] FROM [dbo].[TimeUnit] WHERE TimeUnitId=@EstimationPeriodId";
@@ -361,6 +359,25 @@ namespace OrderFormAcceptanceTests.TestData
         {
             const string query = @"Select [Description] FROM [dbo].[TimeUnit] WHERE TimeUnitId=@TimeUnitId";
             return SqlExecutor.Execute<string>(connectionString, query, this).FirstOrDefault();
+        }
+
+        public decimal CalculateItemCost()
+        {
+            return Price * Quantity * GetItemCostOffset();
+        }
+
+        private decimal GetItemCostOffset()
+        {
+            if (ProvisioningTypeId == ProvisioningType.OnDemand
+                && EstimationPeriodId == TimeUnit.Month ||
+                (ProvisioningTypeId == ProvisioningType.Declarative
+                 && (CatalogueItemTypeId == CatalogueItemType.Solution 
+                     || CatalogueItemTypeId == CatalogueItemType.AdditionalService)))
+            {
+                return 12m;
+            }
+
+            return 1m;
         }
     }
 }

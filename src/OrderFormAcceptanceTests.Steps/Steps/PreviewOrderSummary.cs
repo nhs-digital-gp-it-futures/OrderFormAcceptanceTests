@@ -1,21 +1,17 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
-using OrderFormAcceptanceTests.TestData.Utils;
 using System;
 using System.Globalization;
-using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
 {
     [Binding]
-    class PreviewOrderSummary : TestBase
+    public sealed class PreviewOrderSummary : TestBase
     {
-
         public PreviewOrderSummary(UITest test, ScenarioContext context) : base(test, context)
         {
-
         }
 
         [When(@"the User chooses to preview the Order Summary")]
@@ -101,7 +97,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"Order items \(recurring cost\) table is displayed")]
         public void ThenOrderItemsRecurringCostTableIsDisplayed()
         {
-            Test.Pages.OrderForm.RecurringCostsTableIsDiaplyed().Should().BeTrue();
+            Test.Pages.OrderForm.RecurringCostsTableIsDisplayed().Should().BeTrue();
         }
 
         [Then(@"the total one-off cost is displayed")]
@@ -248,7 +244,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
-            orderItem.EstimationPeriodId = 2;
+            orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
@@ -258,7 +254,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
-            orderItem.EstimationPeriodId = 1;
+            orderItem.EstimationPeriodId = TimeUnit.Month;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
@@ -297,7 +293,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
-            orderItem.EstimationPeriodId = 2;
+            orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.TimeUnitId = 2;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
@@ -308,7 +304,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
-            orderItem.EstimationPeriodId = 1;
+            orderItem.EstimationPeriodId = TimeUnit.Month;
             orderItem.TimeUnitId = 1;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
@@ -322,6 +318,59 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
+        }
+
+        [Given(@"there are one or more Order items summarised in the Order items \(recurring cost\) table")]
+        public void GivenThereAreOneOrMoreOrderItemsSummarisedInTheOrderItemsRecurringCostTable()
+        {
+            var onDemandOrderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            onDemandOrderItem.Create(Test.ConnectionString);
+
+            var declarativeOrderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableDeclarative((Order)Context["CreatedOrder"]);
+            declarativeOrderItem.Create(Test.ConnectionString);
+
+            var patientOrderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient((Order)Context["CreatedOrder"]);
+            patientOrderItem.Create(Test.ConnectionString);
+
+            Context.Add("CreatedOrderItems", new OrderItemList(onDemandOrderItem, declarativeOrderItem, patientOrderItem));
+        }
+
+        [Then(@"the Total cost for one year is the result of the Total cost for one year calculation")]
+        public void ThenTheTotalCostForOneYearIsTheResultOfTheTotalCostForOneYearCalculation()
+        {
+            var actual = Test.Pages.OrderForm.GetTotalAnnualCost();
+            var expectedTotalAnnualCost = Context.Get<OrderItemList>("CreatedOrderItems").GetTotalAnnualCost();
+
+            actual.Should().Be(FormatDecimal(expectedTotalAnnualCost));
+        }
+
+        [Then(@"the Total cost for one year is expressed as two decimal places")]
+        public void ThenItIsExpressedAsTwoDecimalPlaces()
+        {
+            const int decimalPointPartIndex = 1;
+            var actual = Test.Pages.OrderForm.GetTotalAnnualCost().Split('.')[decimalPointPartIndex].Length;
+
+            const int expectedDecimalPointLength = 2;
+            actual.Should().Be(expectedDecimalPointLength);
+        }
+
+        [Then(@"the Total monthly cost is the result of the Total monthly cost calculation")]
+        public void ThenTheTotalMonthlyCostIsTheResultOfTheTotalMonthlyCostCalculation()
+        {
+            var actual = Test.Pages.OrderForm.GetTotalMonthlyCost();
+            var expectedTotalMonthlyCost = Context.Get<OrderItemList>("CreatedOrderItems").GetTotalMonthlyCost();
+
+            actual.Should().Be(FormatDecimal(expectedTotalMonthlyCost));
+        }
+
+        [Then(@"the Total monthly cost is expressed as two decimal places")]
+        public void ThenTheTotalMonthlyCostIsExpressedAsTwoDecimalPlaces()
+        {
+            const int decimalPointPartIndex = 1;
+            var actual = Test.Pages.OrderForm.GetTotalMonthlyCost().Split('.')[decimalPointPartIndex].Length;
+
+            const int expectedDecimalPointLength = 2;
+            actual.Should().Be(expectedDecimalPointLength);
         }
 
         private static string FormatDecimal(decimal price)

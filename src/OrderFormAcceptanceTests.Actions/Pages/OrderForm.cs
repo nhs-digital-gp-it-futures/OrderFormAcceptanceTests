@@ -3,7 +3,6 @@ using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.TestData;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -178,7 +177,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool EditDescriptionSectionDisplayed()
         {
-            
+
             try
             {
                 Wait.Until(d => d.FindElements(Pages.OrderForm.EditDescription).Count == 1);
@@ -301,7 +300,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             return Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).TagName == "a";
         }
-        
 
         public void AssertThatEditCatalogueSolutionsSectionIsNotComplete()
         {
@@ -329,7 +327,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool ContinueButtonDisplayed()
         {
-            return Driver.FindElements(Pages.Common.ContinueButton).Count ==  1;
+            return Driver.FindElements(Pages.Common.ContinueButton).Count == 1;
         }
 
         public void ClickContinueButton()
@@ -453,7 +451,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         }
 
         public Contact GetContact()
-        {			
+        {
             Wait.Until(d => d.FindElements(Pages.OrderForm.ContactFirstName).Count == 1);
             return new Contact()
             {
@@ -513,7 +511,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public void ClickSelectDeselectAll()
         {
             Wait.Until(d => d.FindElements(Pages.OrderForm.SelectDeselectAll).Count == 1);
-            Driver.FindElement(Pages.OrderForm.SelectDeselectAll).Click();			
+            Driver.FindElement(Pages.OrderForm.SelectDeselectAll).Click();
         }
 
         public string GetSelectDeselectAllText()
@@ -635,7 +633,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             return Driver.FindElements(Pages.OrderForm.OrderUnit).Count == 1;
         }
-            
+
         public bool QuantityInputIsDisplayed()
         {
             return Driver.FindElements(Pages.OrderForm.Quantity).Count == 1;
@@ -771,7 +769,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 .Count > 0;
         }
 
-        public bool RecurringCostsTableIsDiaplyed()
+        public bool RecurringCostsTableIsDisplayed()
         {
             return Driver.FindElements(Pages.OrderForm.RecurringCostsTable).Count == 1;
         }
