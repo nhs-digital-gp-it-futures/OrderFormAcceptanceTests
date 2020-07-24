@@ -349,6 +349,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditCatalogueSolutionsSectionIsEnabled().Should().BeTrue();
         }
 
+        [Then(@"the Catalogue Solution section is not enabled")]
+        public void ThenTheCatalogueSolutionSectionIsNotEnabled()
+        {
+            Test.Pages.OrderForm.EditCatalogueSolutionsSectionIsEnabled().Should().BeFalse();
+        }
+
         [Then(@"the Additional Service section is enabled")]
         public void ThenTheAdditionalServiceSectionIsEnabled()
         {
