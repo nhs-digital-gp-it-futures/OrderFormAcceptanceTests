@@ -95,7 +95,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"Order items \(one-off cost\) table is displayed")]
         public void ThenOrderItemsOne_OffCostTableIsDisplayed()
         {
-            Test.Pages.OrderForm.OneOffCostsTableIsDiaplyed().Should().BeTrue();
+            Test.Pages.OrderForm.OneOffCostsTableIsDisplayed().Should().BeTrue();
         }
 
         [Then(@"Order items \(recurring cost\) table is displayed")]
