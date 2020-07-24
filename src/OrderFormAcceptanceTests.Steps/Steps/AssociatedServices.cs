@@ -221,7 +221,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"there is no Associated Service in the order but the section is complete")]
         public void GivenThereIsNoAssociatedServiceInTheOrderButTheSectionIsComplete()
         {
-            new OrderForm(Test, Context).GivenTheAssociatedServicesSectionIsNotComplete();
+            new OrderForm(Test, Context).GivenTheAssociatedServicesSectionIsNotCompleteAndNoServicesAreAdded();
             SetOrderAssociatedServicesSectionToComplete();
         }
 

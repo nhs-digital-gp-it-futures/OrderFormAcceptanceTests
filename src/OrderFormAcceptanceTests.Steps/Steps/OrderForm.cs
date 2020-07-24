@@ -273,7 +273,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Given(@"the Additional Services section is not complete")]
-        public void GivenTheAdditionalServicesSectionIsNotComplete()
+        public void GivenTheAdditionalServicesSectionIsNotCompleteAndNoServicesAreAdded()
         {
             var order = (Order)Context["CreatedOrder"];
             order.AdditionalServicesViewed = 0;
@@ -286,7 +286,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Given(@"the Associated Services section is not complete")]
-        public void GivenTheAssociatedServicesSectionIsNotComplete()
+        public void GivenTheAssociatedServicesSectionIsNotCompleteAndNoServicesAreAdded()
         {
             var order = (Order)Context["CreatedOrder"];
             order.AssociatedServicesViewed = 0;
