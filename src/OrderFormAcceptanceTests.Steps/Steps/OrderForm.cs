@@ -4,6 +4,7 @@ using OpenQA.Selenium.Remote;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Information;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -62,6 +63,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenThereIsTheAssociatedServicesSection()
         {
             Test.Pages.OrderForm.EditAssociatedServicesSectionDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"there is the Funding Source section")]
+        public void ThenThereIsTheFundingSourceSection()
+        {
+            Test.Pages.OrderForm.EditFundingSourceSectionDisplayed().Should().BeTrue();
         }
 
         [Then(@"the user is able to manage the Order Description section")]
@@ -270,6 +277,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context["CreatedOrder"];
             order.AdditionalServicesViewed = 0;
+            IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 2);
+            foreach (var item in items)
+            {
+                item.Delete(Test.ConnectionString);
+            }
             order.Update(Test.ConnectionString);
         }
 
@@ -277,10 +289,22 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheAssociatedServicesSectionIsNotComplete()
         {
             var order = (Order)Context["CreatedOrder"];
-            //do something when model is updated
+            order.AssociatedServicesViewed = 0;
+            IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 3);
+            foreach (var item in items)
+            {
+                item.Delete(Test.ConnectionString);
+            }
             order.Update(Test.ConnectionString);
         }
 
+        [Given(@"the Funding Source section is not complete")]
+        public void GivenTheFundingSourceSectionIsNotComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.FundingSourceOnlyGMS = null;
+            order.Update(Test.ConnectionString);
+        }
 
         [When(@"the User navigates back to the Organisation's Orders dashboard")]
         public void WhenTheUserNavigatesBackToTheOrganisationSOrdersDashboard()
