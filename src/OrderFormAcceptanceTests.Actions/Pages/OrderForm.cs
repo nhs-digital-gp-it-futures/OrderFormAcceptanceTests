@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.TestData;
+using OrderFormAcceptanceTests.TestData.Information;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -132,7 +133,39 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElement(Pages.OrderForm.PreviewOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
         }
 
-        public bool SubmitOrderButtonIsDisabled()
+		public void SelectSupplierWithContactDetails(string bapiConnString)
+		{
+            var suppliers = ListOfSupplierNames();
+            var supplierNames = suppliers.Select(s => s.Text);
+            
+            // Randomise ordering of list so a random supplier is chosen each time
+            Random rng = new Random();
+            var supplierListShuffle = supplierNames
+                .Select(x => new { value = x, order = rng.Next() })
+                .OrderBy(x => x.order)
+                .Select(x => x.value)
+                .ToList();
+
+            string selectedSupplier = string.Empty;
+
+            foreach(var supplier in supplierListShuffle)
+			{
+                if(SupplierInfo.SupplierHasContactInfo(bapiConnString, supplier))
+				{
+                    selectedSupplier = supplier;
+                    break;
+				}
+			}
+
+            suppliers.Single(s => s.Text == selectedSupplier).Click();
+        }
+
+		private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
+		{
+            return Driver.FindElements(Pages.OrderForm.SupplierOptionsLabels);
+        }
+
+		public bool SubmitOrderButtonIsDisabled()
         {
             return Driver.FindElement(Pages.OrderForm.SubmitOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
         }
@@ -483,11 +516,15 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public void SelectSupplier(int? index)
         {
             var suppliers = ListOfSuppliers();
-            if (index == null)
-            {
-                index = new Random().Next(suppliers.Count());
-            }
-            suppliers[(int)index].Click();
+
+			if (index.HasValue)
+			{
+                suppliers[index.Value].Click();
+			}
+			else
+			{
+                RandomInformation.GetRandomItem(suppliers).Click();
+			}
         }
 
         public bool SupplierNameIsDisplayed()
