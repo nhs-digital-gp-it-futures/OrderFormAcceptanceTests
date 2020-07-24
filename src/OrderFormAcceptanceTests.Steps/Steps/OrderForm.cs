@@ -4,6 +4,7 @@ using OpenQA.Selenium.Remote;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Information;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -62,6 +63,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenThereIsTheAssociatedServicesSection()
         {
             Test.Pages.OrderForm.EditAssociatedServicesSectionDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"there is the Funding Source section")]
+        public void ThenThereIsTheFundingSourceSection()
+        {
+            Test.Pages.OrderForm.EditFundingSourceSectionDisplayed().Should().BeTrue();
         }
 
         [Then(@"the user is able to manage the Order Description section")]
@@ -266,21 +273,38 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Given(@"the Additional Services section is not complete")]
-        public void GivenTheAdditionalServicesSectionIsNotComplete()
+        public void GivenTheAdditionalServicesSectionIsNotCompleteAndNoServicesAreAdded()
         {
             var order = (Order)Context["CreatedOrder"];
             order.AdditionalServicesViewed = 0;
+            IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 2);
+            foreach (var item in items)
+            {
+                item.Delete(Test.ConnectionString);
+            }
             order.Update(Test.ConnectionString);
         }
 
         [Given(@"the Associated Services section is not complete")]
-        public void GivenTheAssociatedServicesSectionIsNotComplete()
+        public void GivenTheAssociatedServicesSectionIsNotCompleteAndNoServicesAreAdded()
         {
             var order = (Order)Context["CreatedOrder"];
-            //do something when model is updated
+            order.AssociatedServicesViewed = 0;
+            IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 3);
+            foreach (var item in items)
+            {
+                item.Delete(Test.ConnectionString);
+            }
             order.Update(Test.ConnectionString);
         }
 
+        [Given(@"the Funding Source section is not complete")]
+        public void GivenTheFundingSourceSectionIsNotComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.FundingSourceOnlyGMS = null;
+            order.Update(Test.ConnectionString);
+        }
 
         [When(@"the User navigates back to the Organisation's Orders dashboard")]
         public void WhenTheUserNavigatesBackToTheOrganisationSOrdersDashboard()
@@ -325,6 +349,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditCatalogueSolutionsSectionIsEnabled().Should().BeTrue();
         }
 
+        [Then(@"the Catalogue Solution section is not enabled")]
+        public void ThenTheCatalogueSolutionSectionIsNotEnabled()
+        {
+            Test.Pages.OrderForm.EditCatalogueSolutionsSectionIsEnabled().Should().BeFalse();
+        }
+
         [Then(@"the Additional Service section is enabled")]
         public void ThenTheAdditionalServiceSectionIsEnabled()
         {
@@ -349,6 +379,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditAssociatedServicesSectionIsEnabled().Should().BeFalse();
         }
 
+        [Then(@"the Funding Source section is enabled")]
+        public void ThenTheFundingSourceSectionIsEnabled()
+        {
+            Test.Pages.OrderForm.EditFundingSourceSectionIsEnabled().Should().BeTrue();
+        }
 
+        [Then(@"the Funding Source section is not enabled")]
+        public void ThenTheFundingSourceSectionIsNotEnabled()
+        {
+            Test.Pages.OrderForm.EditFundingSourceSectionIsEnabled().Should().BeFalse();
+        }
     }
 }

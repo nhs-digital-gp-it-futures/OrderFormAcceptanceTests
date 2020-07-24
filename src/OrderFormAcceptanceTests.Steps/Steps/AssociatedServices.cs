@@ -4,6 +4,7 @@ using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Utils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 
@@ -167,7 +168,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             SetOrderAssociatedServicesSectionToComplete();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
-            Context.Add("CreatedOrderItem", orderItem);
+            if (!Context.ContainsKey("CreatedOrderItem")) 
+            {
+                Context.Add("CreatedOrderItem", orderItem);
+            }
         }
 
         [Given(@"the User amends the existing Associated Service details")]
@@ -216,6 +220,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var orderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 3).First();
             Context.Add("CreatedOrderItem", orderItem);
             orderItem.Should().NotBeNull();
+        }
+
+        [Given(@"there is no Associated Service in the order but the section is complete")]
+        public void GivenThereIsNoAssociatedServiceInTheOrderButTheSectionIsComplete()
+        {
+            new OrderForm(Test, Context).GivenTheAssociatedServicesSectionIsNotCompleteAndNoServicesAreAdded();
+            SetOrderAssociatedServicesSectionToComplete();
         }
 
         private void SetOrderAssociatedServicesSectionToComplete()

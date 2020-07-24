@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -126,7 +127,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand(order);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
-		}
+        }
 
         [StepDefinition(@"the Order Form for the existing order is presented")]
         public void WhenTheOrderFormForTheExistingOrderIsPresented()

@@ -877,5 +877,28 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             return Driver.FindElements(Pages.OrderForm.AddSolution).Count == 1;
         }
+
+        public bool EditFundingSourceSectionDisplayed()
+        {
+            try
+            {
+                Wait.Until(d => d.FindElements(Pages.OrderForm.EditFundingSource).Count == 1);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void ClickEditFundingSource()
+        {
+            Driver.FindElement(Pages.OrderForm.EditFundingSource).Click();
+        }
+
+        public bool EditFundingSourceSectionIsEnabled()
+        {
+            return Driver.FindElement(Pages.OrderForm.EditFundingSource).TagName == "a";
+        }
     }
 }

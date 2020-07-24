@@ -26,6 +26,7 @@ namespace OrderFormAcceptanceTests.TestData
         public int CatalogueSolutionsViewed { get; set; }
         public int AdditionalServicesViewed { get; set; }
         public int AssociatedServicesViewed { get; set; }
+        public int? FundingSourceOnlyGMS { get; set; }
         public DateTime? CommencementDate { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }
@@ -81,6 +82,7 @@ namespace OrderFormAcceptanceTests.TestData
                                  CatalogueSolutionsViewed,
                                  AdditionalServicesViewed,
                                  AssociatedServicesViewed,
+                                 FundingSourceOnlyGMS,
                                  CommencementDate,
                                  Created,
                                  LastUpdated,
@@ -105,6 +107,7 @@ namespace OrderFormAcceptanceTests.TestData
                                  @CatalogueSolutionsViewed,
                                  @AdditionalServicesViewed,
                                  @AssociatedServicesViewed,
+                                 @FundingSourceOnlyGMS,
                                  @CommencementDate,
                                  @Created,
                                  @LastUpdated,
@@ -135,6 +138,7 @@ namespace OrderFormAcceptanceTests.TestData
                             CatalogueSolutionsViewed=@CatalogueSolutionsViewed,
                             AdditionalServicesViewed=@AdditionalServicesViewed,
                             AssociatedServicesViewed=@AssociatedServicesViewed,
+                            FundingSourceOnlyGMS=@FundingSourceOnlyGMS,
                             CommencementDate=@CommencementDate,
                             Created=@created,
                             LastUpdated=@lastUpdated,

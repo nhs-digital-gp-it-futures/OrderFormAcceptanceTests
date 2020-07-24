@@ -306,5 +306,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.SupplierName = "Clinical Raptor";
             order.Update(Test.ConnectionString);
         }
+
+        [Given(@"there is no Additional Service in the order but the section is complete")]
+        public void GivenThereIsNoAdditionalServiceInTheOrderButTheSectionIsComplete()
+        {
+            var of = new OrderForm(Test, Context);
+            of.GivenTheAdditionalServicesSectionIsNotCompleteAndNoServicesAreAdded();
+            of.GivenTheAdditionalServicesSectionIsComplete();
+        }
+
     }
 }
