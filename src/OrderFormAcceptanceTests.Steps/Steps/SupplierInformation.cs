@@ -99,6 +99,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.SelectSupplier();
         }
 
+        [When(@"they select a Supplier that has saved contact details")]
+        public void WhenTheySelectASupplierWithDetails()
+        {
+            Test.Pages.OrderForm.SelectSupplierWithContactDetails(Test.BapiConnectionString);
+        }
+
         [Then(@"they are informed that a Supplier needs to be selected")]
         public void ThenTheyAreInformedThatASupplierNeedsToBeSelected()
         {

@@ -38,6 +38,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 		public By ContactEmail => By.Id("emailAddress");
 		public By ContactTelephone => By.Id("telephoneNumber");
 		public By SearchButton => CustomBy.DataTestId("search-button", "button");
+		public By SupplierOptionsLabels => CustomBy.DataTestId("question-selectSupplier", "label");
 		public By SupplierOptions => CustomBy.DataTestId("question-selectSupplier", "input");
 		public By SupplierName => CustomBy.DataTestId("supplier-name");
 		public By SearchAgainLink => CustomBy.DataTestId("search-again-link", "a");
