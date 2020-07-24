@@ -379,6 +379,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditFundingSourceSectionIsEnabled().Should().BeTrue();
         }
 
-
+        [Then(@"the Funding Source section is not enabled")]
+        public void ThenTheFundingSourceSectionIsNotEnabled()
+        {
+            Test.Pages.OrderForm.EditFundingSourceSectionIsEnabled().Should().BeFalse();
+        }
     }
 }
