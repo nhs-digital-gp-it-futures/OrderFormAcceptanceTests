@@ -90,7 +90,7 @@ Scenario: Supplier Information - Go Back (No Supplier(s) returned)
 	
 Scenario: Supplier Information - Supplier selected
 	Given the User has been presented with matching Suppliers
-	When they select a Supplier
+	When they select a Supplier that has saved contact details
 	And they choose to continue
 	Then the Edit Supplier Form Page is presented
 	And the Supplier name is autopopulated

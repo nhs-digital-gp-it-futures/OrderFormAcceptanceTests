@@ -133,3 +133,18 @@ Scenario: Preview Order Summary - Additional Service Flat with Variable (On-Dema
 	And the Quantity of each item is the concatenation [Quantity] per month
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
+
+Scenario: Preview Order Summary - Total cost for one year
+    Given there are one or more Order items summarised in the Order items (recurring cost) table
+    When the Order Summary is displayed
+    Then the Order items (recurring cost) table is populated
+    And the total annual cost is displayed
+    And the Total cost for one year is the result of the Total cost for one year calculation
+    And the Total cost for one year is expressed as two decimal places
+
+Scenario: Preview Order Summary - Total monthly cost
+    Given there are one or more Order items summarised in the Order items (recurring cost) table
+    When the Order Summary is displayed
+    Then the total monthly cost is displayed
+    And the Total monthly cost is the result of the Total monthly cost calculation
+    And the Total monthly cost is expressed as two decimal places

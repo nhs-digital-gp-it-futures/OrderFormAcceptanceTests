@@ -39,7 +39,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             {
                 ((Address)Context["CreatedSupplierAddress"]).Delete(Test.ConnectionString);
             }
-            
 
             Test.Driver?.Quit();
         }
