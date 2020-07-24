@@ -301,7 +301,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).TagName == "a";
         }
 
-
         public void AssertThatEditCatalogueSolutionsSectionIsNotComplete()
         {
             var labelFound = Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions)

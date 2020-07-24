@@ -244,7 +244,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
-            orderItem.EstimationPeriodId = 2;
+            orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
@@ -254,7 +254,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
-            orderItem.EstimationPeriodId = 1;
+            orderItem.EstimationPeriodId = TimeUnit.Month;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
@@ -293,7 +293,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
-            orderItem.EstimationPeriodId = 2;
+            orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.TimeUnitId = 2;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
@@ -304,7 +304,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
-            orderItem.EstimationPeriodId = 1;
+            orderItem.EstimationPeriodId = TimeUnit.Month;
             orderItem.TimeUnitId = 1;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
@@ -331,25 +331,26 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
             var patientOrderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient((Order)Context["CreatedOrder"]);
             patientOrderItem.Create(Test.ConnectionString);
+
+            Context.Add("CreatedOrderItems", new OrderItemList(onDemandOrderItem, declarativeOrderItem, patientOrderItem));
         }
 
         [Then(@"the Total cost for one year is the result of the Total cost for one year calculation")]
         public void ThenTheTotalCostForOneYearIsTheResultOfTheTotalCostForOneYearCalculation()
         {
             var actual = Test.Pages.OrderForm.GetTotalAnnualCost();
+            var expectedTotalAnnualCost = Context.Get<OrderItemList>("CreatedOrderItems").GetTotalAnnualCost();
 
-            const string expectedTotalAnnualCost = "1,316,535.00";
-            actual.Should().Be(expectedTotalAnnualCost);
+            actual.Should().Be(FormatDecimal(expectedTotalAnnualCost));
         }
 
         [Then(@"the Total cost for one year is expressed as two decimal places")]
         public void ThenItIsExpressedAsTwoDecimalPlaces()
         {
             const int decimalPointPartIndex = 1;
-            const int expectedDecimalPointLength = 2;
-
             var actual = Test.Pages.OrderForm.GetTotalAnnualCost().Split('.')[decimalPointPartIndex].Length;
 
+            const int expectedDecimalPointLength = 2;
             actual.Should().Be(expectedDecimalPointLength);
         }
 
@@ -357,19 +358,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheTotalMonthlyCostIsTheResultOfTheTotalMonthlyCostCalculation()
         {
             var actual = Test.Pages.OrderForm.GetTotalMonthlyCost();
+            var expectedTotalMonthlyCost = Context.Get<OrderItemList>("CreatedOrderItems").GetTotalMonthlyCost();
 
-            const string expectedTotalAnnualCost = "109,711.25";
-            actual.Should().Be(expectedTotalAnnualCost);
+            actual.Should().Be(FormatDecimal(expectedTotalMonthlyCost));
         }
 
         [Then(@"the Total monthly cost is expressed as two decimal places")]
         public void ThenTheTotalMonthlyCostIsExpressedAsTwoDecimalPlaces()
         {
             const int decimalPointPartIndex = 1;
-            const int expectedDecimalPointLength = 2;
-
             var actual = Test.Pages.OrderForm.GetTotalMonthlyCost().Split('.')[decimalPointPartIndex].Length;
 
+            const int expectedDecimalPointLength = 2;
             actual.Should().Be(expectedDecimalPointLength);
         }
 
