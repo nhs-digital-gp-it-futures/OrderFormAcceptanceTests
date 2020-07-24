@@ -218,6 +218,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             orderItem.Should().NotBeNull();
         }
 
+        [Given(@"there is no Associated Service in the order but the section is complete")]
+        public void GivenThereIsNoAssociatedServiceInTheOrderButTheSectionIsComplete()
+        {
+            new OrderForm(Test, Context).GivenTheAssociatedServicesSectionIsNotComplete();
+            SetOrderAssociatedServicesSectionToComplete();
+        }
+
         private void SetOrderAssociatedServicesSectionToComplete()
         {
             var order = (Order)Context["CreatedOrder"];
