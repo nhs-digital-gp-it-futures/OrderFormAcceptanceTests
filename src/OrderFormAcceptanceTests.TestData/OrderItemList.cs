@@ -10,7 +10,7 @@ namespace OrderFormAcceptanceTests.TestData
 
         public OrderItemList(params OrderItem[] orderItems)
         {
-            if (orderItems is null) 
+            if (orderItems is null)
                 throw new ArgumentNullException(nameof(orderItems));
 
             foreach (var orderItem in orderItems)
@@ -19,7 +19,7 @@ namespace OrderFormAcceptanceTests.TestData
             }
         }
 
-        public IEnumerable<OrderItem> GetAll() => 
+        public IEnumerable<OrderItem> GetAll() =>
             _cache.Values;
 
         public void Add(OrderItem orderItem)
