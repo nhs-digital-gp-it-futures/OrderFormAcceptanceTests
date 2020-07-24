@@ -179,7 +179,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the Price unit of order of each item is the concatenation ""\[Price\] \[unit\]""")]
         public void ThenThePriceUnitOfOrderOfEachItemIsTheConcatenation()
-        {
+        {            
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var timeDescription = expectedOrderItem.GetTimeUnitPeriod(Test.ConnectionString);
             var expectedValue = $"{FormatDecimal(expectedOrderItem.Price)} {expectedOrderItem.PricingUnitDescription} {timeDescription}".Trim();
