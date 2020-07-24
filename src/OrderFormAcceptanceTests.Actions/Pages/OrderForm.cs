@@ -157,6 +157,8 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 				}
 			}
 
+            if (string.IsNullOrEmpty(selectedSupplier)) throw new ArgumentNullException(nameof(selectedSupplier));
+
             suppliers.Single(s => s.Text == selectedSupplier).Click();
         }
 
