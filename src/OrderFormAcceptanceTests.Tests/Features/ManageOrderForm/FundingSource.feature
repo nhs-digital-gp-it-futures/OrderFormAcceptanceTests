@@ -3,11 +3,8 @@
 	I want to manage the Funding Source of Order Form
 	So that I can ensure the information is correct
 	
-@ignore
 Scenario: Funding Source - Sections presented
-	Given an unsubmitted order exists
-	And there are no Service Recipients in the order
-	And an Associated Service with a flat price declarative order type is saved to the order
+	Given the minimum data needed to enable the Funding Source section exists
 	When the Order Form for the existing order is presented
 	Then there is the Funding Source section
 	And the User is able to manage the Funding Source section
@@ -177,3 +174,25 @@ Scenario: Funding Source - Associated Service now complete, >= 1 Service Recipie
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled
+
+Scenario: Edit Funding Source - No Funding Source option selected
+	Given the minimum data needed to enable the Funding Source section exists
+	And the User is presented with the edit Funding Source page
+	And no Funding Source option is selected
+	When the User chooses to save
+	Then they are informed they have to select a Funding Source option
+
+Scenario: Edit Funding Source - Go back
+	Given the minimum data needed to enable the Funding Source section exists
+	And the User is presented with the edit Funding Source page
+	When the User chooses to go back
+	Then the Order dashboard is presented
+@ignore
+Scenario: Edit Funding Source - Funding source option selected
+	Given the minimum data needed to enable the Funding Source section exists
+	And the User is presented with the edit Funding Source page
+	When the User chooses a Funding Source option
+	And the User chooses to save
+	Then the Order dashboard is presented
+	And the Funding Source section is complete
+	And the content validation status of the funding-sources section is complete

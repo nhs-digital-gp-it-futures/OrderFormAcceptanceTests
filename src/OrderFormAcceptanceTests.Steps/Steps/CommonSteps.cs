@@ -53,6 +53,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             }
         }
 
+        [Given(@"no Funding Source option is selected")]
         [StepDefinition(@"the Associated Service is saved")]
         [Then(@"the Associated Service is not saved")]
         [Given(@"no Associated Service price is selected")]
