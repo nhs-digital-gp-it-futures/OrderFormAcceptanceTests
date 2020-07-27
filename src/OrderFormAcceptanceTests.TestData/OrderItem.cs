@@ -245,7 +245,7 @@ namespace OrderFormAcceptanceTests.TestData
                 TimeUnitId = null,
                 CurrencyCode = "GBP",
                 Quantity = 9,
-                EstimationPeriodId = TimeUnit.Year,
+                EstimationPeriodId = null,
                 DeliveryDate = null,
                 Price = 150.000M,
                 Created = DateTime.Now,

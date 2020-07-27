@@ -229,6 +229,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             SetOrderAssociatedServicesSectionToComplete();
         }
 
+        [Given(@"the supplier added to the order has an associated service with a declarative flat price")]
+        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceWithADeclarativeFlatPrice()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = 100000;
+            order.SupplierName = "Really Kool Corporation";
+            order.Update(Test.ConnectionString);
+        }
+
+
         private void SetOrderAssociatedServicesSectionToComplete()
         {
             var order = (Order)Context["CreatedOrder"];
