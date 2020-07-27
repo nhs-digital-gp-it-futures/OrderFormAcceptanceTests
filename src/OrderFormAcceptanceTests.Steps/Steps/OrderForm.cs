@@ -306,6 +306,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Update(Test.ConnectionString);
         }
 
+        [Given(@"the Funding Source section is complete")]
+        public void GivenTheFundingSourceSectionIsComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.FundingSourceOnlyGMS = 0;
+            order.Update(Test.ConnectionString);
+        }
+
         [When(@"the User navigates back to the Organisation's Orders dashboard")]
         public void WhenTheUserNavigatesBackToTheOrganisationSOrdersDashboard()
         {
