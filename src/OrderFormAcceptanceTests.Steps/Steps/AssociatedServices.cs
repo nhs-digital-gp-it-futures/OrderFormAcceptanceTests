@@ -239,7 +239,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Update(Test.ConnectionString);
         }
 
-        private void SetOrderAssociatedServicesSectionToComplete()
+        public void SetOrderAssociatedServicesSectionToComplete()
         {
             var order = (Order)Context["CreatedOrder"];
             order.AssociatedServicesViewed = 1;
