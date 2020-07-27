@@ -341,8 +341,32 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceWithADeclarativeFlatPrice();
+            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedService();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+        }
+
+        [Given(@"an associated service with a flat price variable \(On-Demand\) order type with the quantity period per year is saved to the order")]
+        public void GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
+        {
+            SetOrderCatalogueSectionToComplete();
+            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedService();
+            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem.EstimationPeriodId = TimeUnit.Year;
+            orderItem.TimeUnitId = 2;
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+        }
+
+        [Given(@"an associated service with a flat price variable \(On-Demand\) order type with the quantity period per month is saved to the order")]
+        public void GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
+        {
+            SetOrderCatalogueSectionToComplete();
+            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedService();
+            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem.EstimationPeriodId = TimeUnit.Month;
+            orderItem.TimeUnitId = 1;
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
