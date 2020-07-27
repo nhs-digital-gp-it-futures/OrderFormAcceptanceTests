@@ -150,6 +150,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.RecurringCostsTableIsPopulated().Should().BeTrue();
         }
 
+        [Then(@"the Order items \(one off\) table is populated")]
+        public void ThenTheOrderItemsOneOffTableIsPopulated()
+        {
+            Test.Pages.OrderForm.OneOffCostsTableIsPopulated().Should().BeTrue();
+        }
+
         [Then(@"the Recipient name \(ODS code\) of each item is the concatenation ""\[Service Recipient name\] \[\(ODS code\)\]""")]
         public void ThenTheRecipientNameODSCodeOfEachItemIsTheConcatenation()
         {
@@ -169,6 +175,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the item name of each item is the Additional Service name")]
+        [Then(@"the item name of each item is the Associated Service name")]
         [Then(@"the item name of each item is the Catalogue Solution name")]
         public void ThenTheItemNameOfEachItemIsTheCatalogueSolutionName()
         {
@@ -195,6 +202,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var expectedPeriod = expectedOrderItem.GetEstimationPeriod(Test.ConnectionString);
             var expectedValue = $"{FormatInt(expectedOrderItem.Quantity)} {expectedPeriod}";
+
+            var quantity = Test.Pages.OrderForm.GetItemQuantity();
+            quantity.Should().Be(expectedValue);
+        }
+
+        [Then(@"the Quantity of each item is \[Quantity\]")]
+        public void ThenTheQuantityOfEachItemIsQuantity()
+        {
+            var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
+            var expectedValue = $"{expectedOrderItem.Quantity}";
 
             var quantity = Test.Pages.OrderForm.GetItemQuantity();
             quantity.Should().Be(expectedValue);
@@ -316,6 +333,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             SetOrderCatalogueSectionToComplete();
             new AdditionalServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAPatientFlatPrice();
             var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context["CreatedOrder"]);
+            orderItem.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItem", orderItem);
+        }
+
+        [Given(@"an associated service with a flat price variable \(Declarative\) order type is saved to the order")]
+        public void GivenAnAssociatedServiceWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder()
+        {
+            SetOrderCatalogueSectionToComplete();
+            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceWithADeclarativeFlatPrice();
+            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
         }
