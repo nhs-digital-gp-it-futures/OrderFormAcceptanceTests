@@ -4,6 +4,7 @@ using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Information;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -832,6 +833,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public string GetItemName()
         {
             return Driver.FindElement(Pages.OrderForm.ItemName).Text;
+        }
+
+        public IEnumerable<string> GetItemRecipientNames()
+        {
+            return Driver.FindElements(Pages.OrderForm.ItemRecipientName).Select(x => x.Text);
         }
 
         public string GetItemPrice()

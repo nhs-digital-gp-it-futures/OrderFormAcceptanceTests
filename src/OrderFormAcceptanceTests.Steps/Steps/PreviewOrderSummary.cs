@@ -184,9 +184,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             name.Should().Be(expectedOrderItem.CatalogueItemName);
         }
 
+        [Then(@"the order items recurring cost table is sorted by service recipient name")]
+        public void ThenTheOrderItemsRecurringCostTableIsSortedByServiceRecipientName()
+        {
+            var names = Test.Pages.OrderForm.GetItemRecipientNames();
+            names.Should().BeInAscendingOrder();
+        }
+
         [Then(@"the Price unit of order of each item is the concatenation ""\[Price\] \[unit\]""")]
         public void ThenThePriceUnitOfOrderOfEachItemIsTheConcatenation()
-        {            
+        {
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var timeDescription = expectedOrderItem.GetTimeUnitPeriod(Test.ConnectionString);
             var expectedValue = $"{FormatDecimal(expectedOrderItem.Price)} {expectedOrderItem.PricingUnitDescription} {timeDescription}".Trim();
@@ -263,7 +270,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.Create(Test.ConnectionString);
-            Context.Add("CreatedOrderItem", orderItem);
+
+            if(!Context.ContainsKey("CreatedOrderItem"))
+                Context.Add("CreatedOrderItem", orderItem);
         }
 
         [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per month is saved to the order")]
@@ -422,6 +431,20 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
             const int expectedDecimalPointLength = 2;
             actual.Should().Be(expectedDecimalPointLength);
+        }
+
+        [Given(@"multiple order items with different service recipient have been added to the order")]
+        public void GivenMultipleOrderItemsWithDifferentServiceRecipientHaveBeenAddedToTheOrder()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, "yolo", "some name");
+            serviceRecipient.Create(Test.ConnectionString);
+
+            GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder();
+
+            order.OrganisationOdsCode = "yolo";
+
+            GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder();
         }
 
         private static string FormatDecimal(decimal price)
