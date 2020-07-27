@@ -30,6 +30,8 @@ namespace OrderFormAcceptanceTests.TestData
             _cache.Add(orderItem.OrderItemId, orderItem);
         }
 
+        public decimal GetTotalOneOffCost() => GetTotalAnnualCost();
+
         public decimal GetTotalAnnualCost() => GetAll().Sum(orderItem => orderItem.CalculateItemCost());
 
         public decimal GetTotalMonthlyCost() => GetAll().Sum(orderItem => orderItem.CalculateItemCost()) / 12m;

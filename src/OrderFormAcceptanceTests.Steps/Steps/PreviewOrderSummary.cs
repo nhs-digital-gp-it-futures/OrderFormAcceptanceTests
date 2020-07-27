@@ -371,6 +371,20 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedOrderItem", orderItem);
         }
 
+        [Given(@"there are one or more Associated Service items summarised in the Order items \(one-off cost\) table")]
+        public void GivenThereAreOneOrMoreAssociatedServiceItemsSummarisedInTheOrderItemsOne_OffCostTable()
+        {
+            SetOrderCatalogueSectionToComplete();
+            var AssociatedServicesSteps = new AssociatedServices(Test, Context);
+            AssociatedServicesSteps.SetOrderAssociatedServicesSectionToComplete();
+            AssociatedServicesSteps.GivenTheSupplierAddedToTheOrderHasAnAssociatedService();
+            var declarativeOrderItem1 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
+            var declarativeOrderItem2 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
+            declarativeOrderItem1.Create(Test.ConnectionString);
+            declarativeOrderItem2.Create(Test.ConnectionString);
+            Context.Add("CreatedOrderItems", new OrderItemList(declarativeOrderItem1, declarativeOrderItem2));
+        }
+
         [Given(@"there are one or more Order items summarised in the Order items \(recurring cost\) table")]
         public void GivenThereAreOneOrMoreOrderItemsSummarisedInTheOrderItemsRecurringCostTable()
         {
@@ -386,6 +400,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedOrderItems", new OrderItemList(onDemandOrderItem, declarativeOrderItem, patientOrderItem));
         }
 
+        [Then(@"the Total one-off cost is the result of the Total one-off cost calculation")]
+        public void ThenTheTotalOne_OffCostIsTheResultOfTheTotalOne_OffCostCalculation()
+        {
+            var actual = Test.Pages.OrderForm.GetTotalOneOffCost();
+            var expectedTotalCost = Context.Get<OrderItemList>("CreatedOrderItems").GetTotalOneOffCost();
+
+            actual.Should().Be(FormatDecimal(expectedTotalCost));
+        }
+
         [Then(@"the Total cost for one year is the result of the Total cost for one year calculation")]
         public void ThenTheTotalCostForOneYearIsTheResultOfTheTotalCostForOneYearCalculation()
         {
@@ -395,14 +418,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             actual.Should().Be(FormatDecimal(expectedTotalAnnualCost));
         }
 
+        [Then(@"the Total one-off cost is expressed as (.*) decimal places")]
+        public void ThenTheTotalOne_OffCostIsExpressedAsDecimalPlaces(int p0)
+        {
+            ValueExpressedAsTwoDecimalPlaces(Test.Pages.OrderForm.GetTotalOneOffCost());
+        }
+
         [Then(@"the Total cost for one year is expressed as two decimal places")]
         public void ThenItIsExpressedAsTwoDecimalPlaces()
         {
-            const int decimalPointPartIndex = 1;
-            var actual = Test.Pages.OrderForm.GetTotalAnnualCost().Split('.')[decimalPointPartIndex].Length;
-
-            const int expectedDecimalPointLength = 2;
-            actual.Should().Be(expectedDecimalPointLength);
+            ValueExpressedAsTwoDecimalPlaces(Test.Pages.OrderForm.GetTotalAnnualCost());
         }
 
         [Then(@"the Total monthly cost is the result of the Total monthly cost calculation")]
@@ -417,11 +442,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Total monthly cost is expressed as two decimal places")]
         public void ThenTheTotalMonthlyCostIsExpressedAsTwoDecimalPlaces()
         {
-            const int decimalPointPartIndex = 1;
-            var actual = Test.Pages.OrderForm.GetTotalMonthlyCost().Split('.')[decimalPointPartIndex].Length;
-
-            const int expectedDecimalPointLength = 2;
-            actual.Should().Be(expectedDecimalPointLength);
+            ValueExpressedAsTwoDecimalPlaces(Test.Pages.OrderForm.GetTotalMonthlyCost());
         }
 
         private static string FormatDecimal(decimal price)
@@ -439,6 +460,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context["CreatedOrder"];
             order.CatalogueSolutionsViewed = 1;
             order.Update(Test.ConnectionString);
+        }
+
+        private void ValueExpressedAsTwoDecimalPlaces(string value)
+        {
+            const int decimalPointPartIndex = 1;
+            var actual = value.Split('.')[decimalPointPartIndex].Length;
+
+            const int expectedDecimalPointLength = 2;
+            actual.Should().Be(expectedDecimalPointLength);
         }
     }
 }

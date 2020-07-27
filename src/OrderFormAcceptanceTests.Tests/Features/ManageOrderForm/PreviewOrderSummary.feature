@@ -183,3 +183,10 @@ Scenario: Preview Order Summary - Total monthly cost
     Then the total monthly cost is displayed
     And the Total monthly cost is the result of the Total monthly cost calculation
     And the Total monthly cost is expressed as two decimal places
+
+Scenario: Preview Order Summary - Total one-off cost
+	Given there are one or more Associated Service items summarised in the Order items (one-off cost) table
+	When the Order Summary is displayed
+	Then the total one-off cost is displayed
+	And the Total one-off cost is the result of the Total one-off cost calculation
+	And the Total one-off cost is expressed as 2 decimal places 
