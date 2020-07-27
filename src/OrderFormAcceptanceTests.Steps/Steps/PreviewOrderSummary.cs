@@ -341,7 +341,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceWithADeclarativeFlatPrice();
+            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedService();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
@@ -351,7 +351,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceWithAnOnDemandFlatPrice();
+            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedService();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.TimeUnitId = 2;
@@ -363,7 +363,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceWithAnOnDemandFlatPrice();
+            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedService();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.EstimationPeriodId = TimeUnit.Month;
             orderItem.TimeUnitId = 1;

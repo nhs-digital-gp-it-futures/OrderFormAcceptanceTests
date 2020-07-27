@@ -230,16 +230,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Given(@"the supplier added to the order has an associated service with a declarative flat price")]
-        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceWithADeclarativeFlatPrice()
-        {
-            var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100000;
-            order.SupplierName = "Really Kool Corporation";
-            order.Update(Test.ConnectionString);
-        }
-
         [Given(@"the supplier added to the order has an associated service with an on-demand flat price")]
-        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceWithAnOnDemandFlatPrice()
+        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedService()
         {
             var order = (Order)Context["CreatedOrder"];
             order.SupplierId = 100000;
