@@ -153,7 +153,7 @@ Scenario: Funding Source - Associated Service Complete:  0 Service Recipient, 0 
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is disabled
-@ignore
+
 Scenario: Funding Source - Associated Service now complete, >= 1 Service Recipient, 0 Catalogue Solution, 0 Associated Service
 	Given an unsubmitted order exists
 	And there are one or more Service Recipients in the order
