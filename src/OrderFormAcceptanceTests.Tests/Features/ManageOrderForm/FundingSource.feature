@@ -187,7 +187,7 @@ Scenario: Edit Funding Source - Go back
 	And the User is presented with the edit Funding Source page
 	When the User chooses to go back
 	Then the Order dashboard is presented
-@ignore
+
 Scenario: Edit Funding Source - Funding source option selected
 	Given the minimum data needed to enable the Funding Source section exists
 	And the User is presented with the edit Funding Source page
@@ -195,4 +195,4 @@ Scenario: Edit Funding Source - Funding source option selected
 	And the User chooses to save
 	Then the Order dashboard is presented
 	And the Funding Source section is complete
-	And the content validation status of the funding-sources section is complete
+	And the content validation status of the funding-source section is complete
