@@ -284,7 +284,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the supplier added to the order has an additional service with a declarative flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithADeclarativeFlatPrice()
         {
-            var supplier = SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, ProvisioningType.Declarative).First() ?? throw new NullReferenceException("Supplier not found");
+            var supplier = GetSupplierDetails(ProvisioningType.Declarative);
             var order = (Order)Context["CreatedOrder"];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
@@ -294,7 +294,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the supplier added to the order has an additional service with a patient flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAPatientFlatPrice()
         {
-            var supplier = SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, ProvisioningType.Patient).First() ?? throw new NullReferenceException("Supplier not found");
+            var supplier = GetSupplierDetails(ProvisioningType.Patient);
             var order = (Order)Context["CreatedOrder"];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
@@ -304,7 +304,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the supplier added to the order has an additional service with an on demand flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAnOnDemandFlatPrice()
         {
-            var supplier = SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, ProvisioningType.OnDemand).First() ?? throw new NullReferenceException("Supplier not found");
+            var supplier = GetSupplierDetails(ProvisioningType.OnDemand);
             var order = (Order)Context["CreatedOrder"];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
@@ -319,5 +319,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             of.GivenTheAdditionalServicesSectionIsComplete();
         }
 
+        private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
+        {
+            return SupplierInfo.SuppliersWithAdditionalServices(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
+        }
     }
 }

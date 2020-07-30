@@ -549,7 +549,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the supplier added to the order has a solution with a declarative flat price")]
         public void GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice()
         {
-            var supplier = SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, ProvisioningType.Declarative).First() ?? throw new NullReferenceException("Supplier not found");
+            var supplier = GetSupplierDetails(ProvisioningType.Declarative);
 
             var order = (Order)Context["CreatedOrder"];
             order.SupplierId = int.Parse(supplier.SupplierId);
@@ -565,5 +565,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
         }
 
+        private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
+        {
+            return SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
+        }        
     }
 }

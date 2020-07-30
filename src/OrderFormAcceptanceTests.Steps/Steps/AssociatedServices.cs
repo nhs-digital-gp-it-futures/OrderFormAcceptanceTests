@@ -231,7 +231,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the supplier added to the order has an associated service with a declarative flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative()
         {
-            var supplier = SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, ProvisioningType.Declarative).First() ?? throw new NullReferenceException("Supplier not found");
+            var supplier = GetSupplierDetails(ProvisioningType.Declarative);
             var order = (Order)Context["CreatedOrder"];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
@@ -241,7 +241,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the supplier added to the order has an associated service with an on-demand flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceOnDemand()
         {
-            var supplier = SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, ProvisioningType.OnDemand).First() ?? throw new NullReferenceException("Supplier not found");
+            var supplier = GetSupplierDetails(ProvisioningType.OnDemand);
             var order = (Order)Context["CreatedOrder"];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
@@ -253,6 +253,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context["CreatedOrder"];
             order.AssociatedServicesViewed = 1;
             order.Update(Test.ConnectionString);
+        }
+
+        private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
+        {
+            return SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
         }
     }
 }
