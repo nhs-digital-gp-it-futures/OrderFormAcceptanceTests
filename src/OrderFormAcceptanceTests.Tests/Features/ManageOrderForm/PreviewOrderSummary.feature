@@ -196,3 +196,9 @@ Scenario: Preview Order Summary - Sort by service recipient name
     When the Order Summary is displayed
     Then the Order items (recurring cost) table is populated
     And the order items recurring cost table is sorted by service recipient name
+
+Scenario: Preview Order Summary - Second Sort by item name
+    Given multiple order items with the same service recipient have been added to the order
+    When the Order Summary is displayed
+    Then the Order items (recurring cost) table is populated
+    And the order items recurring cost table is second sorted by item name
