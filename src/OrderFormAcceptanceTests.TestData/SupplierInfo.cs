@@ -16,7 +16,7 @@ namespace OrderFormAcceptanceTests.TestData
                   ,[PhoneNumber]
                   ,[LastUpdated]
                   ,[LastUpdatedBy]
-              FROM[buyingcatalogue].[dbo].[SupplierContact]
+              FROM [dbo].[SupplierContact]
               Where SupplierId = (Select Id FROM Supplier s where s.Name=@supplierName)";
 
             try
@@ -62,7 +62,7 @@ namespace OrderFormAcceptanceTests.TestData
         private static IEnumerable<SupplierDetails> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
         {
             var query = @"SELECT ci.[SupplierId], su.[Name]      
-                            FROM [buyingcatalogue].[dbo].[CatalogueItem] ci
+                            FROM [dbo].[CatalogueItem] ci
                             INNER JOIN CataloguePrice pr ON ci.CatalogueItemId=pr.CatalogueItemId
                             INNER JOIN Supplier su On ci.SupplierId=su.Id
                             WHERE ci.CatalogueItemTypeId=@catalogueItemType
