@@ -3,6 +3,7 @@ using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Utils;
+using System;
 using System.Linq;
 using TechTalk.SpecFlow;
 
@@ -228,12 +229,22 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Given(@"the supplier added to the order has an associated service with a declarative flat price")]
-        [Given(@"the supplier added to the order has an associated service with an on-demand flat price")]
-        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedService()
+        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative()
         {
+            var supplier = SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, ProvisioningType.Declarative).First() ?? throw new NullReferenceException("Supplier not found");
             var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100000;
-            order.SupplierName = "Really Kool Corporation";
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
+            order.Update(Test.ConnectionString);
+        }
+
+        [Given(@"the supplier added to the order has an associated service with an on-demand flat price")]
+        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceOnDemand()
+        {
+            var supplier = SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, ProvisioningType.OnDemand).First() ?? throw new NullReferenceException("Supplier not found");
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
         }
 

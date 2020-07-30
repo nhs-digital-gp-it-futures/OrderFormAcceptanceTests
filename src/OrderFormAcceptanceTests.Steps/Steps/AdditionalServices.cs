@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
+using System;
+using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -282,27 +284,30 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the supplier added to the order has an additional service with a declarative flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithADeclarativeFlatPrice()
         {
+            var supplier = SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, ProvisioningType.Declarative).First() ?? throw new NullReferenceException("Supplier not found");
             var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100004;
-            order.SupplierName = "Catterpillar Medworks";
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
         }
 
         [Given(@"the supplier added to the order has an additional service with a patient flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAPatientFlatPrice()
         {
+            var supplier = SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, ProvisioningType.Patient).First() ?? throw new NullReferenceException("Supplier not found");
             var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100007;
-            order.SupplierName = "Doc Lightning";
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
         }
 
         [Given(@"the supplier added to the order has an additional service with an on demand flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAnOnDemandFlatPrice()
         {
+            var supplier = SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, ProvisioningType.OnDemand).First() ?? throw new NullReferenceException("Supplier not found");
             var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100006;
-            order.SupplierName = "Clinical Raptor";
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
         }
 

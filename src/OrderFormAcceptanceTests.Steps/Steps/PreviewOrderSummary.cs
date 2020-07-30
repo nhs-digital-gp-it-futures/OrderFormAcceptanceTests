@@ -350,7 +350,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedService();
+            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
@@ -360,7 +360,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedService();
+            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceOnDemand();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.TimeUnitId = 2;
@@ -372,7 +372,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedService();
+            new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceOnDemand();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
             orderItem.EstimationPeriodId = TimeUnit.Month;
             orderItem.TimeUnitId = 1;
@@ -386,7 +386,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             SetOrderCatalogueSectionToComplete();
             var AssociatedServicesSteps = new AssociatedServices(Test, Context);
             AssociatedServicesSteps.SetOrderAssociatedServicesSectionToComplete();
-            AssociatedServicesSteps.GivenTheSupplierAddedToTheOrderHasAnAssociatedService();
+            AssociatedServicesSteps.GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative();
             var declarativeOrderItem1 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
             var declarativeOrderItem2 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
             declarativeOrderItem1.Create(Test.ConnectionString);

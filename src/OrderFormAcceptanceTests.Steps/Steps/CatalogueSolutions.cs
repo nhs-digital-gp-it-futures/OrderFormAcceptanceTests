@@ -536,12 +536,24 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Given(@"that the Supplier in the order has no associated services")]
+        public void GivenTheSupplierInTheOrderHasNoAssociatedServices()
+        {
+            var supplier = SupplierInfo.SuppliersWithout(Test.BapiConnectionString, CatalogueItemType.AssociatedService).First() ?? throw new NullReferenceException("Supplier not found");
+
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
+            order.Update(Test.ConnectionString);
+        }
+
         [Given(@"the supplier added to the order has a solution with a declarative flat price")]
         public void GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice()
         {
+            var supplier = SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, ProvisioningType.Declarative).First() ?? throw new NullReferenceException("Supplier not found");
+
             var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100003;
-            order.SupplierName = "Avatar Solutions";
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
         }
 

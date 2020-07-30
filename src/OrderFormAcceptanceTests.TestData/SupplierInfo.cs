@@ -1,5 +1,4 @@
 ﻿using OrderFormAcceptanceTests.TestData.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,25 +30,45 @@ namespace OrderFormAcceptanceTests.TestData
             }
         }
 
-        public static IEnumerable<string> SuppliersWithAdditionalServices(string connectionString, ProvisioningType provisioningType)
+        public static IEnumerable<SupplierDetails> SuppliersWithCatalogueSolution(string connectionString, ProvisioningType provisioningType)
+        {
+            return SupplierLookup(connectionString, CatalogueItemType.Solution, provisioningType);
+        }
+
+        public static IEnumerable<SupplierDetails> SuppliersWithAdditionalServices(string connectionString, ProvisioningType provisioningType)
         {
             return SupplierLookup(connectionString, CatalogueItemType.AdditionalService, provisioningType);
         }
 
-        public static IEnumerable<string> SuppliersWithAssociatedServices(string connectionString, ProvisioningType provisioningType)
+        public static IEnumerable<SupplierDetails> SuppliersWithAssociatedServices(string connectionString, ProvisioningType provisioningType)
         {
             return SupplierLookup(connectionString, CatalogueItemType.AssociatedService, provisioningType);
         }
 
-        private static IEnumerable<string> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
+        public static IEnumerable<SupplierDetails> SuppliersWithout(string connectionString, CatalogueItemType catalogueItemType)
         {
-            var query = @"SELECT ci.[CatalogueItemId]      
-                            FROM [buyingcatalogue].[dbo].[CatalogueItem] as ci
-                            INNER JOIN CataloguePrice as pr ON ci.CatalogueItemId=pr.CatalogueItemId
+            var query = @"SELECT DISTINCT ci.[SupplierId], su.[Name]
+                            FROM CatalogueItem ci
+                            INNER JOIN Supplier su On ci.SupplierId=su.Id
+                            WHERE SupplierId NOT IN(
+	                            SELECT DISTINCT SupplierId
+	                            FROM CatalogueItem    
+	                            WHERE CatalogueItemTypeId = @catalogueItemType
+                            )";
+
+            return SqlExecutor.Execute<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType });
+        }
+
+        private static IEnumerable<SupplierDetails> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
+        {
+            var query = @"SELECT ci.[SupplierId], su.[Name]      
+                            FROM [buyingcatalogue].[dbo].[CatalogueItem] ci
+                            INNER JOIN CataloguePrice pr ON ci.CatalogueItemId=pr.CatalogueItemId
+                            INNER JOIN Supplier su On ci.SupplierId=su.Id
                             WHERE ci.CatalogueItemTypeId=@catalogueItemType
                             AND pr.ProvisioningTypeId=@provisioningType";
-            
-            return SqlExecutor.Execute<string>(connectionString, query, new { catalogueItemType = (int)catalogueItemType, provisioningType = (int)provisioningType });
+
+            return SqlExecutor.Execute<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType, provisioningType = (int)provisioningType });
         }
     }
 }
