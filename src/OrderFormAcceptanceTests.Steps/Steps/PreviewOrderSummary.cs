@@ -187,15 +187,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the order items recurring cost table is sorted by service recipient name")]
         public void ThenTheOrderItemsRecurringCostTableIsSortedByServiceRecipientName()
         {
-            var names = Test.Pages.OrderForm.GetItemRecipientNames();
-            names.Should().BeInAscendingOrder();
+            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.OrderForm.GetItemRecipientNames());
         }
 
         [Then(@"the order items recurring cost table is second sorted by item name")]
         public void ThenTheOrderItemsRecurringCostTableIsSecondSortedByItemName()
         {
-            var names = Test.Pages.OrderForm.GetItemNames();
-            names.Should().BeInAscendingOrder();
+            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.OrderForm.GetItemNames());
         }
 
         [Then(@"the Price unit of order of each item is the concatenation ""\[Price\] \[unit\]""")]

@@ -120,7 +120,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.AdditionalServices.PricePageTitle().Should().ContainEquivalentOf("List price");
             Test.Pages.OrderForm.ClickRadioButton();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
         }
 
         [Then(@"the Additional Service name is displayed")]
@@ -132,9 +131,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Service Recipients are presented in ascending alphabetical order by Presentation Name")]
         public void ThenTheServiceRecipientsArePresentedInAscendingAlphabeticalOrderByPresentationName()
         {
-            var displayedRecipients = Test.Pages.AdditionalServices.ServiceRecipientNames();
-
-            displayedRecipients.Should().BeInAscendingOrder();
+            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.AdditionalServices.ServiceRecipientNames());
         }
 
         [Given(@"the User has selected a price for the Additional Service")]
