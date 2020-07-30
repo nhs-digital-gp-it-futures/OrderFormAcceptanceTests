@@ -4,7 +4,6 @@ using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Utils;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 
@@ -168,7 +167,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             SetOrderAssociatedServicesSectionToComplete();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
-            if (!Context.ContainsKey("CreatedOrderItem")) 
+            if (!Context.ContainsKey("CreatedOrderItem"))
             {
                 Context.Add("CreatedOrderItem", orderItem);
             }
@@ -194,7 +193,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var price = f.Random.Number(min: 1).ToString();
             Test.Pages.OrderForm.EnterQuantity(quantity);
             Test.Pages.OrderForm.EnterPriceInputValue(price);
-            
+
             Context.Add("AmendedQuantity", quantity);
             Context.Add("AmendedPrice", price);
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();
@@ -230,12 +229,22 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Given(@"the supplier added to the order has an associated service with a declarative flat price")]
-        [Given(@"the supplier added to the order has an associated service with an on-demand flat price")]
-        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedService()
+        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative()
         {
+            var supplier = GetSupplierDetails(ProvisioningType.Declarative);
             var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100000;
-            order.SupplierName = "Really Kool Corporation";
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
+            order.Update(Test.ConnectionString);
+        }
+
+        [Given(@"the supplier added to the order has an associated service with an on-demand flat price")]
+        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceOnDemand()
+        {
+            var supplier = GetSupplierDetails(ProvisioningType.OnDemand);
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
         }
 
@@ -244,6 +253,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context["CreatedOrder"];
             order.AssociatedServicesViewed = 1;
             order.Update(Test.ConnectionString);
+        }
+
+        private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
+        {
+            return SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
         }
     }
 }

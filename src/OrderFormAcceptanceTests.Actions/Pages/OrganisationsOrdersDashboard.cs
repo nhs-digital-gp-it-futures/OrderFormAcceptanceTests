@@ -2,10 +2,7 @@
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.TestData;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
@@ -114,14 +111,15 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             var table = Driver.FindElement(Pages.OrganisationsOrdersDashboard.UnsubmittedOrdersTable);
             var tableRows = table.FindElements(By.CssSelector("[data-test-id^='table-row-']"));
 
-            foreach(var row in tableRows)
+            foreach (var row in tableRows)
             {
                 var id = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Text;
                 var description = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Text;
                 var lastUpdateDisplayName = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text;
                 var lastUpdatedDate = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate).Text;
                 var createdDate = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text;
-                var currentRowOrder = new Order { 
+                var currentRowOrder = new Order
+                {
                     OrderId = id,
                     Description = description,
                     LastUpdatedByName = lastUpdateDisplayName,

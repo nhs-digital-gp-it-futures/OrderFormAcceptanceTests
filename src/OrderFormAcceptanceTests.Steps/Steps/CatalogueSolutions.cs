@@ -1,13 +1,10 @@
 ﻿using Bogus;
-using Bogus.Extensions;
 using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Utils;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow;
 
@@ -225,7 +222,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the price input is autopopulated with the list price for the flat list price selected")]
         public void ThenThePriceInputIsAutopopulatedWithTheListPriceForTheFlatListPriceSelected()
         {
-            Test.Pages.OrderForm.GetPriceInputValue().Should().NotBeNullOrEmpty();            
+            Test.Pages.OrderForm.GetPriceInputValue().Should().NotBeNullOrEmpty();
         }
 
         [Then(@"the item on the Associated Service edit form contains a unit of order")]
@@ -272,7 +269,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the save button is enabled")]
         public void ThenTheSaveButtonIsEnabled()
         {
-            Test.Pages.OrderForm.SaveButtonDisplayed().Should().BeTrue();            
+            Test.Pages.OrderForm.SaveButtonDisplayed().Should().BeTrue();
         }
 
 
@@ -421,7 +418,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             }
 
             var f = new Faker();
-            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min:1).ToString());
+            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1).ToString());
             Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
         }
 
@@ -486,8 +483,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context["CreatedOrder"];
             var deliveryDate = order.CommencementDate.Value.AddMonths(6).AddYears(1);
             Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
-            
-            var estimatedPeriod = Test.Pages.OrderForm.ClickRadioButton();            
+
+            var estimatedPeriod = Test.Pages.OrderForm.ClickRadioButton();
 
             var f = new Faker();
             var quantity = f.Random.Number(min: 1).ToString();
@@ -514,37 +511,49 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the values will be populated with the values that was saved by the User")]
         public void ThenTheValuesWillBePopulatedWithTheValuesThatWasSavedByTheUser()
         {
-            if(Context.ContainsKey("AmendedDeliveryDate"))
+            if (Context.ContainsKey("AmendedDeliveryDate"))
             {
                 var expectedDate = (DateTime)Context["AmendedDeliveryDate"];
                 var dateValueFromPage = Test.Pages.OrderForm.GetProposedDate();
                 dateValueFromPage.Should().Be(expectedDate.ToString("dd MM yyyy"));
             }
 
-            if(Context.ContainsKey("AmendedEstimatedPeriod"))
+            if (Context.ContainsKey("AmendedEstimatedPeriod"))
             {
                 var expectedPeriod = (string)Context["AmendedEstimatedPeriod"];
                 var periodFromPage = Test.Pages.OrderForm.GetSelectedRadioButton();
                 periodFromPage.Should().Be(expectedPeriod);
             }
-                        
+
             var quantityFromPage = Test.Pages.OrderForm.GetQuantity();
-            var priceFromPage = Test.Pages.OrderForm.GetPriceInputValue();            
-            
+            var priceFromPage = Test.Pages.OrderForm.GetPriceInputValue();
+
             var expectedQuantity = (string)Context["AmendedQuantity"];
-            var expectedPrice = (string)Context["AmendedPrice"];           
-            
+            var expectedPrice = (string)Context["AmendedPrice"];
+
             quantityFromPage.Should().Be(expectedQuantity);
             priceFromPage.Should().Be(expectedPrice);
         }
 
         [Given(@"that the Supplier in the order has no associated services")]
+        public void GivenTheSupplierInTheOrderHasNoAssociatedServices()
+        {
+            var supplier = SupplierInfo.SuppliersWithout(Test.BapiConnectionString, CatalogueItemType.AssociatedService).First() ?? throw new NullReferenceException("Supplier not found");
+
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
+            order.Update(Test.ConnectionString);
+        }
+
         [Given(@"the supplier added to the order has a solution with a declarative flat price")]
         public void GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice()
         {
+            var supplier = GetSupplierDetails(ProvisioningType.Declarative);
+
             var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100003;
-            order.SupplierName = "Avatar Solutions";
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
         }
 
@@ -555,6 +564,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickRadioButton(0);
             new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
         }
-        
+
+        private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
+        {
+            return SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
+        }        
     }
 }

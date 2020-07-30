@@ -4,7 +4,6 @@ using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
-using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -83,7 +82,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Given(@"an unsubmitted order exists")]
         public void GivenAnUnsubmittedOrderExists()
-        {            
+        {
             var orgAddress = new TestData.Address().Generate();
             orgAddress.Create(Test.ConnectionString);
             Context.Add("CreatedAddress", orgAddress);
@@ -109,18 +108,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
             order.CommencementDate = new Faker().Date.Future().Date;
 
-            var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);            
+            var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);
             order.ServiceRecipientsViewed = 1;
 
             order.Create(Test.ConnectionString);
             Context.Add("CreatedOrder", order);
             serviceRecipient.Create(Test.ConnectionString);
-            Context.Add("CreatedServiceRecipient", serviceRecipient);            
+            Context.Add("CreatedServiceRecipient", serviceRecipient);
         }
 
         [Given(@"an unsubmited order with catalogue items exists")]
         public void GivenAnUnsubmittedOrderWithCatalogueItemsExists()
-		{
+        {
             GivenAnUnsubmittedOrderExists();
             var order = (Order)Context["CreatedOrder"];
             order.CatalogueSolutionsViewed = 1;

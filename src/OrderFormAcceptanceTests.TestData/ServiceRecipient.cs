@@ -1,7 +1,5 @@
-﻿using Bogus;
-using OrderFormAcceptanceTests.TestData.Utils;
+﻿using OrderFormAcceptanceTests.TestData.Utils;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OrderFormAcceptanceTests.TestData
 {

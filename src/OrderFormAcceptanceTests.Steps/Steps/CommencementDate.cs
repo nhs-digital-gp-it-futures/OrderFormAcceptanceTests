@@ -5,12 +5,12 @@ using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps
 {
-	[Binding]
+    [Binding]
     public class CommencementDate : TestBase
     {
-		public CommencementDate(UITest test, ScenarioContext context) : base(test, context)
-		{
-		}
+        public CommencementDate(UITest test, ScenarioContext context) : base(test, context)
+        {
+        }
 
         [Given(@"a valid date is entered")]
         public void GivenAValidDateIsEntered()
@@ -37,7 +37,7 @@ namespace OrderFormAcceptanceTests.Steps
         {
             Test.Pages.CommencementDate.SetYearValue(year);
         }
-        
+
         [Given(@"the Commencement Date entered is (.*) days earlier than today's date")]
         public void GivenTheCommencementDateEnteredIsDaysEarlierThanTodaySDate(int days)
         {
@@ -45,7 +45,7 @@ namespace OrderFormAcceptanceTests.Steps
             var date = DateTime.Today.AddDays((days * -1));
             Test.Pages.CommencementDate.SetDate(date);
         }
-        
+
         [Then(@"the user is able to manage the Commencement Date section")]
         [StepDefinition(@"the user chooses to manage the Commencement Date Section")]
         public void ThenTheUserIsAbleToManageTheCommencementDateSection()

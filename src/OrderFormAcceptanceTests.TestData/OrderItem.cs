@@ -371,7 +371,7 @@ namespace OrderFormAcceptanceTests.TestData
             if (ProvisioningTypeId == ProvisioningType.OnDemand
                 && EstimationPeriodId == TimeUnit.Month ||
                 (ProvisioningTypeId == ProvisioningType.Declarative
-                 && (CatalogueItemTypeId == CatalogueItemType.Solution 
+                 && (CatalogueItemTypeId == CatalogueItemType.Solution
                      || CatalogueItemTypeId == CatalogueItemType.AdditionalService)))
             {
                 return 12m;

@@ -1,11 +1,6 @@
 ﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -179,7 +174,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
             var dbContact = new Contact { ContactId = order.SupplierContactId }.Retrieve(Test.ConnectionString);
             Context.Remove("CreatedSupplierContact");
-            Context.Add("CreatedSupplierContact", dbContact);            
+            Context.Add("CreatedSupplierContact", dbContact);
 
             var dbAddress = new Address { AddressId = order.SupplierAddressId }.Retrieve(Test.ConnectionString);
             Context.Remove("CreatedSupplierAddress");
@@ -208,7 +203,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var currentUrl = Test.Driver.Url;
             Test.Driver.Navigate().GoToUrl(currentUrl + "/supplier/search/select");
         }
-    
+
 
         [Then(@"they are redirected to the Edit Supplier page")]
         public void ThenTheyAreRedirectedToTheEditSupplierPage()

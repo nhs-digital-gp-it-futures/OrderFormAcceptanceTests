@@ -14,7 +14,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the User is presented with the Organisation's Orders dashboard")]
         public void GivenTheUserIsPresentedWithTheOrganisationsOrdersDashboard()
         {
-            Test.Pages.Homepage.ClickOrderTile();            
+            Test.Pages.Homepage.ClickOrderTile();
         }
 
         [When(@"they choose to create a new Order")]
@@ -22,13 +22,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrganisationsOrdersDashboard.CreateNewOrder();
         }
-        
+
         [Then(@"the User is presented with a control to return to the Organisation's Orders dashboard")]
         public void ThenTheUserIsPresentedWithAControlToReturnToTheOrganisationSOrdersDashboard()
         {
             Test.Pages.OrderForm.BackLinkDisplayed();
         }
-        
+
         [Then(@"the User is unable to delete the order")]
         public void ThenTheUserIsUnableToDeleteTheOrder()
         {
@@ -47,7 +47,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.PreviewOrderButtonIsDisabled().Should().BeTrue();
         }
 
-        [Then(@"the Preview order summary button is enabled")]        
+        [Then(@"the Preview order summary button is enabled")]
         public void ThenThePreviewOrderSummaryButtonIsEnabled()
         {
             Test.Pages.OrderForm.PreviewOrderButtonIsDisabled().Should().BeFalse();
@@ -71,13 +71,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.DeleteOrderButtonHasAltTest();
         }
-        
+
         [Then(@"there is alt text content on the disabled Preview Order Summary button")]
         public void ThenThereIsAltTextContentOnTheDisabledPreviewOrderSummaryButton()
         {
             Test.Pages.OrderForm.PreviewOrderButtonHasAltTest();
         }
-        
+
         [Then(@"there is alt text content on the disabled Submit button")]
         public void ThenThereIsAltTextContentOnTheDisabledSubmitButton()
         {

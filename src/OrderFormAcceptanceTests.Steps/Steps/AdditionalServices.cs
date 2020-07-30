@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
-using System.Collections.Generic;
+using System;
+using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -77,7 +78,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Additional Service").Should().BeTrue();
         }
 
-        [Then(@"they can select one Additional Service to add")]        
+        [Then(@"they can select one Additional Service to add")]
         public void ThenTheyCanSelectOneAdditionalServiceToAdd()
         {
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
@@ -97,14 +98,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
             WhenTheUserChoosesToAddASingleAdditionalService();
             ThenTheyArePresentedWithTheAdditionalServiceAvailableFromTheirChosenSupplier();
-            Test.Pages.OrderForm.ClickRadioButton();            
+            Test.Pages.OrderForm.ClickRadioButton();
         }
 
         [Then(@"all the available prices for that Additional Service are presented")]
         public void ThenAllTheAvailablePricesForThatAdditionalServiceArePresented()
         {
             Test.Pages.AdditionalServices.PricePageTitle().Should().ContainEquivalentOf("List price");
-            ThenTheyCanSelectOneAdditionalServiceToAdd();            
+            ThenTheyCanSelectOneAdditionalServiceToAdd();
         }
 
         [Given(@"the available prices for the selected Additional Service are presented")]
@@ -112,7 +113,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserHasSelectedAnAdditionalServiceToAdd();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-        }        
+        }
 
         [Given(@"the User has selected a Additional Service price")]
         public void GivenTheUserHasSelectedAAdditionalServicePrice()
@@ -162,7 +163,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the form contains one item")]
         public void ThenTheFormContainsOneItem()
-        {   
+        {
             Test.Pages.AdditionalServices.GetTableRowsCount().Should().Be(1);
         }
 
@@ -270,40 +271,43 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the pricing values will be populated with the values that was saved by the User")]
         public void ThenThePricingValuesWillBePopulatedWithTheValuesThatWasSavedByTheUser()
-        {   
+        {
             var quantityFromPage = Test.Pages.OrderForm.GetQuantity();
             var priceFromPage = Test.Pages.OrderForm.GetPriceInputValue();
 
-            var orderItem = (OrderItem)Context["CreatedAdditionalServiceOrderItem"];            
+            var orderItem = (OrderItem)Context["CreatedAdditionalServiceOrderItem"];
 
-            quantityFromPage.Should().Be(orderItem.Quantity.ToString());            
+            quantityFromPage.Should().Be(orderItem.Quantity.ToString());
             priceFromPage.Should().Be(orderItem.Price.ToString("F")); // ToString("F") does a financial rounding on a decimal, including adding .00 if a round number
         }
 
         [Given(@"the supplier added to the order has an additional service with a declarative flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithADeclarativeFlatPrice()
         {
+            var supplier = GetSupplierDetails(ProvisioningType.Declarative);
             var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100004;
-            order.SupplierName = "Catterpillar Medworks";
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
         }
 
         [Given(@"the supplier added to the order has an additional service with a patient flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAPatientFlatPrice()
         {
+            var supplier = GetSupplierDetails(ProvisioningType.Patient);
             var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100007;
-            order.SupplierName = "Doc Lightning";
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
         }
 
         [Given(@"the supplier added to the order has an additional service with an on demand flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAnOnDemandFlatPrice()
         {
+            var supplier = GetSupplierDetails(ProvisioningType.OnDemand);
             var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100006;
-            order.SupplierName = "Clinical Raptor";
+            order.SupplierId = int.Parse(supplier.SupplierId);
+            order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
         }
 
@@ -315,5 +319,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             of.GivenTheAdditionalServicesSectionIsComplete();
         }
 
+        private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
+        {
+            return SupplierInfo.SuppliersWithAdditionalServices(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
+        }
     }
 }

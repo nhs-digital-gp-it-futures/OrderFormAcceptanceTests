@@ -158,7 +158,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var createdOrder = (Order)Context["CreatedOrder"];
             var orders = Test.Pages.OrganisationsOrdersDashboard.GetListOfUnsubmittedOrders();
             bool found = false;
-            foreach(Order order in orders)
+            foreach (Order order in orders)
             {
                 if (order.OrderId == createdOrder.OrderId)
                 {
