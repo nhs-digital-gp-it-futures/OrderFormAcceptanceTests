@@ -404,13 +404,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             declarativeOrderItem1.Create(Test.ConnectionString);
             declarativeOrderItem2.Create(Test.ConnectionString);
 
-            var createdOrderItems = new OrderItemList(declarativeOrderItem1, declarativeOrderItem2);
-            if (Context.ContainsKey("CreatedOrderItems"))
-            {               
-                Context.Remove("CreatedOrderItems");                
-            }
+            var createdOrderItems = new OrderItemList(declarativeOrderItem1, declarativeOrderItem2);            
+            AddOrderItemsToContext(createdOrderItems);
             Context.Add("CreatedOneOffOrderItems", createdOrderItems);
-            Context.Add("CreatedOrderItems", createdOrderItems);
         }
 
         [Given(@"there are one or more Order items summarised in the Order items \(recurring cost\) table")]
@@ -427,11 +423,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
             var createdOrderItems = new OrderItemList(onDemandOrderItem, declarativeOrderItem, patientOrderItem);
 
-            if (Context.ContainsKey("CreatedOrderItems"))
-            {
-                Context.Remove("CreatedOrderItems");                
-            }
-            Context.Add("CreatedOrderItems", createdOrderItems);
+            AddOrderItemsToContext(createdOrderItems);
             Context.Add("CreatedRecurringOrderItems", createdOrderItems);
         }
 
@@ -524,6 +516,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
             const int expectedDecimalPointLength = 2;
             actual.Should().Be(expectedDecimalPointLength);
+        }
+
+        private void AddOrderItemsToContext(OrderItemList inputList)
+        {
+            if (Context.ContainsKey("CreatedOrderItems"))
+            {
+                Context.Remove("CreatedOrderItems");
+            }
+            Context.Add("CreatedOrderItems", inputList);
         }
     }
 }
