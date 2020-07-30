@@ -121,6 +121,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             value.Should().NotBeNullOrEmpty();
         }
 
+        [Then(@"the Total cost of contract is displayed")]
         [Then(@"the total cost of ownership is displayed")]
         public void ThenTheTotalCostOfOwnershipIsDisplayed()
         {
@@ -262,6 +263,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             cost.Should().Be(expectedValue.ToString());
         }
 
+        [Then(@"the Total cost of contract is the result of the Total cost of contract calculation Total one-off cost \+ \(3 \* Total cost for one year calculation\)")]
+        public void ThenTheTotalCostOfContractIsTheResultOfTheTotalCostOfContractCalculationTotalOne_OffCostTotalCostForOneYearCalculation()
+        {
+            var expectedTotalCost = Context.Get<OrderItemList>("CreatedOneOffOrderItems").GetTotalOneOffCost();
+            var expectedTotalAnnualCost = Context.Get<OrderItemList>("CreatedRecurringOrderItems").GetTotalAnnualCost();
+            var expectedTotalCostOfContract = expectedTotalCost + (3 * expectedTotalAnnualCost);
+            var actualTotalCostOfContract = Test.Pages.OrderForm.GetTotalOwnershipCost();
+
+            actualTotalCostOfContract.Should().Be(FormatDecimal(expectedTotalCostOfContract));
+        }
+
         [Given(@"a Catalogue Solution is added to the order")]
         [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
         public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
@@ -391,7 +403,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var declarativeOrderItem2 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
             declarativeOrderItem1.Create(Test.ConnectionString);
             declarativeOrderItem2.Create(Test.ConnectionString);
-            Context.Add("CreatedOrderItems", new OrderItemList(declarativeOrderItem1, declarativeOrderItem2));
+
+            var createdOrderItems = new OrderItemList(declarativeOrderItem1, declarativeOrderItem2);            
+            AddOrderItemsToContext(createdOrderItems);
+            Context.Add("CreatedOneOffOrderItems", createdOrderItems);
         }
 
         [Given(@"there are one or more Order items summarised in the Order items \(recurring cost\) table")]
@@ -406,7 +421,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var patientOrderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient((Order)Context["CreatedOrder"]);
             patientOrderItem.Create(Test.ConnectionString);
 
-            Context.Add("CreatedOrderItems", new OrderItemList(onDemandOrderItem, declarativeOrderItem, patientOrderItem));
+            var createdOrderItems = new OrderItemList(onDemandOrderItem, declarativeOrderItem, patientOrderItem);
+
+            AddOrderItemsToContext(createdOrderItems);
+            Context.Add("CreatedRecurringOrderItems", createdOrderItems);
         }
 
         [Then(@"the Total one-off cost is the result of the Total one-off cost calculation")]
@@ -437,6 +455,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenItIsExpressedAsTwoDecimalPlaces()
         {
             ValueExpressedAsTwoDecimalPlaces(Test.Pages.OrderForm.GetTotalAnnualCost());
+        }
+
+        [Then(@"the Total cost of contract is expressed as two decimal places")]
+        public void ThenTheTotalCostOfContractIsExpressedAsTwoDecimalPlaces()
+        {
+            ValueExpressedAsTwoDecimalPlaces(Test.Pages.OrderForm.GetTotalOwnershipCost());
         }
 
         [Then(@"the Total monthly cost is the result of the Total monthly cost calculation")]
@@ -492,6 +516,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
             const int expectedDecimalPointLength = 2;
             actual.Should().Be(expectedDecimalPointLength);
+        }
+
+        private void AddOrderItemsToContext(OrderItemList inputList)
+        {
+            if (Context.ContainsKey("CreatedOrderItems"))
+            {
+                Context.Remove("CreatedOrderItems");
+            }
+            Context.Add("CreatedOrderItems", inputList);
         }
     }
 }
