@@ -133,11 +133,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElement(Pages.OrderForm.PreviewOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
         }
 
-		public void SelectSupplierWithContactDetails(string bapiConnString)
-		{
+        public void SelectSupplierWithContactDetails(string bapiConnString)
+        {
             var suppliers = ListOfSupplierNames();
             var supplierNames = suppliers.Select(s => s.Text);
-            
+
             // Randomise ordering of list so a random supplier is chosen each time
             Random rng = new Random();
             var supplierListShuffle = supplierNames
@@ -148,26 +148,26 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
             string selectedSupplier = string.Empty;
 
-            foreach(var supplier in supplierListShuffle)
-			{
-                if(SupplierInfo.SupplierHasContactInfo(bapiConnString, supplier))
-				{
+            foreach (var supplier in supplierListShuffle)
+            {
+                if (SupplierInfo.SupplierHasContactInfo(bapiConnString, supplier))
+                {
                     selectedSupplier = supplier;
                     break;
-				}
-			}
+                }
+            }
 
             if (string.IsNullOrEmpty(selectedSupplier)) throw new ArgumentNullException(nameof(selectedSupplier));
 
             suppliers.Single(s => s.Text == selectedSupplier).Click();
         }
 
-		private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
-		{
+        private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
+        {
             return Driver.FindElements(Pages.OrderForm.SupplierOptionsLabels);
         }
 
-		public bool SubmitOrderButtonIsDisabled()
+        public bool SubmitOrderButtonIsDisabled()
         {
             return Driver.FindElement(Pages.OrderForm.SubmitOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
         }
@@ -518,14 +518,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             var suppliers = ListOfSuppliers();
 
-			if (index.HasValue)
-			{
+            if (index.HasValue)
+            {
                 suppliers[index.Value].Click();
-			}
-			else
-			{
+            }
+            else
+            {
                 RandomInformation.GetRandomItem(suppliers).Click();
-			}
+            }
         }
 
         public bool SupplierNameIsDisplayed()

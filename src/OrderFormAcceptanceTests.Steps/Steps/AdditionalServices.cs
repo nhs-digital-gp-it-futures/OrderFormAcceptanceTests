@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
-using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -77,7 +76,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Additional Service").Should().BeTrue();
         }
 
-        [Then(@"they can select one Additional Service to add")]        
+        [Then(@"they can select one Additional Service to add")]
         public void ThenTheyCanSelectOneAdditionalServiceToAdd()
         {
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
@@ -97,14 +96,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
             WhenTheUserChoosesToAddASingleAdditionalService();
             ThenTheyArePresentedWithTheAdditionalServiceAvailableFromTheirChosenSupplier();
-            Test.Pages.OrderForm.ClickRadioButton();            
+            Test.Pages.OrderForm.ClickRadioButton();
         }
 
         [Then(@"all the available prices for that Additional Service are presented")]
         public void ThenAllTheAvailablePricesForThatAdditionalServiceArePresented()
         {
             Test.Pages.AdditionalServices.PricePageTitle().Should().ContainEquivalentOf("List price");
-            ThenTheyCanSelectOneAdditionalServiceToAdd();            
+            ThenTheyCanSelectOneAdditionalServiceToAdd();
         }
 
         [Given(@"the available prices for the selected Additional Service are presented")]
@@ -112,7 +111,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserHasSelectedAnAdditionalServiceToAdd();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-        }        
+        }
 
         [Given(@"the User has selected a Additional Service price")]
         public void GivenTheUserHasSelectedAAdditionalServicePrice()
@@ -162,7 +161,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the form contains one item")]
         public void ThenTheFormContainsOneItem()
-        {   
+        {
             Test.Pages.AdditionalServices.GetTableRowsCount().Should().Be(1);
         }
 
@@ -270,13 +269,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the pricing values will be populated with the values that was saved by the User")]
         public void ThenThePricingValuesWillBePopulatedWithTheValuesThatWasSavedByTheUser()
-        {   
+        {
             var quantityFromPage = Test.Pages.OrderForm.GetQuantity();
             var priceFromPage = Test.Pages.OrderForm.GetPriceInputValue();
 
-            var orderItem = (OrderItem)Context["CreatedAdditionalServiceOrderItem"];            
+            var orderItem = (OrderItem)Context["CreatedAdditionalServiceOrderItem"];
 
-            quantityFromPage.Should().Be(orderItem.Quantity.ToString());            
+            quantityFromPage.Should().Be(orderItem.Quantity.ToString());
             priceFromPage.Should().Be(orderItem.Price.ToString("F")); // ToString("F") does a financial rounding on a decimal, including adding .00 if a round number
         }
 

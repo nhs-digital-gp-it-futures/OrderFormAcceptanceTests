@@ -17,49 +17,49 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.Homepage.ClickLoginButton();
         }
-        
+
         [Given(@"that a User is not authenticated and the user selects the order form tile")]
         public void GivenThatAUserIsNotAuthenticatedAndTheUserSelectsTheOrderFormTile()
         {
             Test.Pages.Homepage.ClickOrderTile();
         }
-        
+
         [Given(@"the User is prompted to login")]
         public void GivenTheUserIsPromptedToLogin()
         {
             Test.Pages.Authentication.PageDisplayed();
         }
-        
+
         [When(@"the User is a Buyer User")]
         public void WhenTheUserIsABuyerUser()
         {
             Context.Add("User", EnvironmentVariables.User(UserType.Buyer));
         }
-        
+
         [When(@"the User is not a Buyer User")]
         public void WhenTheUserIsNotABuyerUser()
         {
-            Context.Add("User", EnvironmentVariables.User(UserType.Authority));            
+            Context.Add("User", EnvironmentVariables.User(UserType.Authority));
         }
-        
+
         [Then(@"the User will be logged in")]
         public void ThenTheBuyerWillBeLoggedIn()
         {
             Test.Pages.Authentication.Login((User)Context["User"]);
         }
-        
+
         [Then(@"the Buyer will be able to access the Order Form feature without having to authenticate again")]
         public void ThenTheBuyerWillBeAbleToAccessTheOrderFormFeatureWithoutHavingToAuthenticateAgain()
         {
             Test.Pages.Homepage.ClickOrderTile();
         }
-        
+
         [Then(@"will be taken to the Order Form Feature")]
         public void ThenWillBeTakenToTheOrderFormFeature()
         {
             Test.Driver.Url.Should().Contain("/order/");
         }
-        
+
         [Then(@"the User will be informed they cannot access that feature")]
         public void ThenTheUserWillBeInformedTheyCannotAccessThatFeature()
         {

@@ -1,10 +1,6 @@
 ﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -94,7 +90,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context["CreatedOrder"];
             var serviceRecipientInDB = new ServiceRecipient().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
             Context.Add("CreatedServiceRecipient", serviceRecipientInDB);
-            serviceRecipientInDB.Should().NotBeNull();            
+            serviceRecipientInDB.Should().NotBeNull();
         }
 
         [Then(@"the Service Recipient is deleted from the Order")]

@@ -3,8 +3,6 @@ using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Utils;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 
@@ -168,7 +166,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             SetOrderAssociatedServicesSectionToComplete();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
             orderItem.Create(Test.ConnectionString);
-            if (!Context.ContainsKey("CreatedOrderItem")) 
+            if (!Context.ContainsKey("CreatedOrderItem"))
             {
                 Context.Add("CreatedOrderItem", orderItem);
             }
@@ -194,7 +192,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var price = f.Random.Number(min: 1).ToString();
             Test.Pages.OrderForm.EnterQuantity(quantity);
             Test.Pages.OrderForm.EnterPriceInputValue(price);
-            
+
             Context.Add("AmendedQuantity", quantity);
             Context.Add("AmendedPrice", price);
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();

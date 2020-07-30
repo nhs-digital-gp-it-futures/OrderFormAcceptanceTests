@@ -271,7 +271,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.Create(Test.ConnectionString);
 
-            if(!Context.ContainsKey("CreatedOrderItem"))
+            if (!Context.ContainsKey("CreatedOrderItem"))
                 Context.Add("CreatedOrderItem", orderItem);
         }
 

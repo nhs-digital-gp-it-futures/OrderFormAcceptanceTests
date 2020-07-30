@@ -1,8 +1,8 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Utils
 {
-	internal enum UserType
-	{
-		Buyer,
-		Authority
-	}
+    internal enum UserType
+    {
+        Buyer,
+        Authority
+    }
 }

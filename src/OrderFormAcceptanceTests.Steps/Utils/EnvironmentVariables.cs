@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using OrderFormAcceptanceTests.Actions.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OrderFormAcceptanceTests.Actions.Utils;
 
 namespace OrderFormAcceptanceTests.Steps.Utils
 {
@@ -56,18 +56,18 @@ namespace OrderFormAcceptanceTests.Steps.Utils
 
         internal static string BapiDbConnectionString()
         {
-            var (serverUrl, databaseName, dbUser, dbPassword) = DbConnectionDetails();
+            var (serverUrl, _, dbUser, dbPassword) = DbConnectionDetails();
 
-            databaseName = Environment.GetEnvironmentVariable("BAPIDATABASENAME") ?? "buyingcatalogue";
+            string databaseName = Environment.GetEnvironmentVariable("BAPIDATABASENAME") ?? "buyingcatalogue";
 
             return string.Format(ConnectionString.GPitFutures, serverUrl, databaseName, dbUser, dbPassword);
         }
 
         internal static string IsapiDbConnectionString()
         {
-            var (serverUrl, databaseName, dbUser, dbPassword) = DbConnectionDetails();
+            var (serverUrl, _, dbUser, dbPassword) = DbConnectionDetails();
 
-            databaseName = Environment.GetEnvironmentVariable("ISAPIDATABASENAME") ?? "CatalogueUsers";
+            string databaseName = Environment.GetEnvironmentVariable("ISAPIDATABASENAME") ?? "CatalogueUsers";
 
             return string.Format(ConnectionString.GPitFutures, serverUrl, databaseName, dbUser, dbPassword);
         }

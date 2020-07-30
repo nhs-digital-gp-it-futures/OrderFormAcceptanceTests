@@ -5,7 +5,7 @@ using System;
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
     public sealed class Homepage : PageAction
-	{
+    {
         public Homepage(IWebDriver driver) : base(driver)
         {
         }

@@ -4,13 +4,13 @@ using OrderFormAcceptanceTests.Actions.Utils;
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
     public class Authentication : PageAction
-	{
-		public Authentication(IWebDriver driver) : base(driver)
-		{
-		}
+    {
+        public Authentication(IWebDriver driver) : base(driver)
+        {
+        }
 
-		public void Login(User user)
-		{
+        public void Login(User user)
+        {
             EnterUsername(user.Username);
             EnterPassword(user.Password);
             Driver.FindElement(Pages.Login.LoginButton).Click();

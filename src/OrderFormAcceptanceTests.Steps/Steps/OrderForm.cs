@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Information;
