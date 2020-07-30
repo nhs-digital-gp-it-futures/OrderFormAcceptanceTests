@@ -191,6 +191,15 @@ Scenario: Preview Order Summary - Total one-off cost
 	And the Total one-off cost is the result of the Total one-off cost calculation
     And the Total one-off cost is expressed as 2 decimal places 
 
+Scenario: Preview Order Summary - Total cost of contract
+    Given there are one or more Associated Service items summarised in the Order items (one-off cost) table
+    And there are one or more Order items summarised in the Order items (recurring cost) table
+    When the Order Summary is displayed
+    Then the Total cost of contract is displayed
+    And the Total cost of contract is the result of the Total cost of contract calculation Total one-off cost + (3 * Total cost for one year calculation)
+    And the Total cost of contract is expressed as two decimal places
+    And the order items recurring cost table is sorted by service recipient name
+
 Scenario: Preview Order Summary - Sort by service recipient name
     Given multiple order items with different service recipient have been added to the order
     When the Order Summary is displayed
