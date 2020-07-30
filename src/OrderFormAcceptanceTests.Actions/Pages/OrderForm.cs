@@ -835,6 +835,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElement(Pages.OrderForm.ItemName).Text;
         }
 
+        public IEnumerable<string> GetItemNames()
+        {
+            return Driver.FindElements(Pages.OrderForm.ItemName).Select(x => x.Text);
+        }
+
         public IEnumerable<string> GetItemRecipientNames()
         {
             return Driver.FindElements(Pages.OrderForm.ItemRecipientName).Select(x => x.Text);

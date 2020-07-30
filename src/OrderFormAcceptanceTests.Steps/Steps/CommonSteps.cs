@@ -1,9 +1,14 @@
 ﻿using Bogus;
 using FluentAssertions;
+using Newtonsoft.Json.Bson;
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -200,6 +205,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             WhenTheyChooseToContinue();
             ThenTheyCanSelectOneRadioButton();
+        }
+
+        public void AssertListOfStringsIsInAscendingOrder(IEnumerable<string> stringList)
+        {
+            var hexList = stringList
+                .Select(s => Encoding.UTF8.GetBytes(s)) // Convert to byte[]
+                .Select(h => BitConverter.ToString(h)) // convert byte[] to hex string
+                .Select(r => r.Replace("-", "")) // remove any '-' characters
+                .ToList();
+            hexList.Should().BeInAscendingOrder();
         }
     }
 }

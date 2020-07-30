@@ -188,8 +188,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the order items recurring cost table is sorted by service recipient name")]
         public void ThenTheOrderItemsRecurringCostTableIsSortedByServiceRecipientName()
         {
-            var names = Test.Pages.OrderForm.GetItemRecipientNames();
-            names.Should().BeInAscendingOrder();
+            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.OrderForm.GetItemRecipientNames());
+        }
+
+        [Then(@"the order items recurring cost table is second sorted by item name")]
+        public void ThenTheOrderItemsRecurringCostTableIsSecondSortedByItemName()
+        {
+            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.OrderForm.GetItemNames());
         }
 
         [Then(@"the Price unit of order of each item is the concatenation ""\[Price\] \[unit\]""")]
@@ -490,6 +495,76 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.OrganisationOdsCode = "yolo";
 
             GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder();
+        }
+
+        [Given(@"multiple order items with the same service recipient have been added to the order")]
+        public void GivenMultipleOrderItemsWithTheSameServiceRecipientHaveBeenAddedToTheOrder()
+        {
+            GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder();
+            var orderItem2 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem2.EstimationPeriodId = TimeUnit.Year;
+            orderItem2.CatalogueItemName = "AAA item";
+            orderItem2.Create(Test.ConnectionString);
+            var orderItem3 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem3.EstimationPeriodId = TimeUnit.Year;
+            orderItem3.CatalogueItemName = "5 power up";
+            orderItem3.Create(Test.ConnectionString);
+            var orderItem4 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem4.EstimationPeriodId = TimeUnit.Year;
+            orderItem4.CatalogueItemName = "™ Tee EMM";
+            orderItem4.Create(Test.ConnectionString);
+            var orderItem5 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem5.EstimationPeriodId = TimeUnit.Year;
+            orderItem5.CatalogueItemName = "$$ bills yall";
+            orderItem5.Create(Test.ConnectionString);
+            var orderItem6 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem6.EstimationPeriodId = TimeUnit.Year;
+            orderItem6.CatalogueItemName = "我能";
+            orderItem6.Create(Test.ConnectionString);
+            var orderItem7 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem7.EstimationPeriodId = TimeUnit.Year;
+            orderItem7.CatalogueItemName = "® registered trademark";
+            orderItem7.Create(Test.ConnectionString);
+
+            var orderItem8 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem8.EstimationPeriodId = TimeUnit.Year;
+            orderItem8.CatalogueItemName = ".. dot dot";
+            orderItem8.Create(Test.ConnectionString);
+
+            var orderItem9 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem9.EstimationPeriodId = TimeUnit.Year;
+            orderItem9.CatalogueItemName = "(( lb";
+            orderItem9.Create(Test.ConnectionString);
+
+            var orderItem10 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem10.EstimationPeriodId = TimeUnit.Year;
+            orderItem10.CatalogueItemName = "))) rb cubed";
+            orderItem10.Create(Test.ConnectionString);
+
+            var orderItem11 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem11.EstimationPeriodId = TimeUnit.Year;
+            orderItem11.CatalogueItemName = "+ plus health";
+            orderItem11.Create(Test.ConnectionString);
+
+            var orderItem12 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem12.EstimationPeriodId = TimeUnit.Year;
+            orderItem12.CatalogueItemName = "& ampersand";
+            orderItem12.Create(Test.ConnectionString);
+
+            var orderItem13 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem13.EstimationPeriodId = TimeUnit.Year;
+            orderItem13.CatalogueItemName = "' single quote";
+            orderItem13.Create(Test.ConnectionString);
+
+            var orderItem14 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem14.EstimationPeriodId = TimeUnit.Year;
+            orderItem14.CatalogueItemName = "- well ill be dashed";
+            orderItem14.Create(Test.ConnectionString);
+
+            var orderItem15 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            orderItem15.EstimationPeriodId = TimeUnit.Year;
+            orderItem15.CatalogueItemName = "@ your side";
+            orderItem15.Create(Test.ConnectionString);
         }
 
         private static string FormatDecimal(decimal price)
