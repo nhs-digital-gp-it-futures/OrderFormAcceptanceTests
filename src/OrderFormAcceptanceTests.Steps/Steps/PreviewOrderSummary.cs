@@ -191,6 +191,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.OrderForm.GetItemRecipientNames());
         }
 
+        [Then(@"the order items one-off cost table is sorted by item name")]
         [Then(@"the order items recurring cost table is second sorted by item name")]
         public void ThenTheOrderItemsRecurringCostTableIsSecondSortedByItemName()
         {
@@ -565,6 +566,36 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             orderItem15.EstimationPeriodId = TimeUnit.Year;
             orderItem15.CatalogueItemName = "@ your side";
             orderItem15.Create(Test.ConnectionString);
+        }
+
+        [Given(@"multiple one-off order items have been added to the order")]
+        public void GivenMultipleOne_OffOrderItemsHaveBeenAddedToTheOrder()
+        {
+            SetOrderCatalogueSectionToComplete();
+            var AssociatedServicesSteps = new AssociatedServices(Test, Context);
+            AssociatedServicesSteps.SetOrderAssociatedServicesSectionToComplete();
+            AssociatedServicesSteps.GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative();
+            var declarativeOrderItem1 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
+            var declarativeOrderItem2 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
+            var declarativeOrderItem3 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
+            var declarativeOrderItem4 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
+            var declarativeOrderItem5 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
+
+            declarativeOrderItem1.CatalogueItemName = "® registered trademark";
+            declarativeOrderItem2.CatalogueItemName = "BB Band Aid";
+            declarativeOrderItem3.CatalogueItemName = "AA Battery powered defibrillators";
+            declarativeOrderItem4.CatalogueItemName = "999 Solutions";
+            declarativeOrderItem5.CatalogueItemName = "+ plus health";
+
+            declarativeOrderItem1.Create(Test.ConnectionString);
+            declarativeOrderItem2.Create(Test.ConnectionString);
+            declarativeOrderItem3.Create(Test.ConnectionString);
+            declarativeOrderItem4.Create(Test.ConnectionString);
+            declarativeOrderItem5.Create(Test.ConnectionString);
+
+            var createdOrderItems = new OrderItemList(declarativeOrderItem1, declarativeOrderItem2, declarativeOrderItem3, declarativeOrderItem4, declarativeOrderItem5);
+            AddOrderItemsToContext(createdOrderItems);
+            Context.Add("CreatedOneOffOrderItems", createdOrderItems);
         }
 
         private static string FormatDecimal(decimal price)
