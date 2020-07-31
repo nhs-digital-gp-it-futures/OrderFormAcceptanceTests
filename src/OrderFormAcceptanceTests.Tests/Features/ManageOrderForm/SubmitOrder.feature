@@ -1,6 +1,6 @@
 ﻿Feature: Submit Order
 
-@ignore
+#@ignore
 Scenario: Enable Submit Button - Funding Source now complete, >=1 Catalogue Solution, >=0 Associated Services
 	Given an unsubmited order with catalogue items exists
 	And there are one or more Service Recipients in the order
@@ -21,7 +21,7 @@ Scenario: Enable Submit Button - Funding Source now complete, >=1 Catalogue Solu
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is enabled
-@ignore
+#@ignore
 Scenario: Enable Submit Button - Funding Source now complete, >=1 Catalogue Solution, >=1 Associated Service
 	Given an unsubmited order with catalogue items exists
 	And there are one or more Service Recipients in the order
@@ -42,7 +42,7 @@ Scenario: Enable Submit Button - Funding Source now complete, >=1 Catalogue Solu
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is enabled
-@ignore
+#@ignore
 Scenario: Enable Submit Button - Funding Source now complete, 0 Service Recipient, 0 Catalogue Solution, >=1 Associated Service
 	Given an unsubmitted order exists
 	And there are no Service Recipients in the order
@@ -62,7 +62,7 @@ Scenario: Enable Submit Button - Funding Source now complete, 0 Service Recipien
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is enabled
-@ignore
+#@ignore
 Scenario: Enable Submit Button - Funding Source now complete, >=1 Service Recipient, 0 Catalogue Solution, >=1 Associated Service
 	Given an unsubmitted order exists
 	And there are one or more Service Recipients in the order
