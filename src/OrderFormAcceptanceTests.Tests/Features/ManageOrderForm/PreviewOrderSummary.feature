@@ -211,3 +211,9 @@ Scenario: Preview Order Summary - Second Sort by item name
     When the Order Summary is displayed
     Then the Order items (recurring cost) table is populated
     And the order items recurring cost table is second sorted by item name
+
+Scenario: Preview Order Summary - One-Off table sorted by item name
+    Given multiple one-off order items have been added to the order
+    When the Order Summary is displayed
+    Then the Order items (one off) table is populated
+    And the order items one-off cost table is sorted by item name
