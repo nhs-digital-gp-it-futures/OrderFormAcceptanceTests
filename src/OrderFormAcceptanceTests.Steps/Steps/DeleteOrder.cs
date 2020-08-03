@@ -28,5 +28,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Delete order").Should().BeTrue();
         }
 
+        [Given(@"the confirm delete page is displayed")]
+        public void GivenTheConfirmDeletePageIsDisplayed()
+        {
+            var commonSteps = new CommonSteps(Test, Context);
+            commonSteps.GivenAnUnsubmittedOrderExists();
+            commonSteps.WhenTheOrderFormForTheExistingOrderIsPresented();
+        }
+
     }
 }

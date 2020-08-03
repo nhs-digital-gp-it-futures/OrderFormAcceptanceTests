@@ -12,9 +12,9 @@ Scenario: Delete Order - Confirm delete order
 	And the Order description is displayed
 @ignore
 Scenario: Delete Order - Go back before deleting
-Given the confirm delete page is displayed
-When the User chooses to go back
-Then they are presented with the Orders dashboard
+	Given the confirm delete page is displayed
+	When the User chooses to go back
+	Then the Order dashboard is presented
 @ignore
 Scenario: Delete Order - Order Deleted
 Given the confirm delete page is presented
