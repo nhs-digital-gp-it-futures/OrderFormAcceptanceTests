@@ -26,7 +26,7 @@ Scenario: Associated Services - Service Recipient now complete, 0 Service Recipi
 	And the Associated Service section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Associated Services - Catalogue Solution now complete, >= 1 Service Recipient, 0 Catalogue Solution
 	Given there are one or more Service Recipients in the order
@@ -44,7 +44,7 @@ Scenario: Associated Services - Catalogue Solution now complete, >= 1 Service Re
 	And the Associated Service section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Associated Services - Service Recipient >=1, Catalogue Solution is NULL 
 	Given there are one or more Service Recipients in the order
@@ -61,7 +61,7 @@ Scenario: Associated Services - Service Recipient >=1, Catalogue Solution is NUL
 	And the Associated Service section is not enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Associated Services - >= 1 Service Recipient, >=1 Catalogue Solution, NULL Additional Service
 	Given a Catalogue Solution is added to the order
@@ -78,7 +78,7 @@ Scenario: Associated Services - >= 1 Service Recipient, >=1 Catalogue Solution, 
 	And the Associated Service section is not enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Associated Services - Additional Service now complete, >= 1 Service Recipient, >=1 Catalogue Solution, 0 Additional Services
 	Given a Catalogue Solution is added to the order
@@ -96,7 +96,7 @@ Scenario: Associated Services - Additional Service now complete, >= 1 Service Re
 	And the Associated Service section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Associated Services - Additional Service now complete, >= 1 Service Recipient, >=1 Catalogue Solution, =>1 Additional Service
 	Given a Catalogue Solution is added to the order
@@ -113,7 +113,7 @@ Scenario: Associated Services - Additional Service now complete, >= 1 Service Re
 	And the Associated Service section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Associated Service dashboard
 	Given there are no Service Recipients in the order

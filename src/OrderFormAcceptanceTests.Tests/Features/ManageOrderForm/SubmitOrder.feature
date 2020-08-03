@@ -19,7 +19,7 @@ Scenario: Enable Complete Button - Funding Source now complete, >=1 Catalogue So
 	And the Funding Source section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is enabled
+	And the Complete order button is enabled
 
 Scenario: Enable Complete Button - Funding Source now complete, >=1 Catalogue Solution, >=1 Associated Service
 	Given an unsubmited order with catalogue items exists
@@ -40,7 +40,7 @@ Scenario: Enable Complete Button - Funding Source now complete, >=1 Catalogue So
 	And the Funding Source section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is enabled
+	And the Complete order button is enabled
 
 Scenario: Enable Complete Button - Funding Source now complete, 0 Service Recipient, 0 Catalogue Solution, >=1 Associated Service
 	Given an unsubmitted order exists
@@ -60,7 +60,7 @@ Scenario: Enable Complete Button - Funding Source now complete, 0 Service Recipi
 	And the Funding Source section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is enabled
+	And the Complete order button is enabled
 
 Scenario: Enable Complete Button - Funding Source now complete, >=1 Service Recipient, 0 Catalogue Solution, >=1 Associated Service
 	Given an unsubmitted order exists
@@ -81,7 +81,7 @@ Scenario: Enable Complete Button - Funding Source now complete, >=1 Service Reci
 	And the Funding Source section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is enabled
+	And the Complete order button is enabled
 @ignore
 Scenario: Complete Order - Complete order screen if Funding Source was 'yes'
 	Given an unsubmitted order exists

@@ -22,7 +22,7 @@ Scenario: Additional Services - Catalogue Solution now complete, >= 1 Service Re
 	And there is the Additional Service section
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Additional Services - Catalogue Solution now complete, >= 1 Service Recipient, 0 Catalogue Solution
 	Given the Catalogue Solutions section is not complete
@@ -36,7 +36,7 @@ Scenario: Additional Services - Catalogue Solution now complete, >= 1 Service Re
 	And the Catalogue Solution section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Additional Services - Additional Service dashboard
 	Given the Order Form for the existing order is presented

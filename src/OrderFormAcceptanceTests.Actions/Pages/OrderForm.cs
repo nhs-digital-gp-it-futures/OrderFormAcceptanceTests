@@ -167,9 +167,9 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElements(Pages.OrderForm.SupplierOptionsLabels);
         }
 
-        public bool SubmitOrderButtonIsDisabled()
+        public bool CompleteOrderButtonIsDisabled()
         {
-            return Driver.FindElement(Pages.OrderForm.SubmitOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
+            return Driver.FindElement(Pages.OrderForm.CompleteOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
         }
 
         public void DeleteOrderButtonHasAltTest()
@@ -188,9 +188,9 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             Driver.FindElement(Pages.OrderForm.PreviewOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
         }
 
-        public void SubmitOrderButtonHasAltTest()
+        public void CompleteOrderButtonHasAltTest()
         {
-            Driver.FindElement(Pages.OrderForm.SubmitOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
+            Driver.FindElement(Pages.OrderForm.CompleteOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
         }
 
         public bool EditCommencementDateSectionDisplayed()
@@ -378,7 +378,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickCompleteOrderButton()
         {            
-            Driver.FindElement(Pages.OrderForm.SubmitOrderButton).Click();
+            Driver.FindElement(Pages.OrderForm.CompleteOrderButton).Click();
         }
 
         public void EnterTextIntoTextArea(string value, int index = 0)
