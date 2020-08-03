@@ -114,3 +114,24 @@ Scenario: Complete Order - Go Back after Order completed
 	Given that the User has completed their Order
 	When the User chooses to go back
 	Then the Organisation Orders Dashboard is displayed
+@ignore
+Scenario: Complete Order - Complete order screen if Funding Source was 'no'
+	Given an unsubmitted order exists
+	And there are no Service Recipients in the order
+	And the Funding Source section is complete with 'no' selected
+	When the User chooses to complete the Order
+	Then the confirm complete order screen is displayed
+	And there is specific content related to the User answering 'no' on the Funding Source question
+	And the Call Off Agreement ID is displayed in the page title
+	And the Order description is displayed
+	And there is a control to complete order
+@ignore
+Scenario: Complete Order - Order completed if Funding Source was 'no' confirmation screen
+	Given that the User is on the confirm complete order screen
+	And the Funding Source section is complete with 'no' selected
+	When the User chooses to complete the Order
+	Then the Order completed screen is displayed
+	And the Call Off Agreement ID is displayed in the page title
+	And the Order description is displayed
+	And there is specific content related to the User answering 'no' on the Funding Source question
+	And there is a control that allows the User to download a .PDF version of the Order Summary

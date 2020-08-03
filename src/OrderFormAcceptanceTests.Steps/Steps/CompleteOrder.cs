@@ -34,10 +34,22 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.FundingSourceYesContentIsDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is specific content related to the User answering 'no' on the Funding Source question")]
+        public void ThenThereIsSpecificContentRelatedToTheUserAnsweringNoOnTheFundingSourceQuestion()
+        {
+            Test.Pages.CompleteOrder.FundingSourceNoContentIsDisplayed().Should().BeTrue();
+        }
+
         [Then(@"there is a control to complete order")]
         public void ThenThereIsAControlToCompleteOrder()
         {
             Test.Pages.CompleteOrder.CompleteOrderButtonIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"there is a control that allows the User to download a \.PDF version of the Order Summary")]
+        public void ThenThereIsAControlThatAllowsTheUserToDownloadA_PDFVersionOfTheOrderSummary()
+        {
+            Test.Pages.CompleteOrder.DownloadPDFControlIsDisplayed().Should().BeTrue();
         }
 
         [Given(@"that the User is on the confirm complete order screen")]
