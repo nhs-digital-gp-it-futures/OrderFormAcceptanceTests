@@ -17,12 +17,12 @@ Scenario: Delete Order - Go back before deleting
 	Then the Order dashboard is presented
 @ignore
 Scenario: Delete Order - Order Deleted
-Given the confirm delete page is presented
-When the User chooses to delete
-Then the Order is deleted
-And the User is informed that the Order has been deleted
-And the Order has a Deleted status
-And the Order is not on the Organisation's Orders Dashboard
+	Given the confirm delete page is displayed
+	When the User chooses to delete
+	Then the Order is deleted
+	And the User is informed that the Order has been deleted
+	And the Order has a Deleted status
+	And the Order is not on the Organisation's Orders Dashboard
 @ignore
 Scenario: Delete Order - Not chosen to delete order
 Given the confirm delete page is presented

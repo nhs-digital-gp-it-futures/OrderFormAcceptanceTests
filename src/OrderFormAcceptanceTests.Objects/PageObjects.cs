@@ -16,7 +16,8 @@ namespace OrderFormAcceptanceTests.Objects
                 OrderForm = new OrderForm(),
                 CommencementDate = new CommencementDate(),
                 AdditionalServices = new AdditionalServices(),
-                CompleteOrder = new CompleteOrder()
+                CompleteOrder = new CompleteOrder(),
+                DeleteOrder = new DeleteOrder()
             };
         }
         public PageCollection Pages { get; set; }

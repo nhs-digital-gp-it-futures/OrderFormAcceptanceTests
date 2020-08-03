@@ -1,8 +1,10 @@
 ﻿using Bogus.Extensions;
 using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
 
@@ -36,5 +38,34 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             commonSteps.WhenTheOrderFormForTheExistingOrderIsPresented();
         }
 
+        [When(@"the User chooses to delete")]
+        public void WhenTheUserChoosesToDelete()
+        {
+            Test.Pages.DeleteOrder.ClickDeleteButtonYes();
+        }
+
+        [Then(@"the User is informed that the Order has been deleted")]
+        public void ThenTheUserIsInformedThatTheOrderHasBeenDeleted()
+        {
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("deleted").Should().BeTrue();
+        }
+
+        [Then(@"the Order has a Deleted status")]
+        public void ThenTheOrderHasADeletedStatus()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.Retrieve(Test.ConnectionString);
+            order.IsDeleted.Should().Be(1);
+        }
+
+        [Then(@"the Order is not on the Organisation's Orders Dashboard")]
+        public void ThenTheOrderIsNotOnTheOrganisationSOrdersDashboard()
+        {
+            var deletedOrder = (Order)Context["CreatedOrder"];
+            Test.Pages.OrderForm.ClickBackLink();
+            new OrganisationsOrdersDashboard(Test, Context).ThenThePageDisplaysWhoIsLoggedInAndThePrimaryOrganisationName();
+            var listOfOrders = Test.Pages.OrganisationsOrdersDashboard.GetListOfUnsubmittedOrders();
+            listOfOrders.Where(o => o.OrderId == deletedOrder.OrderId).Count().Should().Be(0);
+        }
     }
 }

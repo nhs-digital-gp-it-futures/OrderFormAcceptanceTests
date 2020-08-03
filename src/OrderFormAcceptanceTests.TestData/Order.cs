@@ -30,6 +30,7 @@ namespace OrderFormAcceptanceTests.TestData
         public DateTime LastUpdated { get; set; }
         public Guid LastUpdatedBy { get; set; }
         public string LastUpdatedByName { get; set; }
+        public int IsDeleted { get; set; }
 
         public Order Retrieve(string connectionString)
         {
@@ -56,7 +57,8 @@ namespace OrderFormAcceptanceTests.TestData
                 Created = DateTime.Now,
                 LastUpdated = DateTime.Now,
                 LastUpdatedBy = Guid.Parse("BC0A6D7B-B44B-436D-8916-1E64EBCAAE64"),
-                LastUpdatedByName = "Alice Smith"
+                LastUpdatedByName = "Alice Smith",
+                IsDeleted = 0
             };
         }
 
@@ -85,7 +87,8 @@ namespace OrderFormAcceptanceTests.TestData
                                  Created,
                                  LastUpdated,
                                  LastUpdatedBy,
-                                 LastUpdatedByName
+                                 LastUpdatedByName,
+                                 IsDeleted
                                  )
                                 VALUES
                                 (@OrderId,
@@ -111,6 +114,7 @@ namespace OrderFormAcceptanceTests.TestData
                                  @LastUpdated,
                                  @LastUpdatedBy,
                                  @LastUpdatedByName
+                                 @IsDeleted
                         )";
             SqlExecutor.Execute<Order>(connectionString, query, this);
         }
@@ -142,6 +146,7 @@ namespace OrderFormAcceptanceTests.TestData
                             LastUpdated=@lastUpdated,
                             LastUpdatedBy=@lastUpdatedBy,
                             LastUpdatedByName=@lastUpdatedByName
+                            IsDeleted=@IsDeleted 
                         WHERE OrderId=@orderId";
             SqlExecutor.Execute<Order>(connectionString, query, this);
         }
