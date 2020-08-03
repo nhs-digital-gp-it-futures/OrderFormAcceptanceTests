@@ -53,16 +53,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.PreviewOrderButtonIsDisabled().Should().BeFalse();
         }
 
-        [Then(@"the User is unable to submit the order")]
+        [Then(@"the User is unable to complete the order")]
         [Then(@"the Complete order button is disabled")]
-        [Then(@"the Submit order button is disabled")]
         public void ThenTheUserIsUnableToCompleteTheOrder()
         {
             Test.Pages.OrderForm.CompleteOrderButtonIsDisabled().Should().BeTrue();
         }
 
         [Then(@"the Complete order button is enabled")]
-        [Then(@"the Submit order button is enabled")]
         public void ThenTheCompleteOrderButtonIsDisabled()
         {
             Test.Pages.OrderForm.CompleteOrderButtonIsDisabled().Should().BeFalse();
@@ -80,8 +78,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.PreviewOrderButtonHasAltTest();
         }
 
-        [Then(@"there is alt text content on the disabled Submit button")]
-        public void ThenThereIsAltTextContentOnTheDisabledSubmitButton()
+        [Then(@"there is alt text content on the disabled Complete button")]
+        public void ThenThereIsAltTextContentOnTheDisabledCompleteButton()
         {
             Test.Pages.OrderForm.CompleteOrderButtonHasAltTest();
         }
