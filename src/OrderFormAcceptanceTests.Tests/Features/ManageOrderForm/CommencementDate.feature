@@ -22,7 +22,7 @@ Scenario: Commencement Date - Order Description, Supplier and Call Off Ordering 
 	And there is the Commencement date section
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Commencement Date - Mandatory data missing
 	When the user chooses to manage the Commencement Date Section

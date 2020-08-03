@@ -40,7 +40,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.SubmitOrderButton).Count == 1);
+                Wait.Until(d => d.FindElements(Pages.OrderForm.CompleteOrderButton).Count == 1);
                 return true;
             }
             catch

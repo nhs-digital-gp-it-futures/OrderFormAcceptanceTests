@@ -28,7 +28,7 @@ Scenario: Funding Source - Associated Service now complete, >=1 Service Recipien
 	And the Funding Source section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Funding Source - Associated Service now complete, >= 1 Service Recipient, >= 1 Catalogue Solution, >=1 Additional Service, 0 Associated Service
 	Given an unsubmited order with catalogue items exists
@@ -49,7 +49,7 @@ Scenario: Funding Source - Associated Service now complete, >= 1 Service Recipie
 	And the Funding Source section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Funding Source - Associated Service now complete, >=1 Service Recipient, >=1 Catalogue Solution, 0 Additional Service, >=1 Associated Service
 	Given an unsubmited order with catalogue items exists
@@ -70,7 +70,7 @@ Scenario: Funding Source - Associated Service now complete, >=1 Service Recipien
 	And the Funding Source section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Funding Source - Associated Service now complete, >= 1 Service Recipient, >= 1 Catalogue Solution, 0 Additional Service, 0 Associated Service
 	Given an unsubmited order with catalogue items exists
@@ -91,7 +91,7 @@ Scenario: Funding Source - Associated Service now complete, >= 1 Service Recipie
 	And the Funding Source section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Funding Source - Associated Service now complete, 0 Service Recipient, >=1 Associated Service
 	Given an unsubmitted order exists
@@ -111,7 +111,7 @@ Scenario: Funding Source - Associated Service now complete, 0 Service Recipient,
 	And the Funding Source section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Funding Source - Associated Service now complete, >=1 Service Recipient, 0 Catalogue Solution, >=1 Associated Service
 	Given an unsubmitted order exists
@@ -132,7 +132,7 @@ Scenario: Funding Source - Associated Service now complete, >=1 Service Recipien
 	And the Funding Source section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Funding Source - Associated Service Complete:  0 Service Recipient, 0 Catalogue Solutions, 0 Associated Service
 	Given an unsubmitted order exists
@@ -152,7 +152,7 @@ Scenario: Funding Source - Associated Service Complete:  0 Service Recipient, 0 
 	And the Funding Source section is not enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Funding Source - Associated Service now complete, >= 1 Service Recipient, 0 Catalogue Solution, 0 Associated Service
 	Given an unsubmitted order exists
@@ -173,7 +173,7 @@ Scenario: Funding Source - Associated Service now complete, >= 1 Service Recipie
 	And the Funding Source section is not enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Edit Funding Source - No Funding Source option selected
 	Given the minimum data needed to enable the Funding Source section exists

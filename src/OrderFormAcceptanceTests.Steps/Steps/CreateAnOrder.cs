@@ -54,16 +54,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the User is unable to submit the order")]
+        [Then(@"the Complete order button is disabled")]
         [Then(@"the Submit order button is disabled")]
-        public void ThenTheUserIsUnableToSubmitTheOrder()
+        public void ThenTheUserIsUnableToCompleteTheOrder()
         {
-            Test.Pages.OrderForm.SubmitOrderButtonIsDisabled().Should().BeTrue();
+            Test.Pages.OrderForm.CompleteOrderButtonIsDisabled().Should().BeTrue();
         }
 
+        [Then(@"the Complete order button is enabled")]
         [Then(@"the Submit order button is enabled")]
-        public void ThenTheSubmitOrderButtonIsDisabled()
+        public void ThenTheCompleteOrderButtonIsDisabled()
         {
-            Test.Pages.OrderForm.SubmitOrderButtonIsDisabled().Should().BeFalse();
+            Test.Pages.OrderForm.CompleteOrderButtonIsDisabled().Should().BeFalse();
         }
 
         [Then(@"there is alt text content on the disabled Delete order button")]
@@ -81,7 +83,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"there is alt text content on the disabled Submit button")]
         public void ThenThereIsAltTextContentOnTheDisabledSubmitButton()
         {
-            Test.Pages.OrderForm.SubmitOrderButtonHasAltTest();
+            Test.Pages.OrderForm.CompleteOrderButtonHasAltTest();
         }
     }
 }

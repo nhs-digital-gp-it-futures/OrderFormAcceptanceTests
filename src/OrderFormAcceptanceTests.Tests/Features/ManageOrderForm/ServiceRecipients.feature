@@ -24,7 +24,7 @@ Scenario: Service Recipients - Commencement date section is now complete
 	And the content validation status of the service-recipients section is incomplete 
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the Submit order button is disabled
+	And the Complete order button is disabled
 
 Scenario: Service Recipients - Select Service Recipient
 	Given the User chooses to edit the Service Recipient section 
