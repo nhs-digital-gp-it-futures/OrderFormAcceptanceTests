@@ -44,6 +44,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.DeleteOrder.ClickDeleteButtonYes();
         }
 
+        [When(@"the User chooses not to delete the Order")]
+        public void WhenTheUserChoosesNotToDeleteTheOrder()
+        {
+            Test.Pages.DeleteOrder.ClickDeleteButtonNo();
+        }
+
         [Then(@"the User is informed that the Order has been deleted")]
         public void ThenTheUserIsInformedThatTheOrderHasBeenDeleted()
         {
@@ -56,6 +62,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context["CreatedOrder"];
             order.Retrieve(Test.ConnectionString);
             order.IsDeleted.Should().Be(1);
+        }
+
+        [Then(@"the status of the Order does not change to deleted")]
+        public void ThenTheStatusOfTheOrderDoesNotChangeToDeleted()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.Retrieve(Test.ConnectionString);
+            order.IsDeleted.Should().Be(0);
         }
 
         [Then(@"the Order is not on the Organisation's Orders Dashboard")]

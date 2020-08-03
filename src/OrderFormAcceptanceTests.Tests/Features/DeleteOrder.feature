@@ -25,10 +25,10 @@ Scenario: Delete Order - Order Deleted
 	And the Order is not on the Organisation's Orders Dashboard
 @ignore
 Scenario: Delete Order - Not chosen to delete order
-Given the confirm delete page is presented
-When the User chooses not to delete the Order
-Then the Order dashboard is presented
-And the status of the Order does not change to deleted
+	Given the confirm delete page is displayed
+	When the User chooses not to delete the Order
+	Then the Order dashboard is presented
+	And the status of the Order does not change to deleted
 @ignore
 Scenario: Delete Order - Go back to all orders after deleting
 Given the Order deleted page is presented
