@@ -376,6 +376,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             Driver.FindElement(Pages.Common.BackLink).Click();
         }
 
+        public void ClickCompleteOrderButton()
+        {            
+            Driver.FindElement(Pages.OrderForm.SubmitOrderButton).Click();
+        }
+
         public void EnterTextIntoTextArea(string value, int index = 0)
         {
             Driver.FindElements(Pages.Common.TextArea)[index].SendKeys(value);

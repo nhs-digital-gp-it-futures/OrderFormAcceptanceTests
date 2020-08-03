@@ -14,6 +14,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         }
 
+        [Then(@"the Organisation Orders Dashboard is displayed")]
         [Then(@"the page displays who is logged in and the primary organisation name")]
         public void ThenThePageDisplaysWhoIsLoggedInAndThePrimaryOrganisationName()
         {

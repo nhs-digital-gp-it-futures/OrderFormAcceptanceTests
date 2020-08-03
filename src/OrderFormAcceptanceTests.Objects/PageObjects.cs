@@ -15,7 +15,8 @@ namespace OrderFormAcceptanceTests.Objects
                 OrganisationsOrdersDashboard = new OrganisationsOrdersDashboard(),
                 OrderForm = new OrderForm(),
                 CommencementDate = new CommencementDate(),
-                AdditionalServices = new AdditionalServices()
+                AdditionalServices = new AdditionalServices(),
+                CompleteOrder = new CompleteOrder()
             };
         }
         public PageCollection Pages { get; set; }
