@@ -31,6 +31,6 @@ Scenario: Delete Order - Not chosen to delete order
 	And the status of the Order does not change to deleted
 @ignore
 Scenario: Delete Order - Go back to all orders after deleting
-Given the Order deleted page is presented
-When the User chooses to go back to all orders
-Then they are presented with the Organisation's Orders dashboard
+	Given the Order deleted page is presented
+	When the User chooses to go back
+	Then the Organisation Orders Dashboard is displayed

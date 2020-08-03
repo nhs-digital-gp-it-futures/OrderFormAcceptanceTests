@@ -38,8 +38,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             commonSteps.WhenTheOrderFormForTheExistingOrderIsPresented();
         }
 
+        [Given(@"the Order deleted page is presented")]
+        public void GivenTheOrderDeletedPageIsPresented()
+        {
+            GivenTheConfirmDeletePageIsDisplayed();
+            ConfirmDeleteOrder();
+            ThenTheUserIsInformedThatTheOrderHasBeenDeleted();
+        }
+
         [When(@"the User chooses to delete")]
-        public void WhenTheUserChoosesToDelete()
+        public void ConfirmDeleteOrder()
         {
             Test.Pages.DeleteOrder.ClickDeleteButtonYes();
         }
