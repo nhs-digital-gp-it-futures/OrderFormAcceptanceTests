@@ -305,6 +305,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Update(Test.ConnectionString);
         }
 
+        [Given(@"the Funding Source section is complete with 'no' selected")]
         [Given(@"the Funding Source section is complete")]
         public void GivenTheFundingSourceSectionIsComplete()
         {

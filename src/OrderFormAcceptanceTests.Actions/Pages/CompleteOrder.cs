@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
+using System;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
@@ -13,7 +14,20 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.CompleteOrder.FundingSourceYesContent).Count == 1);
+                Wait.Until(d => d.FindElement(Pages.CompleteOrder.FundingSourceContent).Text.Contains("As GMS is your only source", StringComparison.OrdinalIgnoreCase));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool FundingSourceNoContentIsDisplayed()
+        {
+            try
+            {
+                Wait.Until(d => d.FindElement(Pages.CompleteOrder.FundingSourceContent).Text.Contains("As GMS is not your only source", StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch
@@ -27,6 +41,19 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             try
             {
                 Wait.Until(d => d.FindElements(Pages.OrderForm.SubmitOrderButton).Count == 1);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool DownloadPDFControlIsDisplayed()
+        {
+            try
+            {
+                Wait.Until(d => d.FindElements(Pages.CompleteOrder.DownloadPDF).Count == 1);
                 return true;
             }
             catch

@@ -6,7 +6,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 {
     public sealed class CompleteOrder
     {
-        public By FundingSourceYesContent => CustomBy.DataTestId("");
-        public By FundingSourceNoContent => CustomBy.DataTestId("");
+        public By FundingSourceContent => CustomBy.DataTestId("");
+        public By DownloadPDF => CustomBy.DataTestId("");
     }
 }
