@@ -15,7 +15,8 @@ namespace OrderFormAcceptanceTests.Actions
                 OrganisationsOrdersDashboard = new OrganisationsOrdersDashboard(driver),
                 OrderForm = new OrderForm(driver),
                 CommencementDate = new CommencementDate(driver),
-                AdditionalServices = new AdditionalServices(driver)
+                AdditionalServices = new AdditionalServices(driver),
+                CompleteOrder = new CompleteOrder(driver)
             };
         }
 

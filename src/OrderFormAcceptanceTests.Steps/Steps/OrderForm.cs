@@ -313,6 +313,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Update(Test.ConnectionString);
         }
 
+        [Given(@"the Funding Source section is complete with 'yes' selected")]
+        public void GivenTheFundingSourceSectionIsCompleteWithYesSelected()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.FundingSourceOnlyGMS = 1;
+            order.Update(Test.ConnectionString);
+        }
+
         [When(@"the User navigates back to the Organisation's Orders dashboard")]
         public void WhenTheUserNavigatesBackToTheOrganisationSOrdersDashboard()
         {
