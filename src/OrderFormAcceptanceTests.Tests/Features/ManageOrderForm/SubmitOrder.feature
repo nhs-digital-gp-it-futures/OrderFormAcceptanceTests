@@ -82,7 +82,7 @@ Scenario: Enable Complete Button - Funding Source now complete, >=1 Service Reci
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Submit order button is enabled
-
+@ignore
 Scenario: Complete Order - Complete order screen if Funding Source was 'yes'
 	Given an unsubmitted order exists
 	And there are no Service Recipients in the order
@@ -94,25 +94,23 @@ Scenario: Complete Order - Complete order screen if Funding Source was 'yes'
 	And the Call Off Agreement ID is displayed in the page title
 	And the Order description is displayed
 	And there is a control to complete order
-
+@ignore
 Scenario: Complete Order - Go back before complete order
-Given that the User is on the confirm complete order screen
+	Given that the User is on the confirm complete order screen
 	And the User has not completed the Order
 	When the User chooses to go back
 	Then the Order dashboard is presented
-
+@ignore
 Scenario: Complete Order - Order completed if Funding Source was 'yes' confirmation screen
-	Given an unsubmitted order exists
-	And there are no Service Recipients in the order
-And the Funding Source section is complete with 'yes' selected
-And the confirm complete order screen is presented
-When the User chooses to complete the Order
-Then the Order completed screen is displayed
+	Given that the User is on the confirm complete order screen
+	And the Funding Source section is complete with 'yes' selected
+	When the User chooses to complete the Order
+	Then the Order completed screen is displayed
 	And the Call Off Agreement ID is displayed in the page title
 	And the Order description is displayed
-And there is specific content related to the User answering 'yes' on the Funding Source question
-
+	And there is specific content related to the User answering 'yes' on the Funding Source question
+@ignore
 Scenario: Complete Order - Go Back after Order completed
-Given that the User has completed their Order
+	Given that the User has completed their Order
 	When the User chooses to go back
 	Then the Organisation Orders Dashboard is displayed

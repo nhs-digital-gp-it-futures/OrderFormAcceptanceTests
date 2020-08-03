@@ -40,5 +40,30 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.CompleteOrderButtonIsDisplayed().Should().BeTrue();
         }
 
+        [Given(@"that the User is on the confirm complete order screen")]
+        public void GivenThatTheUserIsOnTheConfirmCompleteOrderScreen()
+        {
+            var commonSteps = new CommonSteps(Test, Context);
+            commonSteps.GivenAnUnsubmittedOrderExists();
+            new CatalogueSolutions(Test, Context).GivenThereAreNoServiceRecipientsInTheOrder();
+            commonSteps.WhenTheOrderFormForTheExistingOrderIsPresented();
+            WhenTheUserChoosesToCompleteTheOrder();
+            ThenTheConfirmCompleteOrderScreenIsDisplayed();
+        }
+
+        [Then(@"the Order completed screen is displayed")]
+        public void ThenTheOrderCompletedScreenIsDisplayed()
+        {
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("completed").Should().BeTrue();            
+        }
+
+        [Given(@"that the User has completed their Order")]
+        public void GivenThatTheUserHasCompletedTheirOrder()
+        {
+            GivenThatTheUserIsOnTheConfirmCompleteOrderScreen();
+            WhenTheUserChoosesToCompleteTheOrder();
+            ThenTheOrderCompletedScreenIsDisplayed();
+        }
+
     }
 }
