@@ -113,7 +113,7 @@ namespace OrderFormAcceptanceTests.TestData
                                  @Created,
                                  @LastUpdated,
                                  @LastUpdatedBy,
-                                 @LastUpdatedByName
+                                 @LastUpdatedByName,
                                  @IsDeleted
                         )";
             SqlExecutor.Execute<Order>(connectionString, query, this);
@@ -145,7 +145,7 @@ namespace OrderFormAcceptanceTests.TestData
                             Created=@created,
                             LastUpdated=@lastUpdated,
                             LastUpdatedBy=@lastUpdatedBy,
-                            LastUpdatedByName=@lastUpdatedByName
+                            LastUpdatedByName=@lastUpdatedByName,
                             IsDeleted=@IsDeleted 
                         WHERE OrderId=@orderId";
             SqlExecutor.Execute<Order>(connectionString, query, this);
