@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
-    public class DeleteOrder : PageAction
+    public sealed class DeleteOrder : PageAction
     {
         public DeleteOrder(IWebDriver driver) : base(driver)
         {

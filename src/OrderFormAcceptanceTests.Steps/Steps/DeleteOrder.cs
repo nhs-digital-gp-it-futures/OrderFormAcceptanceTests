@@ -11,7 +11,7 @@ using TechTalk.SpecFlow;
 namespace OrderFormAcceptanceTests.Steps.Steps
 {
     [Binding]
-    class DeleteOrder : TestBase
+    public sealed class DeleteOrder : TestBase
     {
         public DeleteOrder(UITest test, ScenarioContext context) : base(test, context)
         {

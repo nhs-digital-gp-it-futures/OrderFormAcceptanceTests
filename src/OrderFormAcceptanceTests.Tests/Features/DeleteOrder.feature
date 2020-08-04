@@ -1,4 +1,4 @@
-﻿Feature: Delete	Order
+﻿Feature: Delete Order
 	As a Buyer
 	I want to delete an Order
 	So that it cannot be progressed on the Buying Catalogue
