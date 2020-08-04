@@ -12,5 +12,6 @@ namespace OrderFormAcceptanceTests.Objects.Collections
         public CommencementDate CommencementDate { get; set; }
         public AdditionalServices AdditionalServices { get; set; }
         public CompleteOrder CompleteOrder { get; set; }
+        public DeleteOrder DeleteOrder { get; set; }
     }
 }

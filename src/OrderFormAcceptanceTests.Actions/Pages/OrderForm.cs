@@ -381,6 +381,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             Driver.FindElement(Pages.OrderForm.CompleteOrderButton).Click();
         }
 
+        public void ClickDeleteButton()
+        {
+            Driver.FindElement(Pages.Common.DeleteButton).Click();
+        }
+
         public void EnterTextIntoTextArea(string value, int index = 0)
         {
             Driver.FindElements(Pages.Common.TextArea)[index].SendKeys(value);
