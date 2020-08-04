@@ -9,13 +9,13 @@ namespace OrderFormAcceptanceTests.Objects.Pages
         public By PageTitle => CustomBy.DataTestId("dashboard-page-title");
         public By CreateOrderButton => CustomBy.DataTestId("new-order-button", "a");
         public Func<string, By> SpecificExistingOrder => (CallOffAgreementId) => CustomBy.PartialDataTestId("{0}-id", CallOffAgreementId);
-        public By Orders => By.CssSelector("div[data-test-id='table'] > div + div");
-        public By GenericExistingOrder => By.CssSelector("[data-test-id$='-id']");
-        public By GenericExistingOrderDescription => By.CssSelector("[data-test-id='table'] > div > [data-test-id$='-description']");
+        public By Orders => By.CssSelector("table[data-test-id='table'] > tbody > tr");
+        public By GenericExistingOrder => By.CssSelector("a[data-test-id$='-id']");
+        public By GenericExistingOrderDescription => By.CssSelector("td > [data-test-id$='-description']");
         public By GenericExistingOrderLastUpdatedBy => By.CssSelector("[data-test-id$='-lastUpdatedBy']");
         public By GenericExistingOrderLastUpdatedDate => By.CssSelector("[data-test-id$='-lastUpdated']");
         public By GenericExistingOrderCreatedDate => By.CssSelector("[data-test-id$='-dateCreated']");
-        public By UnsubmittedOrdersTable => CustomBy.DataTestId("unsubmitted-orders-table");
-        public By SubmittedOrdersTable => CustomBy.DataTestId("submitted-orders-table");
+        public By UnsubmittedOrdersTable => CustomBy.DataTestId("incomplete-orders-table");
+        public By SubmittedOrdersTable => CustomBy.DataTestId("complete-orders-table");
     }
 }
