@@ -307,7 +307,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Given(@"the Funding Source section is complete with 'no' selected")]
         [Given(@"the Funding Source section is complete")]
-        public void GivenTheFundingSourceSectionIsComplete()
+        public void GivenTheFundingSourceSectionIsCompleteWithNoSelected()
         {
             var order = (Order)Context["CreatedOrder"];
             order.FundingSourceOnlyGMS = 0;

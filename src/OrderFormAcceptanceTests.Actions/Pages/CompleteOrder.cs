@@ -49,6 +49,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             }
         }
 
+        public void ClickCompleteOrderButton()
+        {
+            Driver.FindElement(Pages.CompleteOrder.CompleteOrderButton).Click();
+        }
+
         public bool DownloadPDFControlIsDisplayed()
         {
             try
