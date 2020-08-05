@@ -1,4 +1,7 @@
 ﻿Feature: Print Order
+	As a Buyer
+	I want to download a copy of my Order Summary
+	So that I can include it in a contract
 
 @ignore
 Scenario: Choose to Download PDF from the Order completed screen

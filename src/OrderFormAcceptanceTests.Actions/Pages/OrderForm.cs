@@ -185,7 +185,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool ASecondTabIsOpen()
         {
-            return Driver.WindowHandles.Count > 0;
+            return Driver.WindowHandles.Count > 1;
         }
 
         public bool FindPrintableSummaryInTab()

@@ -70,8 +70,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheConfirmCompleteOrderScreenIsDisplayed();
         }
 
-        [Given(@"the Order completed screen is displayed")]
-        [Then(@"the Order completed screen is displayed")]
+        [StepDefinition(@"the Order completed screen is displayed")]
         public void ThenTheOrderCompletedScreenIsDisplayed()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("completed").Should().BeTrue();            
