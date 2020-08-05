@@ -183,6 +183,23 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElements(Pages.Common.RadioButton)[index].GetProperty("checked") != null;
         }
 
+        public bool ASecondTabIsOpen()
+        {
+            return Driver.WindowHandles.Count > 0;
+        }
+
+        public bool FindPrintableSummaryInTab()
+        {
+            Driver.SwitchTo().Window(Driver.WindowHandles.Last());
+            return Driver.FindElements(Pages.PrintOrderSummary.PrintableOrderSummary).Count > 0;
+        }
+
+        public bool FindPrintPreviewWindow()
+        {
+            Driver.SwitchTo().Window(Driver.WindowHandles.Last());
+            return Driver.FindElements(Pages.PrintOrderSummary.PrintPreview).Count > 0;
+        }
+
         public void PreviewOrderButtonHasAltTest()
         {
             Driver.FindElement(Pages.OrderForm.PreviewOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);

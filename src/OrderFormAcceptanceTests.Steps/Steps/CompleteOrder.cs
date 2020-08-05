@@ -16,10 +16,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         }
 
+        [Given(@"the User chooses to complete the Order")]
         [When(@"the User chooses to complete the Order")]
         public void WhenTheUserChoosesToCompleteTheOrder()
         {
             Test.Pages.OrderForm.ClickCompleteOrderButton();
+        }
+
+        [When(@"the User chooses to download a PDF of their Order Summary")]
+        public void WhenTheUserChoosesToDownloadAPdfOfOrderSummary()
+        {
+            Test.Pages.CompleteOrder.ClickDownloadPDFButton();
         }
 
         [Then(@"the confirm complete order screen is displayed")]
@@ -63,6 +70,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheConfirmCompleteOrderScreenIsDisplayed();
         }
 
+        [Given(@"the Order completed screen is displayed")]
         [Then(@"the Order completed screen is displayed")]
         public void ThenTheOrderCompletedScreenIsDisplayed()
         {
