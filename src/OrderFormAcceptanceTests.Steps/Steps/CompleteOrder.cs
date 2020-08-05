@@ -16,8 +16,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         }
 
-        [Given(@"the User chooses to complete the Order")]
-        [When(@"the User chooses to complete the Order")]
+        [StepDefinition(@"the User chooses to complete the Order")]
         public void WhenTheUserChoosesToCompleteTheOrder()
         {
             Test.Pages.OrderForm.ClickCompleteOrderButton();
