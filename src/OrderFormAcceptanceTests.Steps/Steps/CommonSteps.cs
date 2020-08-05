@@ -203,6 +203,24 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.IsRadioButtonSelected().Should().BeTrue();
         }
 
+        [Then("a new tab will open")]
+        public void ThenANewTabWillOpen()
+        {
+            Test.Pages.OrderForm.ASecondTabIsOpen().Should().BeTrue();
+        }
+
+        [Then("the tab will contain the printable version of the Order Summary")]
+        public void ThenTheTabWillContainThePrintableVersionOfTheOrderSummary()
+        {
+            Test.Pages.OrderForm.FindPrintableSummaryInTab().Should().BeTrue();
+        }
+
+        [Then("the Print Dialog within the Browser will appear automatically")]
+        public void ThenThePrintPreviewDialogueWithinTheBrowserWillAppearAutomatically()
+        {
+            Test.Pages.OrderForm.FindPrintPreviewWindow().Should().BeTrue();
+        }
+
         public void ContinueAndWaitForRadioButtons()
         {
             WhenTheyChooseToContinue();

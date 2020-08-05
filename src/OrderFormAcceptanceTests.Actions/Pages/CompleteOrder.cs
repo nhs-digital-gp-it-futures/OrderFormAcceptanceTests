@@ -61,5 +61,10 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 return false;
             }
         }
+
+        public void ClickDownloadPDFButton()
+        {
+            Driver.FindElement(Pages.CompleteOrder.DownloadPDF).Click();
+        }
     }
 }
