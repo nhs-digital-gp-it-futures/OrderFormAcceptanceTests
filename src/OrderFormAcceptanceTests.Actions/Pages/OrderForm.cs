@@ -169,7 +169,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool CompleteOrderButtonIsDisabled()
         {
-            return Driver.FindElement(Pages.OrderForm.CompleteOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
+            return Driver.FindElement(Pages.OrderForm.CompleteOrderLink).GetAttribute("aria-disabled") != null;
         }
 
         public void DeleteOrderButtonHasAltTest()
@@ -206,7 +206,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void CompleteOrderButtonHasAltTest()
         {
-            Driver.FindElement(Pages.OrderForm.CompleteOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
+            Driver.FindElement(Pages.OrderForm.CompleteOrderLink).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
         }
 
         public bool EditCommencementDateSectionDisplayed()
