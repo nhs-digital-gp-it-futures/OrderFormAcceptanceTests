@@ -22,6 +22,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickCompleteOrderButton();
         }
 
+        [StepDefinition(@"the User confirms to complete the Order")]
+        public void WhenTheUserConfirmsToCompleteTheOrder()
+        {
+            Test.Pages.CompleteOrder.ClickCompleteOrderButton();
+        }
+
         [When(@"the User chooses to download a PDF of their Order Summary")]
         public void WhenTheUserChoosesToDownloadAPdfOfOrderSummary()
         {
@@ -46,6 +52,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.FundingSourceNoContentIsDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is specific content related to the User answering 'yes' on the Funding Source question on the completed screen")]
+        public void ThenThereIsSpecificContentRelatedToTheUserAnsweringYesOnTheFundingSourceQuestionOnTheCompletedScreen()
+        {
+            Test.Pages.CompleteOrder.FundingSourceYesContentOnCompletedScreenIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"there is specific content related to the User answering 'no' on the Funding Source question on the completed screen")]
+        public void ThenThereIsSpecificContentRelatedToTheUserAnsweringNoOnTheFundingSourceQuestionOnTheCompletedScreen()
+        {
+            Test.Pages.CompleteOrder.FundingSourceNoContentOnCompletedScreenIsDisplayed().Should().BeTrue();
+        }
+
         [Then(@"there is a control to complete order")]
         public void ThenThereIsAControlToCompleteOrder()
         {
@@ -58,13 +76,27 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.DownloadPDFControlIsDisplayed().Should().BeTrue();
         }
 
-        [Given(@"that the User is on the confirm complete order screen")]
-        public void GivenThatTheUserIsOnTheConfirmCompleteOrderScreen()
+        [Given(@"the order is complete enough so that the Complete order button is enabled with Funding Source option '(.*)' selected")]
+        public void GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled(string fsValue)
         {
-            var commonSteps = new CommonSteps(Test, Context);
-            commonSteps.GivenAnUnsubmittedOrderExists();
+            new CommonSteps(Test, Context).GivenAnUnsubmittedOrderExists();
             new CatalogueSolutions(Test, Context).GivenThereAreNoServiceRecipientsInTheOrder();
-            commonSteps.WhenTheOrderFormForTheExistingOrderIsPresented();
+            new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
+            if (fsValue.Equals("yes"))
+            {
+                new OrderForm(Test, Context).GivenTheFundingSourceSectionIsCompleteWithYesSelected();
+            }
+            else
+            {
+                new OrderForm(Test, Context).GivenTheFundingSourceSectionIsCompleteWithNoSelected();
+            }
+        }
+
+        [Given(@"that the User is on the confirm complete order screen with Funding Source option '(.*)' selected")]
+        public void GivenThatTheUserIsOnTheConfirmCompleteOrderScreen(string fsValue)
+        {
+            GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled(fsValue);
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             WhenTheUserChoosesToCompleteTheOrder();
             ThenTheConfirmCompleteOrderScreenIsDisplayed();
         }
@@ -78,8 +110,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"that the User has completed their Order")]
         public void GivenThatTheUserHasCompletedTheirOrder()
         {
-            GivenThatTheUserIsOnTheConfirmCompleteOrderScreen();
-            WhenTheUserChoosesToCompleteTheOrder();
+            GivenThatTheUserIsOnTheConfirmCompleteOrderScreen("no");
+            WhenTheUserConfirmsToCompleteTheOrder();
             ThenTheOrderCompletedScreenIsDisplayed();
         }
 

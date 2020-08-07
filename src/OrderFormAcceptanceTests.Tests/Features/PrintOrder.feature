@@ -5,9 +5,8 @@
 
 @ignore
 Scenario: Choose to Download PDF from the Order completed screen
-	Given that the User is on the confirm complete order screen
-	And the Funding Source section is complete with 'no' selected
-	And the User chooses to complete the Order
+	Given that the User is on the confirm complete order screen with Funding Source option 'no' selected
+	And the User confirms to complete the Order
 	And the Order completed screen is displayed
 	When the User chooses to download a PDF of their Order Summary
 	Then a new tab will open

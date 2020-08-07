@@ -23,11 +23,37 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             }
         }
 
+        public bool FundingSourceYesContentOnCompletedScreenIsDisplayed()
+        {
+            try
+            {
+                Wait.Until(d => d.FindElement(Pages.CompleteOrder.CompletedPageDescription).Text.Contains("It'll be automatically processed", StringComparison.OrdinalIgnoreCase));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public bool FundingSourceNoContentIsDisplayed()
         {
             try
             {
                 Wait.Until(d => d.FindElement(Pages.CompleteOrder.FundingSourceContent).Text.Contains("As GMS is not your only source", StringComparison.OrdinalIgnoreCase));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool FundingSourceNoContentOnCompletedScreenIsDisplayed()
+        {
+            try
+            {
+                Wait.Until(d => d.FindElement(Pages.CompleteOrder.CompletedPageDescription).Text.Contains("not be automatically processed", StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch
@@ -47,6 +73,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             {
                 return false;
             }
+        }
+
+        public void ClickCompleteOrderButton()
+        {
+            Driver.FindElement(Pages.CompleteOrder.CompleteOrderButton).Click();
         }
 
         public bool DownloadPDFControlIsDisplayed()
