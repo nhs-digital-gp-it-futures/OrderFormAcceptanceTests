@@ -82,7 +82,7 @@ Scenario: Enable Complete Button - Funding Source now complete, >=1 Service Reci
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
 	And the Complete order button is enabled
-@ignore
+
 Scenario: Complete Order - Complete order screen if Funding Source was 'yes'
 	Given the order is complete enough so that the Complete order button is enabled with Funding Source option 'yes' selected
 	And the Order Form for the existing order is presented
@@ -98,15 +98,14 @@ Scenario: Complete Order - Go back before complete order
 	And the User has not completed the Order
 	When the User chooses to go back
 	Then the Order dashboard is presented
-@ignore
+
 Scenario: Complete Order - Order completed if Funding Source was 'yes' confirmation screen
 	Given that the User is on the confirm complete order screen with Funding Source option 'yes' selected
 	When the User confirms to complete the Order
 	Then the Order completed screen is displayed
 	And the Call Off Agreement ID is displayed in the page title
-	And the Order description is displayed
-	And there is specific content related to the User answering 'yes' on the Funding Source question
-@ignore
+	And there is specific content related to the User answering 'yes' on the Funding Source question on the completed screen
+
 Scenario: Complete Order - Go Back after Order completed
 	Given that the User has completed their Order
 	When the User chooses to go back
@@ -121,12 +120,11 @@ Scenario: Complete Order - Complete order screen if Funding Source was 'no'
 	And the Call Off Agreement ID is displayed in the page title
 	And the Order description is displayed
 	And there is a control to complete order
-@ignore
+
 Scenario: Complete Order - Order completed if Funding Source was 'no' confirmation screen
 	Given that the User is on the confirm complete order screen with Funding Source option 'no' selected
 	When the User confirms to complete the Order
 	Then the Order completed screen is displayed
 	And the Call Off Agreement ID is displayed in the page title
-	And the Order description is displayed
-	And there is specific content related to the User answering 'no' on the Funding Source question
+	And there is specific content related to the User answering 'no' on the Funding Source question on the completed screen
 	And there is a control that allows the User to download a .PDF version of the Order Summary

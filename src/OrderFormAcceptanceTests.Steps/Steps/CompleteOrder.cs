@@ -52,6 +52,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.FundingSourceNoContentIsDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is specific content related to the User answering 'yes' on the Funding Source question on the completed screen")]
+        public void ThenThereIsSpecificContentRelatedToTheUserAnsweringYesOnTheFundingSourceQuestionOnTheCompletedScreen()
+        {
+            Test.Pages.CompleteOrder.FundingSourceYesContentOnCompletedScreenIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"there is specific content related to the User answering 'no' on the Funding Source question on the completed screen")]
+        public void ThenThereIsSpecificContentRelatedToTheUserAnsweringNoOnTheFundingSourceQuestionOnTheCompletedScreen()
+        {
+            Test.Pages.CompleteOrder.FundingSourceNoContentOnCompletedScreenIsDisplayed().Should().BeTrue();
+        }
+
         [Then(@"there is a control to complete order")]
         public void ThenThereIsAControlToCompleteOrder()
         {
