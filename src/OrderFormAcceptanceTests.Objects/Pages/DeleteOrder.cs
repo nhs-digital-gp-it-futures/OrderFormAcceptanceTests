@@ -5,7 +5,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 {
     public sealed class DeleteOrder
     {
-        public By DeleteButtonYes => CustomBy.DataTestId("TODO");
-        public By DeleteButtonNo => CustomBy.DataTestId("TODO");
+        public By DeleteButtonYes => CustomBy.DataTestId("yes-button", "button");
+        public By DeleteButtonNo => CustomBy.DataTestId("no-button", "a");
     }
 }
