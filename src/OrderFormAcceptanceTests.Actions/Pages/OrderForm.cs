@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using OrderFormAcceptanceTests.Objects.Utils;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
@@ -206,7 +207,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void CompleteOrderButtonHasAltTest()
         {
-            Driver.FindElement(Pages.OrderForm.CompleteOrderLink).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
+            Driver.FindElement(Pages.OrderForm.CompleteOrderLabel).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
         }
 
         public bool EditCommencementDateSectionDisplayed()

@@ -10,6 +10,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
         public By PreviewOrderButton => CustomBy.DataTestId("preview-order-button");
         public By CompleteOrderLink => CustomBy.DataTestId("complete-order-button" ,"a");
         public By CompleteOrderButton => CustomBy.DataTestId("complete-order-button", "button");
+        public By CompleteOrderLabel => CustomBy.DataTestId("complete-order-button");
         public By PageTitle => By.CssSelector("[data-test-id$='-page-title']");
         public By TaskList => CustomBy.DataTestId("task-list");
         public By SectionStatus => By.CssSelector("[data-test-id$='-complete-tag']");
