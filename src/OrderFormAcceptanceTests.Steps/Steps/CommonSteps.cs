@@ -212,7 +212,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then("the tab will contain the printable version of the Order Summary")]
         public void ThenTheTabWillContainThePrintableVersionOfTheOrderSummary()
         {
-            Test.Pages.OrderForm.FindPrintableSummaryInTab().Should().BeTrue();
+            Test.Pages.OrderForm.FindPrintableSummary().Should().BeTrue();
         }
 
         [Then("the Print Dialog within the Browser will appear automatically")]

@@ -17,7 +17,8 @@ namespace OrderFormAcceptanceTests.Objects
                 CommencementDate = new CommencementDate(),
                 AdditionalServices = new AdditionalServices(),
                 CompleteOrder = new CompleteOrder(),
-                DeleteOrder = new DeleteOrder()
+                DeleteOrder = new DeleteOrder(),
+                PrintOrderSummary = new PrintOrderSummary()
             };
         }
         public PageCollection Pages { get; set; }

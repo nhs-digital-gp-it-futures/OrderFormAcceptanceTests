@@ -188,9 +188,8 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.WindowHandles.Count > 1;
         }
 
-        public bool FindPrintableSummaryInTab()
+        public bool FindPrintableSummary()
         {
-            Driver.SwitchTo().Window(Driver.WindowHandles.Last());
             return Driver.FindElements(Pages.PrintOrderSummary.PrintableOrderSummary).Count > 0;
         }
 
@@ -393,9 +392,9 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             Driver.FindElement(Pages.Common.BackLink).Click();
         }
 
-        public void ClickCompleteOrderButton()
-        {            
-            Driver.FindElement(Pages.OrderForm.CompleteOrderButton).Click();
+        public void ClickCompleteOrderLink()
+        {
+            Driver.FindElement(Pages.OrderForm.CompleteOrderLink).Click();
         }
 
         public void ClickDeleteButton()

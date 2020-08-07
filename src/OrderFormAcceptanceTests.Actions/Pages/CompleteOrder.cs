@@ -58,7 +58,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.CompleteOrder.DownloadPDF).Count == 1);
+                Wait.Until(d => d.FindElements(Pages.CompleteOrder.GetOrderSummaryLink).Count == 1);
                 return true;
             }
             catch
@@ -67,9 +67,9 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             }
         }
 
-        public void ClickDownloadPDFButton()
+        public void ClickGetOrderSummaryLink()
         {
-            Driver.FindElement(Pages.CompleteOrder.DownloadPDF).Click();
+            Driver.FindElement(Pages.CompleteOrder.GetOrderSummaryLink).Click();
         }
     }
 }
