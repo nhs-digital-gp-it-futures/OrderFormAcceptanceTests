@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -36,6 +37,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var commonSteps = new CommonSteps(Test, Context);
             commonSteps.GivenAnUnsubmittedOrderExists();
             commonSteps.WhenTheOrderFormForTheExistingOrderIsPresented();
+            WhenTheUserChoosesToDeleteTheOrder();
+            ThenTheUserIsAskedToConfirmTheChoiceToDelete();
         }
 
         [Given(@"the Order deleted page is presented")]
@@ -68,7 +71,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheOrderHasADeletedStatus()
         {
             var order = (Order)Context["CreatedOrder"];
-            order.Retrieve(Test.ConnectionString);
+            order = order.Retrieve(Test.ConnectionString);
             order.IsDeleted.Should().Be(1);
         }
 
