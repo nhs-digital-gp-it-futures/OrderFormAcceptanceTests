@@ -19,7 +19,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"the User chooses to complete the Order")]
         public void WhenTheUserChoosesToCompleteTheOrder()
         {
-            Test.Pages.OrderForm.ClickCompleteOrderButton();
+            Test.Pages.OrderForm.ClickCompleteOrderLink();
         }
 
         [StepDefinition(@"the User confirms to complete the Order")]
@@ -31,7 +31,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [When(@"the User chooses to download a PDF of their Order Summary")]
         public void WhenTheUserChoosesToDownloadAPdfOfOrderSummary()
         {
-            Test.Pages.CompleteOrder.ClickDownloadPDFButton();
+            Test.Pages.CompleteOrder.ClickGetOrderSummaryLink();
         }
 
         [Then(@"the confirm complete order screen is displayed")]

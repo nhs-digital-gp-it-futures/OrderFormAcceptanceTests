@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using OrderFormAcceptanceTests.Objects.Utils;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
@@ -169,7 +170,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool CompleteOrderButtonIsDisabled()
         {
-            return Driver.FindElement(Pages.OrderForm.CompleteOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
+            return Driver.FindElement(Pages.OrderForm.CompleteOrderLink).GetAttribute("aria-disabled") != null;
         }
 
         public void DeleteOrderButtonHasAltTest()
@@ -188,9 +189,9 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.WindowHandles.Count > 1;
         }
 
-        public bool FindPrintableSummaryInTab()
+        public bool FindPrintableSummary()
         {
-            Driver.SwitchTo().Window(Driver.WindowHandles.Last());
+            Driver.SwitchTo().Window(Driver.WindowHandles[1]);
             return Driver.FindElements(Pages.PrintOrderSummary.PrintableOrderSummary).Count > 0;
         }
 
@@ -207,7 +208,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void CompleteOrderButtonHasAltTest()
         {
-            Driver.FindElement(Pages.OrderForm.CompleteOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
+            Driver.FindElement(Pages.OrderForm.CompleteOrderLabel).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
         }
 
         public bool EditCommencementDateSectionDisplayed()
@@ -393,9 +394,9 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             Driver.FindElement(Pages.Common.BackLink).Click();
         }
 
-        public void ClickCompleteOrderButton()
-        {            
-            Driver.FindElement(Pages.OrderForm.CompleteOrderButton).Click();
+        public void ClickCompleteOrderLink()
+        {
+            Driver.FindElement(Pages.OrderForm.CompleteOrderLink).Click();
         }
 
         public void ClickDeleteButton()

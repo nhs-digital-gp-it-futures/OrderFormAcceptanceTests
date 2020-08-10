@@ -8,7 +8,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
 {
     public class PrintOrderSummary
     {
-        public By PrintableOrderSummary => CustomBy.DataTestId("printable-order-summary");
-        public By PrintPreview => By.Name("print-preview-app");
+        public By PrintableOrderSummary => CustomBy.DataTestId("summary-page-title");
+        public By PrintPreview => By.TagName("print-preview-app");
     }
 }

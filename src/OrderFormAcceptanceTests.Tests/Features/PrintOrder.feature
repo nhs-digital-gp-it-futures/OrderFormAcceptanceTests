@@ -3,8 +3,7 @@
 	I want to download a copy of my Order Summary
 	So that I can include it in a contract
 
-@ignore
-Scenario: Choose to Download PDF from the Order completed screen
+Scenario: Choose to Get Order Summary from the Order completed screen
 	Given that the User is on the confirm complete order screen with Funding Source option 'no' selected
 	And the User confirms to complete the Order
 	And the Order completed screen is displayed
