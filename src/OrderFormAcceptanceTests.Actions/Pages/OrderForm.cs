@@ -191,6 +191,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool FindPrintableSummary()
         {
+            Driver.SwitchTo().Window(Driver.WindowHandles[1]);
             return Driver.FindElements(Pages.PrintOrderSummary.PrintableOrderSummary).Count > 0;
         }
 
