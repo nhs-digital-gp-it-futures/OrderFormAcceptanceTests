@@ -3,6 +3,7 @@ using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.TestData;
 using System;
 using System.Collections.Generic;
+using OrderFormAcceptanceTests.Objects.Pages;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
@@ -109,7 +110,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             List<Order> listOfUnsubmittedOrders = new List<Order>();
 
             var table = Driver.FindElement(Pages.OrganisationsOrdersDashboard.UnsubmittedOrdersTable);
-            var tableRows = table.FindElements(By.CssSelector("[data-test-id^='table-row-']"));
+            var tableRows = table.FindElements(Pages.Common.TableRows);
 
             foreach (var row in tableRows)
             {
@@ -137,7 +138,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             List<Order> listOfSubmittedOrders = new List<Order>();
 
             var table = Driver.FindElement(Pages.OrganisationsOrdersDashboard.SubmittedOrdersTable);
-            var tableRows = table.FindElements(By.CssSelector("[data-test-id^='table-row-']"));
+            var tableRows = table.FindElements(Pages.Common.TableRows);
 
             foreach (var row in tableRows)
             {
