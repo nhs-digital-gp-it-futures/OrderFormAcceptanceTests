@@ -146,7 +146,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
         }
 
-        [When(@"the User chooses to go back")]
+        [StepDefinition(@"the User chooses to go back")]
         public void WhenTheUserChoosesToGoBack()
         {
             Test.Pages.OrderForm.ClickBackLink();

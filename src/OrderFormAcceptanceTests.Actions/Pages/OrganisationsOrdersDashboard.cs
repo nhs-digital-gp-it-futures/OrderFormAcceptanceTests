@@ -3,6 +3,7 @@ using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.TestData;
 using System;
 using System.Collections.Generic;
+using OrderFormAcceptanceTests.Objects.Pages;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
@@ -109,7 +110,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             List<Order> listOfUnsubmittedOrders = new List<Order>();
 
             var table = Driver.FindElement(Pages.OrganisationsOrdersDashboard.UnsubmittedOrdersTable);
-            var tableRows = table.FindElements(By.CssSelector("[data-test-id^='table-row-']"));
+            var tableRows = table.FindElements(Pages.Common.TableRows);
 
             foreach (var row in tableRows)
             {
@@ -130,6 +131,35 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             }
 
             return listOfUnsubmittedOrders;
+        }
+
+        public List<Order> GetListOfCompletedOrders()
+        {
+            List<Order> listOfSubmittedOrders = new List<Order>();
+
+            var table = Driver.FindElement(Pages.OrganisationsOrdersDashboard.SubmittedOrdersTable);
+            var tableRows = table.FindElements(Pages.Common.TableRows);
+
+            foreach (var row in tableRows)
+            {
+                var id = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Text;
+                var description = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Text;
+                var lastUpdateDisplayName = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text;
+                var createdDate = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text;
+                var automaticallyProcessed = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderAutomaticallyProcessed).Text;
+                
+                var currentRowOrder = new Order
+                {
+                    OrderId = id,
+                    Description = description,
+                    LastUpdatedByName = lastUpdateDisplayName,
+                    Created = Convert.ToDateTime(createdDate),
+                    FundingSourceOnlyGMS = automaticallyProcessed== "Yes" ? 1 : 0
+                };
+                listOfSubmittedOrders.Add(currentRowOrder);
+            }
+
+            return listOfSubmittedOrders;
         }
     }
 }

@@ -128,3 +128,19 @@ Scenario: Complete Order - Order completed if Funding Source was 'no' confirmati
 	And the Call Off Agreement ID is displayed in the page title
 	And there is specific content related to the User answering 'no' on the Funding Source question on the completed screen
 	And there is a control that allows the User to download a .PDF version of the Order Summary
+
+Scenario: Complete Order - Indicate if automatically processed or not if Funding Source was Yes
+	Given that the User is on the confirm complete order screen with Funding Source option 'yes' selected
+	And the User confirms to complete the Order
+	When the User chooses to go back
+	And the Organisation Orders Dashboard is displayed
+	And the Order is in the 'Completed Orders' table
+	Then there is an indication that the Order has been processed automatically
+	            
+Scenario: Complete Order - Indicate if automatically processed or not if Funding Source was No
+	Given that the User is on the confirm complete order screen with Funding Source option 'no' selected
+	And the User confirms to complete the Order
+	When the User chooses to go back
+	And the Organisation Orders Dashboard is displayed
+	And the Order is in the 'Completed Orders' table
+	Then there is an indication that the Order has not been processed automatically

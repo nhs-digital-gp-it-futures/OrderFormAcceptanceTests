@@ -14,7 +14,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         }
 
-        [Then(@"the Organisation Orders Dashboard is displayed")]
+        [StepDefinition(@"the Organisation Orders Dashboard is displayed")]
         [Then(@"the page displays who is logged in and the primary organisation name")]
         public void ThenThePageDisplaysWhoIsLoggedInAndThePrimaryOrganisationName()
         {
@@ -169,6 +169,43 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 }
             }
             found.Should().BeTrue();
+        }
+
+        [StepDefinition(@"the Order is in the 'Completed Orders' table")]
+        public void ThenTheItemIsDisplayedAsAnSubmittedOrder()
+        {
+            var createdOrder = (Order)Context["CreatedOrder"];
+            var orders = Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders();
+            bool found = false;
+            foreach (Order order in orders)
+            {
+                if (order.OrderId == createdOrder.OrderId)
+                {
+                    found = true;
+                    Context.Add("OrderFromUI", order);
+                    break;
+                }
+            }
+            found.Should().BeTrue();
+        }
+
+        [StepDefinition(@"there is an indication that the Order has been processed automatically")]
+        public void WhenTheItemHasBeenAutomaticallyProcessed()
+        {
+            var CreatedOrder = (Order)Context["CreatedOrder"];
+            var OrderFromUI = (Order)Context["OrderFromUI"];
+            OrderFromUI.OrderId.Should().BeEquivalentTo(CreatedOrder.OrderId);
+            OrderFromUI.FundingSourceOnlyGMS.Should().Be(1);
+        }
+
+        [StepDefinition(@"there is an indication that the Order has not been processed automatically")]
+        public void WhenTheItemHasNotBeenAutomaticallyProcessed()
+        {
+            var CreatedOrder = (Order)Context["CreatedOrder"];
+            var OrderFromUI = (Order)Context["OrderFromUI"];
+            OrderFromUI.OrderId.Should().BeEquivalentTo(CreatedOrder.OrderId);
+            var notProcessed = OrderFromUI.FundingSourceOnlyGMS == null || OrderFromUI.FundingSourceOnlyGMS == 0;
+            notProcessed.Should().BeTrue();
         }
 
         [StepDefinition(@"the item includes the Call Off Agreement ID")]
