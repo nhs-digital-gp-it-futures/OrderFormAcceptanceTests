@@ -4,7 +4,7 @@
 	So that it cannot be progressed on the Buying Catalogue
 
 Scenario: Delete Order - Confirm delete order 
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Order Form for the existing order is presented
 	When the User chooses to delete the order
 	Then the User is asked to confirm the choice to delete

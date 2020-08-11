@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using FluentAssertions;
-using Newtonsoft.Json.Bson;
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
@@ -48,8 +47,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [When(@"the User has not entered a Supplier search criterion")]
         public void GivenMandatoryDataAreMissing()
         {
-            //clear fields	
-            //var listOfTextAreas = Test.Driver.FindElements(By.TagName("textarea"));	
+            //clear fields
+            //var listOfTextAreas = Test.Driver.FindElements(By.TagName("textarea"));
             var listOfInputs = Test.Driver.FindElements(By.ClassName("nhsuk-input"));
             foreach (var element in listOfInputs)
             {
@@ -84,20 +83,19 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void DoNothing()
         {
             //do nothing
-
         }
 
-        [Given(@"an unsubmitted order exists")]
-        public void GivenAnUnsubmittedOrderExists()
+        [Given(@"an incomplete order exists")]
+        public void GivenAnIncompleteOrderExists()
         {
-            var orgAddress = new TestData.Address().Generate();
+            var orgAddress = new Address().Generate();
             orgAddress.Create(Test.ConnectionString);
             Context.Add("CreatedAddress", orgAddress);
             var orgContact = new Contact().Generate();
             orgContact.Create(Test.ConnectionString);
             Context.Add("CreatedContact", orgContact);
 
-            var supplierAddress = new TestData.Address().Generate();
+            var supplierAddress = new Address().Generate();
             supplierAddress.Create(Test.ConnectionString);
             Context.Add("CreatedSupplierAddress", supplierAddress);
             var supplierContact = new Contact().Generate();
@@ -124,10 +122,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedServiceRecipient", serviceRecipient);
         }
 
-        [Given(@"an unsubmited order with catalogue items exists")]
-        public void GivenAnUnsubmittedOrderWithCatalogueItemsExists()
+        [Given(@"an incomplete order with catalogue items exists")]
+        public void GivenAnIncompleteOrderWithCatalogueItemsExists()
         {
-            GivenAnUnsubmittedOrderExists();
+            GivenAnIncompleteOrderExists();
             var order = (Order)Context["CreatedOrder"];
             order.CatalogueSolutionsViewed = 1;
             order.Update(Test.ConnectionString);

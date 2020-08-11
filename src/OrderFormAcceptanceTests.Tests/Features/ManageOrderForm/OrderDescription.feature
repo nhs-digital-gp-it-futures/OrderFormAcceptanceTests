@@ -42,7 +42,7 @@ Scenario: Order Description - Saved Order on the Organisation's Orders dashboard
 	Given the Order is saved for the first time 
 	When the User navigates back to the Organisation's Orders dashboard
 	Then the saved Order is displayed as an item on the Organisation's Orders dashboard 
-	And the item is displayed as an Unsubmitted Order
+	And the item is displayed as an Incomplete Order
 	And the item includes the Call Off Agreement ID
 	And the item includes the Order Description
 	And the item includes the Display Name of the User who made most recent edit

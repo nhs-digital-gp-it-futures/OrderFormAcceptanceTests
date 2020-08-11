@@ -4,7 +4,7 @@
 	So that I can ensure the information is correct
 
 Background:
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Commencement Date section is not complete
 	When the Order Form for the existing order is presented
 

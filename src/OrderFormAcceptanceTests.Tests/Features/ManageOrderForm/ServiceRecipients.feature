@@ -4,7 +4,7 @@
 	So that the information is correct
 
 Background: 
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Service Recipients section is not complete
 
 Scenario: Service Recipients - Sections presented

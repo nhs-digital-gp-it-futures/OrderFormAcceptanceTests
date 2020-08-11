@@ -10,7 +10,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
     {
         public OrganisationsOrdersDashboard(IWebDriver driver) : base(driver)
         {
-
         }
 
         public void WaitForDashboardToBeDisplayed()
@@ -20,11 +19,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             Wait.Until(d => CreateNewOrderButtonDisplayed());
         }
 
-        public void SelectExistingOrder(string CallOffAgreementId)
+        public void SelectExistingOrder(string callOffAgreementId)
         {
-            Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(CallOffAgreementId)).Count == 1);
-            Wait.Until(ElementExtensions.ElementToBeClickable(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(CallOffAgreementId)));
-            Driver.FindElement(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(CallOffAgreementId)).Click();
+            Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Count == 1);
+            Wait.Until(ElementExtensions.ElementToBeClickable(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)));
+            Driver.FindElement(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Click();
         }
 
         public bool CreateNewOrderButtonDisplayed()
@@ -55,30 +54,35 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Count;
         }
+
         public int GetNumberOfDescriptions()
         {
             return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Count;
         }
+
         public int GetNumberOfLastUpdatedBys()
         {
             return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Count;
         }
+
         public int GetNumberOfLastUpdatedDates()
         {
             return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate).Count;
         }
+
         public int GetNumberOfCreatedDates()
         {
             return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Count;
         }
-        public bool UnsubmittedOrdersTableDisplayed()
+
+        public bool IncompleteOrdersTableDisplayed()
         {
-            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.UnsubmittedOrdersTable).Count == 1;
+            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.IncompleteOrdersTable).Count == 1;
         }
 
         public bool SubmittedOrdersTableDisplayed()
         {
-            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.SubmittedOrdersTable).Count == 1;
+            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable).Count == 1;
         }
 
         public bool BackLinkDisplayed()
@@ -95,20 +99,22 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             return Driver.FindElements(Pages.Common.Footer).Count == 1;
         }
+
         public bool HeaderDisplayed()
         {
             return Driver.FindElements(Pages.Common.Header).Count == 1;
         }
+
         public bool BetaBannerDisplayed()
         {
             return Driver.FindElements(Pages.Common.BetaBanner).Count == 1;
         }
 
-        public List<Order> GetListOfUnsubmittedOrders()
+        public List<Order> GetListOfIncompleteOrders()
         {
-            List<Order> listOfUnsubmittedOrders = new List<Order>();
+            var listOfIncompleteOrders = new List<Order>();
 
-            var table = Driver.FindElement(Pages.OrganisationsOrdersDashboard.UnsubmittedOrdersTable);
+            var table = Driver.FindElement(Pages.OrganisationsOrdersDashboard.IncompleteOrdersTable);
             var tableRows = table.FindElements(By.CssSelector("[data-test-id^='table-row-']"));
 
             foreach (var row in tableRows)
@@ -126,10 +132,10 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                     LastUpdated = Convert.ToDateTime(lastUpdatedDate),
                     Created = Convert.ToDateTime(createdDate)
                 };
-                listOfUnsubmittedOrders.Add(currentRowOrder);
+                listOfIncompleteOrders.Add(currentRowOrder);
             }
 
-            return listOfUnsubmittedOrders;
+            return listOfIncompleteOrders;
         }
     }
 }

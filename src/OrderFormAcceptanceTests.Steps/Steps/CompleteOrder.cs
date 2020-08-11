@@ -1,19 +1,14 @@
-﻿using Bogus.Extensions;
-using FluentAssertions;
+﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
 {
     [Binding]
-    class CompleteOrder : TestBase
+    internal sealed class CompleteOrder : TestBase
     {
         public CompleteOrder(UITest test, ScenarioContext context) : base(test, context)
         {
-
         }
 
         [StepDefinition(@"the User chooses to complete the Order")]
@@ -79,7 +74,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the order is complete enough so that the Complete order button is enabled with Funding Source option '(.*)' selected")]
         public void GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled(string fsValue)
         {
-            new CommonSteps(Test, Context).GivenAnUnsubmittedOrderExists();
+            new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
             new CatalogueSolutions(Test, Context).GivenThereAreNoServiceRecipientsInTheOrder();
             new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
             if (fsValue.Equals("yes"))
@@ -104,7 +99,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"the Order completed screen is displayed")]
         public void ThenTheOrderCompletedScreenIsDisplayed()
         {
-            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("completed").Should().BeTrue();            
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("completed").Should().BeTrue();
         }
 
         [Given(@"that the User has completed their Order")]
@@ -114,6 +109,5 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             WhenTheUserConfirmsToCompleteTheOrder();
             ThenTheOrderCompletedScreenIsDisplayed();
         }
-
     }
 }

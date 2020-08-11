@@ -4,7 +4,7 @@
 	So that I can ensure the information is correct
 
 Background:
-	Given an unsubmited order with catalogue items exists
+	Given an incomplete order with catalogue items exists
 
 Scenario: Additional Services - Sections presented
 	When the Order Form for the existing order is presented

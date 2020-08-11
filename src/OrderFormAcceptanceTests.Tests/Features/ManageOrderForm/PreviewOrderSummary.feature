@@ -4,7 +4,7 @@
     So that I can preview the Order
 
 Background: 
-    Given an unsubmitted order exists
+    Given an incomplete order exists
 
 Scenario: Preview Order Summary
     Given the Order Form for the existing order is presented

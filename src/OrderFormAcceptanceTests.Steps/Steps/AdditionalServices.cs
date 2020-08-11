@@ -120,6 +120,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.AdditionalServices.PricePageTitle().Should().ContainEquivalentOf("List price");
             Test.Pages.OrderForm.ClickRadioButton();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
         }
 
         [Then(@"the Additional Service name is displayed")]
@@ -205,6 +206,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             ThenTheAdditionalServiceDashboardIsPresented();
             Test.Pages.OrderForm.AddedOrderItemsTableIsPopulated().Should().BeTrue();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
         }
 
         [Then(@"the section content validation status of the Additional Service is Complete")]

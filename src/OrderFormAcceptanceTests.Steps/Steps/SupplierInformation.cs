@@ -80,7 +80,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the User has been presented with matching Suppliers")]
         public void GivenTheUserHasBeenPresentedWithMatchingSuppliers()
         {
-            new CommonSteps(Test, Context).GivenAnUnsubmittedOrderExists();
+            new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
             new OrderForm(Test, Context).GivenTheSupplierSectionIsNotComplete();
             WhenTheUserChoosesToEditTheSupplierSectionForTheFirstTime();
             WhenTheUserHasEnteredAValidSupplierSearchCriterion();

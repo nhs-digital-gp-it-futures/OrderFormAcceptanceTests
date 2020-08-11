@@ -4,7 +4,7 @@
 	So that I can ensure the information is correct
 
 Background: 
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Associated Services section is not complete
 
 Scenario: Associated Services - Sections presented
