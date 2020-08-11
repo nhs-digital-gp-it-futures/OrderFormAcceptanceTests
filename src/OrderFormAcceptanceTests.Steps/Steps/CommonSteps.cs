@@ -136,6 +136,22 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedOrderItem", orderItem);
         }
 
+        [Given(@"a completed order exists")]
+        public void GivenACompletedOrderExists()
+        {
+            GivenAnUnsubmittedOrderWithCatalogueItemsExists();
+
+            new AdditionalServices(Test, Context).GivenTheThereAreOneOrMoreAddionalServicesAddedtoTheOrder();
+            new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
+            new OrderForm(Test, Context).GivenTheFundingSourceSectionIsCompleteWithYesSelected();
+            var order = (Order)Context["CreatedOrder"];
+            order.OrderStatusId = 1;
+            order.LastUpdated = new Faker().Date.Past().Date;
+            //order.DateCompleted = new Faker().Date.Past().Date;
+            //do same for order items
+            order.Update(Test.ConnectionString);
+        }
+
         [StepDefinition(@"the Order Form for the existing order is presented")]
         public void WhenTheOrderFormForTheExistingOrderIsPresented()
         {

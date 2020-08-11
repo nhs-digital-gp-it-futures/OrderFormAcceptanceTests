@@ -810,6 +810,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElement(Pages.OrderForm.DateOrderSummaryCreated).Text;
         }
 
+        public string GetDateOrderCompletedValue()
+        {
+            return Driver.FindElement(Pages.OrderForm.DateOrderCompleted).Text;
+        }
+
         public string GetCallOffOrderingPartyPreviewValue()
         {
             return Driver.FindElement(Pages.OrderForm.CallOffOrderingPartyPreview).Text;
