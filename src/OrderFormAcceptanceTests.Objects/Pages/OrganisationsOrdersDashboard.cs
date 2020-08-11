@@ -17,5 +17,6 @@ namespace OrderFormAcceptanceTests.Objects.Pages
         public By GenericExistingOrderCreatedDate => By.CssSelector("[data-test-id$='-dateCreated']");
         public By IncompleteOrdersTable => CustomBy.DataTestId("incomplete-orders-table");
         public By CompletedOrdersTable => CustomBy.DataTestId("complete-orders-table");
+        public By GenericExistingOrderAutomaticallyProcessed => By.CssSelector("[data-test-id$='-automaticallyProcessed']");
     }
 }
