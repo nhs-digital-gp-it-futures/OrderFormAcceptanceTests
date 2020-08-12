@@ -2,6 +2,8 @@
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
+using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -11,7 +13,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
     {
         public OrganisationsOrdersDashboard(UITest test, ScenarioContext context) : base(test, context)
         {
-
         }
 
         [StepDefinition(@"the Organisation Orders Dashboard is displayed")]
@@ -112,7 +113,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"there is a table titled Submitted orders")]
         public void ThenThereIsATableTitledCompletedOrders()
         {
-            Test.Pages.OrganisationsOrdersDashboard.SubmittedOrdersTableDisplayed().Should().BeTrue();
+            Test.Pages.OrganisationsOrdersDashboard.CompletedOrdersTableDisplayed().Should().BeTrue();
         }
 
         [Then(@"there is a control to go back to the homepage")]
@@ -193,19 +194,19 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"there is an indication that the Order has been processed automatically")]
         public void WhenTheItemHasBeenAutomaticallyProcessed()
         {
-            var CreatedOrder = (Order)Context["CreatedOrder"];
-            var OrderFromUI = (Order)Context["OrderFromUI"];
-            OrderFromUI.OrderId.Should().BeEquivalentTo(CreatedOrder.OrderId);
-            OrderFromUI.FundingSourceOnlyGMS.Should().Be(1);
+            var createdOrder = (Order)Context["CreatedOrder"];
+            var orderFromUi = (Order)Context["OrderFromUI"];
+            orderFromUi.OrderId.Should().BeEquivalentTo(createdOrder.OrderId);
+            orderFromUi.FundingSourceOnlyGMS.Should().Be(1);
         }
 
         [StepDefinition(@"there is an indication that the Order has not been processed automatically")]
         public void WhenTheItemHasNotBeenAutomaticallyProcessed()
         {
-            var CreatedOrder = (Order)Context["CreatedOrder"];
-            var OrderFromUI = (Order)Context["OrderFromUI"];
-            OrderFromUI.OrderId.Should().BeEquivalentTo(CreatedOrder.OrderId);
-            var notProcessed = OrderFromUI.FundingSourceOnlyGMS == null || OrderFromUI.FundingSourceOnlyGMS == 0;
+            var createdOrder = (Order)Context["CreatedOrder"];
+            var orderFromUi = (Order)Context["OrderFromUI"];
+            orderFromUi.OrderId.Should().BeEquivalentTo(createdOrder.OrderId);
+            var notProcessed = orderFromUi.FundingSourceOnlyGMS == null || orderFromUi.FundingSourceOnlyGMS == 0;
             notProcessed.Should().BeTrue();
         }
 
@@ -240,6 +241,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var orderFromUi = (Order)Context["OrderFromUI"];
             orderFromUi.LastUpdated.Should().BeSameDateAs(createdOrder.LastUpdated);
         }
+
         [Then(@"the item includes the date it was created")]
         public void ThenTheItemIncludesTheDateItWasCreated()
         {
@@ -248,5 +250,114 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             orderFromUi.Created.Should().BeSameDateAs(createdOrder.Created);
         }
 
+        [When(@"my organisation's orders dashboard is presented")]
+        [When(@"the order dashboard is presented")]
+        public void WhenTheOrderDashboardIsPresented()
+        {
+            new CommonSteps(Test, Context).GivenThatABuyerUserHasLoggedIn();
+            Test.Pages.Homepage.ClickOrderTile();
+            Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
+        }
+
+        [When(@"it is included in the completed orders table of the organisation's orders dashboard")]
+        public void WhenItIsIncludedInTheCompletedOrdersTableOfTheOrganisationsOrdersDashboard()
+        {
+            WhenTheOrderDashboardIsPresented();
+
+            var order = Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders).First();
+            var orderLink = Test.Pages.OrganisationsOrdersDashboard.GetOrderSummaryLink(order.OrderId);
+
+            orderLink.Should().NotBeNull();
+        }
+
+        [Then(@"there isn't a last updated column in the completed orders table")]
+        public void ThenThereIsNoLastUpdatedColumnInTheCompletedOrdersTable()
+        {
+            Test.Pages.OrganisationsOrdersDashboard.CompletedOrdersTableHasNoLastUpdateDate();
+        }
+
+        [Then(@"the completed orders are presented in descending order by the date completed")]
+        public void ThenCompletedOrdersPresentedIDescendingOrderByDateCompleted()
+        {
+            IList<Order> orders = Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders();
+            orders.Should().NotBeEmpty();
+            orders.Should().BeInDescendingOrder(o => o.DateCompleted);
+        }
+
+        [Then(@"there is a control I can use to view the completed Version of the order summary")]
+        public void ThenThereIsAControlICanUseToViewTheCompletedVersionOfTheOrderSummary()
+        {
+            var orders = Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders);
+
+            foreach (var order in orders)
+            {
+                var orderId = order.OrderId;
+                var (tagName, text, url) = Test.Pages.OrganisationsOrdersDashboard.GetOrderSummaryLink(orderId);
+
+                tagName.Should().Be("a");
+                text.Should().Be(orderId);
+                url.Should().EndWith($"/order/organisation/{orderId}");
+            }
+        }
+
+        [Then(@"there is a date completed column")]
+        public void ThenThereIsADateCompletedColumn()
+        {
+            Test.Pages.OrganisationsOrdersDashboard.CompletedOrdersTableHasDateCompleted()
+                .Should().BeTrue();
+        }
+
+        [Then(@"the orders are separated into groups")]
+        public void ThenTheOrdersAreSeparatedIntoGroups()
+        {
+            Test.Pages.OrganisationsOrdersDashboard.GetNumberOfIncompleteOrders().Should().BeGreaterOrEqualTo(1);
+            Test.Pages.OrganisationsOrdersDashboard.GetNumberOfCompleteOrders().Should().BeGreaterOrEqualTo(1);
+        }
+
+        [Then(@"the first group includes orders which are not completed")]
+        public void ThenTheFirstGroupIncludesOrdersWhichAreNotCompleted()
+        {
+            Test.Pages.OrganisationsOrdersDashboard.IncompleteOrdersPrecedesCompletedOrders()
+                .Should().BeTrue();
+
+            IEnumerable<string> createdOrders = Context
+                .Get<IList<Order>>(ContextKeys.CreatedIncompleteOrders)
+                .Select(o => o.OrderId);
+
+            IEnumerable<string> incompleteOrders = Test.Pages.OrganisationsOrdersDashboard
+                .GetListOfIncompleteOrders()
+                .Select(o => o.OrderId);
+
+            incompleteOrders.Should().IntersectWith(createdOrders);
+        }
+
+        [Then(@"the second group includes orders which are completed")]
+        public void ThenTheSecondGroupIncludesOrdersWhichAreCompleted()
+        {
+            Test.Pages.OrganisationsOrdersDashboard.IncompleteOrdersPrecedesCompletedOrders()
+                .Should().BeTrue();
+
+            IEnumerable<string> createdOrders = Context
+                .Get<IList<Order>>(ContextKeys.CreatedCompletedOrders)
+                .Select(o => o.OrderId);
+
+            IEnumerable<string> completedOrders = Test.Pages.OrganisationsOrdersDashboard
+                .GetListOfCompletedOrders()
+                .Select(o => o.OrderId);
+
+            completedOrders.Should().IntersectWith(createdOrders);
+        }
+
+        [Then(@"the date that the order was completed is displayed in the date completed column")]
+        public void ThenTheDateThatTheOrderWasCompletedIsDisplayedInTheDateCompletedColumn()
+        {
+            var createdOrder = Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders).First();
+
+            IList<Order> completedOrders = Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders();
+            var completedOrder = completedOrders.FirstOrDefault(o => o.OrderId == createdOrder.OrderId);
+
+            completedOrder.Should().NotBeNull();
+            completedOrder.DateCompleted.Should().Be(createdOrder.DateCompleted);
+        }
     }
 }

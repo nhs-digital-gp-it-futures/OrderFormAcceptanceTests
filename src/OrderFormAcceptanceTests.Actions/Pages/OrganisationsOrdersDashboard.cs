@@ -3,7 +3,7 @@ using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.TestData;
 using System;
 using System.Collections.Generic;
-using OrderFormAcceptanceTests.Objects.Pages;
+using System.Linq;
 
 namespace OrderFormAcceptanceTests.Actions.Pages
 {
@@ -46,6 +46,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             Driver.FindElement(Pages.OrganisationsOrdersDashboard.CreateOrderButton).Click();
         }
 
+        public (string TagName, string Text, string Url) GetOrderSummaryLink(string callOffAgreementId)
+        {
+            var link = Driver.FindElement(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId));
+            return (link.TagName, link.Text, link.GetAttribute("href"));
+        }
+
         public int GetNumberOfOrdersDisplayed()
         {
             return Driver.FindElements(Pages.OrganisationsOrdersDashboard.Orders).Count;
@@ -81,9 +87,26 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElements(Pages.OrganisationsOrdersDashboard.IncompleteOrdersTable).Count == 1;
         }
 
-        public bool SubmittedOrdersTableDisplayed()
+        public bool CompletedOrdersTableDisplayed()
         {
             return Driver.FindElements(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable).Count == 1;
+        }
+
+        public bool CompletedOrdersTableHasNoLastUpdateDate()
+        {
+            return Driver
+                .FindElement(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable)
+                .FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate)
+                .Count == 0;
+        }
+
+        public bool CompletedOrdersTableHasDateCompleted()
+        {
+            IReadOnlyCollection<IWebElement> columnHeadings = Driver
+                .FindElement(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable)
+                .FindElements(Pages.OrganisationsOrdersDashboard.GenericColumnHeadingData);
+
+            return columnHeadings.Count(c => c.Text.Equals("Date completed", StringComparison.OrdinalIgnoreCase)) == 1;
         }
 
         public bool BackLinkDisplayed()
@@ -109,6 +132,21 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public bool BetaBannerDisplayed()
         {
             return Driver.FindElements(Pages.Common.BetaBanner).Count == 1;
+        }
+
+        public int GetNumberOfIncompleteOrders()
+        {
+            return GetNumberOfTableRows(Pages.OrganisationsOrdersDashboard.IncompleteOrdersTable);
+        }
+
+        public int GetNumberOfCompleteOrders()
+        {
+            return GetNumberOfTableRows(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable);
+        }
+
+        public bool IncompleteOrdersPrecedesCompletedOrders()
+        {
+            return Driver.FindElement(Pages.OrganisationsOrdersDashboard.IncompleteOrdersBeforeCompletedOrders).Displayed;
         }
 
         public List<Order> GetListOfIncompleteOrders()
@@ -141,7 +179,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public List<Order> GetListOfCompletedOrders()
         {
-            List<Order> listOfSubmittedOrders = new List<Order>();
+            var listOfSubmittedOrders = new List<Order>();
 
             var table = Driver.FindElement(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable);
             var tableRows = table.FindElements(Pages.Common.TableRows);
@@ -151,21 +189,31 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 var id = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Text;
                 var description = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Text;
                 var lastUpdateDisplayName = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text;
+                var dateCompleted = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderCompletedDate).Text;
                 var createdDate = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text;
                 var automaticallyProcessed = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderAutomaticallyProcessed).Text;
-                
+
                 var currentRowOrder = new Order
                 {
                     OrderId = id,
                     Description = description,
                     LastUpdatedByName = lastUpdateDisplayName,
                     Created = Convert.ToDateTime(createdDate),
-                    FundingSourceOnlyGMS = automaticallyProcessed== "Yes" ? 1 : 0
+                    DateCompleted = Convert.ToDateTime(dateCompleted),
+                    FundingSourceOnlyGMS = automaticallyProcessed == "Yes" ? 1 : 0
                 };
                 listOfSubmittedOrders.Add(currentRowOrder);
             }
 
             return listOfSubmittedOrders;
+        }
+
+        private int GetNumberOfTableRows(By tableSelector)
+        {
+            var table = Driver.FindElement(tableSelector);
+            IReadOnlyCollection<IWebElement> tableRows = table.FindElements(Pages.Common.TableRows);
+
+            return tableRows.Count;
         }
     }
 }

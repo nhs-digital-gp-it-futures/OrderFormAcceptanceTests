@@ -8,28 +8,53 @@ namespace OrderFormAcceptanceTests.TestData
     public sealed class Order
     {
         public string OrderId { get; set; }
+
         public string Description { get; set; }
+
         public Guid OrganisationId { get; set; }
+
         public string OrganisationName { get; set; }
+
         public string OrganisationOdsCode { get; set; }
+
         public int? OrganisationAddressId { get; set; }
+
         public int? OrganisationBillingAddressId { get; set; }
+
         public int? OrganisationContactId { get; set; }
+
         public int OrderStatusId { get; set; }
+
         public int ServiceRecipientsViewed { get; set; }
+
         public int? SupplierId { get; set; }
+
         public string SupplierName { get; set; }
+
         public int? SupplierAddressId { get; set; }
+
         public int? SupplierContactId { get; set; }
+
         public int CatalogueSolutionsViewed { get; set; }
+
         public int AdditionalServicesViewed { get; set; }
+
         public int AssociatedServicesViewed { get; set; }
+
         public int? FundingSourceOnlyGMS { get; set; }
+
         public DateTime? CommencementDate { get; set; }
+
+        public DateTime? DateCompleted { get; set; }
+
         public DateTime Created { get; set; }
+
         public DateTime LastUpdated { get; set; }
+
         public Guid LastUpdatedBy { get; set; }
+
         public string LastUpdatedByName { get; set; }
+
         public int IsDeleted { get; set; }
 
         public Order Retrieve(string connectionString)
@@ -42,7 +67,7 @@ namespace OrderFormAcceptanceTests.TestData
         public Order Generate()
         {
             var faker = new Faker();
-            return new Order()
+            return new Order
             {
                 OrderId = GenerateRandomCallOffId(),
                 Description = faker.Lorem.Sentence(6),
@@ -55,6 +80,7 @@ namespace OrderFormAcceptanceTests.TestData
                 AdditionalServicesViewed = 0,
                 AssociatedServicesViewed = 0,
                 Created = DateTime.Now,
+                DateCompleted = DateTime.Now,
                 LastUpdated = DateTime.Now,
                 LastUpdatedBy = Guid.Parse("BC0A6D7B-B44B-436D-8916-1E64EBCAAE64"),
                 LastUpdatedByName = "Alice Smith",
@@ -85,6 +111,7 @@ namespace OrderFormAcceptanceTests.TestData
                                  FundingSourceOnlyGMS,
                                  CommencementDate,
                                  Created,
+                                 Completed,
                                  LastUpdated,
                                  LastUpdatedBy,
                                  LastUpdatedByName,
@@ -111,6 +138,7 @@ namespace OrderFormAcceptanceTests.TestData
                                  @FundingSourceOnlyGMS,
                                  @CommencementDate,
                                  @Created,
+                                 @DateCompleted,
                                  @LastUpdated,
                                  @LastUpdatedBy,
                                  @LastUpdatedByName,
@@ -121,8 +149,8 @@ namespace OrderFormAcceptanceTests.TestData
 
         public void Update(string connectionString)
         {
-            var query = @"UPDATE [dbo].[Order] 
-                        SET 
+            const string query = @"UPDATE [dbo].[Order]
+                        SET
                             OrderId=@orderId,
                             Description=@description,
                             OrganisationId=@organisationId,
@@ -142,11 +170,12 @@ namespace OrderFormAcceptanceTests.TestData
                             AssociatedServicesViewed=@AssociatedServicesViewed,
                             FundingSourceOnlyGMS=@FundingSourceOnlyGMS,
                             CommencementDate=@CommencementDate,
+                            Completed=@Completed,
                             Created=@created,
                             LastUpdated=@lastUpdated,
                             LastUpdatedBy=@lastUpdatedBy,
                             LastUpdatedByName=@lastUpdatedByName,
-                            IsDeleted=@IsDeleted 
+                            IsDeleted=@IsDeleted
                         WHERE OrderId=@orderId";
             SqlExecutor.Execute<Order>(connectionString, query, this);
         }
@@ -157,7 +186,7 @@ namespace OrderFormAcceptanceTests.TestData
             SqlExecutor.Execute<Order>(connectionString, query, this);
         }
 
-        private string GenerateRandomCallOffId()
+        private static string GenerateRandomCallOffId()
         {
             var randomNum = new Faker().Random.Number(max: 99999).ToString("D5");
             return string.Format("C9{0}-01", randomNum);

@@ -15,6 +15,9 @@ namespace OrderFormAcceptanceTests.Objects.Pages
         public By GenericExistingOrderLastUpdatedBy => By.CssSelector("[data-test-id$='-lastUpdatedBy']");
         public By GenericExistingOrderLastUpdatedDate => By.CssSelector("[data-test-id$='-lastUpdated']");
         public By GenericExistingOrderCreatedDate => By.CssSelector("[data-test-id$='-dateCreated']");
+        public By GenericExistingOrderCompletedDate => By.CssSelector("[data-test-id$='-dateCompleted']");
+        public By IncompleteOrdersBeforeCompletedOrders => By.CssSelector(".nhsuk-grid-column-full > [data-test-id='incomplete-orders-table'] + [data-test-id='complete-orders-table']");
+        public By GenericColumnHeadingData => By.CssSelector("[data-test-id$='-data']");
         public By IncompleteOrdersTable => CustomBy.DataTestId("incomplete-orders-table");
         public By CompletedOrdersTable => CustomBy.DataTestId("complete-orders-table");
         public By GenericExistingOrderAutomaticallyProcessed => By.CssSelector("[data-test-id$='-automaticallyProcessed']");
