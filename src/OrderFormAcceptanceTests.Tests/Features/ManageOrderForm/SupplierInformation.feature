@@ -4,14 +4,14 @@
 	So that the information is correct
 
 Scenario: Supplier Information - Sections presented
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Supplier section is not complete
 	When the Order Form for the existing order is presented
 	Then there is the Supplier section
 	And the user is able to manage the Supplier section
 
 Scenario: Supplier Information - Call Off Ordering Party section is now complete but, Supplier not 
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Supplier section is not complete
 	When the Order Form for the existing order is presented
 	Then the Call Off Agreement ID is displayed
@@ -25,7 +25,7 @@ Scenario: Supplier Information - Call Off Ordering Party section is now complete
 	And the Complete order button is disabled
 
 Scenario: Supplier Information - Supplier section is now complete but, Call Off Ordering Party not
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Call Off Ordering Party section is not complete
 	When the Order Form for the existing order is presented
 	Then the Call Off Agreement ID is displayed
@@ -39,14 +39,14 @@ Scenario: Supplier Information - Supplier section is now complete but, Call Off 
 	And the User is unable to submit the order
 
 Scenario: Supplier Information - Search supplier 
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Supplier section is not complete
 	When the User chooses to edit the Supplier section for the first time
 	Then the Search supplier screen is presented
 	And the Call Off Agreement ID is displayed in the page title
 
 Scenario: Supplier Information - Supplier(s) returned
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Supplier section is not complete
 	And the User chooses to edit the Supplier section for the first time
 	When the User has entered a valid Supplier search criterion
@@ -54,7 +54,7 @@ Scenario: Supplier Information - Supplier(s) returned
 	Then the matching Suppliers are presented
 
 Scenario: Supplier Information - No Supplier(s) returned
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Supplier section is not complete
 	And the User chooses to edit the Supplier section for the first time
 	When the User has entered a non matching Supplier search criterion
@@ -63,7 +63,7 @@ Scenario: Supplier Information - No Supplier(s) returned
 	And the User is informed that no matching Suppliers exist
 
 Scenario: Supplier Information - Supplier name missing
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Supplier section is not complete
 	And the User chooses to edit the Supplier section for the first time
 	When the User has not entered a Supplier search criterion
@@ -71,7 +71,7 @@ Scenario: Supplier Information - Supplier name missing
 	Then they are informed that a Supplier name needs to be entered
 
 Scenario: Supplier Information - Go Back (Search Supplier)
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Supplier section is not complete
 	And the User chooses to edit the Supplier section for the first time
 	And the Search supplier screen is presented
@@ -79,7 +79,7 @@ Scenario: Supplier Information - Go Back (Search Supplier)
 	Then the Order dashboard is presented
 
 Scenario: Supplier Information - Go Back (No Supplier(s) returned)
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Supplier section is not complete
 	And the User chooses to edit the Supplier section for the first time
 	And the User has entered a non matching Supplier search criterion
@@ -157,7 +157,7 @@ Scenario: Supplier Information - Go Back (first time)
 	Then the matching Suppliers are presented
 
 Scenario: Supplier Information - Edit (subsequent times)
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Order Form for the existing order is presented
 	When the User re-edits the Supplier section
 	Then the Edit Supplier Form Page is presented
@@ -167,7 +167,7 @@ Scenario: Supplier Information - Edit (subsequent times)
 	And the Supplier Contact details are autopopulated
 
 Scenario: Supplier Information - Edit and save (subsequent times)
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Order Form for the existing order is presented
 	And the User re-edits the Supplier section
 	And the user has entered a valid supplier contact for the order
@@ -178,7 +178,7 @@ Scenario: Supplier Information - Edit and save (subsequent times)
 	And the Supplier section is saved in the DB
 
 Scenario: Supplier Information - Go Back (subsequent times)
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Order Form for the existing order is presented
 	And the User re-edits the Supplier section
 	And the Edit Supplier Form Page is presented
@@ -186,13 +186,13 @@ Scenario: Supplier Information - Go Back (subsequent times)
 	Then the Order dashboard is presented
 
 Scenario: Supplier Information - Visit search supplier page after section complete
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Order Form for the existing order is presented
 	When the User chooses to the visit the search supplier page
 	Then they are redirected to the Edit Supplier page
 
 Scenario: Supplier Information - Visit select supplier page after section complete
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Order Form for the existing order is presented
 	When the User chooses to visit the select supplier page
 	Then they are redirected to the Edit Supplier page

@@ -1,5 +1,4 @@
-﻿using Bogus.Extensions;
-using FluentAssertions;
+﻿using FluentAssertions;
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
@@ -11,11 +10,10 @@ using TechTalk.SpecFlow;
 namespace OrderFormAcceptanceTests.Steps.Steps
 {
     [Binding]
-    class CompleteOrder : TestBase
+    internal sealed class CompleteOrder : TestBase
     {
         public CompleteOrder(UITest test, ScenarioContext context) : base(test, context)
         {
-
         }
 
         [StepDefinition(@"the User chooses to complete the Order")]
@@ -81,7 +79,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the order is complete enough so that the Complete order button is enabled with Funding Source option '(.*)' selected")]
         public void GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled(string fsValue)
         {
-            new CommonSteps(Test, Context).GivenAnUnsubmittedOrderExists();
+            new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
             new CatalogueSolutions(Test, Context).GivenThereAreNoServiceRecipientsInTheOrder();
             new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
             if (fsValue.Equals("yes"))
@@ -106,7 +104,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"the Order completed screen is displayed")]
         public void ThenTheOrderCompletedScreenIsDisplayed()
         {
-            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("completed").Should().BeTrue();            
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("completed").Should().BeTrue();
         }
 
         [Given(@"that the User has completed their Order")]
@@ -120,7 +118,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"a User has completed an Order")]
         public void GivenAUserHasCompletedAnOrder()
         {
-            new CommonSteps(Test, Context).GivenACompletedOrderExists();
+            new CommonSteps(Test, Context).GivenACompleteOrderExists();
         }
 
         [When(@"they choose to view the Completed Order from their Organisation's Orders Dashboard")]
@@ -149,8 +147,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context["CreatedOrder"];
             var date = Test.Pages.OrderForm.GetDateOrderCompletedValue();
             date.Should().NotBeNullOrEmpty();
-            //var expectedDate = order.DateCompleted.ToString("d MMMM yyyy");
-            //date.Should().EndWithEquivalent(expectedDate);
+            var expectedDate = order.DateCompleted.Value.ToString("d MMMM yyyy");
+            date.Should().EndWithEquivalent(expectedDate);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
         public By LoggedInDisplayName => CustomBy.DataTestId("logged-in-text");
         public By SaveButton => CustomBy.DataTestId("save-button", "button");
         public By ContinueButton => CustomBy.DataTestId("continue-button", "button");
-        public By DeleteButton => CustomBy.DataTestId("delete-order-button", "a");
+        public By DeleteButton => CustomBy.DataTestId("delete-button", "button");
         public By TextArea => By.TagName("textarea");
         public By TextField => By.ClassName("nhsuk-input");
         public By Checkbox => By.ClassName("nhsuk-checkboxes__input");

@@ -6,11 +6,10 @@ using TechTalk.SpecFlow;
 namespace OrderFormAcceptanceTests.Steps.Steps
 {
     [Binding]
-    class CallOffOrderingParty : TestBase
+    internal sealed class CallOffOrderingParty : TestBase
     {
         public CallOffOrderingParty(UITest test, ScenarioContext context) : base(test, context)
         {
-
         }
 
         [Then(@"the user is able to manage the Call-off Ordering Party section")]
@@ -29,7 +28,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the Call Off Ordering Party ODS code is autopopulated from the User's organisation")]
         [Then(@"the User is unable to edit the ODS code")]
-        public void ThenTheCallOffOrderingPartyODSCodeIsAutopopulatedFromTheUserSOrganisation()
+        public void ThenTheCallOffOrderingPartyOdsCodeIsAutoPopulatedFromTheUsersOrganisation()
         {
             Test.Pages.OrderForm.OdsCodeDisplayedAndNotEditable().Should().BeTrue();
         }
@@ -49,7 +48,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the Call Off Agreement ID is displayed in the page title")]
-        public void ThenTheCallOffAgreementIDIsDisplayedInThePageTitle()
+        public void ThenTheCallOffAgreementIdIsDisplayedInThePageTitle()
         {
             Test.Pages.OrderForm.TextDisplayedInPageTitle(((Order)Context["CreatedOrder"]).OrderId).Should().BeTrue();
         }
@@ -57,7 +56,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the user is managing the Call Off Ordering Party section")]
         public void GivenTheUserIsManagingTheCallOffOrderingPartySection()
         {
-            new CommonSteps(Test, Context).GivenAnUnsubmittedOrderExists();
+            new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
             new OrderForm(Test, Context).GivenTheCallOffOrderingPartySectionIsNotComplete();
             WhenTheUserChoosesToEditTheCallOffOrderingPartyInformation();
         }
@@ -82,7 +81,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the Call Off Ordering Party section is saved in the DB")]
-        public void ThenTheCallOffOrderingPartySectionIsSavedInTheDB()
+        public void ThenTheCallOffOrderingPartySectionIsSavedInTheDb()
         {
             var id = Test.Pages.OrderForm.GetCallOffId();
             var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
@@ -100,6 +99,5 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedAddress = (Address)Context["ExpectedAddress"];
             dbAddress.Equals(expectedAddress);
         }
-
     }
 }

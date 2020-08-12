@@ -4,7 +4,7 @@
 	So that the information is correct
 
 Background: 
-	Given an unsubmitted order exists
+	Given an incomplete order exists
 	And the Catalogue Solutions section is not complete
 
 Scenario: Catalogue Solutions- Sections presented
