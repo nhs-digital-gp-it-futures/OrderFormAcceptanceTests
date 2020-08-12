@@ -63,6 +63,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
         public By EstimationPeriod => CustomBy.DataTestId("question-selectEstimationPeriod");
 
         public By DateOrderSummaryCreated => CustomBy.DataTestId("date-summary-created");
+        public By DateOrderCompleted => CustomBy.DataTestId("date-order-completed");
         public By CallOffOrderingPartyPreview => CustomBy.DataTestId("call-off-party");
         public By SupplierPreview => CustomBy.DataTestId("supplier");
         public By CommencementDate => CustomBy.DataTestId("commencement-date");

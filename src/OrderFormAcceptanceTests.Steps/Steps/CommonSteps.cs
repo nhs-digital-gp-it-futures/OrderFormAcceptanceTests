@@ -149,6 +149,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Given(@"a complete order exists")]
         [Given(@"an order is completed")]
+        [Given(@"a User has completed an Order")]
         public void GivenACompleteOrderExists()
         {
             var orgAddress = new Address().Generate();
@@ -170,8 +171,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.SupplierId = 100000;
             order.SupplierName = "Really Kool Corporation";
 
-            order.CommencementDate = new Faker().Date.Future().Date;
-            order.DateCompleted = order.CommencementDate.Value.AddDays(1);
+            var faker = new Faker();
+            order.CommencementDate = faker.Date.Future().Date;
+            var dateCompleted = faker.Date.Past().Date;
+            order.DateCompleted = dateCompleted;
+            order.LastUpdated = dateCompleted;
 
             var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);
 
@@ -187,6 +191,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Create(Test.ConnectionString);
 
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand(order);
+            orderItem.LastUpdated = dateCompleted;
             orderItem.Create(Test.ConnectionString);
             serviceRecipient.Create(Test.ConnectionString);
 

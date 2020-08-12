@@ -144,3 +144,10 @@ Scenario: Complete Order - Indicate if automatically processed or not if Funding
 	And the Organisation Orders Dashboard is displayed
 	And the Order is in the 'Completed Orders' table
 	Then there is an indication that the Order has not been processed automatically
+@ignore
+Scenario: View Completed Order Summary
+	Given a User has completed an Order 
+	When they choose to view the Completed Order from their Organisation's Orders Dashboard
+	Then the Completed version of the Order Summary is presented
+	And the completed order summary has specific content related to the order being completed
+	And the completed order summary contains the date the Order was completed

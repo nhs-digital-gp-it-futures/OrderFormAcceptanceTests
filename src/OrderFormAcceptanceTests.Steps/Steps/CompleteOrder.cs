@@ -1,5 +1,11 @@
 ﻿using FluentAssertions;
+using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -108,6 +114,36 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             GivenThatTheUserIsOnTheConfirmCompleteOrderScreen("no");
             WhenTheUserConfirmsToCompleteTheOrder();
             ThenTheOrderCompletedScreenIsDisplayed();
+        }
+
+        [When(@"they choose to view the Completed Order from their Organisation's Orders Dashboard")]
+        public void WhenTheyChooseToViewTheCompletedOrderFromTheirOrganisationSOrdersDashboard()
+        {
+            new OrganisationsOrdersDashboard(Test, Context).WhenTheUserIsPresentedWithTheOrganisationSOrdersDashboard();
+            Test.Pages.OrganisationsOrdersDashboard.SelectExistingOrder(Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders).First().OrderId);
+        }
+
+        [Then(@"the Completed version of the Order Summary is presented")]
+        public void ThenTheCompletedVersionOfTheOrderSummaryIsPresented()
+        {
+            new PreviewOrderSummary(Test, Context).ThenTheOrderSummaryIsPresented();
+            ThenThereIsAControlThatAllowsTheUserToDownloadA_PDFVersionOfTheOrderSummary();
+        }
+
+        [Then(@"the completed order summary has specific content related to the order being completed")]
+        public void ThenTheCompletedOrderSummaryHasSpecificContentRelatedToTheOrderBeingCompleted()
+        {
+            Test.Driver.FindElement(By.TagName("h2")).Text.Should().ContainEquivalentOf("This order is complete");
+        }
+
+        [Then(@"the completed order summary contains the date the Order was completed")]
+        public void ThenTheCompletedOrderSummaryContainsTheDateTheOrderWasCompleted()
+        {
+            var order = Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders).First();
+            var date = Test.Pages.OrderForm.GetDateOrderCompletedValue();
+            date.Should().NotBeNullOrEmpty();
+            var expectedDate = order.DateCompleted.Value.ToString("d MMMM yyyy");
+            date.Should().EndWithEquivalent(expectedDate);
         }
     }
 }
