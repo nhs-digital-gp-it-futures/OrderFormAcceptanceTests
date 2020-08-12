@@ -170,8 +170,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.SupplierId = 100000;
             order.SupplierName = "Really Kool Corporation";
 
-            order.CommencementDate = new Faker().Date.Future().Date;
-            var dateCompleted = new Faker().Date.Past().Date;
+            var faker = new Faker();
+            order.CommencementDate = faker.Date.Future().Date;
+            var dateCompleted = faker.Date.Past().Date;
             order.DateCompleted = dateCompleted;
             order.LastUpdated = dateCompleted;
 
