@@ -4,6 +4,7 @@ using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
 
@@ -125,7 +126,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void WhenTheyChooseToViewTheCompletedOrderFromTheirOrganisationSOrdersDashboard()
         {
             new OrganisationsOrdersDashboard(Test, Context).WhenTheUserIsPresentedWithTheOrganisationSOrdersDashboard();
-            Test.Pages.OrganisationsOrdersDashboard.SelectExistingOrder(((Order)Context["CreatedOrder"]).OrderId);
+            Test.Pages.OrganisationsOrdersDashboard.SelectExistingOrder(Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders).First().OrderId);
         }
 
         [Then(@"the Completed version of the Order Summary is presented")]
@@ -144,7 +145,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the completed order summary contains the date the Order was completed")]
         public void ThenTheCompletedOrderSummaryContainsTheDateTheOrderWasCompleted()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders).First();
             var date = Test.Pages.OrderForm.GetDateOrderCompletedValue();
             date.Should().NotBeNullOrEmpty();
             var expectedDate = order.DateCompleted.Value.ToString("d MMMM yyyy");
