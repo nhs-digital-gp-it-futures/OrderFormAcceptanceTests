@@ -110,7 +110,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrganisationsOrdersDashboard.IncompleteOrdersTableDisplayed().Should().BeTrue();
         }
 
-        [Then(@"there is a table titled Submitted orders")]
+        [Then(@"there is a table titled Completed orders")]
         public void ThenThereIsATableTitledCompletedOrders()
         {
             Test.Pages.OrganisationsOrdersDashboard.CompletedOrdersTableDisplayed().Should().BeTrue();
@@ -174,7 +174,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [StepDefinition(@"the Order is in the 'Completed Orders' table")]
-        public void ThenTheItemIsDisplayedAsAnSubmittedOrder()
+        public void ThenTheItemIsDisplayedAsACompletedOrder()
         {
             var createdOrder = (Order)Context["CreatedOrder"];
             var orders = Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders();

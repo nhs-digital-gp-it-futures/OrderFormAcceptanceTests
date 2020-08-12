@@ -179,7 +179,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public List<Order> GetListOfCompletedOrders()
         {
-            var listOfSubmittedOrders = new List<Order>();
+            var listOfCompletedOrders = new List<Order>();
 
             var table = Driver.FindElement(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable);
             var tableRows = table.FindElements(Pages.Common.TableRows);
@@ -202,10 +202,10 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                     DateCompleted = Convert.ToDateTime(dateCompleted),
                     FundingSourceOnlyGMS = automaticallyProcessed == "Yes" ? 1 : 0
                 };
-                listOfSubmittedOrders.Add(currentRowOrder);
+                listOfCompletedOrders.Add(currentRowOrder);
             }
 
-            return listOfSubmittedOrders;
+            return listOfCompletedOrders;
         }
 
         private int GetNumberOfTableRows(By tableSelector)
