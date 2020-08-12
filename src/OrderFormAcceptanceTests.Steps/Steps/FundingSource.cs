@@ -6,7 +6,7 @@ using TechTalk.SpecFlow;
 namespace OrderFormAcceptanceTests.Steps.Steps
 {
     [Binding]
-    class FundingSource : TestBase
+    internal sealed class FundingSource : TestBase
     {
         public FundingSource(UITest test, ScenarioContext context) : base(test, context)
         {
@@ -36,7 +36,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the minimum data needed to enable the Funding Source section exists")]
         public void GivenTheMinimumDataNeededToEnableTheFundingSourceSectionExists()
         {
-            new CommonSteps(Test, Context).GivenAnUnsubmittedOrderExists();
+            new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
             new CatalogueSolutions(Test, Context).GivenThereAreNoServiceRecipientsInTheOrder();
             new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
         }
@@ -58,8 +58,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Funding Source section is complete")]
         public void ThenTheFundingSourceSectionIsComplete()
         {
-            var ChosenOption = (string)Context["ChosenOption"];
-            var expectedValue = ChosenOption == "true" ? 1 : 0;
+            var chosenOption = (string)Context["ChosenOption"];
+            var expectedValue = chosenOption == "true" ? 1 : 0;
             var order = (Order)Context["CreatedOrder"];
             order = order.Retrieve(Test.ConnectionString);
             order.FundingSourceOnlyGMS.Should().Be(expectedValue);

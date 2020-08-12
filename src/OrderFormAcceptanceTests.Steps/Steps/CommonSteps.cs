@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using FluentAssertions;
-using Newtonsoft.Json.Bson;
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
@@ -48,8 +47,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [When(@"the User has not entered a Supplier search criterion")]
         public void GivenMandatoryDataAreMissing()
         {
-            //clear fields	
-            //var listOfTextAreas = Test.Driver.FindElements(By.TagName("textarea"));	
+            //clear fields
+            //var listOfTextAreas = Test.Driver.FindElements(By.TagName("textarea"));
             var listOfInputs = Test.Driver.FindElements(By.ClassName("nhsuk-input"));
             foreach (var element in listOfInputs)
             {
@@ -84,20 +83,19 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void DoNothing()
         {
             //do nothing
-
         }
 
-        [Given(@"an unsubmitted order exists")]
-        public void GivenAnUnsubmittedOrderExists()
+        [Given(@"an incomplete order exists")]
+        public void GivenAnIncompleteOrderExists()
         {
-            var orgAddress = new TestData.Address().Generate();
+            var orgAddress = new Address().Generate();
             orgAddress.Create(Test.ConnectionString);
             Context.Add("CreatedAddress", orgAddress);
             var orgContact = new Contact().Generate();
             orgContact.Create(Test.ConnectionString);
             Context.Add("CreatedContact", orgContact);
 
-            var supplierAddress = new TestData.Address().Generate();
+            var supplierAddress = new Address().Generate();
             supplierAddress.Create(Test.ConnectionString);
             Context.Add("CreatedSupplierAddress", supplierAddress);
             var supplierContact = new Contact().Generate();
@@ -122,18 +120,80 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("CreatedOrder", order);
             serviceRecipient.Create(Test.ConnectionString);
             Context.Add("CreatedServiceRecipient", serviceRecipient);
+
+            Context.TryGetValue(ContextKeys.CreatedIncompleteOrders, out IList<Order> createdOrders);
+            createdOrders ??= new List<Order>();
+            createdOrders.Add(order);
+            Context.Set(createdOrders, ContextKeys.CreatedIncompleteOrders);
         }
 
-        [Given(@"an unsubmited order with catalogue items exists")]
-        public void GivenAnUnsubmittedOrderWithCatalogueItemsExists()
+        [Given(@"an incomplete order with catalogue items exists")]
+        public void GivenAnIncompleteOrderWithCatalogueItemsExists()
         {
-            GivenAnUnsubmittedOrderExists();
+            GivenAnIncompleteOrderExists();
             var order = (Order)Context["CreatedOrder"];
             order.CatalogueSolutionsViewed = 1;
             order.Update(Test.ConnectionString);
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand(order);
             orderItem.Create(Test.ConnectionString);
             Context.Add("CreatedOrderItem", orderItem);
+        }
+
+        [Given(@"my organisation has one or more orders")]
+        public void GivenOneOrMoreOrdersExist()
+        {
+            GivenACompleteOrderExists();
+            GivenACompleteOrderExists();
+            GivenAnIncompleteOrderExists();
+        }
+
+        [Given(@"a complete order exists")]
+        [Given(@"an order is completed")]
+        public void GivenACompleteOrderExists()
+        {
+            var orgAddress = new Address().Generate();
+            orgAddress.Create(Test.ConnectionString);
+            var orgContact = new Contact().Generate();
+            orgContact.Create(Test.ConnectionString);
+
+            var supplierAddress = new Address().Generate();
+            supplierAddress.Create(Test.ConnectionString);
+            var supplierContact = new Contact().Generate();
+            supplierContact.Create(Test.ConnectionString);
+
+            var order = new Order().Generate();
+            order.OrganisationAddressId = orgAddress.AddressId;
+            order.OrganisationBillingAddressId = orgAddress.AddressId;
+            order.OrganisationContactId = orgContact.ContactId;
+            order.SupplierAddressId = supplierAddress.AddressId;
+            order.SupplierContactId = supplierContact.ContactId;
+            order.SupplierId = 100000;
+            order.SupplierName = "Really Kool Corporation";
+
+            order.CommencementDate = new Faker().Date.Future().Date;
+            order.DateCompleted = order.CommencementDate.Value.AddDays(1);
+
+            var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);
+
+            order.CatalogueSolutionsViewed = 1;
+            order.ServiceRecipientsViewed = 1;
+            order.AdditionalServicesViewed = 1;
+            order.AssociatedServicesViewed = 1;
+            order.FundingSourceOnlyGMS = 1;
+
+            const int completed = 1;
+            order.OrderStatusId = completed;
+
+            order.Create(Test.ConnectionString);
+
+            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand(order);
+            orderItem.Create(Test.ConnectionString);
+            serviceRecipient.Create(Test.ConnectionString);
+
+            Context.TryGetValue(ContextKeys.CreatedCompletedOrders, out IList<Order> createdOrders);
+            createdOrders ??= new List<Order>();
+            createdOrders.Add(order);
+            Context.Set(createdOrders, ContextKeys.CreatedCompletedOrders);
         }
 
         [StepDefinition(@"the Order Form for the existing order is presented")]

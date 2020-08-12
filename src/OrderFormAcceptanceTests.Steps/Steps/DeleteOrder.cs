@@ -1,12 +1,7 @@
-﻿using Bogus.Extensions;
-using FluentAssertions;
+﻿using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -16,7 +11,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
     {
         public DeleteOrder(UITest test, ScenarioContext context) : base(test, context)
         {
-
         }
 
         [When(@"the User chooses to delete the order")]
@@ -35,7 +29,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheConfirmDeletePageIsDisplayed()
         {
             var commonSteps = new CommonSteps(Test, Context);
-            commonSteps.GivenAnUnsubmittedOrderExists();
+            commonSteps.GivenAnIncompleteOrderExists();
             commonSteps.WhenTheOrderFormForTheExistingOrderIsPresented();
             WhenTheUserChoosesToDeleteTheOrder();
             ThenTheUserIsAskedToConfirmTheChoiceToDelete();
@@ -89,7 +83,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var deletedOrder = (Order)Context["CreatedOrder"];
             Test.Pages.OrderForm.ClickBackLink();
             new OrganisationsOrdersDashboard(Test, Context).ThenThePageDisplaysWhoIsLoggedInAndThePrimaryOrganisationName();
-            var listOfOrders = Test.Pages.OrganisationsOrdersDashboard.GetListOfUnsubmittedOrders();
+            var listOfOrders = Test.Pages.OrganisationsOrdersDashboard.GetListOfIncompleteOrders();
             listOfOrders.Where(o => o.OrderId == deletedOrder.OrderId).Count().Should().Be(0);
         }
     }
