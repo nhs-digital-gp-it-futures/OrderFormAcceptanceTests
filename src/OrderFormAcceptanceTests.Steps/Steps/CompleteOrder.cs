@@ -116,12 +116,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheOrderCompletedScreenIsDisplayed();
         }
 
-        [Given(@"a User has completed an Order")]
-        public void GivenAUserHasCompletedAnOrder()
-        {
-            new CommonSteps(Test, Context).GivenACompleteOrderExists();
-        }
-
         [When(@"they choose to view the Completed Order from their Organisation's Orders Dashboard")]
         public void WhenTheyChooseToViewTheCompletedOrderFromTheirOrganisationSOrdersDashboard()
         {

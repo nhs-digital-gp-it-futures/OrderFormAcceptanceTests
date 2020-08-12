@@ -149,6 +149,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Given(@"a complete order exists")]
         [Given(@"an order is completed")]
+        [Given(@"a User has completed an Order")]
         public void GivenACompleteOrderExists()
         {
             var orgAddress = new Address().Generate();
