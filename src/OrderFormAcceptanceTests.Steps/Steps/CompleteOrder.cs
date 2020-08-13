@@ -29,6 +29,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.ClickCompleteOrderButton();
         }
 
+        [When(@"the User chooses to get the Order Summary")]
         [When(@"the User chooses to download a PDF of their Order Summary")]
         public void WhenTheUserChoosesToDownloadAPdfOfOrderSummary()
         {
@@ -71,6 +72,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.CompleteOrderButtonIsDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is a button to get the Order Summary at the top and bottom of it")]
         [Then(@"there is a control that allows the User to download a \.PDF version of the Order Summary")]
         public void ThenThereIsAControlThatAllowsTheUserToDownloadA_PDFVersionOfTheOrderSummary()
         {
@@ -145,5 +147,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedDate = order.DateCompleted.Value.ToString("d MMMM yyyy");
             date.Should().EndWithEquivalent(expectedDate);
         }
+
+        [StepDefinition(@"the Completed Order Summary is displayed")]
+        public void WhenTheCompletedOrderSummaryIsDisplayed()
+        {
+            WhenTheyChooseToViewTheCompletedOrderFromTheirOrganisationSOrdersDashboard();
+            ThenTheCompletedVersionOfTheOrderSummaryIsPresented();
+        }
+
     }
 }
