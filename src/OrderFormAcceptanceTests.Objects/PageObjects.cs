@@ -18,7 +18,8 @@ namespace OrderFormAcceptanceTests.Objects
                 AdditionalServices = new AdditionalServices(),
                 CompleteOrder = new CompleteOrder(),
                 DeleteOrder = new DeleteOrder(),
-                PrintOrderSummary = new PrintOrderSummary()
+                PrintOrderSummary = new PrintOrderSummary(),
+                PreviewOrderSummary = new PreviewOrderSummary()
             };
         }
         public PageCollection Pages { get; set; }

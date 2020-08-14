@@ -29,11 +29,23 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.ClickCompleteOrderButton();
         }
 
-        [When(@"the User chooses to get the Order Summary")]
+        [StepDefinition(@"the User chooses to get the Order Summary")]
         [When(@"the User chooses to download a PDF of their Order Summary")]
         public void WhenTheUserChoosesToDownloadAPdfOfOrderSummary()
         {
             Test.Pages.CompleteOrder.ClickGetOrderSummaryLink();
+        }
+
+        [StepDefinition(@"the User chooses to get the Preview Order Summary")]
+        public void WhentheUserChoosesToGetThePreviewOrderSummary()
+        {
+            Test.Pages.OrderForm.ClickPreviewOrderButton();
+        }
+
+        [When(@"the User chooses to print the Preview Order Summary")]
+        public void WhenTheUserChoosesToPrintThePreviewOrderSummary()
+        {
+            Test.Pages.PreviewOrderSummary.ClickGetPreviewOrderSummary();
         }
 
         [Then(@"the confirm complete order screen is displayed")]
@@ -79,6 +91,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.DownloadPDFControlIsDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is a button to get the Preview Order Summary at the top and bottom of it")]
+        public void ThenThereIsAControlThatAllowsTheUserToGetAPreviewOrderSummary()
+        {
+            Test.Pages.PreviewOrderSummary.TopGetOrderSummaryIsDisplayed().Should().BeTrue();
+            Test.Pages.PreviewOrderSummary.BottomGetOrderSummaryIsDisplayed().Should().BeTrue();
+        }
+        
         [Given(@"the order is complete enough so that the Complete order button is enabled with Funding Source option '(.*)' selected")]
         public void GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled(string fsValue)
         {
@@ -102,6 +121,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             WhenTheUserChoosesToCompleteTheOrder();
             ThenTheConfirmCompleteOrderScreenIsDisplayed();
+        }
+
+        [Given("the User chooses to preview the Order Summary")]
+        [Given("that the User is on the Order Summary")]
+        public void GivenThatTheUserIsOnTheOrderSummary()
+        {
+            GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled("yes");
+            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
         }
 
         [StepDefinition(@"the Order completed screen is displayed")]

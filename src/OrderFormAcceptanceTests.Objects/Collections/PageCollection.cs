@@ -1,4 +1,5 @@
-﻿using OrderFormAcceptanceTests.Objects.Pages;
+﻿using System.Dynamic;
+using OrderFormAcceptanceTests.Objects.Pages;
 
 namespace OrderFormAcceptanceTests.Objects.Collections
 {
@@ -14,5 +15,6 @@ namespace OrderFormAcceptanceTests.Objects.Collections
         public CompleteOrder CompleteOrder { get; set; }
         public DeleteOrder DeleteOrder { get; set; }
         public PrintOrderSummary PrintOrderSummary { get; set; }
+        public PreviewOrderSummary PreviewOrderSummary { get; set; }
     }
 }
