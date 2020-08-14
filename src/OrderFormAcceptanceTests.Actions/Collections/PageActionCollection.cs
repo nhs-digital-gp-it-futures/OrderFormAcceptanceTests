@@ -12,5 +12,6 @@ namespace OrderFormAcceptanceTests.Actions.Collections
         public AdditionalServices AdditionalServices { get; set; }
         public CompleteOrder CompleteOrder { get; set; }
         public DeleteOrder DeleteOrder { get; set; }
+        public PreviewOrderSummary PreviewOrderSummary { get; set; }
     }
 }
