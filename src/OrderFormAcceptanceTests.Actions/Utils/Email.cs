@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Mail;
 using System.Text;
 
 namespace OrderFormAcceptanceTests.Actions.Utils
@@ -16,5 +18,7 @@ namespace OrderFormAcceptanceTests.Actions.Utils
         public string PlainTextBody { get; set; }
 
         public string HtmlBody { get; set; }
+        public Attachment Attachment { get; set; }
+
     }
 }

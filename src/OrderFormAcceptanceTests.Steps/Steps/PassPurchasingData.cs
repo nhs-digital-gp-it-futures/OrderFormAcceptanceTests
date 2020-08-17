@@ -3,6 +3,7 @@ using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
@@ -20,22 +21,25 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"a \.CSV is sent to the specified mailbox")]
         public async System.Threading.Tasks.Task ThenA_CSVIsSentToTheSpecifiedMailboxAsync()
         {
-            var targetEmail = "noreply@buyingcatalogue.nhs.uk";
+            var targetEmail = "alicesmith@email.com";
             var currentCount = await EmailServerDriver.GetEmailCountAsync(Test.Url, targetEmail);
-            var precount = (int)Context["EmailCount"];
+            var precount = (int)Context[ContextKeys.EmailCount];
             currentCount.Should().BeGreaterThan(precount);
             var email = (await EmailServerDriver.FindAllEmailsAsync(Test.Url, targetEmail)).Last();
-            Context.Add("SentEmail", email);
+            Context.Add(ContextKeys.SentEmail, email);
         }
 
         [Then(@"the \.CSV to the desired specification is produced \(call off-id only\)")]
         public void ThenThe_CSVToTheDesiredSpecificationIsProducedCallOff_IdOnly()
         {
-            var email = (Email)Context["SentEmail"];
-            //assert attachment is .csv and contains column name call-off-id?
-            Context.Pending();
+            var email = (Email)Context[ContextKeys.SentEmail];
+            var attachmentFileName = email.Attachment.Name;
+            var attachmentFileType = email.Attachment.ContentType.MediaType;
+            var attachmentContent = new StreamReader(email.Attachment.ContentStream).ReadToEnd();
+            email.Attachment.ContentStream.Dispose();
+            attachmentFileName.Should().EndWithEquivalent(".CSV");
+            attachmentFileType.Should().ContainEquivalentOf("CSV");
+            attachmentContent.Should().ContainEquivalentOf("CallOffPartyId");            
         }
-
-
     }
 }
