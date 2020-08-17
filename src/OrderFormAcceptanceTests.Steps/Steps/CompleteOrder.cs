@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using OpenQA.Selenium;
+using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using System;
@@ -24,8 +25,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [StepDefinition(@"the User confirms to complete the Order")]
-        public void WhenTheUserConfirmsToCompleteTheOrder()
+        public async System.Threading.Tasks.Task WhenTheUserConfirmsToCompleteTheOrderAsync()
         {
+            var precount = await EmailServerDriver.GetEmailCountAsync(Test.Url, ("noreply@buyingcatalogue.nhs.uk"));
+            Context.Add("EmailCount", precount);
             Test.Pages.CompleteOrder.ClickCompleteOrderButton();
         }
 
@@ -141,7 +144,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenThatTheUserHasCompletedTheirOrder()
         {
             GivenThatTheUserIsOnTheConfirmCompleteOrderScreen("no");
-            WhenTheUserConfirmsToCompleteTheOrder();
+            WhenTheUserConfirmsToCompleteTheOrderAsync();
             ThenTheOrderCompletedScreenIsDisplayed();
         }
 
