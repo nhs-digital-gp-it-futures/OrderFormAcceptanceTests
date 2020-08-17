@@ -29,7 +29,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.ClickCompleteOrderButton();
         }
 
-        [StepDefinition(@"the User chooses to get the Order Summary")]
         [When(@"the User chooses to download a PDF of their Order Summary")]
         public void WhenTheUserChoosesToDownloadAPdfOfOrderSummary()
         {
@@ -42,6 +41,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickPreviewOrderButton();
         }
 
+        [StepDefinition(@"the User chooses to get the Order Summary")]
         [When(@"the User chooses to print the Preview Order Summary")]
         public void WhenTheUserChoosesToPrintThePreviewOrderSummary()
         {
@@ -84,13 +84,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.CompleteOrderButtonIsDisplayed().Should().BeTrue();
         }
 
-        [Then(@"there is a button to get the Order Summary at the top and bottom of it")]
         [Then(@"there is a control that allows the User to download a \.PDF version of the Order Summary")]
         public void ThenThereIsAControlThatAllowsTheUserToDownloadA_PDFVersionOfTheOrderSummary()
         {
             Test.Pages.CompleteOrder.DownloadPDFControlIsDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is a button to get the Order Summary at the top and bottom of it")]
         [Then(@"there is a button to get the Preview Order Summary at the top and bottom of it")]
         public void ThenThereIsAControlThatAllowsTheUserToGetAPreviewOrderSummary()
         {
@@ -156,7 +156,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheCompletedVersionOfTheOrderSummaryIsPresented()
         {
             new PreviewOrderSummary(Test, Context).ThenTheOrderSummaryIsPresented();
-            ThenThereIsAControlThatAllowsTheUserToDownloadA_PDFVersionOfTheOrderSummary();
+            Test.Pages.PreviewOrderSummary.TopGetOrderSummaryIsDisplayed().Should().BeTrue();
         }
 
         [Then(@"the completed order summary has specific content related to the order being completed")]
