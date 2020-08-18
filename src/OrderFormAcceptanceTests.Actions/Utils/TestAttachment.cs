@@ -17,7 +17,6 @@ namespace OrderFormAcceptanceTests.Actions.Utils
                 this.ContentAsString = sr.ReadToEnd();
             }
             this.Name = fileName;
-            this.ContentType = mediaType;
         }
     }
 }
