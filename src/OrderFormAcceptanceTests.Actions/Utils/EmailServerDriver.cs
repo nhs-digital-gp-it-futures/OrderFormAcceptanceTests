@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Mail;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,7 +19,6 @@ namespace OrderFormAcceptanceTests.Actions.Utils
             {
                 emailList = emailList.Where(e => e.To.Equals(emailToCheck, StringComparison.OrdinalIgnoreCase));
             }
-            emailList.ToList().ForEach( e => e.Attachment.Dispose());
             return emailList.Count();
         }
 
@@ -103,23 +102,19 @@ namespace OrderFormAcceptanceTests.Actions.Utils
             return new Uri($"{hostUrl}/email/email/{id}");
         }
 
-        private static Attachment ExtractAttachment(JToken x)
+        private static TestAttachment ExtractAttachment(JToken x)
         {
             if(!x.Contains("attachment"))
             {
                 return null;
             }
 
-            Attachment returnAttachment;
-
             byte[] byteArray = Encoding.ASCII.GetBytes(x.SelectToken("attachment").First().SelectToken("stream").ToString().Trim());
             var stream = new MemoryStream(byteArray);
             var fileName = x.SelectToken("attachment").First().SelectToken("fileName").ToString().Trim();
             var contentType = x.SelectToken("attachment").First().SelectToken("contentType").ToString().Trim();
 
-            returnAttachment = new Attachment(stream, fileName, contentType);
-
-            return returnAttachment;
+            return new TestAttachment(stream, fileName, new ContentType(contentType));
         }
     }
 }

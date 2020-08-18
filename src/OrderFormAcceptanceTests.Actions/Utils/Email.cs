@@ -18,7 +18,7 @@ namespace OrderFormAcceptanceTests.Actions.Utils
         public string PlainTextBody { get; set; }
 
         public string HtmlBody { get; set; }
-        public Attachment Attachment { get; set; }
+        public TestAttachment Attachment { get; set; }
 
     }
 }

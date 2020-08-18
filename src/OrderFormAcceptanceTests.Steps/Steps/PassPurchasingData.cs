@@ -35,11 +35,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var email = (Email)Context[ContextKeys.SentEmail];
             var attachmentFileName = email.Attachment.Name;
             var attachmentFileType = email.Attachment.ContentType.MediaType;
-            var attachmentContent = new StreamReader(email.Attachment.ContentStream).ReadToEnd();
-            email.Attachment.ContentStream.Dispose();
             attachmentFileName.Should().EndWithEquivalent(".CSV");
             attachmentFileType.Should().ContainEquivalentOf("CSV");
-            attachmentContent.Should().ContainEquivalentOf("CallOffPartyId");            
+            email.Attachment.ContentAsString.Should().ContainEquivalentOf("CallOffPartyId");            
         }
     }
 }
