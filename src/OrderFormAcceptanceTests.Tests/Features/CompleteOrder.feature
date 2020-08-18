@@ -92,6 +92,7 @@ Scenario: Complete Order - Complete order screen if Funding Source was 'yes'
 	And the Call Off Agreement ID is displayed in the page title
 	And the Order description is displayed
 	And there is a control to complete order
+	And there is a control to continue editing order
 
 Scenario: Complete Order - Go back before complete order
 	Given that the User is on the confirm complete order screen with Funding Source option 'yes' selected
@@ -120,6 +121,7 @@ Scenario: Complete Order - Complete order screen if Funding Source was 'no'
 	And the Call Off Agreement ID is displayed in the page title
 	And the Order description is displayed
 	And there is a control to complete order
+	And there is a control to continue editing order
 
 Scenario: Complete Order - Order completed if Funding Source was 'no' confirmation screen
 	Given that the User is on the confirm complete order screen with Funding Source option 'no' selected
@@ -144,6 +146,12 @@ Scenario: Complete Order - Indicate if automatically processed or not if Funding
 	And the Organisation Orders Dashboard is displayed
 	And the Order is in the 'Completed Orders' table
 	Then there is an indication that the Order has not been processed automatically
+
+Scenario: Complete Order - Continue editing order
+	Given that the User is on the confirm complete order screen with Funding Source option 'no' selected
+	When the User chooses to continue editing order 
+	Then the Order dashboard is presented
+	And the Order is not completed
 
 Scenario: View Completed Order Summary
 	Given a User has completed an Order 
