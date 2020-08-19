@@ -29,6 +29,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.CompleteOrder.ClickCompleteOrderButton();
         }
 
+        [When(@"the User chooses to continue editing order")]
+        public void WhenTheUserChoosesToContinueEditingOrder()
+        {
+            Test.Pages.CompleteOrder.ClickContinueEditingOrderButton();
+        }
+
         [When(@"the User chooses to download a PDF of their Order Summary")]
         public void WhenTheUserChoosesToDownloadAPdfOfOrderSummary()
         {
@@ -82,6 +88,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenThereIsAControlToCompleteOrder()
         {
             Test.Pages.CompleteOrder.CompleteOrderButtonIsDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"there is a control to continue editing order")]
+        public void ThenThereIsAControlToContinueEditingOrder()
+        {
+            Test.Pages.CompleteOrder.ContinueEditingOrderButtonIsDisplayed().Should().BeTrue();
         }
 
         [Then(@"there is a control that allows the User to download a \.PDF version of the Order Summary")]
@@ -182,5 +194,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheCompletedVersionOfTheOrderSummaryIsPresented();
         }
 
+        [Then(@"the Order is not completed")]
+        public void ThenTheOrderIsNotCompleted()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order = order.Retrieve(Test.ConnectionString);
+            order.OrderStatusId.Should().Be(2);
+            order.DateCompleted.Should().BeNull();
+        }
     }
 }
