@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
+using System.Threading.Tasks;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
 {
@@ -25,7 +26,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [StepDefinition(@"the User confirms to complete the Order")]
-        public async System.Threading.Tasks.Task WhenTheUserConfirmsToCompleteTheOrderAsync()
+        public async Task WhenTheUserConfirmsToCompleteTheOrderAsync()
         {
             var precount = await EmailServerDriver.GetEmailCountAsync(Test.Url, ("noreply@buyingcatalogue.nhs.uk"));
             Context.Add(ContextKeys.EmailCount, precount);

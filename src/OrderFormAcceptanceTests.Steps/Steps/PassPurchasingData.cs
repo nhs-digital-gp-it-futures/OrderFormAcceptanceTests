@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
+using System.Threading.Tasks;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
 {
@@ -15,11 +16,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
     {
         public PassPurchasingData(UITest test, ScenarioContext context) : base(test, context)
         {
-
         }
 
         [Then(@"a \.CSV is sent to the specified mailbox")]
-        public async System.Threading.Tasks.Task ThenA_CSVIsSentToTheSpecifiedMailboxAsync()
+        public async Task ThenA_CSVIsSentToTheSpecifiedMailboxAsync()
         {
             var targetEmail = "alicesmith@email.com";
             var currentCount = await EmailServerDriver.GetEmailCountAsync(Test.Url, targetEmail);
@@ -35,8 +35,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var email = (Email)Context[ContextKeys.SentEmail];
             var attachmentFileName = email.Attachment.Name;
             var attachmentFileType = email.Attachment.ContentType.MediaType;
-            attachmentFileName.Should().EndWithEquivalent(".CSV");
-            attachmentFileType.Should().ContainEquivalentOf("CSV");
+            attachmentFileName.Should().EndWithEquivalent(".csv");
+            attachmentFileType.Should().ContainEquivalentOf("csv");
             email.Attachment.ContentAsString.Should().ContainEquivalentOf("CallOffPartyId");            
         }
     }

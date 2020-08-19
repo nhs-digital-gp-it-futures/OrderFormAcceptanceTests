@@ -51,6 +51,7 @@ namespace OrderFormAcceptanceTests.Actions.Utils
             using var client = NewHttpClient();
             await client.DeleteAsync(DeleteAllEmailsUrl(hostUrl));
         }
+
         public static async Task ClearEmailAsync(string hostUrl, string id)
         {
             using var client = NewHttpClient();
@@ -93,6 +94,7 @@ namespace OrderFormAcceptanceTests.Actions.Utils
             }
             return new Uri($"{hostUrl}/email/email/all");
         }
+
         private static Uri DeleteEmailUrl(string hostUrl, string id)
         {
             if (IsRunningLocal(hostUrl))
