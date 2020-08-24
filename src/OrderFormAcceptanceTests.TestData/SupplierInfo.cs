@@ -73,7 +73,8 @@ namespace OrderFormAcceptanceTests.TestData
 
         public static int SupplierWithMoreThanOneSolution(string connectionString)
         {
-            const string query = @"SELECT SupplierId, COUNT(*) FROM CatalogueItem WHERE CatalogueItemTypeId = 1 GROUP BY SupplierId ORDER BY 2 DESC";
+            var query =
+                $@"SELECT SupplierId, COUNT(*) FROM CatalogueItem WHERE CatalogueItemTypeId = {(int)CatalogueItemType.Solution} GROUP BY SupplierId ORDER BY 2 DESC";
 
             return SqlExecutor.Execute<int>(connectionString, query, null).FirstOrDefault();
         } 

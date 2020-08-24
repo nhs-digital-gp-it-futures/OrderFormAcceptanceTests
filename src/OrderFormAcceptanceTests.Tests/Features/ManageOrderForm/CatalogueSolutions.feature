@@ -1,7 +1,7 @@
 ﻿Feature: Catalogue Solutions
-	As a Buyer
-	I want to manage the Catalogue Solutions of Order Form 
-	So that the information is correct
+    As a Buyer
+    I want to manage the Catalogue Solutions of Order Form 
+    So that the information is correct
 
 Background:
     Given an incomplete order exists
