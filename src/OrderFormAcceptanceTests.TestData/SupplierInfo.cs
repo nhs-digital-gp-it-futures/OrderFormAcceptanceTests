@@ -70,5 +70,12 @@ namespace OrderFormAcceptanceTests.TestData
 
             return SqlExecutor.Execute<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType, provisioningType = (int)provisioningType });
         }
+
+        public static int SupplierWithMoreThanOneSolution(string connectionString)
+        {
+            const string query = @"SELECT SupplierId, COUNT(*) FROM CatalogueItem WHERE CatalogueItemTypeId = 1 GROUP BY SupplierId ORDER BY 2 DESC";
+
+            return SqlExecutor.Execute<int>(connectionString, query, null).FirstOrDefault();
+        } 
     }
 }
