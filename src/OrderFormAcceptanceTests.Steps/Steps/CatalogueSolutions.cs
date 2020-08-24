@@ -51,8 +51,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenASupplierWhichHasACatalogueSoltutionWithOnlyOneListPriceWasChosen()
         {
             var order = (Order)Context["CreatedOrder"];
-            order.SupplierId = 100001;
-            order.SupplierName = "Remedical Software";
+            order.SupplierId = SupplierInfo.SupplierWithSolutionWithOnePrice(Test.BapiConnectionString);
+            order.SupplierName = SupplierInfo.SupplierName(Test.BapiConnectionString, order.SupplierId.Value);
             order.Update(Test.ConnectionString);
         }
 
