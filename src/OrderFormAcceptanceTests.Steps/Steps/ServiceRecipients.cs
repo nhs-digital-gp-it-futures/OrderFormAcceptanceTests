@@ -17,6 +17,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.ClickEditServiceRecipients();
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeFalse();
+            ThenTheyArePresentedWithSelectServiceRecipientForm();
+        }
+
+        [Then(@"they are presented with select Service Recipient form")]
+        public void ThenTheyArePresentedWithSelectServiceRecipientForm()
+        {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("service recipients").Should().BeTrue();
         }
 

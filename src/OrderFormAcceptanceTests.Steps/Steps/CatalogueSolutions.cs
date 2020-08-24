@@ -47,6 +47,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             searchedOrderItem.Should().BeEmpty();
         }
 
+        [Given(@"a supplier which has a catalogue soltution with only one list price was chosen")]
+        public void GivenASupplierWhichHasACatalogueSoltutionWithOnlyOneListPriceWasChosen()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = 100001;
+            order.SupplierName = "Remedical Software";
+            order.Update(Test.ConnectionString);
+        }
+
         [Given(@"there is no Catalogue Solution in the order but the section is complete")]
         public void SetCatalogueSolutionSectionToCompleteWith0SolutionsAdded()
         {
@@ -130,6 +139,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add("ChosenSolutionId", solutionId);
         }
 
+        [Given(@"the User is presented with select Service Recipient form")]
+        public void GivenTheUserIsPresentedWithSelectServiceRecipientForm()
+        {
+            GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier();
+            GivenTheUserSelectsACatalogueSolutionToAdd();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            new ServiceRecipients(Test, Context).ThenTheyArePresentedWithSelectServiceRecipientForm();
+        }
+
         [Then(@"all the available prices for that Catalogue Solution are presented")]
         public void ThenAllTheAvailablePricesForThatCatalogueSolutionArePresented()
         {
@@ -166,7 +184,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             GivenTheUserSelectsAPrice();
-            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            new ServiceRecipients(Test, Context).ThenTheyArePresentedWithSelectServiceRecipientForm();
         }
 
         [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the per patient flat price")]
@@ -174,7 +193,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton();
-            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
+            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            new ServiceRecipients(Test, Context).ThenTheyArePresentedWithSelectServiceRecipientForm();
         }
 
         [Then(@"the User is informed they have to select a Service Recipient")]
