@@ -175,11 +175,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"a Service Recipient is selected")]
         public void GivenAServiceRecipientIsSelected()
         {
-            var odsCode = Test.Pages.OrderForm.ClickRadioButton();
+            var odsCode = Test.Pages.OrderForm.ClickCheckbox();
             Context.Add("ChosenOdsCode", odsCode);
         }
 
-        [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the variable flat price")]
+        [Given(@"the User is presented with the Service Recipients for the Order after selecting the variable flat price")]
         public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder()
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
@@ -188,7 +188,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new ServiceRecipients(Test, Context).ThenTheyArePresentedWithSelectServiceRecipientForm();
         }
 
-        [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the per patient flat price")]
+        [Given(@"the User is presented with the Service Recipients for the Order after selecting the per patient flat price")]
         public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingThePerPatientFlatPrice()
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
@@ -577,7 +577,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Update(Test.ConnectionString);
         }
 
-        [Given(@"the User is presented with the Service Recipients saved in the Order after selecting the declarative flat price")]
+        [Given(@"the User is presented with the Service Recipients for the Order after selecting the declarative flat price")]
         public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingTheDeclarativeFlatPrice()
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();

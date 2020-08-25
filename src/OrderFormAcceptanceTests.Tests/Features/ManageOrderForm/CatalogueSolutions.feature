@@ -113,20 +113,24 @@ Scenario: Catalogue Solutions - Select a Service Recipient
 	And the User selects a price
 	When they choose to continue 
 	Then they are presented with select Service Recipient form
+    And the Call Off Agreement ID is displayed in the page title
+    And they can select one or more Service Recipients for the Catalogue Solution
+    And the Call Off Ordering Party's Name (organisation name) and ODS code are presented as a Service Recipient
 
 Scenario: Catalogue Solutions - No Service Recipient for the Catalogue Solution selected
-	Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
+	Given the User is presented with the Service Recipients for the Order after selecting the variable flat price
 	And no Service Recipient is selected
 	When they choose to continue
 	Then the User is informed they have to select a Service Recipient
 
 Scenario: Catalogue Solutions - Go back from select a service recipient
-	Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
+	Given the User is presented with the Service Recipients for the Order after selecting the variable flat price
 	When the User chooses to go back
 	Then all the available prices for that Catalogue Solution are presented
+    And the User's selected price is selected
 
 Scenario: Catalogue Solutions - edit price screen - Flat price with variable order type selected
-	Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
+	Given the User is presented with the Service Recipients for the Order after selecting the variable flat price
 	And a Service Recipient is selected
 	When they choose to continue
 	Then they are presented with the Catalogue Solution edit form
@@ -142,7 +146,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	And the save button is enabled
 
 Scenario: Catalogue Solutions - edit price screen - Flat price with per patient order type selected
-	Given the User is presented with the Service Recipients saved in the Order after selecting the per patient flat price
+	Given the User is presented with the Service Recipients for the Order after selecting the per patient flat price
 	And a Service Recipient is selected
 	When they choose to continue
 	Then they are presented with the Catalogue Solution edit form
@@ -158,7 +162,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with per patient 
 
 Scenario: Catalogue Solutions - edit price screen - Flat price with declarative order type selected
 	Given the supplier added to the order has a solution with a declarative flat price
-	And the User is presented with the Service Recipients saved in the Order after selecting the declarative flat price
+	And the User is presented with the Service Recipients for the Order after selecting the declarative flat price
 	And a Service Recipient is selected
 	When they choose to continue
 	Then they are presented with the Catalogue Solution edit form
@@ -394,7 +398,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Price is 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back before save
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	When the User chooses to go back
-	Then they are presented with the Service Recipients saved in the Order
+	Then they are presented with the Service Recipients for the Order
 	Examples:
 	| ProvisioningType |
 	| declarative      |

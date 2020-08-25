@@ -250,6 +250,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ContinueButtonDisplayed().Should().BeFalse();
         }
 
+        [Then(@"they can select one or more Service Recipients for the Catalogue Solution")]
+        [Then(@"the User is able to select the Call Off Ordering Party")]
+        [Then(@"they are presented with the Service Recipients for the Order")]
+        public void ThenTheyCanSelectOneOrMoreCheckbox()
+        {
+            Test.Pages.OrderForm.NumberOfCheckboxesDisplayed().Should().BeGreaterThan(0);
+        }
+
         [Then(@"they can select a price for the Associated Service")]
         [Then(@"they can select one Catalogue Solution to add")]
         [Then(@"they can select a price for the Catalogue Solution")]
