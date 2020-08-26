@@ -24,7 +24,6 @@ namespace OrderFormAcceptanceTests.Steps.Utils
             Driver = new BrowserFactory().Driver;
             Pages = new PageActions(Driver).PageActionCollection;
             Url = EnvironmentVariables.Url();
-
             EmailServerDriver = InstantiateEmailServerDriver(Url);
 
             GoToUrl();

@@ -190,7 +190,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedDate = order.DateCompleted.Value.ToString("d MMMM yyyy");
             date.Should().EndWithEquivalent(expectedDate);
         }
-
+        
         [StepDefinition(@"the Completed Order Summary is displayed")]
         public void WhenTheCompletedOrderSummaryIsDisplayed()
         {
