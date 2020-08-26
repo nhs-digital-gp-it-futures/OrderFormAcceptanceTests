@@ -6,9 +6,10 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NHSD.BuyingCatalogue.EmailClient.IntegrationTesting" Version="2.1.1" />
     <PackageReference Include="Polly" Version="7.2.1" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-    <PackageReference Include="SpecFlow" Version="3.1.97" />
+    <PackageReference Include="SpecFlow" Version="3.3.57" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
   </ItemGroup>
 

@@ -12,7 +12,6 @@ Scenario: Enable Complete Button - Funding Source now complete, >=1 Catalogue So
 	And the Call-off Ordering Party section is enabled
 	And the Supplier section is enabled
 	And the Commencement date section is enabled 
-	And the Service Recipient section is enabled
 	And the Catalogue Solution section is enabled
 	And the Additional Service section is enabled
 	And the Associated Service section is enabled
@@ -33,7 +32,6 @@ Scenario: Enable Complete Button - Funding Source now complete, >=1 Catalogue So
 	And the Call-off Ordering Party section is enabled
 	And the Supplier section is enabled
 	And the Commencement date section is enabled 
-	And the Service Recipient section is enabled
 	And the Catalogue Solution section is enabled
 	And the Additional Service section is enabled
 	And the Associated Service section is enabled
@@ -53,7 +51,6 @@ Scenario: Enable Complete Button - Funding Source now complete, 0 Service Recipi
 	And the Call-off Ordering Party section is enabled
 	And the Supplier section is enabled
 	And the Commencement date section is enabled 
-	And the Service Recipient section is enabled
 	And the Catalogue Solution section is not enabled
 	And the Additional Service section is not enabled
 	And the Associated Service section is enabled
@@ -74,7 +71,6 @@ Scenario: Enable Complete Button - Funding Source now complete, >=1 Service Reci
 	And the Call-off Ordering Party section is enabled
 	And the Supplier section is enabled
 	And the Commencement date section is enabled 
-	And the Service Recipient section is enabled
 	And the Catalogue Solution section is enabled
 	And the Additional Service section is not enabled
 	And the Associated Service section is enabled

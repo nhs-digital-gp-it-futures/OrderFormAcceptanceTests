@@ -18,7 +18,6 @@ Scenario: Additional Services - Catalogue Solution now complete, >= 1 Service Re
 	And there is the Call-off Ordering Party section
 	And there is the Supplier section
 	And there is the Commencement date section
-	And there is the Service Recipients section
 	And there is the Additional Service section
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
@@ -32,7 +31,6 @@ Scenario: Additional Services - Catalogue Solution now complete, >= 1 Service Re
 	And the Call-off Ordering Party section is enabled
 	And the Supplier section is enabled
 	And the Commencement date section is enabled 
-	And the Service Recipient section is enabled
 	And the Catalogue Solution section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled

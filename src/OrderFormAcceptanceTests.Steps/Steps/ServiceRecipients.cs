@@ -17,6 +17,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.ClickEditServiceRecipients();
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeFalse();
+            ThenTheyArePresentedWithSelectServiceRecipientForm();
+        }
+
+        [Then(@"they are presented with select Service Recipient form")]
+        public void ThenTheyArePresentedWithSelectServiceRecipientForm()
+        {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("service recipients").Should().BeTrue();
         }
 
@@ -102,28 +108,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             serviceRecipientInDB.Should().BeNullOrEmpty();
             serviceRecipientInDB = ((ServiceRecipient)Context["CreatedServiceRecipient"]).Retrieve(Test.ConnectionString);
             serviceRecipientInDB.Should().BeNullOrEmpty();
-        }
-
-        [When(@"the User deselects a Service Recipient that have been previously saved in the Order")]
-        [StepDefinition(@"the User deselects all Service Recipients that have been previously saved in the Order")]
-        public void WhenTheUserDeselectsAServiceRecipientThatHaveBeenPreviouslySavedInTheOrder()
-        {
-            GivenTheUserChoosesToManageTheServiceRecipientsSection();
-            WhenTheUserChoosesToSelectAll();
-            ThenTheSelectAllButtonChangesToDeselectAll();
-            WhenTheUserChoosesToSelectAll();
-            ThenTheSelectedCallOffOrderingPartyPresentedIsDeselected();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            new OrderForm(Test, Context).ThenTheOrderIsSaved();
-        }
-
-        [When(@"the User adds a Service Recipient to the Service Recipient section")]
-        public void WhenTheUserAddsAServiceRecipientToTheServiceRecipientSection()
-        {
-            ThenTheUserIsAbleToManageTheServiceRecipientsSection();
-            GivenTheCallOffOrderingPartyIsSelected();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            new OrderForm(Test, Context).ThenTheOrderIsSaved();
         }
     }
 }
