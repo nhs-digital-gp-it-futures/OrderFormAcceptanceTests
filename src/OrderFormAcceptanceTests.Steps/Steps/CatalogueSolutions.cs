@@ -19,6 +19,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         }
 
+        [Given(@"the Commencement date section is complete")]
+        public void GivenTheCommencementDateSectionIsComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.CommencementDate.Should().NotBeNull();
+        }
+
         [Given(@"there are one or more Service Recipients in the order")]
         public void GivenThereAreOneOrMoreServiceRecipientsInTheOrder()
         {

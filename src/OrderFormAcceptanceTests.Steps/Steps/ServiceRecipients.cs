@@ -12,21 +12,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
         }
 
-        [Then(@"the user is able to manage the Service Recipients section")]
-        public void ThenTheUserIsAbleToManageTheServiceRecipientsSection()
-        {
-            Test.Pages.OrderForm.ClickEditServiceRecipients();
-            Test.Pages.OrderForm.TaskListDisplayed().Should().BeFalse();
-            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("service recipients").Should().BeTrue();
-        }
-
-        [Given(@"the User chooses to edit the Service Recipient section")]
-        public void GivenTheUserChoosesToManageTheServiceRecipientsSection()
-        {
-            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
-            ThenTheUserIsAbleToManageTheServiceRecipientsSection();
-        }
-
         [Then(@"the Call Off Ordering Party's Name \(organisation name\) and ODS code are presented as a Service Recipient")]
         public void ThenTheCallOffOrderingPartySNameOrganisationNameAndODSCodeArePresentedAsAServiceRecipient()
         {
@@ -102,28 +87,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             serviceRecipientInDB.Should().BeNullOrEmpty();
             serviceRecipientInDB = ((ServiceRecipient)Context["CreatedServiceRecipient"]).Retrieve(Test.ConnectionString);
             serviceRecipientInDB.Should().BeNullOrEmpty();
-        }
-
-        [When(@"the User deselects a Service Recipient that have been previously saved in the Order")]
-        [StepDefinition(@"the User deselects all Service Recipients that have been previously saved in the Order")]
-        public void WhenTheUserDeselectsAServiceRecipientThatHaveBeenPreviouslySavedInTheOrder()
-        {
-            GivenTheUserChoosesToManageTheServiceRecipientsSection();
-            WhenTheUserChoosesToSelectAll();
-            ThenTheSelectAllButtonChangesToDeselectAll();
-            WhenTheUserChoosesToSelectAll();
-            ThenTheSelectedCallOffOrderingPartyPresentedIsDeselected();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            new OrderForm(Test, Context).ThenTheOrderIsSaved();
-        }
-
-        [When(@"the User adds a Service Recipient to the Service Recipient section")]
-        public void WhenTheUserAddsAServiceRecipientToTheServiceRecipientSection()
-        {
-            ThenTheUserIsAbleToManageTheServiceRecipientsSection();
-            GivenTheCallOffOrderingPartyIsSelected();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            new OrderForm(Test, Context).ThenTheOrderIsSaved();
         }
     }
 }

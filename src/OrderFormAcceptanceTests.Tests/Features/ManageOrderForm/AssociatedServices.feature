@@ -22,7 +22,6 @@ Scenario: Associated Services - Service Recipient now complete, 0 Service Recipi
 	And the Call-off Ordering Party section is enabled
 	And the Supplier section is enabled
 	And the Commencement date section is enabled 
-	And the Service Recipient section is enabled
 	And the Associated Service section is enabled
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
@@ -38,7 +37,6 @@ Scenario: Associated Services - Catalogue Solution now complete, >= 1 Service Re
 	And the Call-off Ordering Party section is enabled
 	And the Supplier section is enabled
 	And the Commencement date section is enabled 
-	And the Service Recipient section is enabled
 	And the Catalogue Solution section is enabled
 	And the Additional Service section is not enabled
 	And the Associated Service section is enabled
@@ -55,7 +53,6 @@ Scenario: Associated Services - Service Recipient >=1, Catalogue Solution is NUL
 	And the Call-off Ordering Party section is enabled
 	And the Supplier section is enabled
 	And the Commencement date section is enabled 
-	And the Service Recipient section is enabled
 	And the Catalogue Solution section is enabled
 	And the Additional Service section is not enabled
 	And the Associated Service section is not enabled
@@ -72,7 +69,6 @@ Scenario: Associated Services - >= 1 Service Recipient, >=1 Catalogue Solution, 
 	And the Call-off Ordering Party section is enabled
 	And the Supplier section is enabled
 	And the Commencement date section is enabled 
-	And the Service Recipient section is enabled
 	And the Catalogue Solution section is enabled
 	And the Additional Service section is enabled
 	And the Associated Service section is not enabled
@@ -90,7 +86,6 @@ Scenario: Associated Services - Additional Service now complete, >= 1 Service Re
 	And the Call-off Ordering Party section is enabled
 	And the Supplier section is enabled
 	And the Commencement date section is enabled 
-	And the Service Recipient section is enabled
 	And the Catalogue Solution section is enabled
 	And the Additional Service section is enabled
 	And the Associated Service section is enabled
@@ -107,7 +102,6 @@ Scenario: Associated Services - Additional Service now complete, >= 1 Service Re
 	And the Call-off Ordering Party section is enabled
 	And the Supplier section is enabled
 	And the Commencement date section is enabled 
-	And the Service Recipient section is enabled
 	And the Catalogue Solution section is enabled
 	And the Additional Service section is enabled
 	And the Associated Service section is enabled
@@ -434,11 +428,3 @@ Scenario: Associated Service added - section marked as complete
 	When the User chooses to continue
 	Then the Order dashboard is presented
 	And the content validation status of the associated-services section is complete
-
-Scenario: Associated Service added - Select no Service Recipients and then go back and add service recipients
-	Given there are no Service Recipients in the order
-	And the Catalogue Solutions section is not complete
-	And an Associated Service with a flat price declarative order type is saved to the order
-	And the Order Form for the existing order is presented
-	When the User adds a Service Recipient to the Service Recipient section
-	Then the Associated Service section is enabled 
