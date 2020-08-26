@@ -28,8 +28,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"the User confirms to complete the Order")]
         public async Task WhenTheUserConfirmsToCompleteTheOrderAsync()
         {
-            var precount = await EmailServerDriver.GetEmailCountAsync(Test.Url, ("noreply@buyingcatalogue.nhs.uk"));
-            Context.Add(ContextKeys.EmailCount, precount);
+            //var precount = await EmailServerDriver.GetEmailCountAsync(Test.Url, ("noreply@buyingcatalogue.nhs.uk"));
+            //Context.Add(ContextKeys.EmailCount, precount);
             Test.Pages.CompleteOrder.ClickCompleteOrderButton();
         }
 
