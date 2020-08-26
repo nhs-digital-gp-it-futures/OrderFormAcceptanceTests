@@ -682,6 +682,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return value;
         }
 
+        public List<string> GetRadioButtonText()
+        {
+            return Driver.FindElements(Pages.Common.RadioButtonLabel).Select(s => s.Text).ToList();
+        }
+
         public bool PriceInputIsDisplayed()
         {
             return Driver.FindElements(Pages.OrderForm.PriceInput).Count == 1;

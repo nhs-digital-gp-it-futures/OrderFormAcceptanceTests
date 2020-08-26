@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NHSD.BuyingCatalogue.EmailClient.IntegrationTesting.Drivers;
+using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions;
 using OrderFormAcceptanceTests.Actions.Collections;
 
@@ -10,6 +11,7 @@ namespace OrderFormAcceptanceTests.Steps.Utils
         internal string BapiConnectionString;
         internal string IsapiConnectionString;
         internal IWebDriver Driver;
+        internal EmailServerDriver EmailServerDriver;
         internal PageActionCollection Pages;
         internal readonly string Url;
 
@@ -22,6 +24,7 @@ namespace OrderFormAcceptanceTests.Steps.Utils
             Driver = new BrowserFactory().Driver;
             Pages = new PageActions(Driver).PageActionCollection;
             Url = EnvironmentVariables.Url();
+            EmailServerDriver = InstantiateEmailServerDriver(Url);
 
             GoToUrl();
         }
@@ -29,6 +32,13 @@ namespace OrderFormAcceptanceTests.Steps.Utils
         public void GoToUrl()
         {
             Driver.Navigate().GoToUrl(Url);
+        }
+
+        private EmailServerDriver InstantiateEmailServerDriver(string Url)
+        {
+            var emailUrl = EmailUtils.GetEmailUrl(Url);
+            var emailDriverSettings = new EmailServerDriverSettings(emailUrl);
+            return new EmailServerDriver(emailDriverSettings);
         }
     }
 }

@@ -19,6 +19,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         }
 
+        [Given(@"the Commencement date section is complete")]
+        public void GivenTheCommencementDateSectionIsComplete()
+        {
+            var order = (Order)Context["CreatedOrder"];
+            order.CommencementDate.Should().NotBeNull();
+        }
+
         [Given(@"there are one or more Service Recipients in the order")]
         public void GivenThereAreOneOrMoreServiceRecipientsInTheOrder()
         {
@@ -106,6 +113,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheyArePresentedWithTheCatalogueSolutionsAvailableFromTheirChosenSupplier()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Catalogue Solution").Should().BeTrue();
+        }
+
+        [Then(@"they are displayed in alphabetical order")]
+        public void ThenTheyAreDisplayedInAlphabeticalOrder()
+        {
+            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.OrderForm.GetRadioButtonText());
         }
 
         [Given(@"the User is presented with Catalogue Solutions available from their chosen Supplier")]
@@ -460,6 +473,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             GivenTheCatalogueSolutionIsSavedInTheDB();
         }
 
+        [Given(@"the supplier chosen has more than one solution")]
+        public void GivenTheSupplierChosenHasMoreThanOneSolution()
+        {
+            var supplierId = SupplierInfo.SupplierWithMoreThanOneSolution(Test.BapiConnectionString);
+            var order = (Order)Context["CreatedOrder"];
+            order.SupplierId = supplierId;
+            order.Update(Test.ConnectionString);
+        }
+
+
         [Then(@"the Catalogue Solutions are presented")]
         [Then(@"the Associated Services are presented")]
         [Then(@"the Additional Services are presented")]
@@ -588,6 +611,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
         {
             return SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
-        }        
+        }
     }
 }
