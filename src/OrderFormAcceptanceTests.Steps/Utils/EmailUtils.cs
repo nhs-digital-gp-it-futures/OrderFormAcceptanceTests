@@ -8,16 +8,8 @@ using TechTalk.SpecFlow;
 namespace OrderFormAcceptanceTests.Steps
 {
     [Binding]
-    class EmailUtils
+    internal class EmailUtils
     {
-
-        private readonly EmailServerDriver _emailServerDriver;
-
-        public EmailUtils(EmailServerDriver emailServerDriver)
-        {
-            _emailServerDriver = emailServerDriver ?? throw new ArgumentNullException(nameof(emailServerDriver));
-        }
-
         private static string DowngradeHttps(string value)
         {
             return value.Replace("https", "http");

@@ -25,7 +25,7 @@ namespace OrderFormAcceptanceTests.Steps.Utils
             Pages = new PageActions(Driver).PageActionCollection;
             Url = EnvironmentVariables.Url();
 
-            EmailServerDriver = InstatiateEmailServerDriver(Url);
+            EmailServerDriver = InstantiateEmailServerDriver(Url);
 
             GoToUrl();
         }
@@ -35,7 +35,7 @@ namespace OrderFormAcceptanceTests.Steps.Utils
             Driver.Navigate().GoToUrl(Url);
         }
 
-        private EmailServerDriver InstatiateEmailServerDriver(string Url)
+        private EmailServerDriver InstantiateEmailServerDriver(string Url)
         {
             var emailUrl = EmailUtils.GetEmailUrl(Url);
             var emailDriverSettings = new EmailServerDriverSettings(emailUrl);
