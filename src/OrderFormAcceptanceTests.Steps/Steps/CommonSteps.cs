@@ -260,6 +260,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
         }
 
+        [Then(@"the User's selected catalogue solution is selected")]
         [Then(@"the User's selected price is selected")]
         [Then(@"the User's selected Associated Service is selected")]
         [Then(@"the User's selected Additional Service is selected")]

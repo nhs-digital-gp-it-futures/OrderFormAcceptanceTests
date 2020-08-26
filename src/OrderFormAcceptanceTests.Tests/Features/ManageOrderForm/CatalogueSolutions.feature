@@ -88,11 +88,25 @@ Scenario: Catalogue Solutions - Go back from select price
 	When the User chooses to go back
 	Then they are presented with the Catalogue Solutions available from their chosen Supplier
 
+Scenario: Catalogue Solutions - Skip list price page and display select service recipient page
+    Given a supplier which has a catalogue soltution with only one list price was chosen
+    And the User is presented with Catalogue Solutions available from their chosen Supplier
+    And the User selects a catalogue solution to add
+    When they choose to continue
+    Then they are presented with select Service Recipient form
+
+Scenario: Catalogue Solutions - Skip list price page and click go back
+    Given a supplier which has a catalogue soltution with only one list price was chosen
+    And the User is presented with select Service Recipient form
+    When the User chooses to go back
+	Then they are presented with the Catalogue Solutions available from their chosen Supplier
+    And the User's selected catalogue solution is selected
+
 Scenario: Catalogue Solutions - Select a Service Recipient
 	Given the User is presented with the prices for the selected Catalogue Solution
 	And the User selects a price
 	When they choose to continue 
-	Then they are presented with the Service Recipients saved in the Order
+	Then they are presented with select Service Recipient form
 
 Scenario: Catalogue Solutions - No Service Recipient for the Catalogue Solution selected
 	Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
