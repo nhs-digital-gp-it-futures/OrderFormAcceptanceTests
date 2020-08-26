@@ -92,6 +92,7 @@ Scenario: Complete Order - Complete order screen if Funding Source was 'yes'
 	And the Call Off Agreement ID is displayed in the page title
 	And the Order description is displayed
 	And there is a control to complete order
+	And there is a control to continue editing order
 
 Scenario: Complete Order - Go back before complete order
 	Given that the User is on the confirm complete order screen with Funding Source option 'yes' selected
@@ -120,6 +121,7 @@ Scenario: Complete Order - Complete order screen if Funding Source was 'no'
 	And the Call Off Agreement ID is displayed in the page title
 	And the Order description is displayed
 	And there is a control to complete order
+	And there is a control to continue editing order
 
 Scenario: Complete Order - Order completed if Funding Source was 'no' confirmation screen
 	Given that the User is on the confirm complete order screen with Funding Source option 'no' selected
@@ -144,10 +146,29 @@ Scenario: Complete Order - Indicate if automatically processed or not if Funding
 	And the Organisation Orders Dashboard is displayed
 	And the Order is in the 'Completed Orders' table
 	Then there is an indication that the Order has not been processed automatically
-@ignore
+
+Scenario: Complete Order - Continue editing order
+	Given that the User is on the confirm complete order screen with Funding Source option 'no' selected
+	When the User chooses to continue editing order 
+	Then the Order dashboard is presented
+	And the Order is not completed
+
 Scenario: View Completed Order Summary
 	Given a User has completed an Order 
 	When they choose to view the Completed Order from their Organisation's Orders Dashboard
 	Then the Completed version of the Order Summary is presented
 	And the completed order summary has specific content related to the order being completed
 	And the completed order summary contains the date the Order was completed
+
+Scenario: View Completed Order Summary - Button to get Order Summary
+	Given a User has completed an Order
+	When the Completed Order Summary is displayed
+	Then there is a button to get the Order Summary at the top and bottom of it 
+
+Scenario: View Completed Order Summary - Choose to get Order Summary
+	Given a User has completed an Order
+	And the Completed Order Summary is displayed
+	When the User chooses to get the Order Summary
+	Then a new tab will open
+	And the tab will contain the printable version of the Order Summary
+	And the Print Dialog within the Browser will appear automatically

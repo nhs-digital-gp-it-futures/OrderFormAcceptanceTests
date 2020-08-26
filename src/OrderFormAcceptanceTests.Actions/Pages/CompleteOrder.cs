@@ -80,6 +80,24 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             Driver.FindElement(Pages.CompleteOrder.CompleteOrderButton).Click();
         }
 
+        public bool ContinueEditingOrderButtonIsDisplayed()
+        {
+            try
+            {
+                Wait.Until(d => d.FindElements(Pages.CompleteOrder.ContinueEditingButton).Count == 1);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void ClickContinueEditingOrderButton()
+        {
+            Driver.FindElement(Pages.CompleteOrder.ContinueEditingButton).Click();
+        }
+
         public bool DownloadPDFControlIsDisplayed()
         {
             try

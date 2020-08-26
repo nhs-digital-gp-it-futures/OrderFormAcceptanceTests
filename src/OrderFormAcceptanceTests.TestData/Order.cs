@@ -170,7 +170,7 @@ namespace OrderFormAcceptanceTests.TestData
                             AssociatedServicesViewed=@AssociatedServicesViewed,
                             FundingSourceOnlyGMS=@FundingSourceOnlyGMS,
                             CommencementDate=@CommencementDate,
-                            Completed=@Completed,
+                            Completed=@DateCompleted,
                             Created=@created,
                             LastUpdated=@lastUpdated,
                             LastUpdatedBy=@lastUpdatedBy,
