@@ -46,6 +46,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditServiceRecipientsSectionDisplayed().Should().BeTrue();
         }
 
+        [Then(@"there is no Service Recipient section")]
+        public void ThenThereIsNoServiceRecipientSection()
+        {
+            Test.Pages.OrderForm.EditServiceRecipientsSectionDisplayed().Should().BeFalse();
+        }
+
         [Then(@"there is the Catalogue Solutions section")]
         public void ThenThereIsTheCatalogueSolutionsSection()
         {
@@ -351,12 +357,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheCommencementDateSectionIsEnabled()
         {
             Test.Pages.OrderForm.CommencementDateEnabled().Should().BeTrue();
-        }
-
-        [Then(@"the Service Recipient section is enabled")]
-        public void ThenTheServiceRecipientSectionIsEnabled()
-        {
-            Test.Pages.OrderForm.ServiceRecipientSectionEnabled().Should().BeTrue();
         }
 
         [Then(@"the Catalogue Solution section is enabled")]

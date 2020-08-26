@@ -20,7 +20,7 @@ Scenario: Call Off Ordering Party - Order description section is now complete
 	And there is the Call-off Ordering Party section
 	And the Preview order summary button is enabled
 	And the Delete order button is enabled
-	And the User is unable to submit the order
+	And the User is unable to complete the order
 
 Scenario: Call Off Ordering Party - Name and Address autopopulated
 	Given an incomplete order exists
