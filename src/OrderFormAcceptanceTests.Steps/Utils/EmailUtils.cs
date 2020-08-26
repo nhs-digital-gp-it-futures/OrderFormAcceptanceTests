@@ -8,7 +8,7 @@ using TechTalk.SpecFlow;
 namespace OrderFormAcceptanceTests.Steps
 {
     [Binding]
-    internal class EmailUtils
+    internal static class EmailUtils
     {
         private static string DowngradeHttps(string value)
         {
