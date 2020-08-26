@@ -109,68 +109,72 @@ Scenario: Catalogue Solutions - Skip list price page and click go back
     And the User's selected catalogue solution is selected
 
 Scenario: Catalogue Solutions - Select a Service Recipient
-    Given the User is presented with the prices for the selected Catalogue Solution
-    And the User selects a price
-    When they choose to continue
-    Then they are presented with the Service Recipients saved in the Order
+	Given the User is presented with the prices for the selected Catalogue Solution
+	And the User selects a price
+	When they choose to continue 
+	Then they are presented with select Service Recipient form
+    And the Call Off Agreement ID is displayed in the page title
+    And they can select one or more Service Recipients for the Catalogue Solution
+    And the Call Off Ordering Party's Name (organisation name) and ODS code are presented as a Service Recipient
 
 Scenario: Catalogue Solutions - No Service Recipient for the Catalogue Solution selected
-    Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
-    And no Service Recipient is selected
-    When they choose to continue
-    Then the User is informed they have to select a Service Recipient
+	Given the User is presented with the Service Recipients for the Order after selecting the variable flat price
+	And no Service Recipient is selected
+	When they choose to continue
+	Then the User is informed they have to select a Service Recipient
 
 Scenario: Catalogue Solutions - Go back from select a service recipient
-    Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
-    When the User chooses to go back
-    Then all the available prices for that Catalogue Solution are presented
+	Given the User is presented with the Service Recipients for the Order after selecting the variable flat price
+	When the User chooses to go back
+	Then all the available prices for that Catalogue Solution are presented
+    And the User's selected price is selected
 
 Scenario: Catalogue Solutions - edit price screen - Flat price with variable order type selected
-    Given the User is presented with the Service Recipients saved in the Order after selecting the variable flat price
-    And a Service Recipient is selected
-    When they choose to continue
-    Then they are presented with the Catalogue Solution edit form
-    And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
-    And the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form
-    And the Catalogue Solution edit form contains an input for the price
-    And the item on the Catalogue Solution edit form contains a unit of order
-    And the item on the Catalogue Solution edit form contains an input for the quantity
-    And the item on the Catalogue Solution edit form contains an input for date
-    And the item on the Catalogue Solution edit form contains a selection for the quantity estimation period
-    And the price input is autopopulated with the list price for the flat list price selected
-    And the delete button is disabled
-    And the save button is enabled
+	Given the User is presented with the Service Recipients for the Order after selecting the variable flat price
+	And a Service Recipient is selected
+	When they choose to continue
+	Then they are presented with the Catalogue Solution edit form
+	And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
+	And the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form
+	And the Catalogue Solution edit form contains an input for the price
+	And the item on the Catalogue Solution edit form contains a unit of order
+	And the item on the Catalogue Solution edit form contains an input for the quantity
+	And the item on the Catalogue Solution edit form contains an input for date
+	And the item on the Catalogue Solution edit form contains a selection for the quantity estimation period
+	And the price input is autopopulated with the list price for the flat list price selected
+	And the delete button is disabled
+	And the save button is enabled
 
 Scenario: Catalogue Solutions - edit price screen - Flat price with per patient order type selected
-    Given the User is presented with the Service Recipients saved in the Order after selecting the per patient flat price
-    And a Service Recipient is selected
-    When they choose to continue
-    Then they are presented with the Catalogue Solution edit form
-    And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
-    And the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form
-    And the Catalogue Solution edit form contains an input for the price
-    And the item on the Catalogue Solution edit form contains a unit of order
-    And the item on the Catalogue Solution edit form contains an input for the quantity
-    And the item on the Catalogue Solution edit form contains an input for date
-    And the price input is autopopulated with the list price for the flat list price selected
-    And the delete button is disabled
-    And the save button is enabled
+	Given the User is presented with the Service Recipients for the Order after selecting the per patient flat price
+	And a Service Recipient is selected
+	When they choose to continue
+	Then they are presented with the Catalogue Solution edit form
+	And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
+	And the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form
+	And the Catalogue Solution edit form contains an input for the price
+	And the item on the Catalogue Solution edit form contains a unit of order
+	And the item on the Catalogue Solution edit form contains an input for the quantity
+	And the item on the Catalogue Solution edit form contains an input for date
+	And the price input is autopopulated with the list price for the flat list price selected
+	And the delete button is disabled
+	And the save button is enabled
 
 Scenario: Catalogue Solutions - edit price screen - Flat price with declarative order type selected
-    Given the supplier added to the order has a solution with a declarative flat price
-    And the User is presented with the Service Recipients saved in the Order after selecting the declarative flat price
-    And a Service Recipient is selected
-    When they choose to continue
-    Then they are presented with the Catalogue Solution edit form
-    And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
-    And the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form
-    And the Catalogue Solution edit form contains an input for the price
-    And the item on the Catalogue Solution edit form contains a unit of order
-    And the item on the Catalogue Solution edit form contains an input for the quantity
-    And the item on the Catalogue Solution edit form contains an input for date
-    And the price input is autopopulated with the list price for the flat list price selected
-    And the delete button is disabled
-    And the save button is enabled
+	Given the supplier added to the order has a solution with a declarative flat price
+	And the User is presented with the Service Recipients for the Order after selecting the declarative flat price
+	And a Service Recipient is selected
+	When they choose to continue
+	Then they are presented with the Catalogue Solution edit form
+	And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
+	And the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form
+	And the Catalogue Solution edit form contains an input for the price
+	And the item on the Catalogue Solution edit form contains a unit of order
+	And the item on the Catalogue Solution edit form contains an input for the quantity
+	And the item on the Catalogue Solution edit form contains an input for date
+	And the price input is autopopulated with the list price for the flat list price selected
+	And the delete button is disabled
+	And the save button is enabled
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Mandatory data missing
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
@@ -408,16 +412,15 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Price is 
         | per patient      |
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back before save
-    Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
-    When the User chooses to go back
-    Then they are presented with the Service Recipients saved in the Order
-
-    Examples:
-        | ProvisioningType |
-        | declarative      |
-        | variable         |
-        | per patient      |
-
+	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
+	When the User chooses to go back
+	Then they are presented with the Service Recipients for the Order
+	Examples:
+	| ProvisioningType |
+	| declarative      |
+	| variable         |
+	| per patient      |
+	
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back after save
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data

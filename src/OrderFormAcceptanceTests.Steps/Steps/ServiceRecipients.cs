@@ -39,12 +39,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ServiceRecipientsNameAndOdsDisplayed().Should().BeTrue();
         }
 
-        [Then(@"the User is able to select the Call Off Ordering Party")]
-        public void ThenTheUserIsAbleToSelectTheCallOffOrderingParty()
-        {
-            Test.Pages.OrderForm.NumberOfCheckboxesDisplayed().Should().BeGreaterThan(0);
-        }
-
         [When(@"the User chooses to select all")]
         [When(@"the User chooses to deselect all")]
         public void WhenTheUserChoosesToSelectAll()
