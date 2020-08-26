@@ -295,6 +295,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.FindPrintPreviewWindow().Should().BeTrue();
         }
 
+        public void ContinueAndWaitForCheckboxes()
+        {
+            WhenTheyChooseToContinue();
+            ThenTheyCanSelectOneOrMoreCheckbox();
+        }
+
         public void ContinueAndWaitForRadioButtons()
         {
             WhenTheyChooseToContinue();

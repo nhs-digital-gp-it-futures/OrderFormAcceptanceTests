@@ -321,7 +321,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
-            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
+            new CommonSteps(Test, Context).ContinueAndWaitForCheckboxes();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyArePresentedWithTheOrderItemPriceEditForm();
@@ -332,7 +332,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
-            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
+            new CommonSteps(Test, Context).ContinueAndWaitForCheckboxes();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheyArePresentedWithTheOrderItemPriceEditForm();
@@ -412,7 +412,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             }
 
         }
-
 
         [Given(@"the quantity contains characters")]
         public void GivenTheQuantityContainsCharacters()
@@ -605,7 +604,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
-            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
+            new CommonSteps(Test, Context).ContinueAndWaitForCheckboxes();
         }
 
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
