@@ -27,8 +27,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [StepDefinition(@"the User confirms to complete the Order")]
         public async Task WhenTheUserConfirmsToCompleteTheOrderAsync()
-        {
-            var precount = await EmailServerDriver.GetEmailCountAsync(Test.Url, ("noreply@buyingcatalogue.nhs.uk"));
+        {            
+            var precount = await Test.EmailServerDriver.GetEmailCountAsync();
             Context.Add(ContextKeys.EmailCount, precount);
             Test.Pages.CompleteOrder.ClickCompleteOrderButton();
         }
@@ -154,10 +154,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Given(@"that the User has completed their Order")]
-        public void GivenThatTheUserHasCompletedTheirOrder()
+        public async Task GivenThatTheUserHasCompletedTheirOrderAsync()
         {
             GivenThatTheUserIsOnTheConfirmCompleteOrderScreen("no");
-            WhenTheUserConfirmsToCompleteTheOrderAsync();
+            await WhenTheUserConfirmsToCompleteTheOrderAsync();
             ThenTheOrderCompletedScreenIsDisplayed();
         }
 
