@@ -37,7 +37,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the date the Order Summary was produced")]
         public void ThenTheDateTheOrderSummaryWasProduced()
         {
-            var date = Test.Pages.OrderForm.GetDateOrderSummaryCreatedValue();
+            var date = Test.Pages.PreviewOrderSummary.GetDateOrderSummaryCreatedValue();
             date.Should().NotBeNullOrEmpty();
             var expectedDate = DateTime.Now.ToString("d MMMM yyyy");
             date.Should().EndWithEquivalent(expectedDate);
@@ -48,7 +48,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Call-off Ordering Party names are concatenated")]
         public void ThenTheCallOffOrderingPartyInformationIsDisplayed()
         {
-            var value = Test.Pages.OrderForm.GetCallOffOrderingPartyPreviewValue();
+            var value = Test.Pages.PreviewOrderSummary.GetCallOffOrderingPartyPreviewValue();
             value.Should().NotBeNullOrEmpty();
             var order = (Order)Context["CreatedOrder"];
             var createdAddress = (Address)Context["CreatedAddress"];
@@ -66,7 +66,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Supplier first name and last name are concatenated")]
         public void ThenTheSupplierInformationIsDisplayed()
         {
-            var value = Test.Pages.OrderForm.GetSupplierPreviewValue();
+            var value = Test.Pages.PreviewOrderSummary.GetSupplierPreviewValue();
             value.Should().NotBeNullOrEmpty();
             var createdAddress = (Address)Context["CreatedSupplierAddress"];
             var createdContact = (Contact)Context["CreatedSupplierContact"];
@@ -81,7 +81,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Commencement date data saved in the order")]
         public void ThenTheCommencementDateIsDisplayed()
         {
-            var date = Test.Pages.OrderForm.GetCommencementDateValue();
+            var date = Test.Pages.PreviewOrderSummary.GetCommencementDateValue();
             date.Should().NotBeNullOrEmpty();
             var order = (Order)Context["CreatedOrder"];
             var expectedDate = ((DateTime)order.CommencementDate).ToString("d MMMM yyyy");
@@ -91,33 +91,33 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"Order items \(one-off cost\) table is displayed")]
         public void ThenOrderItemsOne_OffCostTableIsDisplayed()
         {
-            Test.Pages.OrderForm.OneOffCostsTableIsDisplayed().Should().BeTrue();
+            Test.Pages.PreviewOrderSummary.OneOffCostsTableIsDisplayed().Should().BeTrue();
         }
 
         [Then(@"Order items \(recurring cost\) table is displayed")]
         public void ThenOrderItemsRecurringCostTableIsDisplayed()
         {
-            Test.Pages.OrderForm.RecurringCostsTableIsDisplayed().Should().BeTrue();
+            Test.Pages.PreviewOrderSummary.RecurringCostsTableIsDisplayed().Should().BeTrue();
         }
 
         [Then(@"the total one-off cost is displayed")]
         public void ThenTheTotalOne_OffCostIsDisplayed()
         {
-            var value = Test.Pages.OrderForm.GetTotalOneOffCost();
+            var value = Test.Pages.PreviewOrderSummary.GetTotalOneOffCost();
             value.Should().NotBeNullOrEmpty();
         }
 
         [Then(@"the total monthly cost is displayed")]
         public void ThenTheTotalMonthlyCostIsDisplayed()
         {
-            var value = Test.Pages.OrderForm.GetTotalMonthlyCost();
+            var value = Test.Pages.PreviewOrderSummary.GetTotalMonthlyCost();
             value.Should().NotBeNullOrEmpty();
         }
 
         [Then(@"the total annual cost is displayed")]
         public void ThenTheTotalAnnualCostIsDisplayed()
         {
-            var value = Test.Pages.OrderForm.GetTotalAnnualCost();
+            var value = Test.Pages.PreviewOrderSummary.GetTotalAnnualCost();
             value.Should().NotBeNullOrEmpty();
         }
 
@@ -125,7 +125,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the total cost of ownership is displayed")]
         public void ThenTheTotalCostOfOwnershipIsDisplayed()
         {
-            var value = Test.Pages.OrderForm.GetTotalOwnershipCost();
+            var value = Test.Pages.PreviewOrderSummary.GetTotalOwnershipCost();
             value.Should().NotBeNullOrEmpty();
         }
 
@@ -148,19 +148,19 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Order items \(recurring cost\) table is populated")]
         public void ThenTheOrderItemsRecurringCostTableIsPopulated()
         {
-            Test.Pages.OrderForm.RecurringCostsTableIsPopulated().Should().BeTrue();
+            Test.Pages.PreviewOrderSummary.RecurringCostsTableIsPopulated().Should().BeTrue();
         }
 
         [Then(@"the Order items \(one off\) table is populated")]
         public void ThenTheOrderItemsOneOffTableIsPopulated()
         {
-            Test.Pages.OrderForm.OneOffCostsTableIsPopulated().Should().BeTrue();
+            Test.Pages.PreviewOrderSummary.OneOffCostsTableIsPopulated().Should().BeTrue();
         }
 
         [Then(@"the Recipient name \(ODS code\) of each item is the concatenation ""\[Service Recipient name\] \[\(ODS code\)\]""")]
         public void ThenTheRecipientNameODSCodeOfEachItemIsTheConcatenation()
         {
-            var name = Test.Pages.OrderForm.GetItemRecipientName();
+            var name = Test.Pages.PreviewOrderSummary.GetItemRecipientName();
             var expectedServiceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
             var expectedValue = string.Format("{0} ({1})", expectedServiceRecipient.Name, expectedServiceRecipient.OdsCode);
             name.Should().Be(expectedValue);
@@ -171,7 +171,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var expectedId = $"{expectedOrderItem.OrderId}-{expectedOrderItem.OdsCode}-{expectedOrderItem.OrderItemId}";
-            var id = Test.Pages.OrderForm.GetItemId();
+            var id = Test.Pages.PreviewOrderSummary.GetItemId();
             id.Should().Be(expectedId);
         }
 
@@ -181,21 +181,21 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheItemNameOfEachItemIsTheCatalogueSolutionName()
         {
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
-            var name = Test.Pages.OrderForm.GetItemName();
+            var name = Test.Pages.PreviewOrderSummary.GetItemName();
             name.Should().Be(expectedOrderItem.CatalogueItemName);
         }
 
         [Then(@"the order items recurring cost table is sorted by service recipient name")]
         public void ThenTheOrderItemsRecurringCostTableIsSortedByServiceRecipientName()
         {
-            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.OrderForm.GetItemRecipientNames());
+            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.PreviewOrderSummary.GetItemRecipientNames());
         }
 
         [Then(@"the order items one-off cost table is sorted by item name")]
         [Then(@"the order items recurring cost table is second sorted by item name")]
         public void ThenTheOrderItemsRecurringCostTableIsSecondSortedByItemName()
         {
-            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.OrderForm.GetItemNames());
+            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.PreviewOrderSummary.GetItemNames());
         }
 
         [Then(@"the Price unit of order of each item is the concatenation ""\[Price\] \[unit\]""")]
@@ -205,7 +205,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var timeDescription = expectedOrderItem.GetTimeUnitPeriod(Test.ConnectionString);
             var expectedValue = $"{FormatDecimal(expectedOrderItem.Price)} {expectedOrderItem.PricingUnitDescription} {timeDescription}".Trim();
 
-            var price = Test.Pages.OrderForm.GetItemPrice();
+            var price = Test.Pages.PreviewOrderSummary.GetItemPrice();
             price.Should().Be(expectedValue);
         }
 
@@ -217,7 +217,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedPeriod = expectedOrderItem.GetEstimationPeriod(Test.ConnectionString);
             var expectedValue = $"{FormatInt(expectedOrderItem.Quantity)} {expectedPeriod}";
 
-            var quantity = Test.Pages.OrderForm.GetItemQuantity();
+            var quantity = Test.Pages.PreviewOrderSummary.GetItemQuantity();
             quantity.Should().Be(expectedValue);
         }
 
@@ -227,7 +227,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var expectedValue = $"{expectedOrderItem.Quantity}";
 
-            var quantity = Test.Pages.OrderForm.GetItemQuantity();
+            var quantity = Test.Pages.PreviewOrderSummary.GetItemQuantity();
             quantity.Should().Be(expectedValue);
         }
 
@@ -237,7 +237,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var expectedQuantityValue = $"{FormatInt(expectedOrderItem.Quantity)} {period}";
 
-            var actualQuantity = Test.Pages.OrderForm.GetItemQuantity();
+            var actualQuantity = Test.Pages.PreviewOrderSummary.GetItemQuantity();
             actualQuantity.Should().Be(expectedQuantityValue);
         }
 
@@ -245,7 +245,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenThePlannedDeliveryDateOfEachItemIsDisplayed()
         {
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
-            var date = Test.Pages.OrderForm.GetItemPlannedDate();
+            var date = Test.Pages.PreviewOrderSummary.GetItemPlannedDate();
             date.Should().Be(expectedOrderItem.DeliveryDate.Value.ToString("d MMMM yyyy"));
         }
 
@@ -255,7 +255,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var expectedCost = expectedOrderItem.Price * expectedOrderItem.Quantity;
             var expectedValue = FormatDecimal(Math.Round(expectedCost, 2));
-            var cost = Test.Pages.OrderForm.GetItemCost();
+            var cost = Test.Pages.PreviewOrderSummary.GetItemCost();
             cost.Should().Be(expectedValue.ToString());
         }
 
@@ -265,7 +265,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedOrderItem = (OrderItem)Context["CreatedOrderItem"];
             var expectedCost = expectedOrderItem.Price * expectedOrderItem.Quantity * 12;
             var expectedValue = FormatDecimal(Math.Round(expectedCost, 2));
-            var cost = Test.Pages.OrderForm.GetItemCost();
+            var cost = Test.Pages.PreviewOrderSummary.GetItemCost();
             cost.Should().Be(expectedValue.ToString());
         }
 
@@ -275,7 +275,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedTotalCost = Context.Get<OrderItemList>("CreatedOneOffOrderItems").GetTotalOneOffCost();
             var expectedTotalAnnualCost = Context.Get<OrderItemList>("CreatedRecurringOrderItems").GetTotalAnnualCost();
             var expectedTotalCostOfContract = expectedTotalCost + (3 * expectedTotalAnnualCost);
-            var actualTotalCostOfContract = Test.Pages.OrderForm.GetTotalOwnershipCost();
+            var actualTotalCostOfContract = Test.Pages.PreviewOrderSummary.GetTotalOwnershipCost();
 
             actualTotalCostOfContract.Should().Be(FormatDecimal(expectedTotalCostOfContract));
         }
@@ -436,7 +436,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Total one-off cost is the result of the Total one-off cost calculation")]
         public void ThenTheTotalOne_OffCostIsTheResultOfTheTotalOne_OffCostCalculation()
         {
-            var actual = Test.Pages.OrderForm.GetTotalOneOffCost();
+            var actual = Test.Pages.PreviewOrderSummary.GetTotalOneOffCost();
             var expectedTotalCost = Context.Get<OrderItemList>("CreatedOrderItems").GetTotalOneOffCost();
 
             actual.Should().Be(FormatDecimal(expectedTotalCost));
@@ -445,7 +445,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Total cost for one year is the result of the Total cost for one year calculation")]
         public void ThenTheTotalCostForOneYearIsTheResultOfTheTotalCostForOneYearCalculation()
         {
-            var actual = Test.Pages.OrderForm.GetTotalAnnualCost();
+            var actual = Test.Pages.PreviewOrderSummary.GetTotalAnnualCost();
             var expectedTotalAnnualCost = Context.Get<OrderItemList>("CreatedOrderItems").GetTotalAnnualCost();
 
             actual.Should().Be(FormatDecimal(expectedTotalAnnualCost));
@@ -454,25 +454,25 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Total one-off cost is expressed as (.*) decimal places")]
         public void ThenTheTotalOne_OffCostIsExpressedAsDecimalPlaces(int p0)
         {
-            ValueExpressedAsTwoDecimalPlaces(Test.Pages.OrderForm.GetTotalOneOffCost());
+            ValueExpressedAsTwoDecimalPlaces(Test.Pages.PreviewOrderSummary.GetTotalOneOffCost());
         }
 
         [Then(@"the Total cost for one year is expressed as two decimal places")]
         public void ThenItIsExpressedAsTwoDecimalPlaces()
         {
-            ValueExpressedAsTwoDecimalPlaces(Test.Pages.OrderForm.GetTotalAnnualCost());
+            ValueExpressedAsTwoDecimalPlaces(Test.Pages.PreviewOrderSummary.GetTotalAnnualCost());
         }
 
         [Then(@"the Total cost of contract is expressed as two decimal places")]
         public void ThenTheTotalCostOfContractIsExpressedAsTwoDecimalPlaces()
         {
-            ValueExpressedAsTwoDecimalPlaces(Test.Pages.OrderForm.GetTotalOwnershipCost());
+            ValueExpressedAsTwoDecimalPlaces(Test.Pages.PreviewOrderSummary.GetTotalOwnershipCost());
         }
 
         [Then(@"the Total monthly cost is the result of the Total monthly cost calculation")]
         public void ThenTheTotalMonthlyCostIsTheResultOfTheTotalMonthlyCostCalculation()
         {
-            var actual = Test.Pages.OrderForm.GetTotalMonthlyCost();
+            var actual = Test.Pages.PreviewOrderSummary.GetTotalMonthlyCost();
             var expectedTotalMonthlyCost = Context.Get<OrderItemList>("CreatedOrderItems").GetTotalMonthlyCost();
 
             actual.Should().Be(FormatDecimal(expectedTotalMonthlyCost));
@@ -481,7 +481,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Total monthly cost is expressed as two decimal places")]
         public void ThenTheTotalMonthlyCostIsExpressedAsTwoDecimalPlaces()
         {
-            ValueExpressedAsTwoDecimalPlaces(Test.Pages.OrderForm.GetTotalMonthlyCost());
+            ValueExpressedAsTwoDecimalPlaces(Test.Pages.PreviewOrderSummary.GetTotalMonthlyCost());
         }
 
         [Given(@"multiple order items with different service recipient have been added to the order")]

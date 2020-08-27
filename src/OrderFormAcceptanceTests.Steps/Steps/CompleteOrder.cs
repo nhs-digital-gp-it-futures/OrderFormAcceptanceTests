@@ -185,7 +185,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheCompletedOrderSummaryContainsTheDateTheOrderWasCompleted()
         {
             var order = Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders).First();
-            var date = Test.Pages.OrderForm.GetDateOrderCompletedValue();
+            var date = Test.Pages.PreviewOrderSummary.GetDateOrderCompletedValue();
             date.Should().NotBeNullOrEmpty();
             var expectedDate = order.DateCompleted.Value.ToString("d MMMM yyyy");
             date.Should().EndWithEquivalent(expectedDate);
