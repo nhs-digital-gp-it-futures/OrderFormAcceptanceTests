@@ -59,7 +59,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var chosenOption = (string)Context["ChosenOption"];
             var expectedValue = chosenOption == "true" ? 1 : 0;
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order = order.Retrieve(Test.ConnectionString);
             order.FundingSourceOnlyGMS.Should().Be(expectedValue);
         }

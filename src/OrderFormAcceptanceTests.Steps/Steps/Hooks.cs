@@ -14,30 +14,30 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [AfterScenario]
         public void AfterScenario()
         {
-            if (Context.ContainsKey("CreatedOrder"))
+            if (Context.ContainsKey(ContextKeys.CreatedOrder))
             {
-                var order = (Order)Context["CreatedOrder"];
+                var order = (Order)Context[ContextKeys.CreatedOrder];
                 new OrderItem().DeleteAllOrderItemsForOrderId(Test.ConnectionString, order.OrderId);
 
                 new ServiceRecipient().DeleteAllServiceRecipientsForOrderId(Test.ConnectionString, order.OrderId);
 
-                ((Order)Context["CreatedOrder"]).Delete(Test.ConnectionString);
+                ((Order)Context[ContextKeys.CreatedOrder]).Delete(Test.ConnectionString);
             }
-            if (Context.ContainsKey("CreatedContact"))
+            if (Context.ContainsKey(ContextKeys.CreatedContact))
             {
-                ((Contact)Context["CreatedContact"]).Delete(Test.ConnectionString);
+                ((Contact)Context[ContextKeys.CreatedContact]).Delete(Test.ConnectionString);
             }
-            if (Context.ContainsKey("CreatedSupplierContact"))
+            if (Context.ContainsKey(ContextKeys.CreatedSupplierContact))
             {
-                ((Contact)Context["CreatedSupplierContact"]).Delete(Test.ConnectionString);
+                ((Contact)Context[ContextKeys.CreatedSupplierContact]).Delete(Test.ConnectionString);
             }
-            if (Context.ContainsKey("CreatedAddress"))
+            if (Context.ContainsKey(ContextKeys.CreatedAddress))
             {
-                ((Address)Context["CreatedAddress"]).Delete(Test.ConnectionString);
+                ((Address)Context[ContextKeys.CreatedAddress]).Delete(Test.ConnectionString);
             }
-            if (Context.ContainsKey("CreatedSupplierAddress"))
+            if (Context.ContainsKey(ContextKeys.CreatedSupplierAddress))
             {
-                ((Address)Context["CreatedSupplierAddress"]).Delete(Test.ConnectionString);
+                ((Address)Context[ContextKeys.CreatedSupplierAddress]).Delete(Test.ConnectionString);
             }
 
             Test.Driver?.Quit();

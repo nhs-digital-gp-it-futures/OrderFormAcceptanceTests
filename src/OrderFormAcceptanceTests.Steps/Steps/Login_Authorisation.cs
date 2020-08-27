@@ -33,19 +33,19 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [When(@"the User is a Buyer User")]
         public void WhenTheUserIsABuyerUser()
         {
-            Context.Add("User", EnvironmentVariables.User(UserType.Buyer));
+            Context.Add(ContextKeys.User, EnvironmentVariables.User(UserType.Buyer));
         }
 
         [When(@"the User is not a Buyer User")]
         public void WhenTheUserIsNotABuyerUser()
         {
-            Context.Add("User", EnvironmentVariables.User(UserType.Authority));
+            Context.Add(ContextKeys.User, EnvironmentVariables.User(UserType.Authority));
         }
 
         [Then(@"the User will be logged in")]
         public void ThenTheBuyerWillBeLoggedIn()
         {
-            Test.Pages.Authentication.Login((User)Context["User"]);
+            Test.Pages.Authentication.Login((User)Context[ContextKeys.User]);
         }
 
         [Then(@"the Buyer will be able to access the Order Form feature without having to authenticate again")]

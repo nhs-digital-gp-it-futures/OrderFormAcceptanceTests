@@ -65,16 +65,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Service Recipient section is saved in the DB")]
         public void ThenTheServiceRecipientSectionIsSavedInTheDB()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.Retrieve(Test.ConnectionString).ServiceRecipientsViewed.Should().Be(1);
         }
 
         [Then(@"the Service Recipient is saved in the DB")]
         public void ThenTheServiceRecipientIsSavedInTheDB()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var serviceRecipientInDB = new ServiceRecipient().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
-            Context.Add("CreatedServiceRecipient", serviceRecipientInDB);
+            Context.Add(ContextKeys.CreatedServiceRecipient, serviceRecipientInDB);
             serviceRecipientInDB.Should().NotBeNull();
         }
 
@@ -82,10 +82,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"all the Service Recipients are deleted from the Order")]
         public void ThenTheServiceRecipientIsDeletedFromTheOrder()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var serviceRecipientInDB = new ServiceRecipient().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
             serviceRecipientInDB.Should().BeNullOrEmpty();
-            serviceRecipientInDB = ((ServiceRecipient)Context["CreatedServiceRecipient"]).Retrieve(Test.ConnectionString);
+            serviceRecipientInDB = ((ServiceRecipient)Context[ContextKeys.CreatedServiceRecipient]).Retrieve(Test.ConnectionString);
             serviceRecipientInDB.Should().BeNullOrEmpty();
         }
     }

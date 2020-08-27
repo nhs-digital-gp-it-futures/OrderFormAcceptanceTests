@@ -90,17 +90,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var orgAddress = new Address().Generate();
             orgAddress.Create(Test.ConnectionString);
-            Context.Add("CreatedAddress", orgAddress);
+            Context.Add(ContextKeys.CreatedAddress, orgAddress);
             var orgContact = new Contact().Generate();
             orgContact.Create(Test.ConnectionString);
-            Context.Add("CreatedContact", orgContact);
+            Context.Add(ContextKeys.CreatedContact, orgContact);
 
             var supplierAddress = new Address().Generate();
             supplierAddress.Create(Test.ConnectionString);
-            Context.Add("CreatedSupplierAddress", supplierAddress);
+            Context.Add(ContextKeys.CreatedSupplierAddress, supplierAddress);
             var supplierContact = new Contact().Generate();
             supplierContact.Create(Test.ConnectionString);
-            Context.Add("CreatedSupplierContact", supplierContact);
+            Context.Add(ContextKeys.CreatedSupplierContact, supplierContact);
 
             var order = new Order().Generate();
             order.OrganisationAddressId = orgAddress.AddressId;
@@ -114,7 +114,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.CommencementDate = new Faker().Date.Future().Date;            
 
             order.Create(Test.ConnectionString);
-            Context.Add("CreatedOrder", order);            
+            Context.Add(ContextKeys.CreatedOrder, order);            
 
             Context.TryGetValue(ContextKeys.CreatedIncompleteOrders, out IList<Order> createdOrders);
             createdOrders ??= new List<Order>();
@@ -126,18 +126,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnIncompleteOrderWithCatalogueItemsExists()
         {
             GivenAnIncompleteOrderExists();
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.CatalogueSolutionsViewed = 1;
 
             var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);
             order.ServiceRecipientsViewed = 1;
             serviceRecipient.Create(Test.ConnectionString);
-            Context.Add("CreatedServiceRecipient", serviceRecipient);
+            Context.Add(ContextKeys.CreatedServiceRecipient, serviceRecipient);
 
             order.Update(Test.ConnectionString);
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand(order);
             orderItem.Create(Test.ConnectionString);
-            Context.Add("CreatedOrderItem", orderItem);
+            Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
 
         [Given(@"my organisation has one or more orders")]
@@ -208,7 +208,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             GivenThatABuyerUserHasLoggedIn();
             Test.Pages.Homepage.ClickOrderTile();
             Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
-            Test.Pages.OrganisationsOrdersDashboard.SelectExistingOrder(((Order)Context["CreatedOrder"]).OrderId);
+            Test.Pages.OrganisationsOrdersDashboard.SelectExistingOrder(((Order)Context[ContextKeys.CreatedOrder]).OrderId);
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
         }
 

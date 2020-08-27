@@ -64,7 +64,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Order has a Deleted status")]
         public void ThenTheOrderHasADeletedStatus()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order = order.Retrieve(Test.ConnectionString);
             order.IsDeleted.Should().Be(1);
         }
@@ -72,7 +72,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the status of the Order does not change to deleted")]
         public void ThenTheStatusOfTheOrderDoesNotChangeToDeleted()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.Retrieve(Test.ConnectionString);
             order.IsDeleted.Should().Be(0);
         }
@@ -80,7 +80,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Order is not on the Organisation's Orders Dashboard")]
         public void ThenTheOrderIsNotOnTheOrganisationSOrdersDashboard()
         {
-            var deletedOrder = (Order)Context["CreatedOrder"];
+            var deletedOrder = (Order)Context[ContextKeys.CreatedOrder];
             Test.Pages.OrderForm.ClickBackLink();
             new OrganisationsOrdersDashboard(Test, Context).ThenThePageDisplaysWhoIsLoggedInAndThePrimaryOrganisationName();
             var listOfOrders = Test.Pages.OrganisationsOrdersDashboard.GetListOfIncompleteOrders();

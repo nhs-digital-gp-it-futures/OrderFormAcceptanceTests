@@ -50,7 +50,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Call Off Agreement ID is displayed in the page title")]
         public void ThenTheCallOffAgreementIdIsDisplayedInThePageTitle()
         {
-            Test.Pages.OrderForm.TextDisplayedInPageTitle(((Order)Context["CreatedOrder"]).OrderId).Should().BeTrue();
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(((Order)Context[ContextKeys.CreatedOrder]).OrderId).Should().BeTrue();
         }
 
         [Given(@"the user is managing the Call Off Ordering Party section")]
@@ -67,17 +67,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var contact = new Contact().Generate();
             Test.Pages.OrderForm.EnterContact(contact);
-            Context.Add("ExpectedContact", contact);
+            Context.Add(ContextKeys.ExpectedContact, contact);
         }
 
         [Given(@"makes a note of the autopopulated Ordering Party details")]
         public void GivenMakesANoteOfTheAutopopulatedOrderingPartyDetails()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.OrganisationOdsCode = Test.Pages.OrderForm.GetOdsCode();
             order.OrganisationName = Test.Pages.OrderForm.GetOrganisationName();
             var address = Test.Pages.OrderForm.GetAddress();
-            Context.Add("ExpectedAddress", address);
+            Context.Add(ContextKeys.ExpectedAddress, address);
         }
 
         [Then(@"the Call Off Ordering Party section is saved in the DB")]
@@ -86,17 +86,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var id = Test.Pages.OrderForm.GetCallOffId();
             var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
             var dbContact = new Contact { ContactId = order.OrganisationContactId }.Retrieve(Test.ConnectionString);
-            Context.Remove("CreatedContact");
-            Context.Add("CreatedContact", dbContact);
+            Context.Remove(ContextKeys.CreatedContact);
+            Context.Add(ContextKeys.CreatedContact, dbContact);
 
             var dbAddress = new Address { AddressId = order.OrganisationAddressId }.Retrieve(Test.ConnectionString);
-            Context.Remove("CreatedAddress");
-            Context.Add("CreatedAddress", dbAddress);
+            Context.Remove(ContextKeys.CreatedAddress);
+            Context.Add(ContextKeys.CreatedAddress, dbAddress);
 
-            var expectedContact = (Contact)Context["ExpectedContact"];
+            var expectedContact = (Contact)Context[ContextKeys.ExpectedContact];
             dbContact.Equals(expectedContact);
 
-            var expectedAddress = (Address)Context["ExpectedAddress"];
+            var expectedAddress = (Address)Context[ContextKeys.ExpectedAddress];
             dbAddress.Equals(expectedAddress);
         }
     }

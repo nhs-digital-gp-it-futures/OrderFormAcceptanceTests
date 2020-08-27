@@ -120,7 +120,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
             new CatalogueSolutions(Test, Context).GivenThereAreNoServiceRecipientsInTheOrder();
             new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
-            if (fsValue.Equals("yes"))
+            if (fsValue.ToLower().Equals("yes"))
             {
                 new OrderForm(Test, Context).GivenTheFundingSourceSectionIsCompleteWithYesSelected();
             }
@@ -201,7 +201,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Order is not completed")]
         public void ThenTheOrderIsNotCompleted()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order = order.Retrieve(Test.ConnectionString);
             order.OrderStatusId.Should().Be(2);
             order.DateCompleted.Should().BeNull();

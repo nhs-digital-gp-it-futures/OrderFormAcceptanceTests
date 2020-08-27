@@ -17,8 +17,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"there are no Additional Services in the order")]
         public void GivenThereAreNoAdditionalServicesInTheOrder()
         {
-            Context.Should().NotContainKey("CreatedAdditionalServiceOrderItem");
-            var order = (Order)Context["CreatedOrder"];
+            Context.Should().NotContainKey(ContextKeys.CreatedAdditionalServiceOrderItem);
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var searchedOrderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 2);
             searchedOrderItem.Should().BeEmpty();
         }
@@ -27,9 +27,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAdditionalServiceIsAddedToTheOrder()
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.ConnectionString);
-            Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+            Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
         }
 
         [StepDefinition(@"the User is able to manage the Additional Services section")]
@@ -220,9 +220,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheEditAdditionalServiceFormForFlatListPriceWithVariablePatientNumbersOrderTypeIsPresented()
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.ConnectionString);
-            Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+            Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
             GivenTheUserChoosesToEditTheSavedAdditionalService();
@@ -232,9 +232,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheEditAdditionalServiceFormForFlatListPriceWithDeclarativeOrderTypeIsPresented()
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.ConnectionString);
-            Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+            Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
             GivenTheUserChoosesToEditTheSavedAdditionalService();
@@ -244,9 +244,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheEditAdditionalServiceFormForFlatListPriceWithVariableOnDemandOrderTypeIsPresented()
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.ConnectionString);
-            Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+            Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
             GivenTheUserChoosesToEditTheSavedAdditionalService();
@@ -257,9 +257,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
 
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.ConnectionString);
-            Context.Add("CreatedAdditionalServiceOrderItem", orderItem);
+            Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
         }
 
         [StepDefinition(@"the User chooses to edit the saved Additional service")]
@@ -274,7 +274,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var quantityFromPage = Test.Pages.OrderForm.GetQuantity();
             var priceFromPage = Test.Pages.OrderForm.GetPriceInputValue();
 
-            var orderItem = (OrderItem)Context["CreatedAdditionalServiceOrderItem"];
+            var orderItem = (OrderItem)Context[ContextKeys.CreatedAdditionalServiceOrderItem];
 
             quantityFromPage.Should().Be(orderItem.Quantity.ToString());
             priceFromPage.Should().Be(orderItem.Price.ToString("F")); // ToString("F") does a financial rounding on a decimal, including adding .00 if a round number
@@ -284,7 +284,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithADeclarativeFlatPrice()
         {
             var supplier = GetSupplierDetails(ProvisioningType.Declarative);
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
@@ -294,7 +294,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAPatientFlatPrice()
         {
             var supplier = GetSupplierDetails(ProvisioningType.Patient);
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
@@ -304,7 +304,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAnOnDemandFlatPrice()
         {
             var supplier = GetSupplierDetails(ProvisioningType.OnDemand);
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
