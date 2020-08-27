@@ -18,11 +18,10 @@ namespace OrderFormAcceptanceTests.Objects.Pages
         public By EditCallOffOrderingParty => CustomBy.DataTestId("task-1-item-0-description");
         public By EditSupplier => CustomBy.DataTestId("task-1-item-1-description");
         public By EditCommencementDate => CustomBy.DataTestId("task-2-item-0-description");
-        public By EditServiceRecipients => CustomBy.DataTestId("task-3-item-0-description");
-        public By EditCatalogueSolutions => CustomBy.DataTestId("task-4-item-0-description");
-        public By EditAdditionalServices => CustomBy.DataTestId("task-5-item-0-description");
-        public By EditAssociatedServices => CustomBy.DataTestId("task-6-item-0-description");
-        public By EditFundingSource => CustomBy.DataTestId("task-7-item-0-description");
+        public By EditCatalogueSolutions => CustomBy.DataTestId("task-3-item-0-description");
+        public By EditAdditionalServices => CustomBy.DataTestId("task-4-item-0-description");
+        public By EditAssociatedServices => CustomBy.DataTestId("task-5-item-0-description");
+        public By EditFundingSource => CustomBy.DataTestId("task-6-item-0-description");
         public By GenericSection(string sectionHrefRoute)
         {
             return By.CssSelector(string.Format("[href$='{0}']", sectionHrefRoute));

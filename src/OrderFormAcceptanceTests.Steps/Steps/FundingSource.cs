@@ -37,7 +37,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheMinimumDataNeededToEnableTheFundingSourceSectionExists()
         {
             new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
-            new CatalogueSolutions(Test, Context).GivenThereAreNoServiceRecipientsInTheOrder();
             new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
         }
 

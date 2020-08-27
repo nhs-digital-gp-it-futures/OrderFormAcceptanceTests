@@ -10,29 +10,23 @@ Background:
 Scenario: Catalogue Solutions- Sections presented
     When the Order Form for the existing order is presented
     Then there is the Catalogue Solutions section
+    And there is no Service Recipient section
     And the User is able to manage the Catalogue Solutions section
 
-Scenario: Catalogue Solutions - Service Recipient now complete, >=1 Service Recipient
-    Given there are one or more Service Recipients in the order
+Scenario: Catalogue Solutions - Commencement date section is complete
+    Given the Commencement date section is complete
     When the Order Form for the existing order is presented
-    Then the Call Off Agreement ID is displayed
-    And there is the Order description section
-    And there is the Call-off Ordering Party section
-    And there is the Supplier section
-    And there is the Commencement date section
-    And there is the Service Recipients section
-    And the content validation status of the service-recipients section is complete
+	Then the Call Off Agreement ID is displayed
+	And there is the Order description section
+	And there is the Call-off Ordering Party section
+	And there is the Supplier section
+	And there is the Commencement date section
+    And the content validation status of the commencement-date section is complete 
     And there is the Catalogue Solutions section
+    And the content validation status of the catalogue-solutions section is incomplete 
     And the Preview order summary button is enabled
     And the Delete order button is enabled
     And the Complete order button is disabled
-
-Scenario: Catalogue Solutions - Service Recipient now complete, 0 Service Recipient
-    Given there are no Service Recipients in the order
-    When the Order Form for the existing order is presented
-    Then the content validation status of the service-recipients section is complete
-    And there is the Catalogue Solutions section
-    And the User is not able to manage the Catalogue Solutions section
 
 Scenario: Catalogue Solutions - Catalogue Solution dashboard
     When the User has chosen to manage the Catalogue Solution section
