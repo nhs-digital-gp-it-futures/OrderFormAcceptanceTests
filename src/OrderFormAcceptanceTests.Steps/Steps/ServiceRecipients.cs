@@ -12,25 +12,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
         }
 
-        [Then(@"the user is able to manage the Service Recipients section")]
-        public void ThenTheUserIsAbleToManageTheServiceRecipientsSection()
-        {
-            Test.Pages.OrderForm.ClickEditServiceRecipients();
-            Test.Pages.OrderForm.TaskListDisplayed().Should().BeFalse();
-            ThenTheyArePresentedWithSelectServiceRecipientForm();
-        }
-
         [Then(@"they are presented with select Service Recipient form")]
         public void ThenTheyArePresentedWithSelectServiceRecipientForm()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("service recipients").Should().BeTrue();
-        }
-
-        [Given(@"the User chooses to edit the Service Recipient section")]
-        public void GivenTheUserChoosesToManageTheServiceRecipientsSection()
-        {
-            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
-            ThenTheUserIsAbleToManageTheServiceRecipientsSection();
         }
 
         [Then(@"the Call Off Ordering Party's Name \(organisation name\) and ODS code are presented as a Service Recipient")]

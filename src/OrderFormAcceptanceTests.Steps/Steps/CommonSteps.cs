@@ -111,15 +111,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.SupplierId = 100000;
             order.SupplierName = "Really Kool Corporation";
 
-            order.CommencementDate = new Faker().Date.Future().Date;
-
-            var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);
-            order.ServiceRecipientsViewed = 1;
+            order.CommencementDate = new Faker().Date.Future().Date;            
 
             order.Create(Test.ConnectionString);
-            Context.Add("CreatedOrder", order);
-            serviceRecipient.Create(Test.ConnectionString);
-            Context.Add("CreatedServiceRecipient", serviceRecipient);
+            Context.Add("CreatedOrder", order);            
 
             Context.TryGetValue(ContextKeys.CreatedIncompleteOrders, out IList<Order> createdOrders);
             createdOrders ??= new List<Order>();
@@ -133,6 +128,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             GivenAnIncompleteOrderExists();
             var order = (Order)Context["CreatedOrder"];
             order.CatalogueSolutionsViewed = 1;
+
+            var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);
+            order.ServiceRecipientsViewed = 1;
+            serviceRecipient.Create(Test.ConnectionString);
+            Context.Add("CreatedServiceRecipient", serviceRecipient);
+
             order.Update(Test.ConnectionString);
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand(order);
             orderItem.Create(Test.ConnectionString);

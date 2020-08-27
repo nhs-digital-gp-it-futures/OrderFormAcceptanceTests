@@ -36,11 +36,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenThereAreNoServiceRecipientsInTheOrder()
         {
             var order = (Order)Context["CreatedOrder"];
-            order.ServiceRecipientsViewed.Should().Be(1);
+            new ServiceRecipient().RetrieveByOrderId(Test.ConnectionString, order.OrderId).ToList().Should().BeNullOrEmpty();
 
-            var serviceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
-            serviceRecipient.Delete(Test.ConnectionString);
-            Context.Remove("CreatedServiceRecipient");
+            if (Context.ContainsKey("CreatedServiceRecipient"))
+            {
+                var serviceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
+                serviceRecipient.Delete(Test.ConnectionString);
+                Context.Remove("CreatedServiceRecipient");
+            }
         }
 
         [Given(@"there is no Catalogue Solution in the order")]

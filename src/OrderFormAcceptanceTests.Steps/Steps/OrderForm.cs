@@ -4,6 +4,7 @@ using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Information;
 using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -40,16 +41,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EditCommencementDateSectionDisplayed().Should().BeTrue();
         }
 
-        [Then(@"there is the Service Recipients section")]
-        public void ThenThereIsTheServiceRecipientsSection()
-        {
-            Test.Pages.OrderForm.EditServiceRecipientsSectionDisplayed().Should().BeTrue();
-        }
-
         [Then(@"there is no Service Recipient section")]
         public void ThenThereIsNoServiceRecipientSection()
         {
-            Test.Pages.OrderForm.EditServiceRecipientsSectionDisplayed().Should().BeFalse();
+            var taskListSections = Test.Driver.FindElements(By.CssSelector(".bc-c-task-list__task-name"));
+            taskListSections.Where(e => e.Text.Contains("service recipients", System.StringComparison.OrdinalIgnoreCase)).Should().BeEmpty();
         }
 
         [Then(@"there is the Catalogue Solutions section")]
