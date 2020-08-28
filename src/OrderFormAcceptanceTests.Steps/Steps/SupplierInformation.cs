@@ -159,34 +159,34 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"makes a note of the autopopulated Supplier details")]
         public void GivenMakesANoteOfTheAutopopulatedSupplierDetails()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierName = Test.Pages.OrderForm.GetSupplierName();
             var address = Test.Pages.OrderForm.GetAddress();
-            Context.Add("ExpectedAddress", address);
+            Context.Add(ContextKeys.ExpectedAddress, address);
         }
 
         [Then(@"the Supplier section is saved in the DB")]
         public void ThenTheSupplierSectionIsSavedInTheDB()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var expectedSupplierName = order.SupplierName;
             order = order.Retrieve(Test.ConnectionString);
 
             var dbContact = new Contact { ContactId = order.SupplierContactId }.Retrieve(Test.ConnectionString);
-            Context.Remove("CreatedSupplierContact");
-            Context.Add("CreatedSupplierContact", dbContact);
+            Context.Remove(ContextKeys.CreatedSupplierContact);
+            Context.Add(ContextKeys.CreatedSupplierContact, dbContact);
 
             var dbAddress = new Address { AddressId = order.SupplierAddressId }.Retrieve(Test.ConnectionString);
-            Context.Remove("CreatedSupplierAddress");
-            Context.Add("CreatedSupplierAddress", dbAddress);
+            Context.Remove(ContextKeys.CreatedSupplierAddress);
+            Context.Add(ContextKeys.CreatedSupplierAddress, dbAddress);
 
             order.SupplierName.Should().BeEquivalentTo(expectedSupplierName);
             order.SupplierId.Should().NotBeNull();
 
-            var expectedContact = (Contact)Context["ExpectedContact"];
+            var expectedContact = (Contact)Context[ContextKeys.ExpectedContact];
             dbContact.Equals(expectedContact);
 
-            var expectedAddress = (Address)Context["ExpectedAddress"];
+            var expectedAddress = (Address)Context[ContextKeys.ExpectedAddress];
             dbAddress.Equals(expectedAddress);
         }
 

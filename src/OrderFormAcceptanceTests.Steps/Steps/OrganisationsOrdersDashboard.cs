@@ -66,41 +66,41 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var numberOfOrdersDisplayed = Test.Pages.OrganisationsOrdersDashboard.GetNumberOfOrdersDisplayed();
             (numberOfOrdersDisplayed > 0).Should().BeTrue();
-            Context.Add("NumberOfOrdersDisplayed", numberOfOrdersDisplayed);
+            Context.Add(ContextKeys.NumberOfOrdersDisplayed, numberOfOrdersDisplayed);
         }
 
         [Then(@"each item includes the Call Off Agreement ID")]
         public void ThenEachItemIncludesTheCallOffAgreementId()
         {
-            var numberOfOrdersDisplayed = (int)Context["NumberOfOrdersDisplayed"];
+            var numberOfOrdersDisplayed = (int)Context[ContextKeys.NumberOfOrdersDisplayed];
             Test.Pages.OrganisationsOrdersDashboard.GetNumberOfCallOffAgreementIds().Should().Be(numberOfOrdersDisplayed);
         }
 
         [Then(@"each item includes the Order Description")]
         public void ThenEachItemIncludesTheOrderDescription()
         {
-            var numberOfOrdersDisplayed = (int)Context["NumberOfOrdersDisplayed"];
+            var numberOfOrdersDisplayed = (int)Context[ContextKeys.NumberOfOrdersDisplayed];
             Test.Pages.OrganisationsOrdersDashboard.GetNumberOfDescriptions().Should().Be(numberOfOrdersDisplayed);
         }
 
         [Then(@"each item includes the Display Name of the User who made most recent edit")]
         public void ThenEachItemIncludesTheDisplayNameOfTheUserWhoMadeMostRecentEdit()
         {
-            var numberOfOrdersDisplayed = (int)Context["NumberOfOrdersDisplayed"];
+            var numberOfOrdersDisplayed = (int)Context[ContextKeys.NumberOfOrdersDisplayed];
             Test.Pages.OrganisationsOrdersDashboard.GetNumberOfLastUpdatedBys().Should().Be(numberOfOrdersDisplayed);
         }
 
         [Then(@"each item includes the date of the most recent edit")]
         public void ThenEachItemIncludesTheDateOfTheMostRecentEdit()
         {
-            var numberOfOrdersDisplayed = (int)Context["NumberOfOrdersDisplayed"];
+            var numberOfOrdersDisplayed = (int)Context[ContextKeys.NumberOfOrdersDisplayed];
             Test.Pages.OrganisationsOrdersDashboard.GetNumberOfLastUpdatedDates().Should().Be(numberOfOrdersDisplayed);
         }
 
         [Then(@"each item includes the date it was created")]
         public void ThenEachItemIncludesTheDateItWasCreated()
         {
-            var numberOfOrdersDisplayed = (int)Context["NumberOfOrdersDisplayed"];
+            var numberOfOrdersDisplayed = (int)Context[ContextKeys.NumberOfOrdersDisplayed];
             Test.Pages.OrganisationsOrdersDashboard.GetNumberOfCreatedDates().Should().Be(numberOfOrdersDisplayed);
         }
 
@@ -150,14 +150,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the saved Order is displayed as an item on the Organisation's Orders dashboard")]
         public void ThenTheSavedOrderIsDisplayedAsAnItemOnTheOrganisationSOrdersDashboard()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             (Test.Driver.FindElements(By.LinkText(order.OrderId)).Count == 1).Should().BeTrue();
         }
 
         [StepDefinition(@"the item is displayed as an Incomplete Order")]
         public void ThenTheItemIsDisplayedAsAnIncompleteOrder()
         {
-            var createdOrder = (Order)Context["CreatedOrder"];
+            var createdOrder = (Order)Context[ContextKeys.CreatedOrder];
             var orders = Test.Pages.OrganisationsOrdersDashboard.GetListOfIncompleteOrders();
             var found = false;
 
@@ -166,7 +166,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 if (order.OrderId == createdOrder.OrderId)
                 {
                     found = true;
-                    Context.Add("OrderFromUI", order);
+                    Context.Add(ContextKeys.OrderFromUI, order);
                     break;
                 }
             }
@@ -176,7 +176,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"the Order is in the 'Completed Orders' table")]
         public void ThenTheItemIsDisplayedAsACompletedOrder()
         {
-            var createdOrder = (Order)Context["CreatedOrder"];
+            var createdOrder = (Order)Context[ContextKeys.CreatedOrder];
             var orders = Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders();
             bool found = false;
             foreach (Order order in orders)
@@ -184,7 +184,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 if (order.OrderId == createdOrder.OrderId)
                 {
                     found = true;
-                    Context.Add("OrderFromUI", order);
+                    Context.Add(ContextKeys.OrderFromUI, order);
                     break;
                 }
             }
@@ -194,8 +194,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"there is an indication that the Order has been processed automatically")]
         public void WhenTheItemHasBeenAutomaticallyProcessed()
         {
-            var createdOrder = (Order)Context["CreatedOrder"];
-            var orderFromUi = (Order)Context["OrderFromUI"];
+            var createdOrder = (Order)Context[ContextKeys.CreatedOrder];
+            var orderFromUi = (Order)Context[ContextKeys.OrderFromUI];
             orderFromUi.OrderId.Should().BeEquivalentTo(createdOrder.OrderId);
             orderFromUi.FundingSourceOnlyGMS.Should().Be(1);
         }
@@ -203,8 +203,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"there is an indication that the Order has not been processed automatically")]
         public void WhenTheItemHasNotBeenAutomaticallyProcessed()
         {
-            var createdOrder = (Order)Context["CreatedOrder"];
-            var orderFromUi = (Order)Context["OrderFromUI"];
+            var createdOrder = (Order)Context[ContextKeys.CreatedOrder];
+            var orderFromUi = (Order)Context[ContextKeys.OrderFromUI];
             orderFromUi.OrderId.Should().BeEquivalentTo(createdOrder.OrderId);
             var notProcessed = orderFromUi.FundingSourceOnlyGMS == null || orderFromUi.FundingSourceOnlyGMS == 0;
             notProcessed.Should().BeTrue();
@@ -213,40 +213,40 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"the item includes the Call Off Agreement ID")]
         public void WhenTheItemIncludesTheCallOffAgreementId()
         {
-            var createdOrder = (Order)Context["CreatedOrder"];
-            var orderFromUi = (Order)Context["OrderFromUI"];
+            var createdOrder = (Order)Context[ContextKeys.CreatedOrder];
+            var orderFromUi = (Order)Context[ContextKeys.OrderFromUI];
             orderFromUi.OrderId.Should().BeEquivalentTo(createdOrder.OrderId);
         }
 
         [Then(@"the item includes the Order Description")]
         public void ThenTheItemIncludesTheOrderDescription()
         {
-            var createdOrder = (Order)Context["CreatedOrder"];
-            var orderFromUi = (Order)Context["OrderFromUI"];
+            var createdOrder = (Order)Context[ContextKeys.CreatedOrder];
+            var orderFromUi = (Order)Context[ContextKeys.OrderFromUI];
             orderFromUi.Description.Should().BeEquivalentTo(createdOrder.Description);
         }
 
         [Then(@"the item includes the Display Name of the User who made most recent edit")]
         public void ThenTheItemIncludesTheDisplayNameOfTheUserWhoMadeMostRecentEdit()
         {
-            var createdOrder = (Order)Context["CreatedOrder"];
-            var orderFromUi = (Order)Context["OrderFromUI"];
+            var createdOrder = (Order)Context[ContextKeys.CreatedOrder];
+            var orderFromUi = (Order)Context[ContextKeys.OrderFromUI];
             orderFromUi.LastUpdatedByName.Should().BeEquivalentTo(createdOrder.LastUpdatedByName);
         }
 
         [Then(@"the item includes the date of the most recent edit")]
         public void ThenTheItemIncludesTheDateOfTheMostRecentEdit()
         {
-            var createdOrder = (Order)Context["CreatedOrder"];
-            var orderFromUi = (Order)Context["OrderFromUI"];
+            var createdOrder = (Order)Context[ContextKeys.CreatedOrder];
+            var orderFromUi = (Order)Context[ContextKeys.OrderFromUI];
             orderFromUi.LastUpdated.Should().BeSameDateAs(createdOrder.LastUpdated);
         }
 
         [Then(@"the item includes the date it was created")]
         public void ThenTheItemIncludesTheDateItWasCreated()
         {
-            var createdOrder = (Order)Context["CreatedOrder"];
-            var orderFromUi = (Order)Context["OrderFromUI"];
+            var createdOrder = (Order)Context[ContextKeys.CreatedOrder];
+            var orderFromUi = (Order)Context[ContextKeys.OrderFromUI];
             orderFromUi.Created.Should().BeSameDateAs(createdOrder.Created);
         }
 

@@ -62,7 +62,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             GivenTheUserIsPresentedWithAssociatedServicesAvailableFromTheirChosenSupplier();
             var itemId = Test.Pages.OrderForm.ClickRadioButton(0);
-            Context.Add("ChosenItemId", itemId);
+            Context.Add(ContextKeys.ChosenItemId, itemId);
             new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
         }
 
@@ -86,7 +86,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheUserSelectsAnAssociatedServiceToAdd()
         {
             var itemId = Test.Pages.OrderForm.ClickRadioButton();
-            Context.Add("ChosenItemId", itemId);
+            Context.Add(ContextKeys.ChosenItemId, itemId);
         }
 
         [Given(@"the User selects the flat variable price type")]
@@ -105,7 +105,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenAllTheAvailablePricesForThatAssociatedServiceArePresented()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("List price").Should().BeTrue();
-            var itemId = (string)Context["ChosenItemId"];
+            var itemId = (string)Context[ContextKeys.ChosenItemId];
             var query = "Select count(*) FROM [dbo].[CataloguePrice] where CatalogueItemId=@itemId";
             var expectedNumberOfPrices = SqlExecutor.Execute<int>(Test.BapiConnectionString, query, new { itemId }).Single();
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
@@ -114,7 +114,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the name of the selected Associated Service is displayed on the Associated Service edit form")]
         public void ThenTheNameOfTheSelectedAssociatedServiceIsDisplayedOnTheAssociatedServiceEditForm()
         {
-            var itemId = (string)Context["ChosenItemId"];
+            var itemId = (string)Context[ContextKeys.ChosenItemId];
             var query = "Select Name FROM [dbo].[CatalogueItem] where CatalogueItemId=@itemId";
             var expectedSolutionName = SqlExecutor.Execute<string>(Test.BapiConnectionString, query, new { itemId }).Single();
             Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedSolutionName).Should().BeTrue();
@@ -155,21 +155,21 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
             SetOrderAssociatedServicesSectionToComplete();
-            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.Create(Test.ConnectionString);
-            Context.Add("CreatedOrderItem", orderItem);
+            Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
 
         [Given(@"an Associated Service with a flat price declarative order type is saved to the order")]
         public void GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder()
         {
             SetOrderAssociatedServicesSectionToComplete();
-            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context["CreatedOrder"]);
+            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.ConnectionString);
-            if (!Context.ContainsKey("CreatedOrderItem"))
+            if (!Context.ContainsKey(ContextKeys.CreatedOrderItem))
             {
-                Context.Add("CreatedOrderItem", orderItem);
+                Context.Add(ContextKeys.CreatedOrderItem, orderItem);
             }
         }
 
@@ -185,7 +185,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             if (Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed() == 2)
             {
                 var estimatedPeriod = Test.Pages.OrderForm.ClickRadioButton();
-                Context.Add("AmendedEstimatedPeriod", estimatedPeriod);
+                Context.Add(ContextKeys.AmendedEstimatedPeriod, estimatedPeriod);
             }
 
             var f = new Faker();
@@ -194,8 +194,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EnterQuantity(quantity);
             Test.Pages.OrderForm.EnterPriceInputValue(price);
 
-            Context.Add("AmendedQuantity", quantity);
-            Context.Add("AmendedPrice", price);
+            Context.Add(ContextKeys.AmendedQuantity, quantity);
+            Context.Add(ContextKeys.AmendedPrice, price);
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();
             catalogueSolutionSteps.ThenTheOrderItemsArePresented();
         }
@@ -215,9 +215,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"the Associated Service is saved in the DB")]
         public void GivenTheAssociatedServiceIsSavedInTheDB()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var orderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 3).First();
-            Context.Add("CreatedOrderItem", orderItem);
+            Context.Add(ContextKeys.CreatedOrderItem, orderItem);
             orderItem.Should().NotBeNull();
         }
 
@@ -232,7 +232,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative()
         {
             var supplier = GetSupplierDetails(ProvisioningType.Declarative);
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
@@ -242,7 +242,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceOnDemand()
         {
             var supplier = GetSupplierDetails(ProvisioningType.OnDemand);
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
@@ -250,7 +250,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         public void SetOrderAssociatedServicesSectionToComplete()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.AssociatedServicesViewed = 1;
             order.Update(Test.ConnectionString);
         }

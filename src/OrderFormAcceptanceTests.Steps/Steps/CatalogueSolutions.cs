@@ -22,27 +22,27 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Commencement date section is complete")]
         public void GivenTheCommencementDateSectionIsComplete()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.CommencementDate.Should().NotBeNull();
         }
 
         [Given(@"there are one or more Service Recipients in the order")]
         public void GivenThereAreOneOrMoreServiceRecipientsInTheOrder()
         {
-            Context.ContainsKey("CreatedServiceRecipient").Should().BeTrue();
+            Context.ContainsKey(ContextKeys.CreatedServiceRecipient).Should().BeTrue();
         }
 
         [Given(@"there are no Service Recipients in the order")]
         public void GivenThereAreNoServiceRecipientsInTheOrder()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             new ServiceRecipient().RetrieveByOrderId(Test.ConnectionString, order.OrderId).ToList().Should().BeNullOrEmpty();
 
-            if (Context.ContainsKey("CreatedServiceRecipient"))
+            if (Context.ContainsKey(ContextKeys.CreatedServiceRecipient))
             {
-                var serviceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
+                var serviceRecipient = (ServiceRecipient)Context[ContextKeys.CreatedServiceRecipient];
                 serviceRecipient.Delete(Test.ConnectionString);
-                Context.Remove("CreatedServiceRecipient");
+                Context.Remove(ContextKeys.CreatedServiceRecipient);
             }
         }
 
@@ -50,9 +50,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenThereIsNoCatalogueSolutionInTheOrder()
         {
 
-            Context.Should().NotContainKey("CreatedOrderItem");
+            Context.Should().NotContainKey(ContextKeys.CreatedOrderItem);
 
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var searchedOrderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId);
             searchedOrderItem.Should().BeEmpty();
         }
@@ -60,7 +60,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"a supplier which has a catalogue soltution with only one list price was chosen")]
         public void GivenASupplierWhichHasACatalogueSoltutionWithOnlyOneListPriceWasChosen()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = SupplierInfo.SupplierWithSolutionWithOnePrice(Test.BapiConnectionString);
             order.SupplierName = SupplierInfo.SupplierName(Test.BapiConnectionString, order.SupplierId.Value);
             order.Update(Test.ConnectionString);
@@ -152,7 +152,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheUserSelectsACatalogueSolutionToAdd()
         {
             var solutionId = Test.Pages.OrderForm.ClickRadioButton();
-            Context.Add("ChosenSolutionId", solutionId);
+            Context.Add(ContextKeys.ChosenSolutionId, solutionId);
         }
 
         [Given(@"the User is presented with select Service Recipient form")]
@@ -168,7 +168,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenAllTheAvailablePricesForThatCatalogueSolutionArePresented()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("List price").Should().BeTrue();
-            var SolutionId = (string)Context["ChosenSolutionId"];
+            var SolutionId = (string)Context[ContextKeys.ChosenSolutionId];
             var query = "Select count(*) FROM [dbo].[CataloguePrice] where CatalogueItemId=@SolutionId";
             var expectedNumberOfPrices = SqlExecutor.Execute<int>(Test.BapiConnectionString, query, new { SolutionId }).Single();
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
@@ -192,7 +192,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAServiceRecipientIsSelected()
         {
             var odsCode = Test.Pages.OrderForm.ClickCheckbox();
-            Context.Add("ChosenOdsCode", odsCode);
+            Context.Add(ContextKeys.ChosenOdsCode, odsCode);
         }
 
         [Given(@"the User is presented with the Service Recipients for the Order after selecting the variable flat price")]
@@ -231,7 +231,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form")]
         public void ThenTheNameOfTheSelectedCatalogueSolutionIsDisplayedOnTheCatalogueSolutionEditForm()
         {
-            var SolutionId = (string)Context["ChosenSolutionId"];
+            var SolutionId = (string)Context[ContextKeys.ChosenSolutionId];
             var query = "Select Name FROM [dbo].[CatalogueItem] where CatalogueItemId=@SolutionId";
             var expectedSolutionName = SqlExecutor.Execute<string>(Test.BapiConnectionString, query, new { SolutionId }).Single();
             Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedSolutionName).Should().BeTrue();
@@ -240,7 +240,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form")]
         public void ThenTheSelectedServiceRecipientWithTheirODSCodeIsDisplayedOnTheCatalogueSolutionEditForm()
         {
-            var ChosenOdsCode = (string)Context["ChosenOdsCode"];
+            var ChosenOdsCode = (string)Context[ContextKeys.ChosenOdsCode];
             var query = "Select Name FROM [dbo].[Organisations] where OdsCode=@ChosenOdsCode";
             var expectedOrganisationName = SqlExecutor.Execute<string>(Test.IsapiConnectionString, query, new { ChosenOdsCode }).Single();
             var expectedFormattedValue = string.Format("{0} ({1})", expectedOrganisationName, ChosenOdsCode);
@@ -350,7 +350,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the User enters a Delivery Date that is equal to 183 weeks after the Commencement Date")]
         public void GivenTheUserEntersADeliveryDateThatIsEqualToWeeksAfterTheCommencementDate()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var deliveryDate = order.CommencementDate.Value.AddDays(7 * 183);
             Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
         }
@@ -358,7 +358,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the User enters a Delivery Date that is less than 183 weeks after the Commencement Date")]
         public void GivenTheUserEntersADeliveryDateThatIsLessThanWeeksAfterTheCommencementDate()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var deliveryDate = order.CommencementDate.Value.AddDays(7 * 182);
             Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
         }
@@ -366,7 +366,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the User enters a Delivery Date that is more than 183 weeks after the Commencement Date")]
         public void GivenTheUserEntersADeliveryDateThatIsMoreThanWeeksAfterTheCommencementDate()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var deliveryDate = order.CommencementDate.Value.AddDays((7 * 183) + 1);
             Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
         }
@@ -374,7 +374,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the User enters a Delivery Date that is before the Commencement Date")]
         public void GivenTheUserEntersADeliveryDateThatIsBeforeTheCommencementDate()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var deliveryDate = order.CommencementDate.Value.AddDays(-1);
             Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
         }
@@ -443,7 +443,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"fills in the Catalogue Solution edit form with valid data")]
         public void GivenFillsInTheCatalogueSolutionEditFormWithValidData()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var deliveryDate = order.CommencementDate.Value;
             Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
 
@@ -460,9 +460,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"the Catalogue Solution is saved in the DB")]
         public void GivenTheCatalogueSolutionIsSavedInTheDB()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var orderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId).First();
-            Context.Add("CreatedOrderItem", orderItem);
+            Context.Add(ContextKeys.CreatedOrderItem, orderItem);
             orderItem.Should().NotBeNull();
         }
 
@@ -479,7 +479,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheSupplierChosenHasMoreThanOneSolution()
         {
             var supplierId = SupplierInfo.SupplierWithMoreThanOneSolution(Test.BapiConnectionString);
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = supplierId;
             order.Update(Test.ConnectionString);
         }
@@ -504,7 +504,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Service Recipient Name and Service Recipient ODS code are concatenated into a Presentation Name using the format ""(.*)""")]
         public void ThenTheServiceRecipientNameAndServiceRecipientODSCodeAreConcatenatedIntoAPresentationNameUsingTheFormat(string p0)
         {
-            var serviceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
+            var serviceRecipient = (ServiceRecipient)Context[ContextKeys.CreatedServiceRecipient];
             var expectedFormattedValue = string.Format("{0} ({1})", serviceRecipient.Name, serviceRecipient.OdsCode);
             Test.Pages.OrderForm.GetAddedSolutionServiceRecipient().Should().Be(expectedFormattedValue);
         }
@@ -525,7 +525,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.ClickAddedCatalogueItem();
             ThenTheyArePresentedWithTheOrderItemPriceEditForm();
 
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             var deliveryDate = order.CommencementDate.Value.AddMonths(6).AddYears(1);
             Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
 
@@ -537,10 +537,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EnterQuantity(quantity);
             Test.Pages.OrderForm.EnterPriceInputValue(price);
 
-            Context.Add("AmendedDeliveryDate", deliveryDate);
-            Context.Add("AmendedEstimatedPeriod", estimatedPeriod);
-            Context.Add("AmendedQuantity", quantity);
-            Context.Add("AmendedPrice", price);
+            Context.Add(ContextKeys.AmendedDeliveryDate, deliveryDate);
+            Context.Add(ContextKeys.AmendedEstimatedPeriod, estimatedPeriod);
+            Context.Add(ContextKeys.AmendedQuantity, quantity);
+            Context.Add(ContextKeys.AmendedPrice, price);
             new OrderForm(Test, Context).WhenTheUserChoosesToSave();
             ThenTheOrderItemsArePresented();
         }
@@ -556,16 +556,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the values will be populated with the values that was saved by the User")]
         public void ThenTheValuesWillBePopulatedWithTheValuesThatWasSavedByTheUser()
         {
-            if (Context.ContainsKey("AmendedDeliveryDate"))
+            if (Context.ContainsKey(ContextKeys.AmendedDeliveryDate))
             {
-                var expectedDate = (DateTime)Context["AmendedDeliveryDate"];
+                var expectedDate = (DateTime)Context[ContextKeys.AmendedDeliveryDate];
                 var dateValueFromPage = Test.Pages.OrderForm.GetProposedDate();
                 dateValueFromPage.Should().Be(expectedDate.ToString("dd MM yyyy"));
             }
 
-            if (Context.ContainsKey("AmendedEstimatedPeriod"))
+            if (Context.ContainsKey(ContextKeys.AmendedEstimatedPeriod))
             {
-                var expectedPeriod = (string)Context["AmendedEstimatedPeriod"];
+                var expectedPeriod = (string)Context[ContextKeys.AmendedEstimatedPeriod];
                 var periodFromPage = Test.Pages.OrderForm.GetSelectedRadioButton();
                 periodFromPage.Should().Be(expectedPeriod);
             }
@@ -573,8 +573,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var quantityFromPage = Test.Pages.OrderForm.GetQuantity();
             var priceFromPage = Test.Pages.OrderForm.GetPriceInputValue();
 
-            var expectedQuantity = (string)Context["AmendedQuantity"];
-            var expectedPrice = (string)Context["AmendedPrice"];
+            var expectedQuantity = (string)Context[ContextKeys.AmendedQuantity];
+            var expectedPrice = (string)Context[ContextKeys.AmendedPrice];
 
             quantityFromPage.Should().Be(expectedQuantity);
             priceFromPage.Should().Be(expectedPrice);
@@ -585,7 +585,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var supplier = SupplierInfo.SuppliersWithout(Test.BapiConnectionString, CatalogueItemType.AssociatedService).First() ?? throw new NullReferenceException("Supplier not found");
 
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);
@@ -596,7 +596,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var supplier = GetSupplierDetails(ProvisioningType.Declarative);
 
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
             order.Update(Test.ConnectionString);

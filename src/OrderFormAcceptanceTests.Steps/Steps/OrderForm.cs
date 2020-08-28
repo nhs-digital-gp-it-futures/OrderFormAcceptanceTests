@@ -120,13 +120,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void WhenTheUserSelectsAnErrorLinkInTheErrorSummary()
         {
             var url = Test.Pages.OrderForm.ClickOnErrorLink();
-            Context.Add("ExpectedUrl", url);
+            Context.Add(ContextKeys.ExpectedUrl, url);
         }
 
         [Then(@"they will be navigated to the relevant part of the page")]
         public void ThenTheyWillBeNavigatedToTheRelevantPartOfThePage()
         {
-            var expectedUrl = (string)Context["ExpectedUrl"];
+            var expectedUrl = (string)Context[ContextKeys.ExpectedUrl];
             Test.Driver.Url.Should().Contain(expectedUrl);
         }
 
@@ -135,7 +135,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var randomText = RandomInformation.RandomString(99);
             Test.Pages.OrderForm.EnterTextIntoTextArea(randomText);
-            Context.Add("ExpectedDescriptionValue", randomText);
+            Context.Add(ContextKeys.ExpectedDescriptionValue, randomText);
         }
 
         [Then(@"the Order is saved")]
@@ -154,9 +154,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             WhenTheUserChoosesToSave();
             ThenTheOrderIsSaved();
             ThenTheCallOffAgreementIDIsGenerated();
-            var id = (string)Context["CallOffAgreementId"];
+            var id = (string)Context[ContextKeys.CallOffAgreementId];
             var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
-            Context.Add("CreatedOrder", order);
+            Context.Add(ContextKeys.CreatedOrder, order);
         }
 
         [Then(@"the content validation status of the (.*) section is complete")]
@@ -183,23 +183,23 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var id = Test.Pages.OrderForm.GetCallOffId();
             id.Should().NotBeNullOrEmpty();
-            Context.Add("CallOffAgreementId", id);
+            Context.Add(ContextKeys.CallOffAgreementId, id);
         }
 
         [Then(@"the Order Description section is saved in the DB")]
         public void ThenTheOrderDescriptionSectionIsSavedInTheDB()
         {
-            var expectedDescriptionValue = (string)Context["ExpectedDescriptionValue"];
+            var expectedDescriptionValue = (string)Context[ContextKeys.ExpectedDescriptionValue];
             var id = Test.Pages.OrderForm.GetCallOffId();
             var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
             order.Description.Should().BeEquivalentTo(expectedDescriptionValue);
-            Context.Add("CreatedOrder", order);
+            Context.Add(ContextKeys.CreatedOrder, order);
         }
 
         [Given(@"the Call Off Ordering Party section is not complete")]
         public void GivenTheCallOffOrderingPartySectionIsNotComplete()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.OrganisationAddressId = null;
             order.OrganisationBillingAddressId = null;
             order.OrganisationContactId = null;
@@ -209,7 +209,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Supplier section is not complete")]
         public void GivenTheSupplierSectionIsNotComplete()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierAddressId = null;
             order.SupplierContactId = null;
             order.SupplierId = null;
@@ -220,7 +220,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Commencement Date section is not complete")]
         public void GivenTheCommencementDateSectionIsNotComplete()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.CommencementDate = null;
             order.Update(Test.ConnectionString);
         }
@@ -228,31 +228,31 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Service Recipients section is not complete")]
         public void GivenTheServiceRecipientsSectionIsNotComplete()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.ServiceRecipientsViewed = 0;
             order.Update(Test.ConnectionString);
 
-            var serviceRecipient = (ServiceRecipient)Context["CreatedServiceRecipient"];
+            var serviceRecipient = (ServiceRecipient)Context[ContextKeys.CreatedServiceRecipient];
             serviceRecipient.Delete(Test.ConnectionString);
-            Context.Remove("CreatedServiceRecipient");
+            Context.Remove(ContextKeys.CreatedServiceRecipient);
         }
 
         [Given(@"the Service Recipients section is complete")]
         public void GivenTheServiceRecipientsSectionIsComplete()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.ServiceRecipientsViewed = 1;
             order.Update(Test.ConnectionString);
 
             var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);
             serviceRecipient.Create(Test.ConnectionString);
-            Context.Add("CreatedServiceRecipient", serviceRecipient);
+            Context.Add(ContextKeys.CreatedServiceRecipient, serviceRecipient);
         }
 
         [Given(@"the Catalogue Solutions section is not complete")]
         public void GivenTheCatalogueSolutionsSectionIsNotComplete()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.CatalogueSolutionsViewed = 0;
             order.Update(Test.ConnectionString);
         }
@@ -260,7 +260,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Catalogue Solution section is complete")]
         public void GivenTheCatalogueSolutionSectionIsComplete()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.CatalogueSolutionsViewed = 1;
             order.Update(Test.ConnectionString);
         }
@@ -268,7 +268,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Additional Services section is complete")]
         public void GivenTheAdditionalServicesSectionIsComplete()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.AdditionalServicesViewed = 1;
             order.Update(Test.ConnectionString);
         }
@@ -276,7 +276,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Additional Services section is not complete")]
         public void GivenTheAdditionalServicesSectionIsNotCompleteAndNoServicesAreAdded()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.AdditionalServicesViewed = 0;
             IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 2);
             foreach (var item in items)
@@ -289,7 +289,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Associated Services section is not complete")]
         public void GivenTheAssociatedServicesSectionIsNotCompleteAndNoServicesAreAdded()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.AssociatedServicesViewed = 0;
             IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 3);
             foreach (var item in items)
@@ -302,7 +302,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Funding Source section is not complete")]
         public void GivenTheFundingSourceSectionIsNotComplete()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.FundingSourceOnlyGMS = null;
             order.Update(Test.ConnectionString);
         }
@@ -311,7 +311,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Funding Source section is complete")]
         public void GivenTheFundingSourceSectionIsCompleteWithNoSelected()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.FundingSourceOnlyGMS = 0;
             order.Update(Test.ConnectionString);
         }
@@ -319,7 +319,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Funding Source section is complete with 'yes' selected")]
         public void GivenTheFundingSourceSectionIsCompleteWithYesSelected()
         {
-            var order = (Order)Context["CreatedOrder"];
+            var order = (Order)Context[ContextKeys.CreatedOrder];
             order.FundingSourceOnlyGMS = 1;
             order.Update(Test.ConnectionString);
         }
