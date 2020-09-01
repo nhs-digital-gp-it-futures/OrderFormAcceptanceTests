@@ -63,7 +63,7 @@ namespace OrderFormAcceptanceTests.TestData
         public static int SupplierWithSolutionWithOnePrice(string connectionString)
         {
             var query =
-                $@"SELECT SupplierId, COUNT(*) FROM CatalogueItem WHERE CatalogueItemTypeId = {(int)CatalogueItemType.Solution} GROUP BY SupplierId ORDER BY 2 ASC";
+                $@"SELECT SupplierId, COUNT(*) FROM CatalogueItem LEFT JOIN CataloguePrice ON CataloguePrice.CatalogueItemId = CatalogueItem.CatalogueItemId WHERE CatalogueItemTypeId = {(int)CatalogueItemType.Solution} GROUP BY SupplierId ORDER BY 2 ASC";
 
             return SqlExecutor.Execute<int>(connectionString, query, null).FirstOrDefault();
         }
