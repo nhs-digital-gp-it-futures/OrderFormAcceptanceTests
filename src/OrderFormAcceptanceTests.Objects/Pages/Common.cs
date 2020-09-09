@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Objects.Utils;
 
 namespace OrderFormAcceptanceTests.Objects.Pages
@@ -23,5 +24,6 @@ namespace OrderFormAcceptanceTests.Objects.Pages
         public By BetaBanner => CustomBy.DataTestId("beta-banner");
 
         public By TableRows => By.CssSelector("[data-test-id^=table-row-]");
+        public Func<int, By> TableRowX => (index) => By.CssSelector(string.Format("[data-test-id=table-row-{0}]", index.ToString()));
     }
 }

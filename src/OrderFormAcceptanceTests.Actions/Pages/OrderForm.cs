@@ -319,24 +319,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             }
         }
 
-        public bool EditServiceRecipientsSectionDisplayed()
-        {
-            try
-            {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.EditServiceRecipients).Count == 1);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public void ClickEditServiceRecipients()
-        {
-            Driver.FindElement(Pages.OrderForm.EditServiceRecipients).Click();
-        }
-
         public bool EditCatalogueSolutionsSectionDisplayed()
         {
             try
@@ -496,11 +478,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             };
         }
 
-        public bool ServiceRecipientSectionEnabled()
-        {
-            return Driver.FindElement(Pages.OrderForm.EditServiceRecipients).TagName == "a";
-        }
-
         public void EnterContact(Contact contact)
         {
             Wait.Until(d => d.FindElements(Pages.OrderForm.ContactFirstName).Count == 1);
@@ -592,10 +569,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElements(Pages.Common.Checkbox).Count;
         }
 
-        public void ClickCheckbox(int index = 0)
+        public string ClickCheckbox(int index = 0)
         {
             Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
-            Driver.FindElements(Pages.Common.Checkbox)[index].Click();
+            var element = Driver.FindElements(Pages.Common.Checkbox)[index];
+            element.Click();
+            return element.GetAttribute("value");
         }
 
         public bool IsCheckboxChecked(int index = 0)
@@ -628,7 +607,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public bool AddedOrderItemsTableIsPopulated()
         {
             return Driver.FindElement(Pages.OrderForm.AddedOrderItemsTable)
-                .FindElements(Pages.OrderForm.TableRowX(0))
+                .FindElements(Pages.Common.TableRowX(0))
                 .Count > 0;
         }
 
@@ -678,6 +657,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             Wait.Until(d => NumberOfRadioButtonsDisplayed() > 0);
             var value = Driver.FindElements(Pages.Common.RadioButton).Where(e => e.GetProperty("checked") == "True").Select(s => s.GetAttribute("value")).Single();
             return value;
+        }
+
+        public List<string> GetRadioButtonText()
+        {
+            return Driver.FindElements(Pages.Common.RadioButtonLabel).Select(s => s.Text).ToList();
         }
 
         public bool PriceInputIsDisplayed()
@@ -803,118 +787,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             Driver.FindElement(Pages.OrderForm.PreviewOrderButton)
                 .FindElement(By.TagName("a"))
                 .Click();
-        }
-
-        public string GetDateOrderSummaryCreatedValue()
-        {
-            return Driver.FindElement(Pages.OrderForm.DateOrderSummaryCreated).Text;
-        }
-
-        public string GetDateOrderCompletedValue()
-        {
-            return Driver.FindElement(Pages.OrderForm.DateOrderCompleted).Text;
-        }
-
-        public string GetCallOffOrderingPartyPreviewValue()
-        {
-            return Driver.FindElement(Pages.OrderForm.CallOffOrderingPartyPreview).Text;
-        }
-
-        public string GetSupplierPreviewValue()
-        {
-            return Driver.FindElement(Pages.OrderForm.SupplierPreview).Text;
-        }
-
-        public string GetCommencementDateValue()
-        {
-            return Driver.FindElement(Pages.OrderForm.CommencementDate).Text;
-        }
-
-        public bool OneOffCostsTableIsDisplayed()
-        {
-            return Driver.FindElements(Pages.OrderForm.OneOffCostsTable).Count == 1;
-        }
-
-        public bool OneOffCostsTableIsPopulated()
-        {
-            return Driver.FindElement(Pages.OrderForm.OneOffCostsTable)
-                .FindElements(Pages.OrderForm.TableRowX(0))
-                .Count > 0;
-        }
-
-        public bool RecurringCostsTableIsDisplayed()
-        {
-            return Driver.FindElements(Pages.OrderForm.RecurringCostsTable).Count == 1;
-        }
-
-        public bool RecurringCostsTableIsPopulated()
-        {
-            return Driver.FindElement(Pages.OrderForm.RecurringCostsTable)
-                .FindElements(Pages.OrderForm.TableRowX(0))
-                .Count > 0;
-        }
-
-        public string GetItemRecipientName()
-        {
-            return Driver.FindElement(Pages.OrderForm.ItemRecipientName).Text;
-        }
-
-        public string GetItemId()
-        {
-            return Driver.FindElement(Pages.OrderForm.ItemId).Text;
-        }
-        public string GetItemName()
-        {
-            return Driver.FindElement(Pages.OrderForm.ItemName).Text;
-        }
-
-        public IEnumerable<string> GetItemNames()
-        {
-            return Driver.FindElements(Pages.OrderForm.ItemName).Select(x => x.Text);
-        }
-
-        public IEnumerable<string> GetItemRecipientNames()
-        {
-            return Driver.FindElements(Pages.OrderForm.ItemRecipientName).Select(x => x.Text);
-        }
-
-        public string GetItemPrice()
-        {
-            return Driver.FindElement(Pages.OrderForm.ItemPrice).Text;
-        }
-        public string GetItemQuantity()
-        {
-            return Driver.FindElement(Pages.OrderForm.ItemQuantity).Text;
-        }
-
-        public string GetItemPlannedDate()
-        {
-            return Driver.FindElement(Pages.OrderForm.ItemPlannedDate).Text;
-        }
-
-        public string GetItemCost()
-        {
-            return Driver.FindElement(Pages.OrderForm.ItemCost).Text;
-        }
-
-        public string GetTotalOneOffCost()
-        {
-            return Driver.FindElement(Pages.OrderForm.TotalOneOffCost).Text;
-        }
-
-        public string GetTotalAnnualCost()
-        {
-            return Driver.FindElement(Pages.OrderForm.TotalAnnualCost).Text;
-        }
-
-        public string GetTotalMonthlyCost()
-        {
-            return Driver.FindElement(Pages.OrderForm.TotalMonthlyCost).Text;
-        }
-
-        public string GetTotalOwnershipCost()
-        {
-            return Driver.FindElement(Pages.OrderForm.TotalOwnershipCost).Text;
         }
 
         public bool AddAssociatedServiceButtonDisplayed()

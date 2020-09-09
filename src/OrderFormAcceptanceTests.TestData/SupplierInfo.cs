@@ -1,4 +1,5 @@
 ﻿using OrderFormAcceptanceTests.TestData.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -59,6 +60,22 @@ namespace OrderFormAcceptanceTests.TestData
             return SqlExecutor.Execute<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType });
         }
 
+        public static int SupplierWithSolutionWithOnePrice(string connectionString)
+        {
+            var query =
+                $@"SELECT SupplierId, COUNT(*) FROM CatalogueItem LEFT JOIN CataloguePrice ON CataloguePrice.CatalogueItemId = CatalogueItem.CatalogueItemId WHERE CatalogueItemTypeId = {(int)CatalogueItemType.Solution} GROUP BY SupplierId ORDER BY 2 ASC";
+
+            return SqlExecutor.Execute<int>(connectionString, query, null).FirstOrDefault();
+        }
+
+        public static string SupplierName(string connectionString, int supplierId)
+        {
+            var query =
+                $@"SELECT Name FROM Supplier WHERE Id = @supplierId";
+
+            return SqlExecutor.Execute<string>(connectionString, query, new { supplierId }).FirstOrDefault();
+        }
+
         private static IEnumerable<SupplierDetails> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
         {
             var query = @"SELECT ci.[SupplierId], su.[Name]      
@@ -70,5 +87,13 @@ namespace OrderFormAcceptanceTests.TestData
 
             return SqlExecutor.Execute<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType, provisioningType = (int)provisioningType });
         }
+
+        public static int SupplierWithMoreThanOneSolution(string connectionString)
+        {
+            var query =
+                $@"SELECT SupplierId, COUNT(*) FROM CatalogueItem WHERE CatalogueItemTypeId = {(int)CatalogueItemType.Solution} GROUP BY SupplierId ORDER BY 2 DESC";
+
+            return SqlExecutor.Execute<int>(connectionString, query, null).FirstOrDefault();
+        } 
     }
 }
