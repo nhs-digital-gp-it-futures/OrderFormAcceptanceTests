@@ -37,5 +37,7 @@
         internal const string OrderFromUI = nameof(OrderFromUI);
 
         internal const string User = nameof(User);
+
+        internal const string Organisation = nameof(Organisation);
     }
 }

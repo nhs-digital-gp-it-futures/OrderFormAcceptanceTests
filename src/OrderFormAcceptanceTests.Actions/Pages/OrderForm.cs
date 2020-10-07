@@ -126,7 +126,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool DeleteSolutionButtonIsDisabled()
         {
-            return Driver.FindElement(Pages.Common.DeleteButton).GetAttribute("aria-disabled") != null;
+            return Driver.FindElement(Pages.Common.DeleteSolutionButton).GetAttribute("aria-disabled") != null;
         }
 
         public bool PreviewOrderButtonIsDisabled()
@@ -577,6 +577,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return element.GetAttribute("value");
         }
 
+        public string ClickCheckboxReturnName(int index = 0)
+        {
+            Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
+            var element = Driver.FindElements(Pages.Common.Checkbox)[index];
+            element.Click();
+            return element.GetAttribute("name");
+        }
+
         public bool IsCheckboxChecked(int index = 0)
         {
             Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
@@ -650,6 +658,16 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             var element = Driver.FindElements(Pages.Common.RadioButton)[index];
             element.Click();
             return element.GetAttribute("value");
+        }
+
+        public string ClickRadioButtonWithText(string text)
+        {
+            Wait.Until(d => NumberOfRadioButtonsDisplayed() > 0);
+            var elementIndex = Driver.FindElements(Pages.Common.RadioButtonLabel)
+                .IndexOf(Driver.FindElements(Pages.Common.RadioButtonLabel)
+                    .Single(s => s.Text.Contains(text, StringComparison.OrdinalIgnoreCase)));
+
+            return ClickRadioButton(elementIndex);
         }
 
         public string GetSelectedRadioButton()

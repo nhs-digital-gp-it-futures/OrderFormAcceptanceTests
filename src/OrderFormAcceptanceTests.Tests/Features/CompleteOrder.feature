@@ -162,6 +162,8 @@ Scenario: View Completed Order Summary - Button to get Order Summary
 	When the Completed Order Summary is displayed
 	Then there is a button to get the Order Summary at the top and bottom of it 
 
+# This functionality has changed slightly in the newest version of Chrome. Will need to scrap or rewrite
+@ignore 
 Scenario: View Completed Order Summary - Choose to get Order Summary
 	Given a User has completed an Order
 	And the Completed Order Summary is displayed

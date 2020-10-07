@@ -1,13 +1,12 @@
-﻿using Bogus;
-using FluentAssertions;
-using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Utils;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Bogus;
+using FluentAssertions;
+using OpenQA.Selenium;
+using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -23,8 +22,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenThatABuyerUserHasLoggedIn()
         {
             Test.Pages.Homepage.ClickLoginButton();
-            var user = (User)EnvironmentVariables.User(UserType.Buyer);
-            Test.Pages.Authentication.Login(user);
+            if (!Context.ContainsKey(ContextKeys.User))
+            {
+                CreateUser(UserType.Buyer);
+            }
+
+            User user = (User)Context[ContextKeys.User];
+
+            Test.Pages.Authentication.Login(user.UserName, User.GenericTestPassword());
         }
 
         [Given(@"the User has chosen to manage a new Order Form")]
@@ -89,20 +94,27 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnIncompleteOrderExists()
         {
             var orgAddress = new Address().Generate();
-            orgAddress.Create(Test.ConnectionString);
+            orgAddress.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedAddress, orgAddress);
             var orgContact = new Contact().Generate();
-            orgContact.Create(Test.ConnectionString);
+            orgContact.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedContact, orgContact);
 
             var supplierAddress = new Address().Generate();
-            supplierAddress.Create(Test.ConnectionString);
+            supplierAddress.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedSupplierAddress, supplierAddress);
             var supplierContact = new Contact().Generate();
-            supplierContact.Create(Test.ConnectionString);
+            supplierContact.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedSupplierContact, supplierContact);
 
-            var order = new Order().Generate();
+            if (!Context.ContainsKey(ContextKeys.Organisation))
+            {
+                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisationWithNoUsers(Test.IsapiConnectionString));
+            }
+
+            var organisation = (Organisation)Context[ContextKeys.Organisation];
+
+            var order = new Order().Generate(organisation);
             order.OrganisationAddressId = orgAddress.AddressId;
             order.OrganisationBillingAddressId = orgAddress.AddressId;
             order.OrganisationContactId = orgContact.ContactId;
@@ -111,10 +123,52 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.SupplierId = 100000;
             order.SupplierName = "Really Kool Corporation";
 
-            order.CommencementDate = new Faker().Date.Future().Date;            
+            order.CommencementDate = new Faker().Date.Future().Date;
 
-            order.Create(Test.ConnectionString);
-            Context.Add(ContextKeys.CreatedOrder, order);            
+            order.Create(Test.OrdapiConnectionString);
+            Context.Add(ContextKeys.CreatedOrder, order);
+
+            Context.TryGetValue(ContextKeys.CreatedIncompleteOrders, out IList<Order> createdOrders);
+            createdOrders ??= new List<Order>();
+            createdOrders.Add(order);
+            Context.Set(createdOrders, ContextKeys.CreatedIncompleteOrders);
+        }
+
+        [Given(@"an incomplete order exists without a commencement date")]
+        public void GivenAnIncompleteOrderExistsNoCommencement()
+        {
+            var orgAddress = new Address().Generate();
+            orgAddress.Create(Test.OrdapiConnectionString);
+            Context.Add(ContextKeys.CreatedAddress, orgAddress);
+            var orgContact = new Contact().Generate();
+            orgContact.Create(Test.OrdapiConnectionString);
+            Context.Add(ContextKeys.CreatedContact, orgContact);
+
+            var supplierAddress = new Address().Generate();
+            supplierAddress.Create(Test.OrdapiConnectionString);
+            Context.Add(ContextKeys.CreatedSupplierAddress, supplierAddress);
+            var supplierContact = new Contact().Generate();
+            supplierContact.Create(Test.OrdapiConnectionString);
+            Context.Add(ContextKeys.CreatedSupplierContact, supplierContact);
+
+            if (!Context.ContainsKey(ContextKeys.Organisation))
+            {
+                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisationWithNoUsers(Test.IsapiConnectionString));
+            }
+
+            var organisation = (Organisation)Context[ContextKeys.Organisation];
+
+            var order = new Order().Generate(organisation);
+            order.OrganisationAddressId = orgAddress.AddressId;
+            order.OrganisationBillingAddressId = orgAddress.AddressId;
+            order.OrganisationContactId = orgContact.ContactId;
+            order.SupplierAddressId = supplierAddress.AddressId;
+            order.SupplierContactId = supplierContact.ContactId;
+            order.SupplierId = 100000;
+            order.SupplierName = "Really Kool Corporation";
+
+            order.Create(Test.OrdapiConnectionString);
+            Context.Add(ContextKeys.CreatedOrder, order);
 
             Context.TryGetValue(ContextKeys.CreatedIncompleteOrders, out IList<Order> createdOrders);
             createdOrders ??= new List<Order>();
@@ -131,12 +185,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
             var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);
             order.ServiceRecipientsViewed = 1;
-            serviceRecipient.Create(Test.ConnectionString);
+            serviceRecipient.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedServiceRecipient, serviceRecipient);
 
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand(order);
-            orderItem.Create(Test.ConnectionString);
+            orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
 
@@ -154,16 +208,23 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenACompleteOrderExists()
         {
             var orgAddress = new Address().Generate();
-            orgAddress.Create(Test.ConnectionString);
+            orgAddress.Create(Test.OrdapiConnectionString);
             var orgContact = new Contact().Generate();
-            orgContact.Create(Test.ConnectionString);
+            orgContact.Create(Test.OrdapiConnectionString);
 
             var supplierAddress = new Address().Generate();
-            supplierAddress.Create(Test.ConnectionString);
+            supplierAddress.Create(Test.OrdapiConnectionString);
             var supplierContact = new Contact().Generate();
-            supplierContact.Create(Test.ConnectionString);
+            supplierContact.Create(Test.OrdapiConnectionString);
 
-            var order = new Order().Generate();
+            if (!Context.ContainsKey(ContextKeys.Organisation))
+            {
+                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisationWithNoUsers(Test.IsapiConnectionString));
+            }
+
+            var organisation = (Organisation)Context[ContextKeys.Organisation];
+
+            var order = new Order().Generate(organisation);
             order.OrganisationAddressId = orgAddress.AddressId;
             order.OrganisationBillingAddressId = orgAddress.AddressId;
             order.OrganisationContactId = orgContact.ContactId;
@@ -189,12 +250,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             const int completed = 1;
             order.OrderStatusId = completed;
 
-            order.Create(Test.ConnectionString);
+            order.Create(Test.OrdapiConnectionString);
 
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand(order);
             orderItem.LastUpdated = dateCompleted;
-            orderItem.Create(Test.ConnectionString);
-            serviceRecipient.Create(Test.ConnectionString);
+            orderItem.Create(Test.OrdapiConnectionString);
+            serviceRecipient.Create(Test.OrdapiConnectionString);
 
             Context.TryGetValue(ContextKeys.CreatedCompletedOrders, out IList<Order> createdOrders);
             createdOrders ??= new List<Order>();
@@ -316,6 +377,21 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 .Select(r => r.Replace("-", "")) // remove any '-' characters
                 .ToList();
             hexList.Should().BeInAscendingOrder();
+        }
+
+        public void CreateUser(UserType userType)
+        {
+            if (!Context.ContainsKey(ContextKeys.Organisation))
+            {
+                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisationWithNoUsers(Test.IsapiConnectionString));
+            }
+
+            var organisation = (Organisation)Context[ContextKeys.Organisation];
+
+            var user = new User() { UserType = userType }.GenerateRandomUser(organisation.OrganisationId);
+            user.Create(Test.IsapiConnectionString);
+
+            Context.Add(ContextKeys.User, user);
         }
     }
 }

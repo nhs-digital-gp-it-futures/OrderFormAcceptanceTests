@@ -9,10 +9,10 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
         }
 
-        public void Login(User user)
+        public void Login(string username, string password)
         {
-            EnterUsername(user.Username);
-            EnterPassword(user.Password);
+            EnterUsername(username);
+            EnterPassword(password);
             Driver.FindElement(Pages.Login.LoginButton).Click();
         }
 

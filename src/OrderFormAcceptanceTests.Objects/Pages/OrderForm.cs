@@ -8,7 +8,7 @@ namespace OrderFormAcceptanceTests.Objects.Pages
     {
         public By DeleteOrderButton => CustomBy.DataTestId("delete-order-button");
         public By PreviewOrderButton => CustomBy.DataTestId("preview-order-button");
-        public By CompleteOrderLink => CustomBy.DataTestId("complete-order-button" ,"a");
+        public By CompleteOrderLink => CustomBy.DataTestId("complete-order-button", "a");
         public By CompleteOrderButton => CustomBy.DataTestId("complete-order-button", "button");
         public By CompleteOrderLabel => CustomBy.DataTestId("complete-order-button");
         public By PageTitle => By.CssSelector("[data-test-id$='-page-title']");

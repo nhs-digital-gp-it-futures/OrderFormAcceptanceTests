@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Actions.Utils;
 using OrderFormAcceptanceTests.Steps.Utils;
+using OrderFormAcceptanceTests.TestData;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -33,19 +33,20 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [When(@"the User is a Buyer User")]
         public void WhenTheUserIsABuyerUser()
         {
-            Context.Add(ContextKeys.User, EnvironmentVariables.User(UserType.Buyer));
+            new CommonSteps(Test, Context).CreateUser(UserType.Authority);
         }
 
         [When(@"the User is not a Buyer User")]
         public void WhenTheUserIsNotABuyerUser()
         {
-            Context.Add(ContextKeys.User, EnvironmentVariables.User(UserType.Authority));
+            new CommonSteps(Test, Context).CreateUser(UserType.Authority);
         }
 
         [Then(@"the User will be logged in")]
         public void ThenTheBuyerWillBeLoggedIn()
         {
-            Test.Pages.Authentication.Login((User)Context[ContextKeys.User]);
+            var user = (User)Context[ContextKeys.User];
+            Test.Pages.Authentication.Login(user.UserName, User.GenericTestPassword());
         }
 
         [Then(@"the Buyer will be able to access the Order Form feature without having to authenticate again")]

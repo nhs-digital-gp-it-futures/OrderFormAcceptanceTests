@@ -64,16 +64,16 @@ namespace OrderFormAcceptanceTests.TestData
             return SqlExecutor.Execute<Order>(connectionString, query, this).Single();
         }
 
-        public Order Generate()
+        public Order Generate(Organisation organisation = null)
         {
             var faker = new Faker();
             return new Order
             {
                 OrderId = GenerateRandomCallOffId(),
                 Description = faker.Lorem.Sentence(6),
-                OrganisationId = Guid.Parse("6F6F7D0D-01E9-488F-B7CD-C2E889C4080B"),
-                OrganisationName = "NHS Darlington CCG",
-                OrganisationOdsCode = "00C",
+                OrganisationId = organisation?.OrganisationId ?? Guid.Parse("6F6F7D0D-01E9-488F-B7CD-C2E889C4080B"),
+                OrganisationName = organisation?.Name ?? "NHS Darlington CCG",
+                OrganisationOdsCode = organisation?.OdsCode ?? "00C",
                 ServiceRecipientsViewed = 0,
                 OrderStatusId = 2,
                 CatalogueSolutionsViewed = 0,
