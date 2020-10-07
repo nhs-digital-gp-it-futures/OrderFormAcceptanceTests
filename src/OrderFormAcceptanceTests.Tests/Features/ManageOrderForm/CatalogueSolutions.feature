@@ -159,6 +159,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with declarative 
 	And the User is presented with the Service Recipients for the Order after selecting the declarative flat price
 	And a Service Recipient is selected
 	When they choose to continue
+    And they choose to continue
 	Then they are presented with the Catalogue Solution edit form
 	And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
 	And the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form
@@ -432,7 +433,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back a
         | per patient      |
 
 Scenario: Catalogue Solutions - View Added Catalogue Solutions
-    Given there is one or more Catalogue Solutions added to the order
+    Given the User has chosen to manage the Catalogue Solution section
     When the Catalogue Solution dashboard is presented
     Then the Catalogue Solutions are presented
     And the name of the Catalogue Solution is displayed
@@ -442,8 +443,7 @@ Scenario: Catalogue Solutions - View Added Catalogue Solutions
     And there is a control to edit each Catalogue Solution
 
 Scenario: Catalogue Solutions - Catalogue Solution added section complete
-    Given there is one or more Catalogue Solutions added to the order
-    And the Catalogue Solution dashboard is presented
+    Given the User has chosen to manage the Catalogue Solution section
     When the User chooses to continue
     Then the Order dashboard is presented
     And the content validation status of the catalogue-solutions section is complete

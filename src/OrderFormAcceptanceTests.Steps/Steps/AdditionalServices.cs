@@ -19,7 +19,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Context.Should().NotContainKey(ContextKeys.CreatedAdditionalServiceOrderItem);
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            var searchedOrderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 2);
+            var searchedOrderItem = new OrderItem().RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 2);
             searchedOrderItem.Should().BeEmpty();
         }
 
@@ -28,7 +28,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
             var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.ConnectionString);
+            orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
         }
 
@@ -221,7 +221,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
             var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.ConnectionString);
+            orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
@@ -233,7 +233,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
             var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.ConnectionString);
+            orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
@@ -245,7 +245,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
             var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.ConnectionString);
+            orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
@@ -258,7 +258,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
 
             var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.ConnectionString);
+            orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
         }
 
@@ -287,7 +287,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the supplier added to the order has an additional service with a patient flat price")]
@@ -297,7 +297,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the supplier added to the order has an additional service with an on demand flat price")]
@@ -307,7 +307,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"there is no Additional Service in the order but the section is complete")]

@@ -94,6 +94,14 @@ namespace OrderFormAcceptanceTests.TestData
                 $@"SELECT SupplierId, COUNT(*) FROM CatalogueItem WHERE CatalogueItemTypeId = {(int)CatalogueItemType.Solution} GROUP BY SupplierId ORDER BY 2 DESC";
 
             return SqlExecutor.Execute<int>(connectionString, query, null).FirstOrDefault();
-        } 
+        }
+
+        public static string GetSupplierSolutionNameWithPrice(string connectionString, string supplierId)
+        {
+            var query =
+                $@"SELECT ci.[Name] FROM [buyingcatalogue].[dbo].[CatalogueItem] ci INNER JOIN CataloguePrice cp ON cp.CatalogueItemId=ci.CatalogueItemId WHERE ci.CatalogueItemTypeId = 1 AND ci.PublishedStatusId = 3 AND ci.SupplierId = @supplierId";
+
+            return SqlExecutor.Execute<string>(connectionString, query, new { supplierId }).FirstOrDefault();
+        }
     }
 }

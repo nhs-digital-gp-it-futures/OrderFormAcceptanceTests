@@ -202,7 +202,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheOrderIsNotCompleted()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            order = order.Retrieve(Test.ConnectionString);
+            order = order.Retrieve(Test.OrdapiConnectionString);
             order.OrderStatusId.Should().Be(2);
             order.DateCompleted.Should().BeNull();
         }

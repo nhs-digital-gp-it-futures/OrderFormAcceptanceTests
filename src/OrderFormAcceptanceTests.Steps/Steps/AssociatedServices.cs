@@ -157,7 +157,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             SetOrderAssociatedServicesSectionToComplete();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.EstimationPeriodId = TimeUnit.Year;
-            orderItem.Create(Test.ConnectionString);
+            orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
 
@@ -166,7 +166,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderAssociatedServicesSectionToComplete();
             var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.ConnectionString);
+            orderItem.Create(Test.OrdapiConnectionString);
             if (!Context.ContainsKey(ContextKeys.CreatedOrderItem))
             {
                 Context.Add(ContextKeys.CreatedOrderItem, orderItem);
@@ -216,7 +216,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheAssociatedServiceIsSavedInTheDB()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            var orderItem = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 3).First();
+            var orderItem = new OrderItem().RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 3).First();
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
             orderItem.Should().NotBeNull();
         }
@@ -235,7 +235,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the supplier added to the order has an associated service with an on-demand flat price")]
@@ -245,14 +245,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         public void SetOrderAssociatedServicesSectionToComplete()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.AssociatedServicesViewed = 1;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)

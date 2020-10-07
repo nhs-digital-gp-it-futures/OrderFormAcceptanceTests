@@ -170,13 +170,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             var expectedSupplierName = order.SupplierName;
-            order = order.Retrieve(Test.ConnectionString);
+            order = order.Retrieve(Test.OrdapiConnectionString);
 
-            var dbContact = new Contact { ContactId = order.SupplierContactId }.Retrieve(Test.ConnectionString);
+            var dbContact = new Contact { ContactId = order.SupplierContactId }.Retrieve(Test.OrdapiConnectionString);
             Context.Remove(ContextKeys.CreatedSupplierContact);
             Context.Add(ContextKeys.CreatedSupplierContact, dbContact);
 
-            var dbAddress = new Address { AddressId = order.SupplierAddressId }.Retrieve(Test.ConnectionString);
+            var dbAddress = new Address { AddressId = order.SupplierAddressId }.Retrieve(Test.OrdapiConnectionString);
             Context.Remove(ContextKeys.CreatedSupplierAddress);
             Context.Add(ContextKeys.CreatedSupplierAddress, dbAddress);
 

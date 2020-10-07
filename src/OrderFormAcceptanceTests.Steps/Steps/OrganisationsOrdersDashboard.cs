@@ -251,7 +251,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [When(@"my organisation's orders dashboard is presented")]
-        [When(@"the order dashboard is presented")]
+        [StepDefinition(@"the order dashboard is presented")]
         public void WhenTheOrderDashboardIsPresented()
         {
             new CommonSteps(Test, Context).GivenThatABuyerUserHasLoggedIn();
@@ -296,7 +296,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
                 tagName.Should().Be("a");
                 text.Should().Be(orderId);
-                url.Should().EndWith($"/order/organisation/{orderId}");
+                url.Should().EndWith($"/order/organisation/{orderId}/summary");
             }
         }
 

@@ -43,7 +43,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var data = email.Attachments.First().AttachmentData;
             var decoded = Encoding.UTF8.GetString(data.ToArray());
             var order = ((List<Order>)Context[ContextKeys.CreatedIncompleteOrders]).First();
-            decoded.Should().ContainEquivalentOf("Call off Party Id");
+            decoded.Should().ContainEquivalentOf("Call off Ordering Party Id");
             decoded.Should().ContainEquivalentOf(order.OrderId);
         }
     }

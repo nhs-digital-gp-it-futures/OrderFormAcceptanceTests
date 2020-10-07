@@ -8,16 +8,16 @@
 
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
-    <PackageReference Include="SpecFlow" Version="3.3.57" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="83.0.4103.3900" />
-    <PackageReference Include="SpecFlow.NUnit" Version="3.3.57" />
-    <PackageReference Include="SpecFlow.NUnit.Runners" Version="3.3.57" />
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.3.57" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="SpecFlow" Version="3.4.8" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="85.0.4183.8700" />
+    <PackageReference Include="SpecFlow.NUnit" Version="3.4.8" />
+    <PackageReference Include="SpecFlow.NUnit.Runners" Version="3.4.8" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.4.8" />
   </ItemGroup>
 
   <ItemGroup>
