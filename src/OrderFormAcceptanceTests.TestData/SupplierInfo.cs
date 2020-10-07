@@ -99,7 +99,7 @@ namespace OrderFormAcceptanceTests.TestData
         public static string GetSupplierSolutionNameWithPrice(string connectionString, string supplierId)
         {
             var query =
-                $@" ci.[Name] FROM dbo.CatalogueItem AS ci INNER JOIN CataloguePrice AS cp ON cp.CatalogueItemId = ci.CatalogueItemId WHERE ci.CatalogueItemTypeId = 1 AND ci.PublishedStatusId = 3 AND ci.SupplierId = @supplierId;";
+                $@"SELECT ci.[Name] FROM dbo.CatalogueItem AS ci INNER JOIN CataloguePrice AS cp ON cp.CatalogueItemId = ci.CatalogueItemId WHERE ci.CatalogueItemTypeId = 1 AND ci.PublishedStatusId = 3 AND ci.SupplierId = @supplierId;";
 
             return SqlExecutor.Execute<string>(connectionString, query, new { supplierId }).FirstOrDefault();
         }
