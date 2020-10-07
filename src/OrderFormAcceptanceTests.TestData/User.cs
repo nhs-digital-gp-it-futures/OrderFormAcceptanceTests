@@ -68,7 +68,7 @@ namespace OrderFormAcceptanceTests.TestData
 
         public void Create(string connectionString)
         {
-            var query = @"INSERT INTO AspNetUsers (
+            var query = @"INSERT INTO dbo.AspNetUsers (
                             Id,
                             UserName,
                             NormalizedUserName,
@@ -113,13 +113,13 @@ namespace OrderFormAcceptanceTests.TestData
                             @catalogueAgreementSigned,
                             @firstName,
                             @lastName
-                        )";
+                        );";
 
             SqlExecutor.Execute<User>(connectionString, query, this);
         }
         public void Delete(string connectionString)
         {
-            var query = @"DELETE FROM AspNetUsers WHERE UserName=@userName";
+            var query = @"DELETE FROM dbo.AspNetUsers WHERE UserName = @userName;";
 
             SqlExecutor.Execute<User>(connectionString, query, this);
         }

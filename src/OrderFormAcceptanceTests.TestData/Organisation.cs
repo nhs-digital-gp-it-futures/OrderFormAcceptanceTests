@@ -17,9 +17,12 @@ namespace OrderFormAcceptanceTests.TestData
 
         public Organisation RetrieveRandomOrganisationWithNoUsers(string connectionString)
         {
-            var query = @"SELECT [dbo].[Organisations].* FROM [dbo].[Organisations]
-                          LEFT JOIN AspNetUsers on AspNetUsers.PrimaryOrganisationId=[Organisations].OrganisationId
-                          WHERE AspNetUsers.Id IS NULL;";
+            var query = @"SELECT *
+                          FROM dbo.Organisations AS o
+                          WHERE NOT EXISTS (
+                               SELECT *
+                               FROM dbo.AspNetUsers AS u
+                               WHERE u.PrimaryOrganisationId = o.OrganisationId);";
             var listOfItems = SqlExecutor.Execute<Organisation>(connectionString, query, this);
             return listOfItems.ElementAt(new Faker().Random.Number(listOfItems.Count() - 1));
         }

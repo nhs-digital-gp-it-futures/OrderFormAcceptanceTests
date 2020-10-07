@@ -495,7 +495,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Update(Test.OrdapiConnectionString);
         }
 
-
         [Then(@"the Catalogue Solutions are presented")]
         [Then(@"the Associated Services are presented")]
         [Then(@"the Additional Services are presented")]
@@ -641,7 +640,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var order = (Order)Context[ContextKeys.CreatedOrder];
             
         }
-
 
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
         {

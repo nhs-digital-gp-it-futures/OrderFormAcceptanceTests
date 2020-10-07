@@ -12,7 +12,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         private readonly ScenarioContext _context;
         private readonly IObjectContainer _objectContainer;
 
-
         public Hooks(ScenarioContext context, IObjectContainer objectContainer)
         {
             _context = context;
