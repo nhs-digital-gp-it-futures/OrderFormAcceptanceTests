@@ -1,4 +1,5 @@
-﻿Feature: Additional Services
+﻿
+Feature: Additional Services
 	As a Buyer
 	I want to manage the Additional Services of Order Form
 	So that I can ensure the information is correct
@@ -138,7 +139,6 @@ Scenario: Additional Services - Flat price with variable order type selected
 	And the Additional Service edit form contains a unit of order
 	And the Additional Service edit form contains an input for the quantity
 	And the price input is autopopulated with the list price for the flat list price selected
-	And the delete button is disabled
 	And the save button is enabled
 
 Scenario: Additional Services - Mandatory data missing
@@ -166,7 +166,6 @@ Scenario: Additional Services - All data are valid
 	And the User chooses to save	
 	Then the Additional Service is saved
 	And the content validation status of the additional-services section is complete
-	And the delete button is enabled
 
 Scenario: Additional Services - Go back before save
 	Given the User is on the Edit Price form

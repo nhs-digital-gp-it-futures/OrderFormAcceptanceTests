@@ -44,38 +44,6 @@ Scenario: Associated Services - Catalogue Solution now complete, >= 1 Service Re
 	And the Delete order button is enabled
 	And the Complete order button is disabled
 
-Scenario: Associated Services - Service Recipient >=1, Catalogue Solution is NULL 
-	Given there are one or more Service Recipients in the order
-	And the Catalogue Solutions section is not complete
-	When the Order Form for the existing order is presented
-	Then the Call Off Agreement ID is displayed
-	And the Order description is displayed
-	And the Call-off Ordering Party section is enabled
-	And the Supplier section is enabled
-	And the Commencement date section is enabled 
-	And the Catalogue Solution section is enabled
-	And the Additional Service section is not enabled
-	And the Associated Service section is not enabled
-	And the Preview order summary button is enabled
-	And the Delete order button is enabled
-	And the Complete order button is disabled
-
-Scenario: Associated Services - >= 1 Service Recipient, >=1 Catalogue Solution, NULL Additional Service
-	Given a Catalogue Solution is added to the order
-	And the Additional Services section is not complete
-	When the Order Form for the existing order is presented
-	Then the Call Off Agreement ID is displayed
-	And the Order description is displayed
-	And the Call-off Ordering Party section is enabled
-	And the Supplier section is enabled
-	And the Commencement date section is enabled 
-	And the Catalogue Solution section is enabled
-	And the Additional Service section is enabled
-	And the Associated Service section is not enabled
-	And the Preview order summary button is enabled
-	And the Delete order button is enabled
-	And the Complete order button is disabled
-
 Scenario: Associated Services - Additional Service now complete, >= 1 Service Recipient, >=1 Catalogue Solution, 0 Additional Services
 	Given a Catalogue Solution is added to the order
 	And the Additional Services section is complete
@@ -201,7 +169,6 @@ Scenario: Associated Service - edit price screen - Flat variable price selected
 	And the item on the Associated Service edit form contains an input for the quantity
 	And the item on the Associated Service edit form contains a selection for the quantity estimation period
 	And the price input is autopopulated with the list price for the flat list price selected
-	And the delete button is disabled
 	And the save button is enabled
 
 Scenario: Associated Service - edit price screen - Flat declarative price selected
@@ -215,7 +182,6 @@ Scenario: Associated Service - edit price screen - Flat declarative price select
 	And the item on the Associated Service edit form contains a unit of order
 	And the item on the Associated Service edit form contains an input for the quantity
 	And the price input is autopopulated with the list price for the flat list price selected
-	And the delete button is disabled
 	And the save button is enabled
 
 Scenario Outline: Associated Service - edit price screen - Flat price Mandatory data missing
@@ -225,7 +191,6 @@ Scenario Outline: Associated Service - edit price screen - Flat price Mandatory 
 	When the User chooses to save
 	Then the Associated Service is not saved
 	And the reason is displayed
-	And the delete button is disabled
 	Examples: 
 	| ProvisioningType |
 	| declarative      |

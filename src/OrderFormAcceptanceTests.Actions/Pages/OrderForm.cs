@@ -577,6 +577,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return element.GetAttribute("value");
         }
 
+        public string ClickCheckboxReturnName(int index = 0)
+        {
+            Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
+            var element = Driver.FindElements(Pages.Common.Checkbox)[index];
+            element.Click();
+            return element.GetAttribute("name");
+        }
+
         public bool IsCheckboxChecked(int index = 0)
         {
             Wait.Until(d => NumberOfCheckboxesDisplayed() > index);

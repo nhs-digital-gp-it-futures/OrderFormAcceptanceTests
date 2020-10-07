@@ -42,7 +42,6 @@ Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per 
     Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
     When the Order Summary is displayed
     Then the Order items (recurring cost) table is populated
-    And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
     And the item ID of each item is displayed
     And the item name of each item is the Catalogue Solution name
     And the Price unit of order of each item is the concatenation "[Price] [unit]"
@@ -54,7 +53,6 @@ Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per 
     Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per month is saved to the order
     When the Order Summary is displayed
     Then the Order items (recurring cost) table is populated
-    And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
     And the item ID of each item is displayed
     And the item name of each item is the Catalogue Solution name
     And the Price unit of order of each item is the concatenation "[Price] [unit]"
@@ -66,7 +64,6 @@ Scenario: Preview Order Summary - Flat with Variable (Per-Patient) order type
     Given a catalogue solution with a flat price variable (Per-Patient) order type is saved to the order
     When the Order Summary is displayed
     Then the Order items (recurring cost) table is populated
-    And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
     And the item ID of each item is displayed
     And the item name of each item is the Catalogue Solution name
     And the Price unit of order of each item is the concatenation "[Price] [unit]"
@@ -78,7 +75,6 @@ Scenario: Preview Order Summary - Catalogue Solution Flat with Variable (Declara
     Given a catalogue solution with a flat price variable (Declarative) order type is saved to the order
     When the Order Summary is displayed
     Then the Order items (recurring cost) table is populated
-    And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
     And the item ID of each item is displayed
     And the item name of each item is the Catalogue Solution name
     And the Price unit of order of each item is the concatenation "[Price] [unit]"
@@ -89,8 +85,7 @@ Scenario: Preview Order Summary - Catalogue Solution Flat with Variable (Declara
 Scenario: Preview Order Summary - Additional Service Flat with Variable (Declarative) order type
     Given an additional service with a flat price variable (Declarative) order type is saved to the order
     When the Order Summary is displayed
-    Then the Order items (recurring cost) table is populated
-    And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
+    Then the Order items (recurring cost) table is populated    
     And the item ID of each item is displayed
     And the item name of each item is the Additional Service name
     And the Price unit of order of each item is the concatenation "[Price] [unit]"
@@ -102,7 +97,6 @@ Scenario: Preview Order Summary - Additional Service Flat with Variable (Patient
     Given an additional service with a flat price variable (Patient) order type is saved to the order
     When the Order Summary is displayed
     Then the Order items (recurring cost) table is populated
-    And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
     And the item ID of each item is displayed
     And the item name of each item is the Additional Service name
     And the Price unit of order of each item is the concatenation "[Price] [unit]"
@@ -114,7 +108,6 @@ Scenario: Preview Order Summary - Additional Service Flat with Variable (OnDeman
     Given an additional service with a flat price variable (On-Demand) order type with the quantity period per year is saved to the order
     When the Order Summary is displayed
     Then the Order items (recurring cost) table is populated
-    And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
     And the item ID of each item is displayed
     And the item name of each item is the Additional Service name
     And the Price unit of order of each item is the concatenation "[Price] [unit]"
@@ -126,7 +119,6 @@ Scenario: Preview Order Summary - Additional Service Flat with Variable (On-Dema
     Given an additional service with a flat price variable (On-Demand) order type with the quantity period per month is saved to the order
     When the Order Summary is displayed
     Then the Order items (recurring cost) table is populated
-    And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
     And the item ID of each item is displayed
     And the item name of each item is the Additional Service name
     And the Price unit of order of each item is the concatenation "[Price] [unit]"
@@ -138,7 +130,6 @@ Scenario: Preview Order Summary - Associated Service Flat with Declarative order
 	Given an Associated Service with a flat price declarative order type is saved to the order
 	When the Order Summary is displayed
 	Then the Order items (one off) table is populated
-	And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
 	And the item ID of each item is displayed
 	And the item name of each item is the Associated Service name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
@@ -149,7 +140,6 @@ Scenario: Preview Order Summary - Associated Service Flat with Variable (OnDeman
 	Given an associated service with a flat price variable (On-Demand) order type with the quantity period per year is saved to the order
 	When the Order Summary is displayed
 	Then the Order items (recurring cost) table is populated
-	And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
 	And the item ID of each item is displayed
 	And the item name of each item is the Additional Service name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
@@ -161,7 +151,6 @@ Scenario: Preview Order Summary - Associated Service Flat with Variable (On-Dema
 	Given an associated service with a flat price variable (On-Demand) order type with the quantity period per month is saved to the order
 	When the Order Summary is displayed
 	Then the Order items (recurring cost) table is populated
-	And the Recipient name (ODS code) of each item is the concatenation "[Service Recipient name] [(ODS code)]"
 	And the item ID of each item is displayed
 	And the item name of each item is the Additional Service name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
