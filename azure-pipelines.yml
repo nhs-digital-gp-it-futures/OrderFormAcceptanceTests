@@ -55,6 +55,7 @@ steps:
   displayName: 'Check URL is reachable'
 
 - bash: |
+    chmod +x ./selenium-grid-setup.sh
     ./selenium-grid-setup.sh
     if [ $? -ne 0 ]; then exit 1; fi
   displayName: Selenium Grid Setup
