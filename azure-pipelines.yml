@@ -19,15 +19,15 @@ variables:
   - name: BROWSER
     value: chrome
   - name: BAPIDB__SERVERURL
-    value: gpitfutures-dev-sql-pri.database.windows.net
+    value: $SERVERURL
   - name: BAPIDB__DATABASENAME
     value: bc-buyingcatalogue-development-helm-bapi
   - name: ISAPIDB__SERVERURL
-    value: gpitfutures-dev-sql-pri.database.windows.net
+    value: $SERVERURL
   - name: ISAPI__DATBASENAME
     value: bc-buyingcatalogue-development-helm-isapi
   - name: ORDAPIDB__SERVERURL
-    value: gpitfutures-dev-sql-pri.database.windows.net
+    value: $SERVERURL
   - name: ORDAPI__DATABASENAME
     value: bc-buyingcatalogue-development-helm-ordapi
   - group: dev-secrets
