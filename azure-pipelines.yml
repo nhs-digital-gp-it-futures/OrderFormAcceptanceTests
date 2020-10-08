@@ -64,6 +64,7 @@ steps:
     export BAPI-DB__PASSWORD="$(gpitfuturesdevdbpassword)" 
     export ISAPI-DB__PASSWORD="$(gpitfuturesdevdbpassword)"
     export ORDAPI-DB__PASSWORD="$(gpitfuturesdevdbpassword)"
+    echo $BAPI-DB__PASSWORD $BAPI-DB__SERVERURL $BAPI-DB__DATABASENAME
 
     dotnet test src/ -v n
   displayName: Run All Acceptance Tests
