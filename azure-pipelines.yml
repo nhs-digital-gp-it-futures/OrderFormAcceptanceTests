@@ -18,17 +18,17 @@ variables:
     value: '1'
   - name: BROWSER
     value: chrome
-  - name: BAPIDB__SERVERURL
+  - name: BAPI-DB__SERVERURL
     value: $SERVERURL
-  - name: BAPIDB__DATABASENAME
+  - name: BAPI-DB__DATABASENAME
     value: bc-buyingcatalogue-development-helm-bapi
-  - name: ISAPIDB__SERVERURL
+  - name: ISAPI-DB__SERVERURL
     value: $SERVERURL
-  - name: ISAPI__DATBASENAME
+  - name: ISAPI-DB__DATBASENAME
     value: bc-buyingcatalogue-development-helm-isapi
-  - name: ORDAPIDB__SERVERURL
+  - name: ORDAPI-DB__SERVERURL
     value: $SERVERURL
-  - name: ORDAPI__DATABASENAME
+  - name: ORDAPI-DB__DATABASENAME
     value: bc-buyingcatalogue-development-helm-ordapi
   - group: dev-secrets
 
@@ -55,16 +55,15 @@ steps:
   displayName: 'Check URL is reachable'
 
 - bash: |
-    echo $PBHOSTURL
     chmod +x ./selenium-grid-setup.sh
     ./selenium-grid-setup.sh
     if [ $? -ne 0 ]; then exit 1; fi
   displayName: Selenium Grid Setup
 
 - bash: |
-    export BAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)" 
-    export ISAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)"
-    export ORDAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)"
+    export BAPI-DB__PASSWORD="$(gpitfuturesdevdbpassword)" 
+    export ISAPI-DB__PASSWORD="$(gpitfuturesdevdbpassword)"
+    export ORDAPI-DB__PASSWORD="$(gpitfuturesdevdbpassword)"
 
     dotnet test src/ -v n
   displayName: Run All Acceptance Tests
