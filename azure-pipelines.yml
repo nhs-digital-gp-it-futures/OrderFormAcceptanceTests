@@ -1,103 +1,112 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
 - development
+- master
+
+pr:
+- development
+- master
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
-  BROWSER: chrome
+  - name: buildConfiguration
+    value: 'Release'
+  - name: dotnetVersion
+    value: '3.1.x'
+  - name: MSBUILDSINGLELOADCONTEXT
+    value: '1'
+  - name: BROWSER
+    value: chrome
+  - name: BAPIDB__SERVERURL
+    value: gpitfutures-dev-sql-pri.database.windows.net
+  - name: BAPIDB__DATABASENAME
+    value: bc-buyingcatalogue-development-helm-bapi
+  - name: ISAPIDB__SERVERURL
+    value: gpitfutures-dev-sql-pri.database.windows.net
+  - name: ISAPI__DATBASENAME
+    value: bc-buyingcatalogue-development-helm-isapi
+  - name: ORDAPIDB__SERVERURL
+    value: gpitfutures-dev-sql-pri.database.windows.net
+  - name: ORDAPI__DATABASENAME
+    value: bc-buyingcatalogue-development-helm-ordapi
+  - group: dev-secrets
 
-jobs:
-  - job : Setup
-    steps:
-      - bash: |
-          echo "$(PBURL)"
-          domain=`echo "$(PBURL)" | awk -F[/:] '{print $4}'`
-          echo "$domain"
-          if [[ "$(PBURL)" == *"-dev.buyingcatalogue.digital.nhs.uk"* ]]
-          then
-            curl -k -i $(PBURL) --fail --connect-timeout 30 --resolve $domain:443:51.11.46.27
-          elif [[ "$(PBURL)" == *"private-test.buyingcatalogue.digital.nhs.uk"* ]]
-          then
-            curl -k -i $(PBURL) --fail --connect-timeout 30 --resolve $domain:443:51.132.54.44
-          elif [[ "$(PBURL)" == *"public-test.buyingcatalogue.digital.nhs.uk"* ]]
-          then
-            curl -k -i $(PBURL) --fail --connect-timeout 30 --resolve $domain:443:51.132.53.156
-          else
-            curl -k -i $(PBURL) --fail --connect-timeout 30
-          fi
-        displayName: 'Check URL is reachable'    
-    
+steps:
+- task: UseGitVersion@5
+  name: gitversion
+  displayName: Work out version
+  inputs:
+    versionSpec: '5.x'
 
-  - job: OrderFormAcceptanceTests
-    dependsOn: Setup
-    steps:
-    - script: |
-        domain=`echo "$(PBURL)" | awk -F[/:] '{print $4}'`
-        if [[ "$(PBURL)" == *"-dev.buyingcatalogue.digital.nhs.uk"* ]]
-        then
-          ip="51.11.46.27"
-        elif [[ "$(PBURL)" == *"private-test.buyingcatalogue.digital.nhs.uk"* ]]
-        then
-          ip="51.132.54.44"
-        elif [[ "$(PBURL)" == *"public-test.buyingcatalogue.digital.nhs.uk"* ]]
-        then
-          ip="51.132.53.156"
-        fi
-        if [[ -n "$ip" ]]
-        then
-          echo "$ip        $domain" | sudo tee -a /etc/hosts
-          cat domain-template.yaml | sed "s/DOMAIN/$domain/g;s/IP/$ip/g" > domain.yml
-        else
-          touch domain.yml
-        fi
-        curl -k -i $(PBURL) --fail --connect-timeout 30
-        cat domain.yml
-        cat /etc/hosts
-      displayName: 'Resolve domain'
-    - task: UseDotNet@2
-      displayName: 'Use DotNet Core 3.1.x'
-      inputs:
-        packageType: 'sdk'
-        version: '3.1.101'
-        includePreviewVersions: false
-        installationPath: '$(Agent.ToolsDirectory)'
+- task: UseDotNet@2
+  displayName: 'Use DotNet Core $(dotnetVersion)'
+  inputs:
+    version: $(dotnetVersion)
+    includePreviewVersions: false
 
-    - task: AzureKeyVault@1
-      inputs:
-        azureSubscription: 'NHSAPP-BuyingCatalogue (Non-Prod)'
-        KeyVaultName: 'gpitfutures-dev-kv'
-        SecretsFilter: "*"
+- bash: |
+    echo "##vso[task.setvariable variable=PBHOSTURL]$(echo "${PBURL#'https://'}")"
+  displayName: Set up Host URL
 
-    - task: A8515EC8-7254-4FFD-912C-86772E2B5962@3
-      displayName: 'Replace tokens'
-      inputs:
-        targetFiles: '**/*.json'
-        encoding: 'auto'
-        writeBOM: true
-        actionOnMissing: 'continue'
-        keepToken: true
-        tokenPrefix: '#{'
-        tokenSuffix: '}#'
-        emptyValue: 
-    
-    - task: Bash@3
-      displayName: Selenium Grid Setup
-      inputs:
-        targetType: 'inline'
-        script: |
-          docker-compose stop &&
-          docker-compose rm -f &&
-          docker-compose -f docker-compose.yml -f domain.yml up --scale chrome=4 --scale firefox=4  -d
-    - task: DotNetCoreCLI@2
-      displayName: "Run Order Form Acceptance Tests"
-      inputs:
-        command: 'test'
-        projects: 'src/OrderFormAcceptanceTests.Tests/*csproj'
-        arguments: '-v n'        
+- bash: |
+    echo "51.11.46.27    $PBHOSTURL" | sudo tee -a /etc/hosts
+    curl -k -i $(PBURL) --fail --connect-timeout 30
+  displayName: 'Check URL is reachable'
+
+- bash: |
+    ./selenium-grid-setup.sh
+    if [ $? -ne 0 ]; then exit 1; fi
+  displayName: Selenium Grid Setup
+
+- bash: |
+    export BAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)" 
+    export ISAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)"
+    export ORDAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)"
+
+    dotnet test src/ -v n
+  displayName: Run All Acceptance Tests
+  
+- task: Docker@2
+  condition: and(always(), or(eq(variables['Build.SourceBranch'], 'refs/heads/development'),eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+  displayName: Build and push docker image
+  inputs:
+    containerRegistry: 'gpitfuturesdevacr'
+    repository: 'nhsd/buying-catalogue/of-ac-tests'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: "$(GitVersion.SemVer)"
+    addPipelineData: false
+
+- task: HelmInstaller@1
+  displayName: 'Install helm'
+  condition: and(always(), or(eq(variables['Build.SourceBranch'], 'refs/heads/development'),eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+  inputs:
+    helmVersionToInstall: 'latest'
+
+- bash: |
+    cd charts
+    helm package \
+        --version $(GitVersion.SemVer) \
+        --app-version $(GitVersion.SemVer) \
+        of-ac-tests
+  failOnStderr: true
+  condition: and(always(), or(eq(variables['Build.SourceBranch'], 'refs/heads/development'),eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+  name: helmPackage
+  displayName: 'Helm package'
+
+- bash: |
+    cd charts
+    chartPackage=$(ls of-ac-tests-*.tgz)
+    az acr helm push --force \
+        -n "gpitfuturesdevacr" \
+        -u "gpitfuturesdevacr" \
+        -p $(gpitfuturesdevacr-pass) \
+        $chartPackage
+  failOnStderr: false
+  condition: and(always(), or(eq(variables['Build.SourceBranch'], 'refs/heads/development'),eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+  name: helmPush
+  displayName: 'Push helm chart to acr'
+
+
+

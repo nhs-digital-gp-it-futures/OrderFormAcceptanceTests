@@ -1,0 +1,101 @@
+{{- $name := include "of-ac-tests.fullname" . -}}
+{{- $cfgname := printf "%s-%s" "cfg" $name -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "of-ac-tests.fullname" . }}
+  labels:
+    {{- include "of-ac-tests.labels" . | nindent 4 }}
+spec:
+  template:
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets: {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "of-ac-tests.serviceAccountName" . }}
+      securityContext: {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      hostAliases: {{- toYaml .Values.hostAliases | nindent 8 }}
+      volumes:
+        - name: test-result-storage
+          persistentVolumeClaim:
+            claimName: "bc-test-result-pvc"
+      containers:
+      - name: {{ .Chart.Name }}
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 12 }}
+        {{- include "of-ac-tests.image.properties" . | nindent 8 }}
+        resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        volumeMounts:
+          - mountPath: {{ .Values.testResultDirectory | quote }}
+            name: test-result-storage
+        env:
+          - name: BROWSER
+            value: {{ .Values.browser | quote }}
+          - name: HUBURL
+            value: {{ .Values.hubUrl | quote }}
+          - name: MPSUPPLIERURL  
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.mpSupplierUrlConfig.name }}
+                key: {{ .Values.mpSupplierUrlConfig.key }}
+          - name: MPAUTHORITYURL  
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.mpAuthorityUrlConfig.name }}
+                key: {{ .Values.mpAuthorityUrlConfig.key }}
+          - name: RUN_ID
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.runIdConfig.name }}
+                key: {{ .Values.runIdConfig.key }}
+          {{- with .Values.db }}
+          - name: DB__SERVERURL
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .serverConfig.name }}
+                key: {{ .serverConfig.key }}
+          - name: DB__DATABASENAME
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .nameConfig.name }}
+                key: {{ .nameConfig.key }}
+          - name: DB__PASSWORD
+            valueFrom:
+              secretKeyRef:            
+                name: {{ .passwordSecret.name }}
+                key: {{ .passwordSecret.key }}
+          {{- end }}            
+          {{- if .Values.testFilter }}
+          - name: TEST_FILTER
+            value: {{ .Values.testFilter | quote }}
+          {{- end -}}
+          {{- if .Values.testResultDirectory }}
+          - name: TEST_RESULT_DIR
+            value: {{ .Values.testResultDirectory | quote }}
+          {{- end -}}
+          {{- if .Values.env.values -}}
+          {{- range .Values.env.values }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+          {{- end -}}
+          {{- end -}}
+          {{- if .Values.env.configmap -}}
+          {{- range .Values.env.configmap }}
+            - name: {{ .name }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $cfgname }}
+                  key: {{ .key }}
+          {{- end -}}
+          {{- end }}
+          {{- if .Values.env.secrets -}}
+          {{- range .Values.env.secrets }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:            
+                  name: {{ .valueFrom.secretKeyRef.name }}
+                  key: {{ .valueFrom.secretKeyRef.key }}            
+          {{- end -}}
+          {{- end }}
+      restartPolicy: OnFailure

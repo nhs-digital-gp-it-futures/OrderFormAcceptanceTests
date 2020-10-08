@@ -6,6 +6,3 @@ services:
   chrome:
     extra_hosts:
       - "DOMAIN:IP"
-  firefox:
-    extra_hosts:
-      - "DOMAIN:IP"
