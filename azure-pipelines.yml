@@ -18,17 +18,17 @@ variables:
     value: '1'
   - name: BROWSER
     value: chrome
-  - name: BAPI-DB__SERVERURL
+  - name: BAPIDB__SERVERURL
     value: $SERVERURL
-  - name: BAPI-DB__DATABASENAME
+  - name: BAPIDB__DATABASENAME
     value: bc-buyingcatalogue-development-helm-bapi
-  - name: ISAPI-DB__SERVERURL
+  - name: ISAPIDB__SERVERURL
     value: $SERVERURL
-  - name: ISAPI-DB__DATBASENAME
+  - name: ISAPIDB__DATBASENAME
     value: bc-buyingcatalogue-development-helm-isapi
-  - name: ORDAPI-DB__SERVERURL
+  - name: ORDAPIDB__SERVERURL
     value: $SERVERURL
-  - name: ORDAPI-DB__DATABASENAME
+  - name: ORDAPIDB__DATABASENAME
     value: bc-buyingcatalogue-development-helm-ordapi
   - group: dev-secrets
 
@@ -61,10 +61,10 @@ steps:
   displayName: Selenium Grid Setup
 
 - bash: |
-    export BAPI-DB__PASSWORD="$(gpitfuturesdevdbpassword)" 
-    export ISAPI-DB__PASSWORD="$(gpitfuturesdevdbpassword)"
-    export ORDAPI-DB__PASSWORD="$(gpitfuturesdevdbpassword)"
-    echo $BAPI-DB__PASSWORD $BAPI-DB__SERVERURL $BAPI-DB__DATABASENAME
+    export BAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)" 
+    export ISAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)"
+    export ORDAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)"
+    echo $(BAPIDB__PASSWORD) $(BAPIDB__SERVERURL) $(BAPIDB__DATABASENAME)
 
     dotnet test src/ -v n
   displayName: Run All Acceptance Tests
