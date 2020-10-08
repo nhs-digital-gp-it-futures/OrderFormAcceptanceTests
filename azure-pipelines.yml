@@ -19,15 +19,15 @@ variables:
   - name: BROWSER
     value: chrome
   - name: BAPIDB__SERVERURL
-    value: $SERVERURL
+    value: $(SERVERURL)
   - name: BAPIDB__DATABASENAME
     value: bc-buyingcatalogue-development-helm-bapi
   - name: ISAPIDB__SERVERURL
-    value: $SERVERURL
+    value: $(SERVERURL)
   - name: ISAPIDB__DATBASENAME
     value: bc-buyingcatalogue-development-helm-isapi
   - name: ORDAPIDB__SERVERURL
-    value: $SERVERURL
+    value: $(SERVERURL)
   - name: ORDAPIDB__DATABASENAME
     value: bc-buyingcatalogue-development-helm-ordapi
   - group: dev-secrets
