@@ -1,4 +1,5 @@
-﻿using NHSD.BuyingCatalogue.EmailClient.IntegrationTesting.Drivers;
+﻿using System;
+using NHSD.BuyingCatalogue.EmailClient.IntegrationTesting.Drivers;
 using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Actions;
 using OrderFormAcceptanceTests.Actions.Collections;
@@ -20,6 +21,8 @@ namespace OrderFormAcceptanceTests.Steps.Utils
             OrdapiConnectionString = settings.GetDbString("ordapidb");
             BapiConnectionString = settings.GetDbString("bapidb");
             IsapiConnectionString = settings.GetDbString("isapidb");
+
+            Console.WriteLine(BapiConnectionString);
 
             Driver = new BrowserFactory(settings.Browser, settings.HubUrl).Driver;
             Pages = new PageActions(Driver).PageActionCollection;
