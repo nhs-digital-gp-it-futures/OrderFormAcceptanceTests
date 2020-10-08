@@ -24,7 +24,7 @@ variables:
     value: bc-buyingcatalogue-development-helm-bapi
   - name: ISAPIDB__SERVERURL
     value: $(SERVERURL)
-  - name: ISAPIDB__DATBASENAME
+  - name: ISAPIDB__DATABASENAME
     value: bc-buyingcatalogue-development-helm-isapi
   - name: ORDAPIDB__SERVERURL
     value: $(SERVERURL)
