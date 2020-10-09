@@ -77,7 +77,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickEditAdditionalServices()
         {
-            Driver.FindElement(Pages.OrderForm.EditAdditionalServices).Click();
+            SelectSectionByNameContains("Additional Services").Click();
         }
 
         public bool TextDisplayedInPageTitle(string expectedValue)
@@ -215,7 +215,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.EditCommencementDate).Count == 1);
+                Wait.Until(d => SectionIsDisplayed("commencement date"));
                 return true;
             }
             catch
@@ -226,7 +226,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickEditCommencementDate()
         {
-            Driver.FindElement(Pages.OrderForm.EditCommencementDate).Click();
+            SelectSectionByNameContains("commencement date").Click();
         }
 
         public bool EditDescriptionSectionDisplayed()
@@ -234,7 +234,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.EditDescription).Count == 1);
+                Wait.Until(d => SectionIsDisplayed("Description"));
                 return true;
             }
             catch
@@ -245,7 +245,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickEditDescription()
         {
-            Driver.FindElement(Pages.OrderForm.EditDescription).Click();
+            SelectSectionByNameContains("Description").Click();
         }
 
         public bool EditCallOffOrderingPartySectionDisplayed()
@@ -253,7 +253,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.EditCallOffOrderingParty).Count == 1);
+                Wait.Until(d => SectionIsDisplayed("Call-Off Ordering"));
                 return true;
             }
             catch
@@ -264,34 +264,34 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool CallOffOrderingPartyEnabled()
         {
-            return Driver.FindElement(Pages.OrderForm.EditCallOffOrderingParty).TagName == "a";
+            return SelectSectionByNameContains("Call-Off Ordering").TagName == "a";
         }
 
         public bool OrderDescriptionEnabled()
         {
-            return Driver.FindElement(Pages.OrderForm.EditDescription).TagName == "a";
+            return SelectSectionByNameContains("Description").TagName == "a";
         }
 
         public bool SupplierInformationEnabled()
         {
-            return Driver.FindElement(Pages.OrderForm.EditSupplier).TagName == "a";
+            return SelectSectionByNameContains("Supplier information").TagName == "a";
         }
 
         public void ClickEditCallOffOrderingParty()
         {
-            Driver.FindElement(Pages.OrderForm.EditCallOffOrderingParty).Click();
+            SelectSectionByNameContains("Call-Off Ordering").Click();
         }
 
         public bool CommencementDateEnabled()
         {
-            return Driver.FindElement(Pages.OrderForm.EditCommencementDate).TagName == "a";
+            return SelectSectionByNameContains("commencement date").TagName == "a";
         }
 
         public bool EditSupplierSectionDisplayed()
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.EditSupplier).Count == 1);
+                Wait.Until(d => SectionIsDisplayed("Supplier information"));
                 return true;
             }
             catch
@@ -303,7 +303,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickEditSupplier()
         {
-            Driver.FindElement(Pages.OrderForm.EditSupplier).Click();
+            SelectSectionByNameContains("Supplier information").Click();
         }
 
         public bool EditNamedSectionPageDisplayed(string namedSectionPageTitle)
@@ -323,7 +323,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.EditCatalogueSolutions).Count == 1);
+                Wait.Until(d => SectionIsDisplayed("Catalogue solution"));
                 return true;
             }
             catch
@@ -334,12 +334,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool EditCatalogueSolutionsSectionIsEnabled()
         {
-            return Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).TagName == "a";
+            return SelectSectionByNameContains("Catalogue solution").TagName == "a";
         }
 
         public void AssertThatEditCatalogueSolutionsSectionIsNotComplete()
         {
-            var labelFound = Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions)
+            var labelFound = SelectSectionByNameContains("Catalogue solution")
                 .FindElement(By.XPath("../.."))
                 .FindElements(Pages.OrderForm.SectionStatus).Count;
 
@@ -348,7 +348,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickEditCatalogueSolutions()
         {
-            Driver.FindElement(Pages.OrderForm.EditCatalogueSolutions).Click();
+            SelectSectionByNameContains("Catalogue solution").Click();
         }
 
         public bool SaveButtonDisplayed()
@@ -761,7 +761,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.EditAdditionalServices).Count == 1);
+                Wait.Until(s => SectionIsDisplayed("Additional Services"));
                 return true;
             }
             catch
@@ -772,14 +772,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool EditAdditionalServicesSectionIsEnabled()
         {
-            return Driver.FindElement(Pages.OrderForm.EditAdditionalServices).TagName == "a";
+            return SelectSectionByNameContains("Additional Services").TagName == "a";
         }
 
         public bool EditAssociatedServicesSectionDisplayed()
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.EditAssociatedServices).Count == 1);
+                Wait.Until(d => SectionIsDisplayed("Associated Services"));
                 return true;
             }
             catch
@@ -790,12 +790,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickEditAssociatedServices()
         {
-            Driver.FindElement(Pages.OrderForm.EditAssociatedServices).Click();
+            SelectSectionByNameContains("Associated Services").Click();
         }
 
         public bool EditAssociatedServicesSectionIsEnabled()
         {
-            return Driver.FindElement(Pages.OrderForm.EditAssociatedServices).TagName == "a";
+            return SelectSectionByNameContains("Associated Services").TagName == "a";
         }
 
         public void ClickPreviewOrderButton()
@@ -816,7 +816,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.EditFundingSource).Count == 1);
+                Wait.Until(d => SectionIsDisplayed("Explain how you're paying for this order"));
                 return true;
             }
             catch
@@ -827,12 +827,26 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickEditFundingSource()
         {
-            Driver.FindElement(Pages.OrderForm.EditFundingSource).Click();
+            SelectSectionByNameContains("Explain how you're paying for this order").Click();
         }
 
         public bool EditFundingSourceSectionIsEnabled()
         {
-            return Driver.FindElement(Pages.OrderForm.EditFundingSource).TagName == "a";
+            return SelectSectionByNameContains("Explain how you're paying for this order").TagName == "a";
+        }
+
+        public IWebElement SelectSectionByNameContains(string text)
+        {
+            var titles = Driver.FindElements(Pages.OrderForm.SectionDescription);
+            var selectedSection = titles.Single(s => s.Text.Contains(text, StringComparison.OrdinalIgnoreCase));
+            return selectedSection;
+        }
+
+        public bool SectionIsDisplayed(string text)
+        {
+            var titles = Driver.FindElements(Pages.OrderForm.SectionDescription);
+            var selectedSection = titles.Where(s=>s.Text.Contains(text, StringComparison.OrdinalIgnoreCase));
+            return selectedSection.Count() > 0;
         }
     }
 }
