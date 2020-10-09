@@ -17,9 +17,9 @@ namespace OrderFormAcceptanceTests.Steps.Utils
 
         public UITest(Settings settings)
         {
-            OrdapiConnectionString = settings.GetDbString("ordapi-db");
-            BapiConnectionString = settings.GetDbString("bapi-db");
-            IsapiConnectionString = settings.GetDbString("isapi-db");
+            OrdapiConnectionString = settings.GetDbString("ordapidb");
+            BapiConnectionString = settings.GetDbString("bapidb");
+            IsapiConnectionString = settings.GetDbString("isapidb");
 
             Driver = new BrowserFactory(settings.Browser, settings.HubUrl).Driver;
             Pages = new PageActions(Driver).PageActionCollection;

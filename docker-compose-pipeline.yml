@@ -1,0 +1,13 @@
+version: '3.5'
+services:
+  chrome:
+    entrypoint: 
+      - /bin/sh
+      - -c 
+      - sudo apt update && sudo apt install iproute2 -y && ip -4 route list match 0/0 | awk '{print $$3"    host.docker.internal"}' | sudo tee -a /etc/hosts && echo "51.11.46.27   $PBHOSTURL" | sudo tee -a /etc/hosts && /opt/bin/entry_point.sh 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://$PBHOSTURL"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
