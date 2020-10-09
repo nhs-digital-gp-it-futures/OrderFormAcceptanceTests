@@ -108,6 +108,3 @@ steps:
   condition: and(always(), or(eq(variables['Build.SourceBranch'], 'refs/heads/development'),eq(variables['Build.SourceBranch'], 'refs/heads/master')))
   name: helmPush
   displayName: 'Push helm chart to acr'
-
-
-
