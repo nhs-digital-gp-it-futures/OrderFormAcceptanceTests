@@ -54,6 +54,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Then(@"the User is unable to complete the order")]
+        [Then(@"the User is unable to submit the order")]
         [Then(@"the Complete order button is disabled")]
         public void ThenTheUserIsUnableToCompleteTheOrder()
         {

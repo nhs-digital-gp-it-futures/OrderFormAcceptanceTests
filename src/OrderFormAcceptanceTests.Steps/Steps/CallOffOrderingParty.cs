@@ -84,12 +84,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheCallOffOrderingPartySectionIsSavedInTheDb()
         {
             var id = Test.Pages.OrderForm.GetCallOffId();
-            var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
-            var dbContact = new Contact { ContactId = order.OrganisationContactId }.Retrieve(Test.ConnectionString);
+            var order = new Order { OrderId = id }.Retrieve(Test.OrdapiConnectionString);
+            var dbContact = new Contact { ContactId = order.OrganisationContactId }.Retrieve(Test.OrdapiConnectionString);
             Context.Remove(ContextKeys.CreatedContact);
             Context.Add(ContextKeys.CreatedContact, dbContact);
 
-            var dbAddress = new Address { AddressId = order.OrganisationAddressId }.Retrieve(Test.ConnectionString);
+            var dbAddress = new Address { AddressId = order.OrganisationAddressId }.Retrieve(Test.OrdapiConnectionString);
             Context.Remove(ContextKeys.CreatedAddress);
             Context.Add(ContextKeys.CreatedAddress, dbAddress);
 

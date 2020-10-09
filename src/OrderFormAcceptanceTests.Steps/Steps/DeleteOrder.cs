@@ -65,7 +65,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheOrderHasADeletedStatus()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            order = order.Retrieve(Test.ConnectionString);
+            order = order.Retrieve(Test.OrdapiConnectionString);
             order.IsDeleted.Should().Be(1);
         }
 
@@ -73,7 +73,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheStatusOfTheOrderDoesNotChangeToDeleted()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.Retrieve(Test.ConnectionString);
+            order.Retrieve(Test.OrdapiConnectionString);
             order.IsDeleted.Should().Be(0);
         }
 

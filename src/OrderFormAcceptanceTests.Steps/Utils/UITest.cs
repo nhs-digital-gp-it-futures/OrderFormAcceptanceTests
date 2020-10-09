@@ -7,7 +7,7 @@ namespace OrderFormAcceptanceTests.Steps.Utils
 {
     public sealed class UITest
     {
-        internal string ConnectionString;
+        internal string OrdapiConnectionString;
         internal string BapiConnectionString;
         internal string IsapiConnectionString;
         internal IWebDriver Driver;
@@ -15,15 +15,15 @@ namespace OrderFormAcceptanceTests.Steps.Utils
         internal PageActionCollection Pages;
         internal readonly string Url;
 
-        public UITest()
+        public UITest(Settings settings)
         {
-            ConnectionString = EnvironmentVariables.DbConnectionString();
-            BapiConnectionString = EnvironmentVariables.BapiDbConnectionString();
-            IsapiConnectionString = EnvironmentVariables.IsapiDbConnectionString();
+            OrdapiConnectionString = settings.GetDbString("ordapidb");
+            BapiConnectionString = settings.GetDbString("bapidb");
+            IsapiConnectionString = settings.GetDbString("isapidb");
 
-            Driver = new BrowserFactory().Driver;
+            Driver = new BrowserFactory(settings.Browser, settings.HubUrl).Driver;
             Pages = new PageActions(Driver).PageActionCollection;
-            Url = EnvironmentVariables.Url();
+            Url = settings.PublicBrowseUrl;
             EmailServerDriver = InstantiateEmailServerDriver(Url);
 
             GoToUrl();

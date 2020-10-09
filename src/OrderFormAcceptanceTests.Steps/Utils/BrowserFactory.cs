@@ -10,10 +10,8 @@ namespace OrderFormAcceptanceTests.Steps.Utils
 {
     public sealed class BrowserFactory
     {
-        public BrowserFactory()
+        public BrowserFactory(string browser, string hubUrl)
         {
-            var browser = EnvironmentVariables.Browser();
-            var hubUrl = EnvironmentVariables.HubUrl();
             Driver = Browser(browser, hubUrl);
         }
 

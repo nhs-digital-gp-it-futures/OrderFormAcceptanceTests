@@ -155,7 +155,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheOrderIsSaved();
             ThenTheCallOffAgreementIDIsGenerated();
             var id = (string)Context[ContextKeys.CallOffAgreementId];
-            var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
+            var order = new Order { OrderId = id }.Retrieve(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrder, order);
         }
 
@@ -191,7 +191,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var expectedDescriptionValue = (string)Context[ContextKeys.ExpectedDescriptionValue];
             var id = Test.Pages.OrderForm.GetCallOffId();
-            var order = new Order { OrderId = id }.Retrieve(Test.ConnectionString);
+            var order = new Order { OrderId = id }.Retrieve(Test.OrdapiConnectionString);
             order.Description.Should().BeEquivalentTo(expectedDescriptionValue);
             Context.Add(ContextKeys.CreatedOrder, order);
         }
@@ -203,7 +203,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.OrganisationAddressId = null;
             order.OrganisationBillingAddressId = null;
             order.OrganisationContactId = null;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the Supplier section is not complete")]
@@ -214,7 +214,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.SupplierContactId = null;
             order.SupplierId = null;
             order.SupplierName = null;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the Commencement Date section is not complete")]
@@ -222,7 +222,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.CommencementDate = null;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the Service Recipients section is not complete")]
@@ -230,10 +230,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.ServiceRecipientsViewed = 0;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
 
             var serviceRecipient = (ServiceRecipient)Context[ContextKeys.CreatedServiceRecipient];
-            serviceRecipient.Delete(Test.ConnectionString);
+            serviceRecipient.Delete(Test.OrdapiConnectionString);
             Context.Remove(ContextKeys.CreatedServiceRecipient);
         }
 
@@ -242,10 +242,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.ServiceRecipientsViewed = 1;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
 
             var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);
-            serviceRecipient.Create(Test.ConnectionString);
+            serviceRecipient.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedServiceRecipient, serviceRecipient);
         }
 
@@ -254,7 +254,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.CatalogueSolutionsViewed = 0;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the Catalogue Solution section is complete")]
@@ -262,7 +262,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.CatalogueSolutionsViewed = 1;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the Additional Services section is complete")]
@@ -270,7 +270,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.AdditionalServicesViewed = 1;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the Additional Services section is not complete")]
@@ -278,12 +278,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.AdditionalServicesViewed = 0;
-            IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 2);
+            IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 2);
             foreach (var item in items)
             {
-                item.Delete(Test.ConnectionString);
+                item.Delete(Test.OrdapiConnectionString);
             }
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the Associated Services section is not complete")]
@@ -291,12 +291,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.AssociatedServicesViewed = 0;
-            IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.ConnectionString, order.OrderId, 3);
+            IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 3);
             foreach (var item in items)
             {
-                item.Delete(Test.ConnectionString);
+                item.Delete(Test.OrdapiConnectionString);
             }
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the Funding Source section is not complete")]
@@ -304,7 +304,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.FundingSourceOnlyGMS = null;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the Funding Source section is complete with 'no' selected")]
@@ -313,7 +313,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.FundingSourceOnlyGMS = 0;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [Given(@"the Funding Source section is complete with 'yes' selected")]
@@ -321,7 +321,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.FundingSourceOnlyGMS = 1;
-            order.Update(Test.ConnectionString);
+            order.Update(Test.OrdapiConnectionString);
         }
 
         [When(@"the User navigates back to the Organisation's Orders dashboard")]
