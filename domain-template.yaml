@@ -6,4 +6,3 @@ services:
   chrome:
     extra_hosts:
       - "DOMAIN:IP"
-      
