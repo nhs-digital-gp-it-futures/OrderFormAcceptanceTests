@@ -44,18 +44,52 @@ spec:
               configMapKeyRef:
                 name: {{ .Values.runIdConfig.name }}
                 key: {{ .Values.runIdConfig.key }}
-          {{- with .Values.db }}
-          - name: DB__SERVERURL
+          {{- with .Values.bapidb }}
+          - name: BAPIDB__SERVERURL
             valueFrom:
               configMapKeyRef:
                 name: {{ .serverConfig.name }}
                 key: {{ .serverConfig.key }}
-          - name: DB__DATABASENAME
+          - name: BAPIDB__DATABASENAME
             valueFrom:
               configMapKeyRef:
                 name: {{ .nameConfig.name }}
                 key: {{ .nameConfig.key }}
-          - name: DB__PASSWORD
+          - name: BAPIDB__PASSWORD
+            valueFrom:
+              secretKeyRef:            
+                name: {{ .passwordSecret.name }}
+                key: {{ .passwordSecret.key }}
+          {{- end }}  
+          {{- with .Values.isapidb }}
+          - name: ISAPIDB__SERVERURL
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .serverConfig.name }}
+                key: {{ .serverConfig.key }}
+          - name: ISAPIDB__DATABASENAME
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .nameConfig.name }}
+                key: {{ .nameConfig.key }}
+          - name: ISAPIDB__PASSWORD
+            valueFrom:
+              secretKeyRef:            
+                name: {{ .passwordSecret.name }}
+                key: {{ .passwordSecret.key }}
+          {{- end }}  
+          {{- with .Values.ordapidb }}
+          - name: ORDAPIDB__SERVERURL
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .serverConfig.name }}
+                key: {{ .serverConfig.key }}
+          - name: ORDAPIDB__DATABASENAME
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .nameConfig.name }}
+                key: {{ .nameConfig.key }}
+          - name: ORDAPIDB__PASSWORD
             valueFrom:
               secretKeyRef:            
                 name: {{ .passwordSecret.name }}

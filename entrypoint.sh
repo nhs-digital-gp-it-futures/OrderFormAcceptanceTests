@@ -9,7 +9,7 @@ setAdditionalArgs () {
 
   if [ -n "${TEST_RESULT_DIR}" ]; then
     >&2 echo "Directing test results to '$TEST_RESULT_DIR'"  
-    additionalDotnetArgs+="--logger \"trx;LogFileName=of-$1-$runId-$timestamp.trx\" --results-directory $TEST_RESULT_DIR "
+    additionalDotnetArgs+="--logger \"trx;LogFileName=of-$runId-$timestamp.trx\" --results-directory $TEST_RESULT_DIR "
   fi
 
   echo $additionalDotnetArgs
