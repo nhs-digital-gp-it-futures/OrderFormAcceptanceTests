@@ -33,17 +33,12 @@ spec:
           - name: BROWSER
             value: {{ .Values.browser | quote }}
           - name: HUBURL
-            value: {{ .Values.hubUrl | quote }}
-          - name: MPSUPPLIERURL  
+            value: {{ .Values.hubUrl | quote }}          
+          - name: PBURL  
             valueFrom:
               configMapKeyRef:
-                name: {{ .Values.mpSupplierUrlConfig.name }}
-                key: {{ .Values.mpSupplierUrlConfig.key }}
-          - name: MPAUTHORITYURL  
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.mpAuthorityUrlConfig.name }}
-                key: {{ .Values.mpAuthorityUrlConfig.key }}
+                name: {{ .Values.pbUrlConfig.name }}
+                key: {{ .Values.pbConfig.key }}
           - name: RUN_ID
             valueFrom:
               configMapKeyRef:
