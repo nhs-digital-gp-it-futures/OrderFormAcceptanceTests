@@ -126,8 +126,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.CommencementDate = new Faker().Date.Future().Date;
 
             order.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedOrder, order);
-
+            if (!Context.ContainsKey(ContextKeys.CreatedOrder))
+            {
+                Context.Add(ContextKeys.CreatedOrder, order);
+            }
             Context.TryGetValue(ContextKeys.CreatedIncompleteOrders, out IList<Order> createdOrders);
             createdOrders ??= new List<Order>();
             createdOrders.Add(order);
@@ -168,7 +170,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.SupplierName = "Really Kool Corporation";
 
             order.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedOrder, order);
+            if (!Context.ContainsKey(ContextKeys.CreatedOrder))
+            {
+                Context.Add(ContextKeys.CreatedOrder, order);
+            }
 
             Context.TryGetValue(ContextKeys.CreatedIncompleteOrders, out IList<Order> createdOrders);
             createdOrders ??= new List<Order>();
@@ -251,6 +256,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.OrderStatusId = completed;
 
             order.Create(Test.OrdapiConnectionString);
+            if (!Context.ContainsKey(ContextKeys.CreatedOrder))
+            {
+                Context.Add(ContextKeys.CreatedOrder, order);
+            }
 
             var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand(order);
             orderItem.LastUpdated = dateCompleted;
