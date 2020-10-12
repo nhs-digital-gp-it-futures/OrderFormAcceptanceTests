@@ -277,7 +277,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var orderItem = (OrderItem)Context[ContextKeys.CreatedAdditionalServiceOrderItem];
 
             quantityFromPage.Should().Be(orderItem.Quantity.ToString());
-            priceFromPage.Should().Be(orderItem.Price.ToString("F")); // ToString("F") does a financial rounding on a decimal, including adding .00 if a round number
+            priceFromPage.Should().MatchRegex(@"^[0-9]*(\.[0-9]{2,3})?$");
         }
 
         [Given(@"the supplier added to the order has an additional service with a declarative flat price")]
