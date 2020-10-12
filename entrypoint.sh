@@ -32,11 +32,11 @@ if [ "$n" -eq "$timeout" ]; then echo "$CURLPBURL is not ready after $n seconds"
 
 
 if [ -n "${TEST_FILTER}" ]; then
-  cmd="dotnet test out/MarketingPageAcceptanceTests.SmokeTests.dll -v n $(setAdditionalArgs smoke-tests)"
+  cmd="dotnet test out/OrderFormAcceptanceTests.Tests.dll -v n $(setAdditionalArgs) --filter TestCategory=$TEST_FILTER"
   echo -e "\n Running '$cmd' \n"
   eval $cmd
 else
-  cmd="dotnet test out/OrderFormAcceptanceTests.Tests.dll -v n"
+  cmd="dotnet test out/OrderFormAcceptanceTests.Tests.dll -v n $(setAdditionalArgs)"
   echo -e "\n Running '$cmd' \n"
   eval $cmd
 fi
