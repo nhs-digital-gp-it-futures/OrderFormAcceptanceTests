@@ -228,7 +228,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.ErrorSummaryDisplayed().Should().BeTrue();
             Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
-            Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectRecipient");
+            Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("Recipient");
         }
 
         [Then(@"they are presented with the Associated Service edit form")]

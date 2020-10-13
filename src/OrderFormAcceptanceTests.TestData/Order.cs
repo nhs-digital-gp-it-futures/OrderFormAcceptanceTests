@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using OrderFormAcceptanceTests.TestData.Utils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OrderFormAcceptanceTests.TestData
@@ -62,6 +63,13 @@ namespace OrderFormAcceptanceTests.TestData
             var query = "SELECT * from [dbo].[Order] WHERE OrderId=@orderId";
 
             return SqlExecutor.Execute<Order>(connectionString, query, this).Single();
+        }
+
+        public IEnumerable<int> GetContactIdsForOrder(string connectionString)
+        {
+            var query = "(SELECT OrganisationContactId FROM dbo.[Order] WHERE OrderId = @orderId) " +
+                "UNION (SELECT SupplierContactId FROM dbo.[Order] WHERE OrderId = @orderId);";
+            return SqlExecutor.Execute<int>(connectionString, query, this);
         }
 
         public Order Generate(Organisation organisation = null)

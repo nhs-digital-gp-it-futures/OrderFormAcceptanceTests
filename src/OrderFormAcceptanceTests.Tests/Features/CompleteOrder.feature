@@ -161,13 +161,3 @@ Scenario: View Completed Order Summary - Button to get Order Summary
 	Given a User has completed an Order
 	When the Completed Order Summary is displayed
 	Then there is a button to get the Order Summary at the top and bottom of it 
-
-# This functionality has changed slightly in the newest version of Chrome. Will need to scrap or rewrite
-@ignore 
-Scenario: View Completed Order Summary - Choose to get Order Summary
-	Given a User has completed an Order
-	And the Completed Order Summary is displayed
-	When the User chooses to get the Order Summary
-	Then a new tab will open
-	And the tab will contain the printable version of the Order Summary
-	And the Print Dialog within the Browser will appear automatically

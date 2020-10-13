@@ -1,4 +1,6 @@
-﻿using BoDi;
+﻿using System.Collections;
+using System.Collections.Generic;
+using BoDi;
 using Microsoft.Extensions.Configuration;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
@@ -33,37 +35,40 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void AfterScenario()
         {
             var test = _objectContainer.Resolve<UITest>();
+            test.Driver?.Quit();
+
             if (_context.ContainsKey(ContextKeys.CreatedOrder))
             {
-                var order = (Order)_context[ContextKeys.CreatedOrder];
+                var order = ((Order)_context[ContextKeys.CreatedOrder]).Retrieve(test.OrdapiConnectionString);
+
                 new OrderItem().DeleteAllOrderItemsForOrderId(test.OrdapiConnectionString, order.OrderId);
 
                 new ServiceRecipient().DeleteAllServiceRecipientsForOrderId(test.OrdapiConnectionString, order.OrderId);
 
-                ((Order)_context[ContextKeys.CreatedOrder]).Delete(test.OrdapiConnectionString);
-            }
-            if (_context.ContainsKey(ContextKeys.CreatedContact))
-            {
-                ((Contact)_context[ContextKeys.CreatedContact]).Delete(test.OrdapiConnectionString);
-            }
-            if (_context.ContainsKey(ContextKeys.CreatedSupplierContact))
-            {
-                ((Contact)_context[ContextKeys.CreatedSupplierContact]).Delete(test.OrdapiConnectionString);
-            }
-            if (_context.ContainsKey(ContextKeys.CreatedAddress))
-            {
-                ((Address)_context[ContextKeys.CreatedAddress]).Delete(test.OrdapiConnectionString);
-            }
-            if (_context.ContainsKey(ContextKeys.CreatedSupplierAddress))
-            {
-                ((Address)_context[ContextKeys.CreatedSupplierAddress]).Delete(test.OrdapiConnectionString);
+                order.Delete(test.OrdapiConnectionString);
+
+                if (order.OrganisationContactId.HasValue || order.SupplierContactId.HasValue)
+                {
+                    var contacts = order.GetContactIdsForOrder(test.OrdapiConnectionString);
+                    foreach (var contact in contacts)
+                    {
+                        new Contact { ContactId = contact }.Delete(test.OrdapiConnectionString);
+                    }
+                }
+
+                if(order.OrganisationAddressId.HasValue)
+                {
+                    new Address { AddressId = order.OrganisationAddressId.Value }.Delete(test.OrdapiConnectionString);
+                }
+                if (order.SupplierAddressId.HasValue)
+                {
+                    new Address { AddressId = order.SupplierAddressId.Value }.Delete(test.OrdapiConnectionString);
+                }
             }
             if (_context.ContainsKey(ContextKeys.User))
             {
                 ((User)_context[ContextKeys.User]).Delete(test.IsapiConnectionString);
             }
-
-            test.Driver?.Quit();
         }
     }
 }

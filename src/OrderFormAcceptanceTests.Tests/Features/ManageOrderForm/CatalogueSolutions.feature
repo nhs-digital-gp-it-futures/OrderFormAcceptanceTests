@@ -1,5 +1,4 @@
-﻿@ignore until bulk ordering catches up
-Feature: Catalogue Solutions
+﻿Feature: Catalogue Solutions
     As a Buyer
     I want to manage the Catalogue Solutions of Order Form 
     So that the information is correct
@@ -128,6 +127,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	Given the User is presented with the Service Recipients for the Order after selecting the variable flat price
 	And a Service Recipient is selected
 	When they choose to continue
+    And they choose to continue
 	Then they are presented with the Catalogue Solution edit form
 	And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
 	And the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form
@@ -137,13 +137,13 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with variable ord
 	And the item on the Catalogue Solution edit form contains an input for date
 	And the item on the Catalogue Solution edit form contains a selection for the quantity estimation period
 	And the price input is autopopulated with the list price for the flat list price selected
-	And the delete button is disabled
 	And the save button is enabled
 
 Scenario: Catalogue Solutions - edit price screen - Flat price with per patient order type selected
 	Given the User is presented with the Service Recipients for the Order after selecting the per patient flat price
 	And a Service Recipient is selected
 	When they choose to continue
+    And they choose to continue
 	Then they are presented with the Catalogue Solution edit form
 	And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
 	And the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form
@@ -152,7 +152,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with per patient 
 	And the item on the Catalogue Solution edit form contains an input for the quantity
 	And the item on the Catalogue Solution edit form contains an input for date
 	And the price input is autopopulated with the list price for the flat list price selected
-	And the delete button is disabled
 	And the save button is enabled
 
 Scenario: Catalogue Solutions - edit price screen - Flat price with declarative order type selected
@@ -169,9 +168,9 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with declarative 
 	And the item on the Catalogue Solution edit form contains an input for the quantity
 	And the item on the Catalogue Solution edit form contains an input for date
 	And the price input is autopopulated with the list price for the flat list price selected
-	And the delete button is disabled
 	And the save button is enabled
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Mandatory data missing
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And mandatory data are missing
@@ -182,10 +181,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Mandatory
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - invalid date
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -196,10 +196,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price with 4 decimal place
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -210,10 +211,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price is negative
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -224,10 +226,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price does not allow characters
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -238,10 +241,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow characters
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -252,10 +256,12 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow decimals
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -266,10 +272,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity can not be negative
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -280,10 +287,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity exceeds the maximum length
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -294,10 +302,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price exceeds the maximum value
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -308,10 +317,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Validation Error Message Anchors
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And mandatory data are missing
@@ -321,10 +331,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Validatio
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery date validation - date is equal to 183 weeks after commencement date
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -336,10 +347,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery date validation - date is less than 183 weeks after commencement date
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -351,10 +363,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery date validation - date is more than 183 weeks after commencement date
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -365,10 +378,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery date validation - date cannot be before commencement date
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -379,10 +393,11 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price All data are valid
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -393,30 +408,33 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price All data 
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     Then the price is displayed to two decimal places
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
 
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back before save
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	When the User chooses to go back
 	Then they are presented with the Service Recipients for the Order
 	Examples:
 	| ProvisioningType |
-	| declarative      |
-	| variable         |
+	#| declarative      |
+	#| variable         |
 	| per patient      |
 	
+@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back after save
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data
@@ -429,9 +447,10 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back a
 
     Examples:
         | ProvisioningType |
-        | declarative      |
-        | variable         |
+        #| declarative      |
+        #| variable         |
         | per patient      |
+
 
 Scenario: Catalogue Solutions - View Added Catalogue Solutions
     Given a User has added a solution to the order
