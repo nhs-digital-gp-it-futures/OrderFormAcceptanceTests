@@ -8,7 +8,7 @@ namespace OrderFormAcceptanceTests.TestData
         {
             var query = "DELETE FROM dbo.Contact " +
                 "WHERE ContactId NOT IN (SELECT OrganisationContactId FROM dbo.[Order])" +
-                "OR ContactId NOT IN (SELECT SupplierContactId FROM dbo.[Order]";
+                "OR ContactId NOT IN (SELECT SupplierContactId FROM dbo.[Order];";
 
             SqlExecutor.Execute<string>(connectionString, query, null);
         }

@@ -67,7 +67,8 @@ namespace OrderFormAcceptanceTests.TestData
 
         public IEnumerable<int> GetContactIdsForOrder(string connectionString)
         {
-            var query = "(SELECT OrganisationContactId from [dbo].[Order] WHERE OrderId=@orderId) UNION (SELECT SupplierContactId from [dbo].[Order] WHERE OrderId=@orderId)";
+            var query = "(SELECT OrganisationContactId FROM [dbo].[Order] WHERE OrderId = @orderId) " +
+                "UNION (SELECT SupplierContactId FROM [dbo].[Order] WHERE OrderId = @orderId);";
             return SqlExecutor.Execute<int>(connectionString, query, this);
         }
 
