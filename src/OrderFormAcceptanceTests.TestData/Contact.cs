@@ -76,5 +76,16 @@ namespace OrderFormAcceptanceTests.TestData
             var query = @"DELETE FROM [dbo].[Contact] WHERE ContactId=@ContactId";
             SqlExecutor.Execute<Contact>(connectionString, query, this);
         }
+
+        public static void DeleteOrphanedContacts(string connectionString)
+        {
+            var query = @"DELETE FROM dbo.[Contact] 
+                        WHERE ContactId NOT IN (
+	                        (SELECT SupplierContactId FROM dbo.[Order]) 
+	                        UNION 
+	                        (SELECT OrganisationContactId FROM dbo.[Order])
+                        );";
+            SqlExecutor.Execute<Contact>(connectionString, query, null);
+        }
     }
 }
