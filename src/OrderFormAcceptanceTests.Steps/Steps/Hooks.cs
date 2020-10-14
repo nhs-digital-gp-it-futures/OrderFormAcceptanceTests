@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using BoDi;
+﻿using BoDi;
 using Microsoft.Extensions.Configuration;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
@@ -46,25 +44,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 new ServiceRecipient().DeleteAllServiceRecipientsForOrderId(test.OrdapiConnectionString, order.OrderId);
 
                 order.Delete(test.OrdapiConnectionString);
-
-                if (order.OrganisationContactId.HasValue || order.SupplierContactId.HasValue)
-                {
-                    var contacts = order.GetContactIdsForOrder(test.OrdapiConnectionString);
-                    foreach (var contact in contacts)
-                    {
-                        new Contact { ContactId = contact }.Delete(test.OrdapiConnectionString);
-                    }
-                }
-
-                if(order.OrganisationAddressId.HasValue)
-                {
-                    new Address { AddressId = order.OrganisationAddressId.Value }.Delete(test.OrdapiConnectionString);
-                }
-                if (order.SupplierAddressId.HasValue)
-                {
-                    new Address { AddressId = order.SupplierAddressId.Value }.Delete(test.OrdapiConnectionString);
-                }
             }
+
+            Address.DeleteOrphanedAddresses(test.OrdapiConnectionString);
+            Contact.DeleteOrphanedContacts(test.OrdapiConnectionString);
+
             if (_context.ContainsKey(ContextKeys.User))
             {
                 ((User)_context[ContextKeys.User]).Delete(test.IsapiConnectionString);

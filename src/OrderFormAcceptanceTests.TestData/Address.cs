@@ -122,5 +122,16 @@ namespace OrderFormAcceptanceTests.TestData
             var query = @"DELETE FROM [dbo].[Address] WHERE AddressId=@AddressId";
             SqlExecutor.Execute<Address>(connectionString, query, this);
         }
+
+        public static void DeleteOrphanedAddresses(string connectionString)
+        {
+            var query = @"DELETE FROM dbo.[Address] 
+                            WHERE AddressId NOT IN(
+                            (SELECT OrganisationAddressId FROM dbo.[Order])
+                            UNION
+                            (SELECT SupplierAddressId FROM dbo.[Order])
+                            );";
+            SqlExecutor.Execute<Address>(connectionString, query, null);
+        }
     }
 }
