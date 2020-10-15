@@ -13,7 +13,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
     [Binding]
     public sealed class CatalogueSolutions : TestBase
     {
-
         public CatalogueSolutions(UITest test, ScenarioContext context) : base(test, context)
         {
 
@@ -293,7 +292,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.PracticeListSizeInputIsDisplayed().Should().BeTrue();
         }
 
-
         [Then(@"the item on the Catalogue Solution edit form contains an input for date")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAnInputForDate()
         {
@@ -324,7 +322,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.SaveButtonDisplayed().Should().BeTrue();
         }
-
 
         [Given(@"the User is presented with the Catalogue Solution edit form for a variable flat price")]
         public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormVariableFlatPrice()
@@ -431,7 +428,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             {
                 false.Should().BeTrue("Expecting either 2 decimal places or 0 decimal places");
             }
-
         }
 
         [Given(@"the quantity contains characters")]
@@ -518,7 +514,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
-
 
         [Then(@"the name of each Associated Service is displayed")]
         [Then(@"the name of each Additional Service is displayed")]
