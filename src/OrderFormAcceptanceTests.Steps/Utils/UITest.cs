@@ -14,6 +14,7 @@ namespace OrderFormAcceptanceTests.Steps.Utils
         internal EmailServerDriver EmailServerDriver;
         internal PageActionCollection Pages;
         internal readonly string Url;
+        internal readonly string PbUrl;
 
         public UITest(Settings settings)
         {
@@ -23,10 +24,9 @@ namespace OrderFormAcceptanceTests.Steps.Utils
 
             Driver = new BrowserFactory(settings.Browser, settings.HubUrl).Driver;
             Pages = new PageActions(Driver).PageActionCollection;
-            Url = settings.PublicBrowseUrl;
-            EmailServerDriver = InstantiateEmailServerDriver(Url);
-
-            GoToUrl();
+            Url = settings.OrderFormUrl;
+            PbUrl = settings.PbUrl;
+            EmailServerDriver = InstantiateEmailServerDriver(PbUrl);
         }
 
         public void GoToUrl()
@@ -34,9 +34,9 @@ namespace OrderFormAcceptanceTests.Steps.Utils
             Driver.Navigate().GoToUrl(Url);
         }
 
-        private EmailServerDriver InstantiateEmailServerDriver(string Url)
+        private EmailServerDriver InstantiateEmailServerDriver(string pbUrl)
         {
-            var emailUrl = EmailUtils.GetEmailUrl(Url);
+            var emailUrl = EmailUtils.GetEmailUrl(PbUrl);
             var emailDriverSettings = new EmailServerDriverSettings(emailUrl);
             return new EmailServerDriver(emailDriverSettings);
         }

@@ -56,8 +56,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [When(@"the User is presented with the Organisation's Orders dashboard")]
         public void WhenTheUserIsPresentedWithTheOrganisationSOrdersDashboard()
         {
-            new CommonSteps(Test, Context).GivenThatABuyerUserHasLoggedIn();
-            Test.Pages.Homepage.ClickOrderTile();
+            Test.Driver.Navigate().Refresh();
             Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
         }
 
@@ -254,8 +253,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"the order dashboard is presented")]
         public void WhenTheOrderDashboardIsPresented()
         {
-            new CommonSteps(Test, Context).GivenThatABuyerUserHasLoggedIn();
-            Test.Pages.Homepage.ClickOrderTile();
+            Test.Driver.Navigate().Refresh();
             Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
         }
 

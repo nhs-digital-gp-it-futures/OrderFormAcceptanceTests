@@ -11,12 +11,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
         }
 
-        [Given(@"the User is presented with the Organisation's Orders dashboard")]
-        public void GivenTheUserIsPresentedWithTheOrganisationsOrdersDashboard()
-        {
-            Test.Pages.Homepage.ClickOrderTile();
-        }
-
         [When(@"they choose to create a new Order")]
         public void GivenTheyChooseToCreateANewOrder()
         {

@@ -1,6 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Objects.Utils;
-using System;
 
 namespace OrderFormAcceptanceTests.Objects.Pages
 {
@@ -53,5 +53,6 @@ namespace OrderFormAcceptanceTests.Objects.Pages
         public By OrderDateMonth => By.Id("deliveryDate-month");
         public By OrderDateYear => By.Id("deliveryDate-year");
         public By EstimationPeriod => CustomBy.DataTestId("question-selectEstimationPeriod");
+        public By PracticeListSizeInput => By.Name("practiceSize");
     }
 }
