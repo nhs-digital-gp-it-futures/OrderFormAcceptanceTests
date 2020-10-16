@@ -1,11 +1,11 @@
-﻿using Bogus;
+﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Bogus;
 using FluentAssertions;
 using OrderFormAcceptanceTests.Steps.Utils;
 using OrderFormAcceptanceTests.TestData;
 using OrderFormAcceptanceTests.TestData.Utils;
-using System;
-using System.Linq;
-using System.Text.RegularExpressions;
 using TechTalk.SpecFlow;
 
 namespace OrderFormAcceptanceTests.Steps.Steps
@@ -13,7 +13,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
     [Binding]
     public sealed class CatalogueSolutions : TestBase
     {
-
         public CatalogueSolutions(UITest test, ScenarioContext context) : base(test, context)
         {
 
@@ -287,6 +286,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.QuantityInputIsDisplayed().Should().BeTrue();
         }
 
+        [Then(@"the item on the Catalogue Solution edit form contains an input for the practiceListSize")]
+        public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAnInputForThePracticeListSize()
+        {
+            Test.Pages.OrderForm.PracticeListSizeInputIsDisplayed().Should().BeTrue();
+        }
+
         [Then(@"the item on the Catalogue Solution edit form contains an input for date")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAnInputForDate()
         {
@@ -317,7 +322,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Test.Pages.OrderForm.SaveButtonDisplayed().Should().BeTrue();
         }
-
 
         [Given(@"the User is presented with the Catalogue Solution edit form for a variable flat price")]
         public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormVariableFlatPrice()
@@ -424,7 +428,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             {
                 false.Should().BeTrue("Expecting either 2 decimal places or 0 decimal places");
             }
-
         }
 
         [Given(@"the quantity contains characters")]
@@ -511,7 +514,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
-
 
         [Then(@"the name of each Associated Service is displayed")]
         [Then(@"the name of each Additional Service is displayed")]
@@ -623,22 +625,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         }
 
         [Given(@"the User is presented with the Service Recipients for the Order after selecting the declarative flat price")]
-       public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingTheDeclarativeFlatPrice()
+        public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingTheDeclarativeFlatPrice()
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
             new CommonSteps(Test, Context).ContinueAndWaitForCheckboxes();
-        }
-
-        [Given(@"the User navigates to the Catalogue Solutions dashboard")]
-        public void GivenTheUserNavigatesToTheCatalogueSolutionsDashboard()
-        {
-            var commonSteps = new CommonSteps(Test, Context);
-            commonSteps.GivenThatABuyerUserHasLoggedIn();
-            Test.Pages.Homepage.ClickOrderTile();
-            Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            
         }
 
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)

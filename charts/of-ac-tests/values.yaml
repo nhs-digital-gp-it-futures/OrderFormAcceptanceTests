@@ -52,10 +52,10 @@ affinity: {}
 
 browser: chrome
 hubUrl:
-mpSupplierUrlConfig:
+pbUrlConfig:
   name:
   key:
-mpAuthorityUrlConfig:
+ofUrlConfig:
   name:
   key:
 bapidb: 

@@ -10,13 +10,15 @@ namespace OrderFormAcceptanceTests.Steps.Utils
         {
             configuration = config;
             HubUrl = config.GetValue<string>("hubUrl");
-            PublicBrowseUrl = config.GetValue<string>("pbUrl");
+            OrderFormUrl = config.GetValue<string>("ofUrl");
+            PbUrl = config.GetValue<string>("pbUrl");
             Browser = config.GetValue<string>("browser");
         }
 
         public string HubUrl { get; }
-        public string PublicBrowseUrl { get; }
+        public string OrderFormUrl { get; }
         public string Browser { get; }
+        public string PbUrl { get; set; }
 
         internal string GetDbString(string db)
         {

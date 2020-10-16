@@ -27,6 +27,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 .Build();
 
             _objectContainer.RegisterInstanceAs<IConfiguration>(configurationBuilder);
+            var test = _objectContainer.Resolve<UITest>();
+            test.GoToUrl();
+            new CommonSteps(test, _context).GivenThatABuyerUserHasLoggedIn();
         }
 
         [AfterScenario]
@@ -44,10 +47,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 new ServiceRecipient().DeleteAllServiceRecipientsForOrderId(test.OrdapiConnectionString, order.OrderId);
 
                 order.Delete(test.OrdapiConnectionString);
-            }
 
-            Address.DeleteOrphanedAddresses(test.OrdapiConnectionString);
-            Contact.DeleteOrphanedContacts(test.OrdapiConnectionString);
+                new Address() { AddressId = order.SupplierAddressId }.Delete(test.OrdapiConnectionString);
+                new Address() { AddressId = order.OrganisationAddressId }.Delete(test.OrdapiConnectionString);
+                new Address() { AddressId = order.OrganisationBillingAddressId }.Delete(test.OrdapiConnectionString);
+                new Contact() { ContactId = order.OrganisationContactId }.Delete(test.OrdapiConnectionString);
+                new Contact() { ContactId = order.SupplierContactId }.Delete(test.OrdapiConnectionString);
+            }
 
             if (_context.ContainsKey(ContextKeys.User))
             {

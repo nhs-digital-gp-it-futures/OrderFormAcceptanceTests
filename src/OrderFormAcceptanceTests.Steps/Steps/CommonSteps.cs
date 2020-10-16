@@ -21,7 +21,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"that a buyer user has logged in")]
         public void GivenThatABuyerUserHasLoggedIn()
         {
-            Test.Pages.Homepage.ClickLoginButton();
             if (!Context.ContainsKey(ContextKeys.User))
             {
                 CreateUser(UserType.Buyer);
@@ -35,8 +34,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the User has chosen to manage a new Order Form")]
         public void GivenTheUserHasChosenToManageANewOrderForm()
         {
-            GivenThatABuyerUserHasLoggedIn();
-            Test.Pages.Homepage.ClickOrderTile();
             Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
             Test.Pages.OrganisationsOrdersDashboard.CreateNewOrder();
         }
@@ -94,18 +91,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnIncompleteOrderExists()
         {
             var orgAddress = new Address().Generate();
-            orgAddress.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedAddress, orgAddress);
             var orgContact = new Contact().Generate();
-            orgContact.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedContact, orgContact);
-
             var supplierAddress = new Address().Generate();
-            supplierAddress.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedSupplierAddress, supplierAddress);
             var supplierContact = new Contact().Generate();
-            supplierContact.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedSupplierContact, supplierContact);
 
             if (!Context.ContainsKey(ContextKeys.Organisation))
             {
@@ -115,15 +103,31 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var organisation = (Organisation)Context[ContextKeys.Organisation];
 
             var order = new Order().Generate(organisation);
+            
+            order.SupplierId = 100000;
+            order.SupplierName = "Really Kool Corporation";
+
+            order.CommencementDate = new Faker().Date.Future().Date;
+
+            orgAddress.Create(Test.OrdapiConnectionString);
+            orgAddress = orgAddress.Retrieve(Test.OrdapiConnectionString);
+            Context.Add(ContextKeys.CreatedAddress, orgAddress);
+
+            orgContact.Create(Test.OrdapiConnectionString);
+            Context.Add(ContextKeys.CreatedContact, orgContact);
+
+            supplierAddress.Create(Test.OrdapiConnectionString);
+            supplierAddress = supplierAddress.Retrieve(Test.OrdapiConnectionString);
+            Context.Add(ContextKeys.CreatedSupplierAddress, supplierAddress);
+
+            supplierContact.Create(Test.OrdapiConnectionString);
+            Context.Add(ContextKeys.CreatedSupplierContact, supplierContact);
+
             order.OrganisationAddressId = orgAddress.AddressId;
             order.OrganisationBillingAddressId = orgAddress.AddressId;
             order.OrganisationContactId = orgContact.ContactId;
             order.SupplierAddressId = supplierAddress.AddressId;
             order.SupplierContactId = supplierContact.ContactId;
-            order.SupplierId = 100000;
-            order.SupplierName = "Really Kool Corporation";
-
-            order.CommencementDate = new Faker().Date.Future().Date;
 
             order.Create(Test.OrdapiConnectionString);
             if (!Context.ContainsKey(ContextKeys.CreatedOrder))
@@ -275,8 +279,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [StepDefinition(@"the Order Form for the existing order is presented")]
         public void WhenTheOrderFormForTheExistingOrderIsPresented()
         {
-            GivenThatABuyerUserHasLoggedIn();
-            Test.Pages.Homepage.ClickOrderTile();
+            Test.Driver.Navigate().Refresh();
             Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
             Test.Pages.OrganisationsOrdersDashboard.SelectExistingOrder(((Order)Context[ContextKeys.CreatedOrder]).OrderId);
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();

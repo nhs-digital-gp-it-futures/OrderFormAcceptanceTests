@@ -3,11 +3,7 @@
 	I want to create an Order
 	So that I can order from the Buying Catalogue
 
-Background: 
-	Given that a buyer user has logged in
-
 Scenario: Create a new Order
-	Given the User is presented with the Organisation's Orders dashboard
 	When they choose to create a new Order
 	Then the new Order is presented
 	And the User is presented with a control to return to the Organisation's Orders dashboard

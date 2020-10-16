@@ -13,7 +13,6 @@ namespace OrderFormAcceptanceTests.TestData
         public string Line2 { get; set; }
         public string Line3 { get; set; }
         public string Line4 { get; set; }
-        public string Line5 { get; set; }
         public string Town { get; set; }
         public string County { get; set; }
         public string Postcode { get; set; }
@@ -65,12 +64,11 @@ namespace OrderFormAcceptanceTests.TestData
 
         public int? Create(string connectionString)
         {
-            var query = @"INSERT INTO [dbo].[Address]
+            var query = @"INSERT INTO dbo.[Address]
                                 (Line1,
                                  Line2,
                                  Line3,
                                  Line4,
-                                 Line5,
                                  Town,
                                  County,
                                  Postcode,
@@ -81,14 +79,13 @@ namespace OrderFormAcceptanceTests.TestData
                                  @Line2,
                                  @Line3,
                                  @Line4,
-                                 @Line5,
                                  @Town,
                                  @County,
                                  @Postcode,
                                  @Country
                         );
 
-                        SELECT AddressId = SCOPE_IDENTITY()";
+                        SELECT AddressId FROM dbo.[Address] Where AddressId = SCOPE_IDENTITY();";
             this.AddressId = SqlExecutor.Execute<int>(connectionString, query, this).Single();
             return this.AddressId;
         }
@@ -108,7 +105,6 @@ namespace OrderFormAcceptanceTests.TestData
                             Line2=@Line2,
                             Line3=@Line3,
                             Line4=@Line4,
-                            Line5=@Line5,
                             Town=@Town,
                             County=@County,
                             Postcode=@Postcode,

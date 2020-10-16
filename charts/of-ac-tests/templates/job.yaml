@@ -39,6 +39,11 @@ spec:
               configMapKeyRef:
                 name: {{ .Values.pbUrlConfig.name }}
                 key: {{ .Values.pbUrlConfig.key }}
+          - name: OFURL  
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.ofUrlConfig.name }}
+                key: {{ .Values.ofUrlConfig.key }}
           - name: RUN_ID
             valueFrom:
               configMapKeyRef:

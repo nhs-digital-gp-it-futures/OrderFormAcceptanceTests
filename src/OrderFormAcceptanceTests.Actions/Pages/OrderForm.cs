@@ -463,6 +463,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElement(Pages.OrderForm.OrganisationName).Text;
         }
 
+        public bool PracticeListSizeInputIsDisplayed()
+        {
+            return Driver.FindElements(Pages.OrderForm.PracticeListSizeInput).Count > 0;
+        }
+
         public Address GetAddress()
         {
             return new Address
@@ -704,9 +709,9 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElements(Pages.OrderForm.OrderUnit).Count == 1;
         }
 
-        public bool QuantityInputIsDisplayed()
+        public bool QuantityInputIsDisplayed(int expected = 1)
         {
-            return Driver.FindElements(Pages.OrderForm.Quantity).Count == 1;
+            return Driver.FindElements(Pages.OrderForm.Quantity).Count == expected;
         }
 
         public void EnterQuantity(string value)
