@@ -538,6 +538,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             }
         }
 
+        public bool IsPlannedDeliveryDateDisplayed()
+        {
+            return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains("planned delivery", StringComparison.OrdinalIgnoreCase);
+        }
+
         public bool SupplierNameIsDisplayed()
         {
             return Driver.FindElements(Pages.OrderForm.SupplierName).Count == 1;
@@ -714,11 +719,16 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             return Driver.FindElements(Pages.OrderForm.Quantity).Count == expected;
         }
 
-        public void EnterQuantity(string value)
+        public void EnterQuantity(string value, string quantityLabel = "quantity")
         {
-            Wait.Until(d => d.FindElements(Pages.OrderForm.Quantity).Count == 1);
-            Driver.FindElement(Pages.OrderForm.Quantity).Clear();
-            Driver.FindElement(Pages.OrderForm.Quantity).SendKeys(value);
+            Wait.Until(d => d.FindElements(By.Id(quantityLabel)).Count > 0);
+            var quantities = Driver.FindElements(By.Id(quantityLabel));
+            foreach (var quantity in quantities)
+            {
+                quantity.Clear();
+                quantity.SendKeys(value);
+            }
+            
         }
 
         public string GetQuantity()
