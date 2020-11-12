@@ -259,7 +259,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow decimals
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
-    And the <quantityLabel> quanitity is a decimal
+    And the <quantityLabel> quantity is a decimal
     When the User chooses to save
     Then the Catalogue Solution is not saved
     And the reason is displayed

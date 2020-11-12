@@ -434,26 +434,30 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             }
         }
 
+        [Given("the quantity contains characters")]
         [Given(@"the (.*) quantity contains characters")]
-        public void GivenTheQuantityContainsCharacters(string quantityLabel)
+        public void GivenTheQuantityContainsCharacters(string quantityLabel = "quantity")
         {
             Test.Pages.OrderForm.EnterQuantity("seven", quantityLabel);
         }
 
-        [Given(@"the (.*) quanitity is a decimal")]
-        public void GivenTheQuanitityIsADecimal(string quantityLabel)
+        [Given(@"the quantity is a decimal")]
+        [Given(@"the (.*) quantity is a decimal")]
+        public void GivenTheQuanitityIsADecimal(string quantityLabel = "quantity")
         {
             Test.Pages.OrderForm.EnterQuantity("3.142", quantityLabel);
         }
 
+        [Given(@"the quantity is negative")]
         [Given(@"the (.*) quantity is negative")]
-        public void GivenTheQuantityIsNegative(string quantityLabel)
+        public void GivenTheQuantityIsNegative(string quantityLabel = "quantity")
         {
             Test.Pages.OrderForm.EnterQuantity("-100", quantityLabel);
         }
 
+        [Given(@"the quantity is over the max length")]
         [Given(@"the (.*) quantity is over the max length")]
-        public void GivenTheQuantityIsOverTheMaxLength(string quantityLabel)
+        public void GivenTheQuantityIsOverTheMaxLength(string quantityLabel = "quantity")
         {
             Test.Pages.OrderForm.EnterQuantity("2147483648", quantityLabel);
         }

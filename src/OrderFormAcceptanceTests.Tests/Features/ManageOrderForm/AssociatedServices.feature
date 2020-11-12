@@ -239,7 +239,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data
-	And the quantity quantity contains characters
+	And the quantity contains characters
 	When the User chooses to save
 	Then the Associated Service is not saved
 	And the reason is displayed
@@ -252,7 +252,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data
-	And the quantity quanitity is a decimal
+	And the quantity is a decimal
 	When the User chooses to save
 	Then the Associated Service is not saved
 	And the reason is displayed
@@ -265,7 +265,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data
-	And the quantity quantity is negative
+	And the quantity is negative
 	When the User chooses to save
 	Then the Associated Service is not saved
 	And the reason is displayed
@@ -278,7 +278,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data
-	And the quantity quantity is over the max length
+	And the quantity is over the max length
 	When the User chooses to save
 	Then the Associated Service is not saved 
 	And the reason is displayed
