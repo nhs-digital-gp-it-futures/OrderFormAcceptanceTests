@@ -318,7 +318,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price All data a
 	And fills in the Associated Service edit form with valid data
 	When the User chooses to save
 	Then the Associated Service is saved
-	And the Associated Services dashboard is presented
+	#And the Associated Services dashboard is presented
 	And the Associated Service is saved in the DB
 	Examples:
 	| ProvisioningType |

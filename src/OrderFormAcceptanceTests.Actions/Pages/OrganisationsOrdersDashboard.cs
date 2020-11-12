@@ -16,14 +16,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public void WaitForDashboardToBeDisplayed()
         {
             Driver.WaitForJsToComplete(Wait);
-            Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.PageTitle).Count == 1);
-            Wait.Until(d => CreateNewOrderButtonDisplayed());
+            //Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.PageTitle).Count == 1);
+            //Wait.Until(d => CreateNewOrderButtonDisplayed());
         }
 
         public void SelectExistingOrder(string callOffAgreementId)
         {
             Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Count == 1);
-            Wait.Until(ElementExtensions.ElementToBeClickable(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)));
+            //Wait.Until(ElementExtensions.ElementToBeClickable(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)));
             Driver.FindElement(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Click();
         }
 

@@ -10,6 +10,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
         }
 
+        public bool IsPageDisplayed()
+        {
+            return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains("Commencement date", StringComparison.OrdinalIgnoreCase);
+        }
+
         public void SetDate(DateTime date)
         {
             SetDayValue(date.Day.ToString());

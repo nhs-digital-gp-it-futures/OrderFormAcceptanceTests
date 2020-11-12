@@ -353,6 +353,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).ContinueAndWaitForCheckboxes();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            if (Test.Pages.OrderForm.IsPlannedDeliveryDateDisplayed())
+            {
+                new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            }
             ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
@@ -430,32 +434,32 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             }
         }
 
-        [Given(@"the quantity contains characters")]
-        public void GivenTheQuantityContainsCharacters()
+        [Given(@"the (.*) quantity contains characters")]
+        public void GivenTheQuantityContainsCharacters(string quantityLabel)
         {
-            Test.Pages.OrderForm.EnterQuantity("seven");
+            Test.Pages.OrderForm.EnterQuantity("seven", quantityLabel);
         }
 
-        [Given(@"the quanitity is a decimal")]
-        public void GivenTheQuanitityIsADecimal()
+        [Given(@"the (.*) quanitity is a decimal")]
+        public void GivenTheQuanitityIsADecimal(string quantityLabel)
         {
-            Test.Pages.OrderForm.EnterQuantity("3.142");
+            Test.Pages.OrderForm.EnterQuantity("3.142", quantityLabel);
         }
 
-        [Given(@"the quantity is negative")]
-        public void GivenTheQuantityIsNegative()
+        [Given(@"the (.*) quantity is negative")]
+        public void GivenTheQuantityIsNegative(string quantityLabel)
         {
-            Test.Pages.OrderForm.EnterQuantity("-100");
+            Test.Pages.OrderForm.EnterQuantity("-100", quantityLabel);
         }
 
-        [Given(@"the quantity is over the max length")]
-        public void GivenTheQuantityIsOverTheMaxLength()
+        [Given(@"the (.*) quantity is over the max length")]
+        public void GivenTheQuantityIsOverTheMaxLength(string quantityLabel)
         {
-            Test.Pages.OrderForm.EnterQuantity("2147483648");
+            Test.Pages.OrderForm.EnterQuantity("2147483648", quantityLabel);
         }
 
-        [Given(@"fills in the Catalogue Solution edit form with valid data")]
-        public void GivenFillsInTheCatalogueSolutionEditFormWithValidData()
+        [Given(@"fills in the Catalogue Solution edit form with valid data for (.*)")]
+        public void GivenFillsInTheCatalogueSolutionEditFormWithValidData(string quantityLabel)
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             var deliveryDate = order.CommencementDate.Value;
@@ -467,7 +471,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             }
 
             var f = new Faker();
-            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1).ToString());
+            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1).ToString(), quantityLabel: quantityLabel);
             Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
         }
 
