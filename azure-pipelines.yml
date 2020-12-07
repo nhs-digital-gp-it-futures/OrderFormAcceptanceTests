@@ -58,7 +58,6 @@ steps:
   inputs:
     azureSubscription: 'NHSAPP-BuyingCatalogue (Non-Prod)'
     scriptType: 'bash'
-    workingDirectory: '$(System.ArtifactsDirectory)'
     scriptLocation: 'inlineScript'
     inlineScript: |
         appgwPip=$(az network public-ip show --name gpitfutures-development-pip --resource-group gpitfutures-development-rg-appgw --query ipAddress -o tsv)
@@ -86,7 +85,6 @@ steps:
   inputs:
     azureSubscription: 'NHSAPP-BuyingCatalogue (Non-Prod)'
     scriptType: 'bash'
-    workingDirectory: '$(System.ArtifactsDirectory)'
     scriptLocation: 'inlineScript'
     inlineScript: |
         gpitfuturesdevdbpassword=az keyvault secret show --vault-name gpitfutures-dev-core-kv --name "srt-sqldevdbpass" --query value -o tsv
