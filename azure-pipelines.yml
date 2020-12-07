@@ -19,15 +19,15 @@ variables:
   - name: BAPIDB__SERVERURL
     value: $(SERVERURL)
   - name: BAPIDB__DATABASENAME
-    value: bc-buyingcatalogue-development-helm-bapi
+    value: bc-development-bapi
   - name: ISAPIDB__SERVERURL
     value: $(SERVERURL)
   - name: ISAPIDB__DATABASENAME
-    value: bc-buyingcatalogue-development-helm-isapi
+    value: bc-development-isapi
   - name: ORDAPIDB__SERVERURL
     value: $(SERVERURL)
   - name: ORDAPIDB__DATABASENAME
-    value: bc-buyingcatalogue-development-helm-ordapi
+    value: bc-development-ordapi
   # - group: dev-secrets
 
 steps:
