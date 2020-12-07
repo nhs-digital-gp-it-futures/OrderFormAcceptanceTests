@@ -28,7 +28,7 @@ variables:
     value: $(SERVERURL)
   - name: ORDAPIDB__DATABASENAME
     value: bc-buyingcatalogue-development-helm-ordapi
-  - group: dev-secrets
+  # - group: dev-secrets
 
 steps:
 - task: UseGitVersion@5
