@@ -53,6 +53,6 @@ namespace OrderFormAcceptanceTests.Objects.Pages
         public By OrderDateMonth => By.Id("deliveryDate-month");
         public By OrderDateYear => By.Id("deliveryDate-year");
         public By EstimationPeriod => CustomBy.DataTestId("question-selectEstimationPeriod");
-        public By PracticeListSizeInput => By.Name("practiceSize");
+        public By PracticeListSizeInput => By.Id("quantity");//By.Name("practiceSize");
     }
 }

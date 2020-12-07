@@ -197,7 +197,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price with 4 decimal place
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
@@ -211,7 +211,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price is negative
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
@@ -225,7 +225,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price does not allow characters
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
@@ -239,7 +239,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow characters
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
@@ -253,7 +253,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity does not allow decimals
@@ -268,7 +268,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity can not be negative
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
@@ -282,7 +282,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity exceeds the maximum length
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
@@ -296,7 +296,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price exceeds the maximum value
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
@@ -310,7 +310,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 @ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Validation Error Message Anchors
@@ -332,14 +332,12 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
     And the User enters a Delivery Date that is equal to 183 weeks after the Commencement Date
     When the User chooses to save
     Then the Catalogue Solution is saved
-    And the Catalogue Solution dashboard is presented
-    And the Catalogue Solution is saved in the DB
 
     Examples:
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery date validation - date is less than 183 weeks after commencement date
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
@@ -347,14 +345,12 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
     And the User enters a Delivery Date that is less than 183 weeks after the Commencement Date
     When the User chooses to save
     Then the Catalogue Solution is saved
-    And the Catalogue Solution dashboard is presented
-    And the Catalogue Solution is saved in the DB
 
     Examples:
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery date validation - date is more than 183 weeks after commencement date
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
@@ -368,7 +364,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery date validation - date cannot be before commencement date
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
@@ -382,7 +378,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price All data are valid
@@ -390,14 +386,12 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price All data 
     And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
     When the User chooses to save
     Then the Catalogue Solution is saved
-    And the Catalogue Solution dashboard is presented
-    And the Catalogue Solution is saved in the DB
 
     Examples:
         | ProvisioningType | quantityLabel |
         # | declarative   |  |
         # | variable      |  |
-        | per patient      | practiceSize  |
+        | per patient      | quantity  |
 
 @ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places
@@ -417,25 +411,9 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back b
 	Then they are presented with the Service Recipients for the Order
 	Examples:
 	| ProvisioningType |
-	#| declarative      |
-	#| variable         |
+	# | declarative |
+	# | variable |
 	| per patient      |
-	
-Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back after save
-    Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
-    And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
-    And the User chooses to save
-    And the Catalogue Solution is saved
-    And the Catalogue Solution dashboard is presented
-    When the User chooses to go back
-    Then the Order dashboard is presented
-    And the Catalogue Solution is saved in the DB
-
-    Examples:
-        | ProvisioningType | quantityLabel |
-        # | declarative   |  |
-        # | variable      |  |
-        | per patient      | practiceSize  |
 
 
 Scenario: Catalogue Solutions - View Added Catalogue Solutions

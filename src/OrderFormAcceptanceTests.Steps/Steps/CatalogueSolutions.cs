@@ -494,8 +494,10 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 Test.Pages.OrderForm.ClickRadioButton(1);
             }
 
+            int.TryParse(Test.Pages.OrderForm.GetPriceInputValue(), out int maxValue);
+
             var f = new Faker();
-            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1).ToString(), quantityLabel: quantityLabel);
+            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1, max: maxValue).ToString(), quantityLabel: quantityLabel);
             Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
         }
 
