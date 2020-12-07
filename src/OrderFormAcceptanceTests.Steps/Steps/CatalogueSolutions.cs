@@ -305,18 +305,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.EstimationPeriodIsDisplayed().Should().BeTrue();
         }
 
-        [Then(@"the delete button is disabled")]
-        public void ThenTheDeleteButtonIsDisabled()
-        {
-            Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeTrue();
-        }
-
-        [Then(@"the delete button is enabled")]
-        public void ThenTheDeleteButtonIsEnabled()
-        {
-            Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeFalse();
-        }
-
         [Then(@"the save button is enabled")]
         public void ThenTheSaveButtonIsEnabled()
         {

@@ -340,7 +340,6 @@ Scenario: Associated Service - edit price screen - Flat variable price values po
 	And the User amends the existing Associated Service details
 	When the User re-visits the Associated Service
 	Then the values will be populated with the values that was saved by the User
-	And the delete button is enabled
 
 Scenario: Associated Service - edit price screen - Flat declarative price values populated after editing and saving
 	Given there are no Service Recipients in the order
@@ -348,7 +347,6 @@ Scenario: Associated Service - edit price screen - Flat declarative price values
 	And the User amends the existing Associated Service details
 	When the User re-visits the Associated Service
 	Then the values will be populated with the values that was saved by the User
-	And the delete button is enabled
 
 Scenario Outline: Associated Service - edit price screen - Flat price Go back before save
 	Given there are no Service Recipients in the order
