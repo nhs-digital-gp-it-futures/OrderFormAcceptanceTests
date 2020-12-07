@@ -1,9 +1,7 @@
 trigger:
-- development
 - master
 
 pr:
-- development
 - master
 
 pool:
