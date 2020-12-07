@@ -62,6 +62,7 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
         appgwPip=$(az network public-ip show --name gpitfutures-development-pip --resource-group gpitfutures-development-rg-appgw --query ipAddress -o tsv)
+        echo "DEBUG: $appgwPip    $PBHOSTURL"
         echo "$appgwPip    $PBHOSTURL" | sudo tee -a /etc/hosts
         curl -k -i $(PBURL) --fail --connect-timeout 30
 
