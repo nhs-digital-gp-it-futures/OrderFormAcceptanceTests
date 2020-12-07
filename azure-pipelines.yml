@@ -47,10 +47,23 @@ steps:
     echo "##vso[task.setvariable variable=PBHOSTURL]$(echo "${PBURL##*://}")"  
   displayName: Set up Host URL
 
-- bash: |
-    echo "51.11.46.27    $PBHOSTURL" | sudo tee -a /etc/hosts
-    curl -k -i $(PBURL) --fail --connect-timeout 30
-  displayName: 'Check URL is reachable'
+# - bash: |
+#     echo "51.11.46.27    $PBHOSTURL" | sudo tee -a /etc/hosts
+#     curl -k -i $(PBURL) --fail --connect-timeout 30
+#   displayName: 'Check URL is reachable'
+
+- task: AzureCLI@2
+  name: checkURL
+  displayName: Check URL is reachable
+  inputs:
+    azureSubscription: 'NHSAPP-BuyingCatalogue (Non-Prod)'
+    scriptType: 'bash'
+    workingDirectory: '$(System.ArtifactsDirectory)'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+        appgwPip=$(az network public-ip show --name gpitfutures-development-pip --resource-group gpitfutures-development-rg-appgw --query ipAddress -o tsv)
+        echo "$appgwPip    $PBHOSTURL" | sudo tee -a /etc/hosts
+        curl -k -i $(PBURL) --fail --connect-timeout 30
 
 - bash: |
     chmod +x ./selenium-grid-setup.sh
@@ -58,14 +71,30 @@ steps:
     if [ $? -ne 0 ]; then exit 1; fi
   displayName: Selenium Grid Setup
 
-- bash: |
-    export BAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)" 
-    export ISAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)"
-    export ORDAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)"
+# - bash: |
+#     export BAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)" 
+#     export ISAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)"
+#     export ORDAPIDB__PASSWORD="$(gpitfuturesdevdbpassword)"
 
-    dotnet test src/ -v n
+#     dotnet test src/ -v n
+#   displayName: Run All Acceptance Tests
+
+- task: AzureCLI@2
+  name: runAllTests
   displayName: Run All Acceptance Tests
-  
+  inputs:
+    azureSubscription: 'NHSAPP-BuyingCatalogue (Non-Prod)'
+    scriptType: 'bash'
+    workingDirectory: '$(System.ArtifactsDirectory)'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+        gpitfuturesdevdbpassword=az keyvault secret show --vault-name gpitfutures-dev-core-kv --name "srt-sqldevdbpass" --query value -o tsv
+        export BAPIDB__PASSWORD="$gpitfuturesdevdbpassword" 
+        export ISAPIDB__PASSWORD="$gpitfuturesdevdbpassword"
+        export ORDAPIDB__PASSWORD="$gpitfuturesdevdbpassword"
+
+        dotnet test src/ -v n
+
 - task: Docker@2
   condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   displayName: Build and push docker image
@@ -94,15 +123,38 @@ steps:
   name: helmPackage
   displayName: 'Helm package'
 
-- bash: |
-    cd charts
-    chartPackage=$(ls of-ac-tests-*.tgz)
-    az acr helm push --force \
-        -n "gpitfuturesdevacr" \
-        -u "gpitfuturesdevacr" \
-        -p $(gpitfuturesdevacr-pass) \
-        $chartPackage
-  failOnStderr: false
-  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+# - bash: |
+#     cd charts
+#     chartPackage=$(ls of-ac-tests-*.tgz)
+#     az acr helm push --force \
+#         -n "gpitfuturesdevacr" \
+#         -u "gpitfuturesdevacr" \
+#         -p $(gpitfuturesdevacr-pass) \
+#         $chartPackage
+#   failOnStderr: false
+#   condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#   name: helmPush
+#   displayName: 'Push helm chart to acr'
+
+- task: AzureCLI@2
   name: helmPush
-  displayName: 'Push helm chart to acr'
+  displayName: Push helm chart to acr
+  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  inputs:
+    azureSubscription: 'NHSAPP-BuyingCatalogue (Non-Prod)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    failOnStandardError: false
+    inlineScript: |
+        acr="gpitfuturesdevacr"
+        acrUsername=$(az acr credential show --name $acr --query username -o tsv)
+        acrPassword=$(az acr credential show --name $acr --query passwords[0].value -o tsv)
+        acrLoginSvr=$(az acr list --query "[?name=='$acr'].loginServer" -o tsv)
+    
+        cd charts
+        chartPackage=$(ls of-ac-tests-*.tgz)
+        az acr helm push --force \
+          -n "$acr" \
+          -u "$acrUsername" \
+          -p "$acrPassword" \
+          $chartPackage
