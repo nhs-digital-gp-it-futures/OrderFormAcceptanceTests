@@ -126,7 +126,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool DeleteSolutionButtonIsDisabled()
         {
-            return Driver.FindElement(Pages.Common.DeleteSolutionButton).GetAttribute("aria-disabled") != null;
+            return Driver.FindElement(Pages.Common.DeleteSolutionButton).GetProperty("disabled").Contains("disabled");
         }
 
         public bool PreviewOrderButtonIsDisabled()

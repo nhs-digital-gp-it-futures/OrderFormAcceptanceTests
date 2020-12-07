@@ -662,6 +662,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             new CommonSteps(Test, Context).ContinueAndWaitForCheckboxes();
         }
 
+        [Then(@"they are presented with the Delivery Date for the order")]
+        public void ThenTheyArePresentedWithTheCommencementDateForTheOrder()
+        {
+            Test.Pages.OrderForm.TextDisplayedInPageTitle("Delivery date").Should().BeTrue();
+        }
+
+
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
         {
             return SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");

@@ -170,14 +170,12 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with declarative 
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the save button is enabled
 
-@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Mandatory data missing
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And mandatory data are missing
     When the User chooses to save
     Then the Catalogue Solution is not saved
     And the reason is displayed
-    And the delete button is disabled
 
     Examples:
         | ProvisioningType |
@@ -312,7 +310,6 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
         # | variable      |  |
         | per patient      | quantity  |
 
-@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Validation Error Message Anchors
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And mandatory data are missing
@@ -393,7 +390,6 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price All data 
         # | variable      |  |
         | per patient      | quantity  |
 
-@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Price is displayed to a minimum of 2 decimal places
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     Then the price is displayed to two decimal places
@@ -404,17 +400,15 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Price is 
         #| variable         |
         | per patient      |
 
-@ignore
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back before save
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	When the User chooses to go back
-	Then they are presented with the Service Recipients for the Order
+	Then they are presented with the Delivery Date for the order
 	Examples:
 	| ProvisioningType |
 	# | declarative |
 	# | variable |
 	| per patient      |
-
 
 Scenario: Catalogue Solutions - View Added Catalogue Solutions
     Given a User has added a solution to the order
