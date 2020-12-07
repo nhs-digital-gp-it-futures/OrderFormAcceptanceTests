@@ -26,9 +26,13 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             Driver.WaitForJsToComplete(Wait);
             Wait.Until(d => d.FindElements(Pages.Login.Username).Count == 1);
-            Wait.Until(d => d.FindElement(Pages.Login.Username).GetAttribute("value") == "");
-            Wait.Until(ElementExtensions.ElementToBeClickable(Pages.Login.Username));
-            Driver.FindElement(Pages.Login.Username).Click();
+            var usernameInput = Driver.FindElement(Pages.Login.Username);
+            usernameInput.Click();
+
+            // Workaround for seleniums poor Clear() method
+            usernameInput.SendKeys(Keys.Control + "a");
+            usernameInput.SendKeys(Keys.Delete);
+
             Driver.EnterTextViaJs(Wait, Pages.Login.Username, username);
             Wait.Until(d => d.FindElement(Pages.Login.Username).GetAttribute("value") != "");
         }
