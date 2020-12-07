@@ -87,7 +87,7 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-        gpitfuturesdevdbpassword=az keyvault secret show --vault-name gpitfutures-dev-core-kv --name "srt-sqldevdbpass" --query value -o tsv
+        gpitfuturesdevdbpassword=$(az keyvault secret show --name srt-sqldevdbpass --vault-name gpitfutures-dev-core-kv --query value -o tsv)
         export BAPIDB__PASSWORD="$gpitfuturesdevdbpassword" 
         export ISAPIDB__PASSWORD="$gpitfuturesdevdbpassword"
         export ORDAPIDB__PASSWORD="$gpitfuturesdevdbpassword"
