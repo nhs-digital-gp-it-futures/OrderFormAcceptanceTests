@@ -533,6 +533,16 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
 
+        [Given(@"a User has added a per patient solution to the order")]
+        public void GivenAUserHasAddedAPerPatientSolutionToTheOrder()
+        {
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient(order);
+            orderItem.Create(Test.OrdapiConnectionString);
+            Context.Add(ContextKeys.CreatedOrderItem, orderItem);
+            Test.Driver.Navigate().Refresh();
+        }
+
         [Then(@"the name of each Associated Service is displayed")]
         [Then(@"the name of each Additional Service is displayed")]
         [Then(@"the name of the Catalogue Solution is displayed")]
@@ -656,6 +666,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.TextDisplayedInPageTitle("Delivery date").Should().BeTrue();
         }
 
+        [Given(@"the User chooses to edit a saved Catalogue Solution")]
+        public void GivenTheUserChoosesToEditASavedCatalogueSolution()
+        {
+            Test.Pages.OrderForm.ClickAddedCatalogueItem();
+        }
 
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
         {
