@@ -432,7 +432,6 @@ Scenario: Catalogue Solutions - edit price screen - Flat price values populated 
     And the User amends the existing catalogue solution details
     When the User re-visits the Catalogue Solution
     Then the values will be populated with the values that was saved by the User
-    And the delete button is enabled
 
 Scenario: Catalogue Solutions - Catalogue Solution displayed in alphabetical order
     Given the supplier chosen has more than one solution
@@ -441,3 +440,20 @@ Scenario: Catalogue Solutions - Catalogue Solution displayed in alphabetical ord
     When the User chooses to add a single Catalogue Solution
     Then they are presented with the Catalogue Solutions available from their chosen Supplier
     And they are displayed in alphabetical order
+
+Scenario: Catalogue Solutions - Edit Added Solutions - Data saved after editing
+    Given a User has added a per patient solution to the order
+    And the User has chosen to manage the Catalogue Solution section
+    And the User chooses to edit a saved Catalogue Solution
+    And fills in the Catalogue Solution edit form with valid data for quantity
+    When the User chooses to save
+    Then the Catalogue Solution is saved
+
+Scenario: Catalogue Solutions - Edit Added Solutions - User informed invalid data
+    Given a User has added a per patient solution to the order
+    And the User has chosen to manage the Catalogue Solution section
+    And the User chooses to edit a saved Catalogue Solution
+    And the quantity is over the max length  
+    When the User chooses to save
+    Then the Catalogue Solution is not saved
+    And the reason is displayed 
