@@ -393,6 +393,6 @@ Scenario: Associated Service added - section marked as complete
 	And the content validation status of the associated-services section is complete
 
 Scenario: Associated Services - Published associated services display
-	Given the User has chosen to manage the Associated Service section
+    Given the User has chosen to manage the Associated Service section
     When the User has chosen to Add a single Associated Service
     Then only the published associated services are available for selection
