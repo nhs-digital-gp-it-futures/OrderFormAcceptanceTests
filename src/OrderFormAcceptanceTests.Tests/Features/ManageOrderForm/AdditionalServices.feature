@@ -203,3 +203,9 @@ Scenario: Additional Services added - section marked as complete
 	When the User chooses to continue
 	Then the Order dashboard is presented
 	And the content validation status of the additional-services section is complete
+
+Scenario: Additional Services - Published additional services display
+    Given the Order Form for the existing order is presented
+    And the User is able to manage the Additional Services section
+    When the User chooses to add a single Additional Service
+    Then only the published additional services are available for selection

@@ -369,6 +369,18 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.OrderForm.FindPrintPreviewWindow().Should().BeTrue();
         }
 
+        [Then(@"only the published (.*) are available for selection")]
+        public void ThenOnlyThePublishedAdditionalServicesAreAvailableForSelection(string itemType)
+        {
+            var itemTypeId = ConvertType(itemType);
+
+            var publishedItems = SupplierInfo.GetPublishedCatalogueItems(Test.BapiConnectionString, ((Order)Context[ContextKeys.CreatedOrder]).SupplierId.Value.ToString(), itemTypeId);
+
+            var displayedItems = Test.Pages.OrderForm.GetRadioButtonText();
+
+            displayedItems.Should().BeEquivalentTo(publishedItems);
+        }
+
         public void ContinueAndWaitForCheckboxes()
         {
             WhenTheyChooseToContinue();
@@ -404,6 +416,17 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             user.Create(Test.IsapiConnectionString);
 
             Context.Add(ContextKeys.User, user);
+        }
+
+        private CatalogueItemType ConvertType(string itemType)
+        {
+            return (itemType.ToLower()) switch
+            {
+                "catalogue solution" => CatalogueItemType.Solution,
+                "additional services" => CatalogueItemType.AdditionalService,
+                "associated services" => CatalogueItemType.AssociatedService,
+                _ => throw new ArgumentOutOfRangeException(nameof(itemType), "Item type not recognised"),
+            };
         }
     }
 }
