@@ -457,3 +457,8 @@ Scenario: Catalogue Solutions - Edit Added Solutions - User informed invalid dat
     When the User chooses to save
     Then the Catalogue Solution is not saved
     And the reason is displayed 
+
+Scenario: Catalogue Solutions - Published solutions display
+	Given the User has chosen to manage the Catalogue Solution section
+    When the User chooses to add a single Catalogue Solution
+    Then only the published catalogue solution are available for selection

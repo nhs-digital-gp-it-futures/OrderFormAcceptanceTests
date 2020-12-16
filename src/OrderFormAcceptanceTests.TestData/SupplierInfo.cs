@@ -103,5 +103,12 @@ namespace OrderFormAcceptanceTests.TestData
 
             return SqlExecutor.Execute<string>(connectionString, query, new { supplierId }).FirstOrDefault();
         }
+
+        public static IEnumerable<string> GetPublishedCatalogueItems(string connectionString, string supplierId, CatalogueItemType itemType)
+        {
+            var query = $@"SELECT Name FROM dbo.CatalogueItem WHERE SupplierId = @supplierId AND PublishedStatusId = 3 AND CatalogueItemTypeId = @itemType;";
+
+            return SqlExecutor.Execute<string>(connectionString, query, new { supplierId, itemType });
+        }
     }
 }
