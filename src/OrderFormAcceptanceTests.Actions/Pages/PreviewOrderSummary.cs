@@ -162,7 +162,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public bool ServiceInstanceIdColumn()
         {
             return Driver.FindElement(Pages.PreviewOrderSummary.RecurringCostsTable)
-                .FindElement(Pages.PreviewOrderSummary.ServiceInstanceIdColumn).Text.Equals("Service Instance ID", StringComparison.OrdinalIgnoreCase);
+                .FindElement(Pages.PreviewOrderSummary.ServiceInstanceIdColumn).Text.Equals("Service Instance ID", StringComparison.Ordinal);
         }
     }
 }
