@@ -151,6 +151,12 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.PreviewOrderSummary.RecurringCostsTableIsPopulated().Should().BeTrue();
         }
 
+        [Then(@"the Service Instance ID of each saved Catalogue Solution item is displayed")]
+        public void ThenTheServiceInstanceIDOfEachSavedCatalogueSolutionItemIsDisplayed()
+        {
+            Test.Pages.PreviewOrderSummary.ServiceInstanceIdColumn().Should().BeTrue();
+        }
+
         [Then(@"the Order items \(one off\) table is populated")]
         public void ThenTheOrderItemsOneOffTableIsPopulated()
         {
