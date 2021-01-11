@@ -158,5 +158,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             return Driver.FindElement(Pages.PreviewOrderSummary.TotalOwnershipCost).Text;
         }
+
+        public bool ServiceInstanceIdColumn()
+        {
+            return Driver.FindElement(Pages.PreviewOrderSummary.RecurringCostsTable)
+                .FindElement(Pages.PreviewOrderSummary.ServiceInstanceIdColumn).Text.Equals("Service Instance ID", StringComparison.Ordinal);
+        }
     }
 }

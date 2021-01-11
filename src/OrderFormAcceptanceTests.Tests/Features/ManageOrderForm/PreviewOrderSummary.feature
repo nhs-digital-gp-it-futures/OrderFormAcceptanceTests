@@ -206,3 +206,9 @@ Scenario: Preview Order Summary - One-Off table sorted by item name
     When the Order Summary is displayed
     Then the Order items (one off) table is populated
     And the order items one-off cost table is sorted by item name
+
+Scenario: Service Instance ID displayed
+    Given there are one or more Order items summarised in the Order items (recurring cost) table
+    When the Order Summary is displayed
+    Then the Order items (recurring cost) table is populated
+    And the Service Instance ID of each saved Catalogue Solution item is displayed

@@ -30,5 +30,6 @@ namespace OrderFormAcceptanceTests.Objects.Pages
         public By TotalAnnualCost => CustomBy.DataTestId("total-year-cost-value");
         public By TotalMonthlyCost => CustomBy.DataTestId("total-monthly-cost-value");
         public By TotalOwnershipCost => CustomBy.DataTestId("total-ownership-cost-value");
+        public By ServiceInstanceIdColumn => CustomBy.DataTestId("column-heading-3", "div");
     }
 }
