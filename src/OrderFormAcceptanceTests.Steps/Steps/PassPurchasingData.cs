@@ -28,8 +28,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var currentCount = await Test.EmailServerDriver.GetEmailCountAsync();
             var precount = (int)Context[ContextKeys.EmailCount];
             currentCount.Should().BeGreaterThan(precount);
-            var email = (await Test.EmailServerDriver.FindAllEmailsAsync()).Last();
-            Context.Add(ContextKeys.SentEmail, email);
+            var emails = await Test.EmailServerDriver.FindAllEmailsAsync();
+            Context.Add(ContextKeys.SentEmail, emails[emails.Count - 1]);
         }
 
         [Then(@"the \.CSV to the desired specification is produced \(call off-id only\)")]

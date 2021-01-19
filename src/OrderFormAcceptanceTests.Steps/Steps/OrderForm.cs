@@ -244,7 +244,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.ServiceRecipientsViewed = 1;
             order.Update(Test.OrdapiConnectionString);
 
-            var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode);
+            var serviceRecipient = ServiceRecipient.Generate(order.OrderId, order.OrganisationOdsCode);
             serviceRecipient.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedServiceRecipient, serviceRecipient);
         }
@@ -278,7 +278,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.AdditionalServicesViewed = 0;
-            IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 2);
+            IEnumerable<OrderItem> items = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 2);
             foreach (var item in items)
             {
                 item.Delete(Test.OrdapiConnectionString);
@@ -291,7 +291,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.AssociatedServicesViewed = 0;
-            IEnumerable<OrderItem> items = new OrderItem().RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 3);
+            IEnumerable<OrderItem> items = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 3);
             foreach (var item in items)
             {
                 item.Delete(Test.OrdapiConnectionString);

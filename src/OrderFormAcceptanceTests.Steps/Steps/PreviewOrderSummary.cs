@@ -194,14 +194,14 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the order items recurring cost table is sorted by service recipient name")]
         public void ThenTheOrderItemsRecurringCostTableIsSortedByServiceRecipientName()
         {
-            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.PreviewOrderSummary.GetItemRecipientNames());
+            CommonSteps.AssertListOfStringsIsInAscendingOrder(Test.Pages.PreviewOrderSummary.GetItemRecipientNames());
         }
 
         [Then(@"the order items one-off cost table is sorted by item name")]
         [Then(@"the order items recurring cost table is second sorted by item name")]
         public void ThenTheOrderItemsRecurringCostTableIsSecondSortedByItemName()
         {
-            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.PreviewOrderSummary.GetItemNames());
+            CommonSteps.AssertListOfStringsIsInAscendingOrder(Test.Pages.PreviewOrderSummary.GetItemNames());
         }
 
         [Then(@"the Price unit of order of each item is the concatenation ""\[Price\] \[unit\]""")]
@@ -291,7 +291,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.Create(Test.OrdapiConnectionString);
 
@@ -303,7 +303,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.EstimationPeriodId = TimeUnit.Month;
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
@@ -313,7 +313,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenACatalogueSolutionWithAFlatPriceVariablePer_PatientOrderTypeIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariablePerPatient((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
@@ -323,7 +323,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             new CatalogueSolutions(Test, Context).GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
-            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariableDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
@@ -333,7 +333,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             new AdditionalServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithADeclarativeFlatPrice();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
@@ -342,7 +342,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAdditionalServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.TimeUnitId = 2;
             orderItem.Create(Test.OrdapiConnectionString);
@@ -353,7 +353,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAdditionalServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.EstimationPeriodId = TimeUnit.Month;
             orderItem.TimeUnitId = 1;
             orderItem.Create(Test.OrdapiConnectionString);
@@ -365,7 +365,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             new AdditionalServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAPatientFlatPrice();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
@@ -375,7 +375,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative();
-            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
@@ -385,7 +385,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceOnDemand();
-            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.TimeUnitId = 2;
             orderItem.Create(Test.OrdapiConnectionString);
@@ -397,7 +397,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             SetOrderCatalogueSectionToComplete();
             new AssociatedServices(Test, Context).GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceOnDemand();
-            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.EstimationPeriodId = TimeUnit.Month;
             orderItem.TimeUnitId = 1;
             orderItem.Create(Test.OrdapiConnectionString);
@@ -411,8 +411,8 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var AssociatedServicesSteps = new AssociatedServices(Test, Context);
             AssociatedServicesSteps.SetOrderAssociatedServicesSectionToComplete();
             AssociatedServicesSteps.GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative();
-            var declarativeOrderItem1 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
-            var declarativeOrderItem2 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var declarativeOrderItem1 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var declarativeOrderItem2 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             declarativeOrderItem1.Create(Test.OrdapiConnectionString);
             declarativeOrderItem2.Create(Test.OrdapiConnectionString);
 
@@ -424,13 +424,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"there are one or more Order items summarised in the Order items \(recurring cost\) table")]
         public void GivenThereAreOneOrMoreOrderItemsSummarisedInTheOrderItemsRecurringCostTable()
         {
-            var onDemandOrderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var onDemandOrderItem = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             onDemandOrderItem.Create(Test.OrdapiConnectionString);
 
-            var declarativeOrderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var declarativeOrderItem = OrderItem.GenerateOrderItemWithFlatPricedVariableDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             declarativeOrderItem.Create(Test.OrdapiConnectionString);
 
-            var patientOrderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient((Order)Context[ContextKeys.CreatedOrder]);
+            var patientOrderItem = OrderItem.GenerateOrderItemWithFlatPricedVariablePerPatient((Order)Context[ContextKeys.CreatedOrder]);
             patientOrderItem.Create(Test.OrdapiConnectionString);
 
             var createdOrderItems = new OrderItemList(onDemandOrderItem, declarativeOrderItem, patientOrderItem);
@@ -455,12 +455,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedTotalAnnualCost = Context.Get<OrderItemList>(ContextKeys.CreatedOrderItems).GetTotalAnnualCost();
 
             actual.Should().Be(FormatDecimal(expectedTotalAnnualCost));
-        }
-
-        [Then(@"the Total one-off cost is expressed as (.*) decimal places")]
-        public void ThenTheTotalOne_OffCostIsExpressedAsDecimalPlaces(int p0)
-        {
-            ValueExpressedAsTwoDecimalPlaces(Test.Pages.PreviewOrderSummary.GetTotalOneOffCost());
         }
 
         [Then(@"the Total cost for one year is expressed as two decimal places")]
@@ -494,7 +488,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenMultipleOrderItemsWithDifferentServiceRecipientHaveBeenAddedToTheOrder()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, "yolo", "some name");
+            var serviceRecipient = ServiceRecipient.Generate(order.OrderId, "yolo", "some name");
             serviceRecipient.Create(Test.OrdapiConnectionString);
 
             GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder();
@@ -508,67 +502,67 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenMultipleOrderItemsWithTheSameServiceRecipientHaveBeenAddedToTheOrder()
         {
             GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder();
-            var orderItem2 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem2 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem2.EstimationPeriodId = TimeUnit.Year;
             orderItem2.CatalogueItemName = "AAA item";
             orderItem2.Create(Test.OrdapiConnectionString);
-            var orderItem3 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem3 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem3.EstimationPeriodId = TimeUnit.Year;
             orderItem3.CatalogueItemName = "5 power up";
             orderItem3.Create(Test.OrdapiConnectionString);
-            var orderItem4 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem4 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem4.EstimationPeriodId = TimeUnit.Year;
             orderItem4.CatalogueItemName = "™ Tee EMM";
             orderItem4.Create(Test.OrdapiConnectionString);
-            var orderItem5 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem5 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem5.EstimationPeriodId = TimeUnit.Year;
             orderItem5.CatalogueItemName = "$$ bills yall";
             orderItem5.Create(Test.OrdapiConnectionString);
-            var orderItem6 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem6 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem6.EstimationPeriodId = TimeUnit.Year;
             orderItem6.CatalogueItemName = "我能";
             orderItem6.Create(Test.OrdapiConnectionString);
-            var orderItem7 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem7 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem7.EstimationPeriodId = TimeUnit.Year;
             orderItem7.CatalogueItemName = "® registered trademark";
             orderItem7.Create(Test.OrdapiConnectionString);
 
-            var orderItem8 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem8 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem8.EstimationPeriodId = TimeUnit.Year;
             orderItem8.CatalogueItemName = ".. dot dot";
             orderItem8.Create(Test.OrdapiConnectionString);
 
-            var orderItem9 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem9 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem9.EstimationPeriodId = TimeUnit.Year;
             orderItem9.CatalogueItemName = "(( lb";
             orderItem9.Create(Test.OrdapiConnectionString);
 
-            var orderItem10 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem10 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem10.EstimationPeriodId = TimeUnit.Year;
             orderItem10.CatalogueItemName = "))) rb cubed";
             orderItem10.Create(Test.OrdapiConnectionString);
 
-            var orderItem11 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem11 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem11.EstimationPeriodId = TimeUnit.Year;
             orderItem11.CatalogueItemName = "+ plus health";
             orderItem11.Create(Test.OrdapiConnectionString);
 
-            var orderItem12 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem12 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem12.EstimationPeriodId = TimeUnit.Year;
             orderItem12.CatalogueItemName = "& ampersand";
             orderItem12.Create(Test.OrdapiConnectionString);
 
-            var orderItem13 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem13 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem13.EstimationPeriodId = TimeUnit.Year;
             orderItem13.CatalogueItemName = "' single quote";
             orderItem13.Create(Test.OrdapiConnectionString);
 
-            var orderItem14 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem14 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem14.EstimationPeriodId = TimeUnit.Year;
             orderItem14.CatalogueItemName = "- well ill be dashed";
             orderItem14.Create(Test.OrdapiConnectionString);
 
-            var orderItem15 = new OrderItem().GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem15 = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem15.EstimationPeriodId = TimeUnit.Year;
             orderItem15.CatalogueItemName = "@ your side";
             orderItem15.Create(Test.OrdapiConnectionString);
@@ -581,11 +575,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var AssociatedServicesSteps = new AssociatedServices(Test, Context);
             AssociatedServicesSteps.SetOrderAssociatedServicesSectionToComplete();
             AssociatedServicesSteps.GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative();
-            var declarativeOrderItem1 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
-            var declarativeOrderItem2 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
-            var declarativeOrderItem3 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
-            var declarativeOrderItem4 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
-            var declarativeOrderItem5 = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var declarativeOrderItem1 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var declarativeOrderItem2 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var declarativeOrderItem3 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var declarativeOrderItem4 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var declarativeOrderItem5 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
 
             declarativeOrderItem1.CatalogueItemName = "® registered trademark";
             declarativeOrderItem2.CatalogueItemName = "BB Band Aid";
@@ -621,7 +615,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             order.Update(Test.OrdapiConnectionString);
         }
 
-        private void ValueExpressedAsTwoDecimalPlaces(string value)
+        private static void ValueExpressedAsTwoDecimalPlaces(string value)
         {
             const int decimalPointPartIndex = 1;
             var actual = value.Split('.')[decimalPointPartIndex].Length;

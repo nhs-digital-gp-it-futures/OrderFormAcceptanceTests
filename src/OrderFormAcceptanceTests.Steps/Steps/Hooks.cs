@@ -42,9 +42,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             {
                 var order = ((Order)_context[ContextKeys.CreatedOrder]).Retrieve(test.OrdapiConnectionString);
 
-                new OrderItem().DeleteAllOrderItemsForOrderId(test.OrdapiConnectionString, order.OrderId);
+                OrderItem.DeleteAllOrderItemsForOrderId(test.OrdapiConnectionString, order.OrderId);
 
-                new ServiceRecipient().DeleteAllServiceRecipientsForOrderId(test.OrdapiConnectionString, order.OrderId);
+                ServiceRecipient.DeleteAllServiceRecipientsForOrderId(test.OrdapiConnectionString, order.OrderId);
 
                 order.Delete(test.OrdapiConnectionString);
 

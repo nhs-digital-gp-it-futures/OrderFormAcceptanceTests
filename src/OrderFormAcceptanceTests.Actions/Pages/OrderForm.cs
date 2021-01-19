@@ -158,7 +158,9 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 }
             }
 
+#pragma warning disable CA2208
             if (string.IsNullOrEmpty(selectedSupplier)) throw new ArgumentNullException(nameof(selectedSupplier));
+#pragma warning restore CA2208
 
             suppliers.Single(s => s.Text == selectedSupplier).Click();
         }
@@ -400,7 +402,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public string ClickOnErrorLink()
         {
             var errorMessages = Driver.FindElements(Pages.Common.ErrorMessages).ToList();
-            var index = new Random().Next(errorMessages.Count());
+            var index = new Random().Next(errorMessages.Count);
 
             var linkHref = errorMessages[index].GetAttribute("href");
 
@@ -649,7 +651,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickTableRowLink(int index = 0)
         {
-            Driver.FindElements(Pages.Common.TableRows)[0].FindElement(By.TagName("a")).Click();
+            Driver.FindElements(Pages.Common.TableRows)[index].FindElement(By.TagName("a")).Click();
         }
 
         public string GetAddedSolutionServiceRecipient()
@@ -861,7 +863,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             var titles = Driver.FindElements(Pages.OrderForm.SectionDescription);
             var selectedSection = titles.Where(s=>s.Text.Contains(text, StringComparison.OrdinalIgnoreCase));
-            return selectedSection.Count() > 0;
+            return selectedSection.Any();
         }
     }
 }

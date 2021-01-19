@@ -31,7 +31,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             if (!Context.ContainsKey(ContextKeys.CreatedServiceRecipient))
             {
                 var order = (Order)Context[ContextKeys.CreatedOrder];
-                var serviceRecipient = new ServiceRecipient().Generate(order.OrderId, order.OrganisationOdsCode, order.OrganisationName);
+                var serviceRecipient = ServiceRecipient.Generate(order.OrderId, order.OrganisationOdsCode, order.OrganisationName);
                 serviceRecipient.Create(Test.OrdapiConnectionString);
                 Context.Add(ContextKeys.CreatedServiceRecipient, serviceRecipient);
             }
@@ -41,7 +41,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenThereAreNoServiceRecipientsInTheOrder()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            new ServiceRecipient().RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId).ToList().Should().BeNullOrEmpty();
+            ServiceRecipient.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId).ToList().Should().BeNullOrEmpty();
             order.ServiceRecipientsViewed = 1;
 
             if (Context.ContainsKey(ContextKeys.CreatedServiceRecipient))
@@ -59,7 +59,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Context.Should().NotContainKey(ContextKeys.CreatedOrderItem);
 
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            var searchedOrderItem = new OrderItem().RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId);
+            var searchedOrderItem = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId);
             searchedOrderItem.Should().BeEmpty();
         }
 
@@ -127,7 +127,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"they are displayed in alphabetical order")]
         public void ThenTheyAreDisplayedInAlphabeticalOrder()
         {
-            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.OrderForm.GetRadioButtonText());
+            CommonSteps.AssertListOfStringsIsInAscendingOrder(Test.Pages.OrderForm.GetRadioButtonText());
         }
 
         [Given(@"the User is presented with Catalogue Solutions available from their chosen Supplier")]
@@ -253,7 +253,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var query = "Select Name FROM [dbo].[Organisations] where OdsCode=@ChosenOdsCode";
             var expectedOrganisationName = SqlExecutor.Execute<string>(Test.IsapiConnectionString, query, new { ChosenOdsCode }).Single();
             var expectedFormattedValue = string.Format("{0} ({1})", expectedOrganisationName, ChosenOdsCode);
-            // Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedFormattedValue).Should().BeTrue();
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedFormattedValue).Should().BeTrue();
         }
 
         [Then(@"the Associated Service edit form contains an input for the price")]
@@ -482,7 +482,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 Test.Pages.OrderForm.ClickRadioButton(1);
             }
 
-            int.TryParse(Test.Pages.OrderForm.GetPriceInputValue(), out int maxValue);
+            _ = int.TryParse(Test.Pages.OrderForm.GetPriceInputValue(), out int maxValue);
 
             var f = new Faker();
             Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1, max: maxValue).ToString(), quantityLabel: quantityLabel);
@@ -493,7 +493,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheCatalogueSolutionIsSavedInTheDB()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            var orderItem = new OrderItem().RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId).First();
+            var orderItem = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId).First();
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
             orderItem.Should().NotBeNull();
         }
@@ -503,7 +503,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
 
-            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient(order);
+            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariablePerPatient(order);
             orderItem.Create(Test.OrdapiConnectionString);
         }
 
@@ -528,7 +528,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAUserHasAddedASolutionToTheOrder()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariableDeclarative(order);
+            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariableDeclarative(order);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
         }
@@ -537,7 +537,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAUserHasAddedAPerPatientSolutionToTheOrder()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            var orderItem = new OrderItem().GenerateOrderItemWithFlatPricedVariablePerPatient(order);
+            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariablePerPatient(order);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
             Test.Driver.Navigate().Refresh();
@@ -549,14 +549,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenTheNameOfTheOrderItemIsDisplayed()
         {
             Test.Pages.OrderForm.AddedOrderItemNameIsDisplayed().Should().BeTrue();
-        }
-
-        [Then(@"the Service Recipient Name and Service Recipient ODS code are concatenated into a Presentation Name using the format ""(.*)""")]
-        public void ThenTheServiceRecipientNameAndServiceRecipientODSCodeAreConcatenatedIntoAPresentationNameUsingTheFormat(string p0)
-        {
-            var serviceRecipient = (ServiceRecipient)Context[ContextKeys.CreatedServiceRecipient];
-            var expectedFormattedValue = string.Format("{0} ({1})", serviceRecipient.Name, serviceRecipient.OdsCode);
-            Test.Pages.OrderForm.GetAddedSolutionServiceRecipient().Should().Be(expectedFormattedValue);
         }
 
         [Then(@"they are able to manage each Associated Service")]

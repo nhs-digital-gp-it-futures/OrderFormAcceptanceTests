@@ -21,7 +21,7 @@ namespace OrderFormAcceptanceTests.TestData
             this.Phone.Should().BeEquivalentTo(contact.Phone);
         }
 
-        public Contact Generate()
+        public static Contact Generate()
         {
             Faker faker = new Faker();
             return new Contact()

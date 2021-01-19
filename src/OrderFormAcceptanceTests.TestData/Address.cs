@@ -48,7 +48,7 @@ namespace OrderFormAcceptanceTests.TestData
             this.Country.Should().BeEquivalentTo(address.Country);
         }
 
-        public Address Generate()
+        public static Address Generate()
         {
             Faker faker = new Faker();
             var randomAddress = faker.Address;

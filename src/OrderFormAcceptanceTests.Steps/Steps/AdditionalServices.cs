@@ -19,7 +19,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             Context.Should().NotContainKey(ContextKeys.CreatedAdditionalServiceOrderItem);
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            var searchedOrderItem = new OrderItem().RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 2);
+            var searchedOrderItem = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 2);
             searchedOrderItem.Should().BeEmpty();
         }
 
@@ -27,7 +27,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAdditionalServiceIsAddedToTheOrder()
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
         }
@@ -132,7 +132,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the Service Recipients are presented in ascending alphabetical order by Presentation Name")]
         public void ThenTheServiceRecipientsArePresentedInAscendingAlphabeticalOrderByPresentationName()
         {
-            new CommonSteps(Test, Context).AssertListOfStringsIsInAscendingOrder(Test.Pages.AdditionalServices.ServiceRecipientNames());
+            CommonSteps.AssertListOfStringsIsInAscendingOrder(Test.Pages.AdditionalServices.ServiceRecipientNames());
         }
 
         [Given(@"the User has selected a price for the Additional Service")]
@@ -220,7 +220,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheEditAdditionalServiceFormForFlatListPriceWithVariablePatientNumbersOrderTypeIsPresented()
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
@@ -232,7 +232,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheEditAdditionalServiceFormForFlatListPriceWithDeclarativeOrderTypeIsPresented()
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
@@ -244,7 +244,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheEditAdditionalServiceFormForFlatListPriceWithVariableOnDemandOrderTypeIsPresented()
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = new OrderItem().GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
@@ -257,7 +257,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         {
             new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
 
-            var orderItem = new OrderItem().GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
         }
