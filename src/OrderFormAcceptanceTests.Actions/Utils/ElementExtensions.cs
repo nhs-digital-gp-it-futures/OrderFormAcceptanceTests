@@ -36,12 +36,10 @@ namespace OrderFormAcceptanceTests.Actions.Utils
                 driver.FindElements(elementBy)[index], value);
         }
 
-#pragma warning disable IDE0060
-        public static void WaitForJsToComplete(this IWebDriver driver, WebDriverWait wait)
+        public static void ForJsToComplete(this WebDriverWait wait)
         {
             wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
         }
-#pragma warning restore IDE0060
 
 
         internal static Func<IWebDriver, bool> InvisibilityOfElement(By locator)

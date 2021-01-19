@@ -15,7 +15,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void WaitForDashboardToBeDisplayed()
         {
-            Driver.WaitForJsToComplete(Wait);
+            Wait.ForJsToComplete();
             Wait.Until(d => d.FindElements(Objects.Pages.OrganisationsOrdersDashboard.PageTitle).Count == 1);
             Wait.Until(d => CreateNewOrderButtonDisplayed());
         }
