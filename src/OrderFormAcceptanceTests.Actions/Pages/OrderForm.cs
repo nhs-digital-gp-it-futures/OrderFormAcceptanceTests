@@ -158,9 +158,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 }
             }
 
-#pragma warning disable CA2208
-            if (string.IsNullOrEmpty(selectedSupplier)) throw new ArgumentNullException(nameof(selectedSupplier));
-#pragma warning restore CA2208
+            if (string.IsNullOrEmpty(selectedSupplier)) throw new NullReferenceException(nameof(selectedSupplier));
 
             suppliers.Single(s => s.Text == selectedSupplier).Click();
         }
