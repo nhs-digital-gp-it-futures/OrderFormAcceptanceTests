@@ -482,11 +482,11 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 Test.Pages.OrderForm.ClickRadioButton(1);
             }
 
-            _ = int.TryParse(Test.Pages.OrderForm.GetPriceInputValue(), out int maxValue);
+            decimal maxValue = decimal.Parse(Test.Pages.OrderForm.GetPriceInputValue());
 
             var f = new Faker();
-            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1, max: maxValue).ToString(), quantityLabel: quantityLabel);
-            Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
+            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1, max: 1000).ToString(), quantityLabel: quantityLabel);
+            Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount(min: 0, max: maxValue).ToString());
         }
 
         [StepDefinition(@"the Catalogue Solution is saved in the DB")]
