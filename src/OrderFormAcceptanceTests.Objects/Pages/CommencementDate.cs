@@ -2,10 +2,10 @@
 
 namespace OrderFormAcceptanceTests.Objects.Pages
 {
-    public class CommencementDate
+    public static class CommencementDate
     {
-        public By Day => By.Id("commencementDate-day");
-        public By Month => By.Id("commencementDate-month");
-        public By Year => By.Id("commencementDate-year");
+        public static By Day => By.Id("commencementDate-day");
+        public static By Month => By.Id("commencementDate-month");
+        public static By Year => By.Id("commencementDate-year");
     }
 }

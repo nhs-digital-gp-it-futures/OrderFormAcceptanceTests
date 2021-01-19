@@ -2,10 +2,10 @@
 
 namespace OrderFormAcceptanceTests.Objects.Pages
 {
-    public class Login
+    public static class Login
     {
-        public By Username => By.Id("EmailAddress");
-        public By Password => By.Id("Password");
-        public By LoginButton => By.CssSelector("button[type=submit]");
+        public static By Username => By.Id("EmailAddress");
+        public static By Password => By.Id("Password");
+        public static By LoginButton => By.CssSelector("button[type=submit]");
     }
 }

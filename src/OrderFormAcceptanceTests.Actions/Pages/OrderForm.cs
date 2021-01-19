@@ -21,8 +21,8 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElement(Pages.Common.LoggedInDisplayName).Text.Contains("Logged in as: ", StringComparison.OrdinalIgnoreCase));
-                string loggedInText = Driver.FindElement(Pages.Common.LoggedInDisplayName).Text;
+                Wait.Until(d => d.FindElement(Objects.Pages.Common.LoggedInDisplayName).Text.Contains("Logged in as: ", StringComparison.OrdinalIgnoreCase));
+                string loggedInText = Driver.FindElement(Objects.Pages.Common.LoggedInDisplayName).Text;
                 string displayName = loggedInText.Split(":")[1].Split("for")[0].Trim();
                 string organisationName = loggedInText.Split("for")[1].Trim();
                 return displayName != "" && organisationName != "";
@@ -34,34 +34,34 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         }
         public bool FooterDisplayed()
         {
-            return Driver.FindElements(Pages.Common.Footer).Count == 1;
+            return Driver.FindElements(Objects.Pages.Common.Footer).Count == 1;
         }
 
         public bool HeaderDisplayed()
         {
-            return Driver.FindElements(Pages.Common.Header).Count == 1;
+            return Driver.FindElements(Objects.Pages.Common.Header).Count == 1;
         }
 
         public string ErrorTitle()
         {
-            return Driver.FindElement(Pages.Common.ErrorTitle).Text;
+            return Driver.FindElement(Objects.Pages.Common.ErrorTitle).Text;
         }
 
         public bool ErrorSummaryDisplayed()
         {
-            return Driver.FindElements(Pages.Common.ErrorSummary).Count > 0;
+            return Driver.FindElements(Objects.Pages.Common.ErrorSummary).Count > 0;
         }
 
         public bool ErrorMessagesDisplayed()
         {
-            return Driver.FindElements(Pages.Common.ErrorMessages).Count > 0;
+            return Driver.FindElements(Objects.Pages.Common.ErrorMessages).Count > 0;
         }
 
         public bool NewOrderFormDisplayed()
         {
             try
             {
-                Wait.Until(d => d.FindElement(Pages.OrderForm.PageTitle).Text.Equals("New Order", StringComparison.OrdinalIgnoreCase));
+                Wait.Until(d => d.FindElement(Objects.Pages.OrderForm.PageTitle).Text.Equals("New Order", StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch
@@ -72,7 +72,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public string GetCallOffId()
         {
-            return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Split("Order")[1].Trim();
+            return Driver.FindElement(Objects.Pages.OrderForm.PageTitle).Text.Split("Order")[1].Trim();
         }
 
         public void ClickEditAdditionalServices()
@@ -82,14 +82,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool TextDisplayedInPageTitle(string expectedValue)
         {
-            return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains(expectedValue, StringComparison.OrdinalIgnoreCase);
+            return Driver.FindElement(Objects.Pages.OrderForm.PageTitle).Text.Contains(expectedValue, StringComparison.OrdinalIgnoreCase);
         }
 
         public bool TaskListDisplayed()
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.TaskList).Count == 1);
+                Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.TaskList).Count == 1);
                 return true;
             }
             catch
@@ -100,9 +100,9 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool SectionComplete(string section)
         {
-            var search = Driver.FindElements(Pages.OrderForm.GenericSection(section)).Single()
+            var search = Driver.FindElements(Objects.Pages.OrderForm.GenericSection(section)).Single()
                 .FindElement(By.XPath("../.."))
-                .FindElements(Pages.OrderForm.SectionStatus);
+                .FindElements(Objects.Pages.OrderForm.SectionStatus);
 
             if (search.Count == 0)
             {
@@ -116,22 +116,22 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void BackLinkDisplayed()
         {
-            Driver.FindElements(Pages.Common.BackLink).Count.Should().Be(1);
+            Driver.FindElements(Objects.Pages.Common.BackLink).Count.Should().Be(1);
         }
 
         public bool DeleteOrderButtonIsDisabled()
         {
-            return Driver.FindElement(Pages.OrderForm.DeleteOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
+            return Driver.FindElement(Objects.Pages.OrderForm.DeleteOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
         }
 
         public bool DeleteSolutionButtonIsDisabled()
         {
-            return Driver.FindElement(Pages.Common.DeleteSolutionButton).GetProperty("disabled").Contains("disabled");
+            return Driver.FindElement(Objects.Pages.Common.DeleteSolutionButton).GetProperty("disabled").Contains("disabled");
         }
 
         public bool PreviewOrderButtonIsDisabled()
         {
-            return Driver.FindElement(Pages.OrderForm.PreviewOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
+            return Driver.FindElement(Objects.Pages.OrderForm.PreviewOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
         }
 
         public void SelectSupplierWithContactDetails(string bapiConnString)
@@ -167,23 +167,23 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
         {
-            return Driver.FindElements(Pages.OrderForm.SupplierOptionsLabels);
+            return Driver.FindElements(Objects.Pages.OrderForm.SupplierOptionsLabels);
         }
 
         public bool CompleteOrderButtonIsDisabled()
         {
-            return Driver.FindElement(Pages.OrderForm.CompleteOrderLink).GetAttribute("aria-disabled") != null;
+            return Driver.FindElement(Objects.Pages.OrderForm.CompleteOrderLink).GetAttribute("aria-disabled") != null;
         }
 
         public void DeleteOrderButtonHasAltTest()
         {
-            Driver.FindElement(Pages.OrderForm.DeleteOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
+            Driver.FindElement(Objects.Pages.OrderForm.DeleteOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
         }
 
         public bool IsRadioButtonSelected(int index = 0)
         {
             Wait.Until(d => NumberOfRadioButtonsDisplayed() > index);
-            return Driver.FindElements(Pages.Common.RadioButton)[index].GetProperty("checked") != null;
+            return Driver.FindElements(Objects.Pages.Common.RadioButton)[index].GetProperty("checked") != null;
         }
 
         public bool ASecondTabIsOpen()
@@ -194,23 +194,23 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public bool FindPrintableSummary()
         {
             Driver.SwitchTo().Window(Driver.WindowHandles[1]);
-            return Driver.FindElements(Pages.PrintOrderSummary.PrintableOrderSummary).Count > 0;
+            return Driver.FindElements(Objects.Pages.PrintOrderSummary.PrintableOrderSummary).Count > 0;
         }
 
         public bool FindPrintPreviewWindow()
         {
             Driver.SwitchTo().Window(Driver.WindowHandles.Last());
-            return Driver.FindElements(Pages.PrintOrderSummary.PrintPreview).Count > 0;
+            return Driver.FindElements(Objects.Pages.PrintOrderSummary.PrintPreview).Count > 0;
         }
 
         public void PreviewOrderButtonHasAltTest()
         {
-            Driver.FindElement(Pages.OrderForm.PreviewOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
+            Driver.FindElement(Objects.Pages.OrderForm.PreviewOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
         }
 
         public void CompleteOrderButtonHasAltTest()
         {
-            Driver.FindElement(Pages.OrderForm.CompleteOrderLabel).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
+            Driver.FindElement(Objects.Pages.OrderForm.CompleteOrderLabel).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
         }
 
         public bool EditCommencementDateSectionDisplayed()
@@ -312,7 +312,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElement(Pages.OrderForm.PageTitle).Text.Contains(namedSectionPageTitle, StringComparison.OrdinalIgnoreCase));
+                Wait.Until(d => d.FindElement(Objects.Pages.OrderForm.PageTitle).Text.Contains(namedSectionPageTitle, StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch
@@ -343,7 +343,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             var labelFound = SelectSectionByNameContains("Catalogue solution")
                 .FindElement(By.XPath("../.."))
-                .FindElements(Pages.OrderForm.SectionStatus).Count;
+                .FindElements(Objects.Pages.OrderForm.SectionStatus).Count;
 
             labelFound.Should().Be(0);
         }
@@ -355,53 +355,53 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool SaveButtonDisplayed()
         {
-            return Driver.FindElements(Pages.Common.SaveButton).Count == 1;
+            return Driver.FindElements(Objects.Pages.Common.SaveButton).Count == 1;
         }
 
         public void ClickSaveButton()
         {
-            Driver.FindElement(Pages.Common.SaveButton).Click();
+            Driver.FindElement(Objects.Pages.Common.SaveButton).Click();
         }
 
         public bool ContinueButtonDisplayed()
         {
-            return Driver.FindElements(Pages.Common.ContinueButton).Count == 1;
+            return Driver.FindElements(Objects.Pages.Common.ContinueButton).Count == 1;
         }
 
         public void ClickContinueButton()
         {
-            Driver.FindElement(Pages.Common.ContinueButton).Click();
+            Driver.FindElement(Objects.Pages.Common.ContinueButton).Click();
         }
 
         public void ClickBackLink()
         {
-            Driver.FindElement(Pages.Common.BackLink).Click();
+            Driver.FindElement(Objects.Pages.Common.BackLink).Click();
         }
 
         public void ClickCompleteOrderLink()
         {
-            Driver.FindElement(Pages.OrderForm.CompleteOrderLink).Click();
+            Driver.FindElement(Objects.Pages.OrderForm.CompleteOrderLink).Click();
         }
 
         public void ClickDeleteButton()
         {
-            Driver.FindElement(Pages.Common.DeleteButton).Click();
+            Driver.FindElement(Objects.Pages.Common.DeleteButton).Click();
         }
 
         public void EnterTextIntoTextArea(string value, int index = 0)
         {
-            Driver.FindElements(Pages.Common.TextArea)[index].SendKeys(value);
+            Driver.FindElements(Objects.Pages.Common.TextArea)[index].SendKeys(value);
         }
 
         public void EnterTextIntoTextField(string value, int index = 0)
         {
-            Wait.Until(d => d.FindElements(Pages.Common.TextField).Count > index);
-            Driver.FindElements(Pages.Common.TextField)[index].SendKeys(value);
+            Wait.Until(d => d.FindElements(Objects.Pages.Common.TextField).Count > index);
+            Driver.FindElements(Objects.Pages.Common.TextField)[index].SendKeys(value);
         }
 
         public string ClickOnErrorLink()
         {
-            var errorMessages = Driver.FindElements(Pages.Common.ErrorMessages).ToList();
+            var errorMessages = Driver.FindElements(Objects.Pages.Common.ErrorMessages).ToList();
             var index = new Random().Next(errorMessages.Count);
 
             var linkHref = errorMessages[index].GetAttribute("href");
@@ -413,16 +413,16 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public string GetOrderDescription()
         {
-            Wait.Until(d => d.FindElements(Pages.OrderForm.OrderDescription).Count == 1);
-            return Driver.FindElement(Pages.OrderForm.OrderDescription).Text;
+            Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.OrderDescription).Count == 1);
+            return Driver.FindElement(Objects.Pages.OrderForm.OrderDescription).Text;
         }
 
         public bool OdsCodeDisplayedAndNotEditable()
         {
             try
             {
-                var displayed = Driver.FindElements(Pages.OrderForm.OrganisationOdsCode).Count == 1;
-                var notEditable = Driver.FindElement(Pages.OrderForm.OrganisationOdsCode).TagName == "div";
+                var displayed = Driver.FindElements(Objects.Pages.OrderForm.OrganisationOdsCode).Count == 1;
+                var notEditable = Driver.FindElement(Objects.Pages.OrderForm.OrganisationOdsCode).TagName == "div";
                 return displayed && notEditable;
             }
             catch { return false; }
@@ -432,8 +432,8 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                var displayed = Driver.FindElements(Pages.OrderForm.OrganisationName).Count == 1;
-                var notEditable = Driver.FindElement(Pages.OrderForm.OrganisationName).TagName == "div";
+                var displayed = Driver.FindElements(Objects.Pages.OrderForm.OrganisationName).Count == 1;
+                var notEditable = Driver.FindElement(Objects.Pages.OrderForm.OrganisationName).TagName == "div";
                 return displayed && notEditable;
             }
             catch { return false; }
@@ -442,14 +442,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                var lineDisplayed = Driver.FindElements(Pages.OrderForm.AddressLineX(1)).Count == 1;
-                var lineNotEditable = Driver.FindElement(Pages.OrderForm.AddressLineX(1)).TagName == "div";
-                var townDisplayed = Driver.FindElements(Pages.OrderForm.AddressTown).Count == 1;
-                var townNotEditable = Driver.FindElement(Pages.OrderForm.AddressTown).TagName == "div";
-                var countyDisplayed = Driver.FindElements(Pages.OrderForm.AddressCounty).Count == 1;
-                var countyNotEditable = Driver.FindElement(Pages.OrderForm.AddressCounty).TagName == "div";
-                var postcodeDisplayed = Driver.FindElements(Pages.OrderForm.AddressPostcode).Count == 1;
-                var postcodeNotEditable = Driver.FindElement(Pages.OrderForm.AddressPostcode).TagName == "div";
+                var lineDisplayed = Driver.FindElements(Objects.Pages.OrderForm.AddressLine(1)).Count == 1;
+                var lineNotEditable = Driver.FindElement(Objects.Pages.OrderForm.AddressLine(1)).TagName == "div";
+                var townDisplayed = Driver.FindElements(Objects.Pages.OrderForm.AddressTown).Count == 1;
+                var townNotEditable = Driver.FindElement(Objects.Pages.OrderForm.AddressTown).TagName == "div";
+                var countyDisplayed = Driver.FindElements(Objects.Pages.OrderForm.AddressCounty).Count == 1;
+                var countyNotEditable = Driver.FindElement(Objects.Pages.OrderForm.AddressCounty).TagName == "div";
+                var postcodeDisplayed = Driver.FindElements(Objects.Pages.OrderForm.AddressPostcode).Count == 1;
+                var postcodeNotEditable = Driver.FindElement(Objects.Pages.OrderForm.AddressPostcode).TagName == "div";
                 return lineDisplayed && lineNotEditable && townDisplayed && townNotEditable && countyDisplayed && countyNotEditable && postcodeDisplayed && postcodeNotEditable;
             }
             catch { return false; }
@@ -457,68 +457,68 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public string GetOdsCode()
         {
-            return Driver.FindElement(Pages.OrderForm.OrganisationOdsCode).Text;
+            return Driver.FindElement(Objects.Pages.OrderForm.OrganisationOdsCode).Text;
         }
 
         public string GetOrganisationName()
         {
-            return Driver.FindElement(Pages.OrderForm.OrganisationName).Text;
+            return Driver.FindElement(Objects.Pages.OrderForm.OrganisationName).Text;
         }
 
         public bool PracticeListSizeInputIsDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.PracticeListSizeInput).Count > 0;
+            return Driver.FindElements(Objects.Pages.OrderForm.PracticeListSizeInput).Count > 0;
         }
 
         public Address GetAddress()
         {
             return new Address
             {
-                Line1 = Driver.FindElement(Pages.OrderForm.AddressLineX(1)).Text,
-                Line2 = Driver.FindElement(Pages.OrderForm.AddressLineX(2)).Text,
-                Line3 = Driver.FindElement(Pages.OrderForm.AddressLineX(3)).Text,
-                Line4 = Driver.FindElement(Pages.OrderForm.AddressLineX(4)).Text,
-                Town = Driver.FindElement(Pages.OrderForm.AddressTown).Text,
-                County = Driver.FindElement(Pages.OrderForm.AddressCounty).Text,
-                Postcode = Driver.FindElement(Pages.OrderForm.AddressPostcode).Text,
-                Country = Driver.FindElement(Pages.OrderForm.AddressCountry).Text
+                Line1 = Driver.FindElement(Objects.Pages.OrderForm.AddressLine(1)).Text,
+                Line2 = Driver.FindElement(Objects.Pages.OrderForm.AddressLine(2)).Text,
+                Line3 = Driver.FindElement(Objects.Pages.OrderForm.AddressLine(3)).Text,
+                Line4 = Driver.FindElement(Objects.Pages.OrderForm.AddressLine(4)).Text,
+                Town = Driver.FindElement(Objects.Pages.OrderForm.AddressTown).Text,
+                County = Driver.FindElement(Objects.Pages.OrderForm.AddressCounty).Text,
+                Postcode = Driver.FindElement(Objects.Pages.OrderForm.AddressPostcode).Text,
+                Country = Driver.FindElement(Objects.Pages.OrderForm.AddressCountry).Text
             };
         }
 
         public void EnterContact(Contact contact)
         {
-            Wait.Until(d => d.FindElements(Pages.OrderForm.ContactFirstName).Count == 1);
-            Driver.FindElement(Pages.OrderForm.ContactFirstName).Clear();
-            Driver.FindElement(Pages.OrderForm.ContactFirstName).SendKeys(contact.FirstName);
-            Driver.FindElement(Pages.OrderForm.ContactLastName).Clear();
-            Driver.FindElement(Pages.OrderForm.ContactLastName).SendKeys(contact.LastName);
-            Driver.FindElement(Pages.OrderForm.ContactEmail).Clear();
-            Driver.FindElement(Pages.OrderForm.ContactEmail).SendKeys(contact.Email);
-            Driver.FindElement(Pages.OrderForm.ContactTelephone).Clear();
-            Driver.FindElement(Pages.OrderForm.ContactTelephone).SendKeys(contact.Phone);
+            Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.ContactFirstName).Count == 1);
+            Driver.FindElement(Objects.Pages.OrderForm.ContactFirstName).Clear();
+            Driver.FindElement(Objects.Pages.OrderForm.ContactFirstName).SendKeys(contact.FirstName);
+            Driver.FindElement(Objects.Pages.OrderForm.ContactLastName).Clear();
+            Driver.FindElement(Objects.Pages.OrderForm.ContactLastName).SendKeys(contact.LastName);
+            Driver.FindElement(Objects.Pages.OrderForm.ContactEmail).Clear();
+            Driver.FindElement(Objects.Pages.OrderForm.ContactEmail).SendKeys(contact.Email);
+            Driver.FindElement(Objects.Pages.OrderForm.ContactTelephone).Clear();
+            Driver.FindElement(Objects.Pages.OrderForm.ContactTelephone).SendKeys(contact.Phone);
         }
 
         public Contact GetContact()
         {
-            Wait.Until(d => d.FindElements(Pages.OrderForm.ContactFirstName).Count == 1);
+            Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.ContactFirstName).Count == 1);
             return new Contact()
             {
-                FirstName = Driver.FindElement(Pages.OrderForm.ContactFirstName).GetAttribute("value"),
-                LastName = Driver.FindElement(Pages.OrderForm.ContactLastName).GetAttribute("value"),
-                Email = Driver.FindElement(Pages.OrderForm.ContactEmail).GetAttribute("value"),
-                Phone = Driver.FindElement(Pages.OrderForm.ContactTelephone).GetAttribute("value")
+                FirstName = Driver.FindElement(Objects.Pages.OrderForm.ContactFirstName).GetAttribute("value"),
+                LastName = Driver.FindElement(Objects.Pages.OrderForm.ContactLastName).GetAttribute("value"),
+                Email = Driver.FindElement(Objects.Pages.OrderForm.ContactEmail).GetAttribute("value"),
+                Phone = Driver.FindElement(Objects.Pages.OrderForm.ContactTelephone).GetAttribute("value")
             };
         }
 
         public void ClickSearchButton()
         {
-            Wait.Until(d => d.FindElements(Pages.OrderForm.SearchButton).Count == 1);
-            Driver.FindElement(Pages.OrderForm.SearchButton).Click();
+            Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.SearchButton).Count == 1);
+            Driver.FindElement(Objects.Pages.OrderForm.SearchButton).Click();
         }
 
         public ReadOnlyCollection<IWebElement> ListOfSuppliers()
         {
-            return Driver.FindElements(Pages.OrderForm.SupplierOptions);
+            return Driver.FindElements(Objects.Pages.OrderForm.SupplierOptions);
         }
 
         public void SelectSupplier()
@@ -542,49 +542,49 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool IsPlannedDeliveryDateDisplayed()
         {
-            return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains("planned delivery", StringComparison.OrdinalIgnoreCase);
+            return Driver.FindElement(Objects.Pages.OrderForm.PageTitle).Text.Contains("planned delivery", StringComparison.OrdinalIgnoreCase);
         }
 
         public bool SupplierNameIsDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.SupplierName).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrderForm.SupplierName).Count == 1;
         }
 
         public string GetSupplierName()
         {
-            return Driver.FindElement(Pages.OrderForm.SupplierName).Text;
+            return Driver.FindElement(Objects.Pages.OrderForm.SupplierName).Text;
         }
 
         public bool SearchAgainLinkIsDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.SearchAgainLink).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrderForm.SearchAgainLink).Count == 1;
         }
 
         public void ClickSearchAgainLink()
         {
-            Driver.FindElement(Pages.OrderForm.SearchAgainLink).Click();
+            Driver.FindElement(Objects.Pages.OrderForm.SearchAgainLink).Click();
         }
 
         public void ClickSelectDeselectAll()
         {
-            Wait.Until(d => d.FindElements(Pages.OrderForm.SelectDeselectAll).Count == 1);
-            Driver.FindElement(Pages.OrderForm.SelectDeselectAll).Click();
+            Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.SelectDeselectAll).Count == 1);
+            Driver.FindElement(Objects.Pages.OrderForm.SelectDeselectAll).Click();
         }
 
         public string GetSelectDeselectAllText()
         {
-            return Driver.FindElement(Pages.OrderForm.SelectDeselectAll).Text;
+            return Driver.FindElement(Objects.Pages.OrderForm.SelectDeselectAll).Text;
         }
 
         public int NumberOfCheckboxesDisplayed()
         {
-            return Driver.FindElements(Pages.Common.Checkbox).Count;
+            return Driver.FindElements(Objects.Pages.Common.Checkbox).Count;
         }
 
         public string ClickCheckbox(int index = 0)
         {
             Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
-            var element = Driver.FindElements(Pages.Common.Checkbox)[index];
+            var element = Driver.FindElements(Objects.Pages.Common.Checkbox)[index];
             element.Click();
             return element.GetAttribute("value");
         }
@@ -592,7 +592,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public string ClickCheckboxReturnName(int index = 0)
         {
             Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
-            var element = Driver.FindElements(Pages.Common.Checkbox)[index];
+            var element = Driver.FindElements(Objects.Pages.Common.Checkbox)[index];
             element.Click();
             return element.GetAttribute("name");
         }
@@ -600,45 +600,45 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public bool IsCheckboxChecked(int index = 0)
         {
             Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
-            return Driver.FindElements(Pages.Common.Checkbox)[index].GetAttribute("checked") != null;
+            return Driver.FindElements(Objects.Pages.Common.Checkbox)[index].GetAttribute("checked") != null;
         }
 
         public bool ServiceRecipientsNameAndOdsDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.ServiceRecipientName).Count > 0 && Driver.FindElements(Pages.OrderForm.ServiceRecipientOdsCode).Count > 0;
+            return Driver.FindElements(Objects.Pages.OrderForm.ServiceRecipientName).Count > 0 && Driver.FindElements(Objects.Pages.OrderForm.ServiceRecipientOdsCode).Count > 0;
         }
 
         public bool AddSolutionButtonDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.AddSolution).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrderForm.AddSolution).Count == 1;
         }
 
         public void ClickAddSolutionButton()
         {
             Wait.Until(d => AddSolutionButtonDisplayed());
-            Driver.FindElement(Pages.OrderForm.AddSolution).Click();
+            Driver.FindElement(Objects.Pages.OrderForm.AddSolution).Click();
         }
 
         public bool NoSolutionsAddedDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.NoSolutionsAdded).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrderForm.NoSolutionsAdded).Count == 1;
         }
 
         public bool AddedOrderItemsTableIsPopulated()
         {
-            return Driver.FindElement(Pages.OrderForm.AddedOrderItemsTable)
-                .FindElements(Pages.Common.TableRowX(0))
+            return Driver.FindElement(Objects.Pages.OrderForm.AddedOrderItemsTable)
+                .FindElements(Objects.Pages.Common.TableRowX(0))
                 .Count > 0;
         }
 
         public bool AddedOrderItemNameIsDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.AddedOrderItemName).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrderForm.AddedOrderItemName).Count == 1;
         }
 
         public bool AddedOrderItemNamesAreLinks()
         {
-            var names = Driver.FindElements(Pages.OrderForm.AddedOrderItemName);
+            var names = Driver.FindElements(Objects.Pages.OrderForm.AddedOrderItemName);
             var countOfNames = names.Count;
             var countOfLinks = names.Select(n => n.GetAttribute("href")).Count();
             return countOfNames == countOfLinks;
@@ -646,28 +646,28 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickAddedCatalogueItem(int index = 0)
         {
-            Driver.FindElements(Pages.OrderForm.AddedOrderItemName)[index].Click();
+            Driver.FindElements(Objects.Pages.OrderForm.AddedOrderItemName)[index].Click();
         }
 
         public void ClickTableRowLink(int index = 0)
         {
-            Driver.FindElements(Pages.Common.TableRows)[index].FindElement(By.TagName("a")).Click();
+            Driver.FindElements(Objects.Pages.Common.TableRows)[index].FindElement(By.TagName("a")).Click();
         }
 
         public string GetAddedSolutionServiceRecipient()
         {
-            return Driver.FindElement(Pages.OrderForm.AddedSolutionServiceRecipient).Text;
+            return Driver.FindElement(Objects.Pages.OrderForm.AddedSolutionServiceRecipient).Text;
         }
 
         public int NumberOfRadioButtonsDisplayed()
         {
-            return Driver.FindElements(Pages.Common.RadioButton).Count;
+            return Driver.FindElements(Objects.Pages.Common.RadioButton).Count;
         }
 
         public string ClickRadioButton(int index = 0)
         {
             Wait.Until(d => NumberOfRadioButtonsDisplayed() > index);
-            var element = Driver.FindElements(Pages.Common.RadioButton)[index];
+            var element = Driver.FindElements(Objects.Pages.Common.RadioButton)[index];
             element.Click();
             return element.GetAttribute("value");
         }
@@ -675,8 +675,8 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public string ClickRadioButtonWithText(string text)
         {
             Wait.Until(d => NumberOfRadioButtonsDisplayed() > 0);
-            var elementIndex = Driver.FindElements(Pages.Common.RadioButtonLabel)
-                .IndexOf(Driver.FindElements(Pages.Common.RadioButtonLabel)
+            var elementIndex = Driver.FindElements(Objects.Pages.Common.RadioButtonLabel)
+                .IndexOf(Driver.FindElements(Objects.Pages.Common.RadioButtonLabel)
                     .Single(s => s.Text.Contains(text, StringComparison.OrdinalIgnoreCase)));
 
             return ClickRadioButton(elementIndex);
@@ -685,40 +685,40 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public string GetSelectedRadioButton()
         {
             Wait.Until(d => NumberOfRadioButtonsDisplayed() > 0);
-            var value = Driver.FindElements(Pages.Common.RadioButton).Where(e => e.GetProperty("checked") == "True").Select(s => s.GetAttribute("value")).Single();
+            var value = Driver.FindElements(Objects.Pages.Common.RadioButton).Where(e => e.GetProperty("checked") == "True").Select(s => s.GetAttribute("value")).Single();
             return value;
         }
 
         public List<string> GetRadioButtonText()
         {
-            return Driver.FindElements(Pages.Common.RadioButtonLabel).Select(s => s.Text).ToList();
+            return Driver.FindElements(Objects.Pages.Common.RadioButtonLabel).Select(s => s.Text).ToList();
         }
 
         public bool PriceInputIsDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.PriceInput).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrderForm.PriceInput).Count == 1;
         }
 
         public string GetPriceInputValue()
         {
-            return Driver.FindElement(Pages.OrderForm.PriceInput).GetAttribute("value");
+            return Driver.FindElement(Objects.Pages.OrderForm.PriceInput).GetAttribute("value");
         }
 
         public void EnterPriceInputValue(string value)
         {
-            Wait.Until(d => d.FindElements(Pages.OrderForm.PriceInput).Count == 1);
-            Driver.FindElement(Pages.OrderForm.PriceInput).Clear();
-            Driver.FindElement(Pages.OrderForm.PriceInput).SendKeys(value);
+            Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.PriceInput).Count == 1);
+            Driver.FindElement(Objects.Pages.OrderForm.PriceInput).Clear();
+            Driver.FindElement(Objects.Pages.OrderForm.PriceInput).SendKeys(value);
         }
 
         public bool OrderUnitIsDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.OrderUnit).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrderForm.OrderUnit).Count == 1;
         }
 
         public bool QuantityInputIsDisplayed(int expected = 1)
         {
-            return Driver.FindElements(Pages.OrderForm.Quantity).Count == expected;
+            return Driver.FindElements(Objects.Pages.OrderForm.Quantity).Count == expected;
         }
 
         public void EnterQuantity(string value, string quantityLabel = "quantity")
@@ -735,13 +735,13 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public string GetQuantity()
         {
-            Wait.Until(d => d.FindElements(Pages.OrderForm.Quantity).Count == 1);
-            return Driver.FindElement(Pages.OrderForm.Quantity).GetAttribute("value");
+            Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.Quantity).Count == 1);
+            return Driver.FindElement(Objects.Pages.OrderForm.Quantity).GetAttribute("value");
         }
 
         public bool ProposedDateInputIsDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.OrderDate).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrderForm.OrderDate).Count == 1;
         }
 
         public void EnterProposedDate(DateTime value)
@@ -751,27 +751,27 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void EnterProposedDate(string year, string month, string day)
         {
-            Wait.Until(d => d.FindElements(Pages.OrderForm.OrderDateDay).Count == 1);
-            Driver.FindElement(Pages.OrderForm.OrderDateDay).Clear();
-            Driver.FindElement(Pages.OrderForm.OrderDateMonth).Clear();
-            Driver.FindElement(Pages.OrderForm.OrderDateYear).Clear();
-            Driver.EnterTextViaJs(Wait, Pages.OrderForm.OrderDateDay, day);
-            Driver.EnterTextViaJs(Wait, Pages.OrderForm.OrderDateMonth, month);
-            Driver.EnterTextViaJs(Wait, Pages.OrderForm.OrderDateYear, year);
+            Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.OrderDateDay).Count == 1);
+            Driver.FindElement(Objects.Pages.OrderForm.OrderDateDay).Clear();
+            Driver.FindElement(Objects.Pages.OrderForm.OrderDateMonth).Clear();
+            Driver.FindElement(Objects.Pages.OrderForm.OrderDateYear).Clear();
+            Driver.EnterTextViaJs(Wait, Objects.Pages.OrderForm.OrderDateDay, day);
+            Driver.EnterTextViaJs(Wait, Objects.Pages.OrderForm.OrderDateMonth, month);
+            Driver.EnterTextViaJs(Wait, Objects.Pages.OrderForm.OrderDateYear, year);
         }
 
         public string GetProposedDate()
         {
-            Wait.Until(d => d.FindElements(Pages.OrderForm.OrderDateDay).Count == 1);
-            var day = Driver.FindElement(Pages.OrderForm.OrderDateDay).GetAttribute("value");
-            var month = Driver.FindElement(Pages.OrderForm.OrderDateMonth).GetAttribute("value");
-            var year = Driver.FindElement(Pages.OrderForm.OrderDateYear).GetAttribute("value");
+            Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.OrderDateDay).Count == 1);
+            var day = Driver.FindElement(Objects.Pages.OrderForm.OrderDateDay).GetAttribute("value");
+            var month = Driver.FindElement(Objects.Pages.OrderForm.OrderDateMonth).GetAttribute("value");
+            var year = Driver.FindElement(Objects.Pages.OrderForm.OrderDateYear).GetAttribute("value");
             return string.Join(" ", day, month, year);
         }
 
         public bool EstimationPeriodIsDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.EstimationPeriod).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrderForm.EstimationPeriod).Count == 1;
         }
 
         public bool EditAdditionalServicesSectionDisplayed()
@@ -817,16 +817,16 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickPreviewOrderButton()
         {
-            Wait.Until(d => d.FindElements(Pages.OrderForm.PreviewOrderButton).Count == 1);
+            Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.PreviewOrderButton).Count == 1);
 
-            Driver.FindElement(Pages.OrderForm.PreviewOrderButton)
+            Driver.FindElement(Objects.Pages.OrderForm.PreviewOrderButton)
                 .FindElement(By.TagName("a"))
                 .Click();
         }
 
         public bool AddAssociatedServiceButtonDisplayed()
         {
-            return Driver.FindElements(Pages.OrderForm.AddSolution).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrderForm.AddSolution).Count == 1;
         }
 
         public bool EditFundingSourceSectionDisplayed()
@@ -854,14 +854,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public IWebElement SelectSectionByNameContains(string text)
         {
-            var titles = Driver.FindElements(Pages.OrderForm.SectionDescription);
+            var titles = Driver.FindElements(Objects.Pages.OrderForm.SectionDescription);
             var selectedSection = titles.Single(s => s.Text.Contains(text, StringComparison.OrdinalIgnoreCase));
             return selectedSection;
         }
 
         public bool SectionIsDisplayed(string text)
         {
-            var titles = Driver.FindElements(Pages.OrderForm.SectionDescription);
+            var titles = Driver.FindElements(Objects.Pages.OrderForm.SectionDescription);
             var selectedSection = titles.Where(s=>s.Text.Contains(text, StringComparison.OrdinalIgnoreCase));
             return selectedSection.Any();
         }

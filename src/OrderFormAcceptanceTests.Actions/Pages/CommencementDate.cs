@@ -12,7 +12,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool IsPageDisplayed()
         {
-            return Driver.FindElement(Pages.OrderForm.PageTitle).Text.Contains("Commencement date", StringComparison.OrdinalIgnoreCase);
+            return Driver.FindElement(Objects.Pages.OrderForm.PageTitle).Text.Contains("Commencement date", StringComparison.OrdinalIgnoreCase);
         }
 
         public void SetDate(DateTime date)
@@ -24,32 +24,32 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void SetDayValue(string day)
         {
-            Driver.FindElement(Pages.CommencementDate.Day).SendKeys(day);
+            Driver.FindElement(Objects.Pages.CommencementDate.Day).SendKeys(day);
         }
 
         public void SetMonthValue(string month)
         {
-            Driver.FindElement(Pages.CommencementDate.Month).SendKeys(month);
+            Driver.FindElement(Objects.Pages.CommencementDate.Month).SendKeys(month);
         }
 
         public void SetYearValue(string year)
         {
-            Driver.FindElement(Pages.CommencementDate.Year).SendKeys(year);
+            Driver.FindElement(Objects.Pages.CommencementDate.Year).SendKeys(year);
         }
 
         public string GetDay()
         {
-            return Driver.FindElement(Pages.CommencementDate.Day).GetAttribute("value");
+            return Driver.FindElement(Objects.Pages.CommencementDate.Day).GetAttribute("value");
         }
 
         public string GetMonth()
         {
-            return Driver.FindElement(Pages.CommencementDate.Month).GetAttribute("value");
+            return Driver.FindElement(Objects.Pages.CommencementDate.Month).GetAttribute("value");
         }
 
         public string GetYear()
         {
-            return Driver.FindElement(Pages.CommencementDate.Year).GetAttribute("value");
+            return Driver.FindElement(Objects.Pages.CommencementDate.Year).GetAttribute("value");
         }
     }
 }

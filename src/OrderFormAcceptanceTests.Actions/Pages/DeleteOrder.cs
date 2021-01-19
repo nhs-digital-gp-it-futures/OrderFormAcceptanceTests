@@ -15,14 +15,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickDeleteButtonYes()
         {
-            Wait.Until(d => d.FindElements(Pages.DeleteOrder.DeleteButtonYes).Count == 1);
-            Driver.FindElement(Pages.DeleteOrder.DeleteButtonYes).Click();
+            Wait.Until(d => d.FindElements(Objects.Pages.DeleteOrder.DeleteButtonYes).Count == 1);
+            Driver.FindElement(Objects.Pages.DeleteOrder.DeleteButtonYes).Click();
         }
 
         public void ClickDeleteButtonNo()
         {
-            Wait.Until(d => d.FindElements(Pages.DeleteOrder.DeleteButtonNo).Count == 1);
-            Driver.FindElement(Pages.DeleteOrder.DeleteButtonNo).Click();
+            Wait.Until(d => d.FindElements(Objects.Pages.DeleteOrder.DeleteButtonNo).Count == 1);
+            Driver.FindElement(Objects.Pages.DeleteOrder.DeleteButtonNo).Click();
         }
     }
 }

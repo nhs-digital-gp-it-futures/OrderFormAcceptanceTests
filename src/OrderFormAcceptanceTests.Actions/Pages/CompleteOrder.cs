@@ -14,7 +14,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElement(Pages.CompleteOrder.FundingSourceContent).Text.Contains("As GMS is your only source", StringComparison.OrdinalIgnoreCase));
+                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.FundingSourceContent).Text.Contains("As GMS is your only source", StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch
@@ -27,7 +27,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElement(Pages.CompleteOrder.CompletedPageDescription).Text.Contains("It'll be automatically processed", StringComparison.OrdinalIgnoreCase));
+                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.CompletedPageDescription).Text.Contains("It'll be automatically processed", StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch
@@ -40,7 +40,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElement(Pages.CompleteOrder.FundingSourceContent).Text.Contains("As GMS is not your only source", StringComparison.OrdinalIgnoreCase));
+                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.FundingSourceContent).Text.Contains("As GMS is not your only source", StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch
@@ -53,7 +53,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElement(Pages.CompleteOrder.CompletedPageDescription).Text.Contains("not be automatically processed", StringComparison.OrdinalIgnoreCase));
+                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.CompletedPageDescription).Text.Contains("not be automatically processed", StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch
@@ -66,7 +66,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrderForm.CompleteOrderButton).Count == 1);
+                Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.CompleteOrderButton).Count == 1);
                 return true;
             }
             catch
@@ -77,14 +77,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickCompleteOrderButton()
         {
-            Driver.FindElement(Pages.CompleteOrder.CompleteOrderButton).Click();
+            Driver.FindElement(Objects.Pages.CompleteOrder.CompleteOrderButton).Click();
         }
 
         public bool ContinueEditingOrderButtonIsDisplayed()
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.CompleteOrder.ContinueEditingButton).Count == 1);
+                Wait.Until(d => d.FindElements(Objects.Pages.CompleteOrder.ContinueEditingButton).Count == 1);
                 return true;
             }
             catch
@@ -95,14 +95,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickContinueEditingOrderButton()
         {
-            Driver.FindElement(Pages.CompleteOrder.ContinueEditingButton).Click();
+            Driver.FindElement(Objects.Pages.CompleteOrder.ContinueEditingButton).Click();
         }
 
         public bool DownloadPDFControlIsDisplayed()
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.CompleteOrder.GetOrderSummaryLink).Count == 1);
+                Wait.Until(d => d.FindElements(Objects.Pages.CompleteOrder.GetOrderSummaryLink).Count == 1);
                 return true;
             }
             catch
@@ -113,7 +113,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickGetOrderSummaryLink()
         {
-            Driver.FindElement(Pages.CompleteOrder.GetOrderSummaryLink).Click();
+            Driver.FindElement(Objects.Pages.CompleteOrder.GetOrderSummaryLink).Click();
         }
     }
 }

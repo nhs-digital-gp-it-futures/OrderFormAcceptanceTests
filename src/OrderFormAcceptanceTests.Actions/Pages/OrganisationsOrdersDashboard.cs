@@ -16,22 +16,22 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public void WaitForDashboardToBeDisplayed()
         {
             Driver.WaitForJsToComplete(Wait);
-            Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.PageTitle).Count == 1);
+            Wait.Until(d => d.FindElements(Objects.Pages.OrganisationsOrdersDashboard.PageTitle).Count == 1);
             Wait.Until(d => CreateNewOrderButtonDisplayed());
         }
 
         public void SelectExistingOrder(string callOffAgreementId)
         {
-            Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Count == 1);
-            Wait.Until(ElementExtensions.ElementToBeClickable(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)));
-            Driver.FindElement(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Click();
+            Wait.Until(d => d.FindElements(Objects.Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Count == 1);
+            Wait.Until(ElementExtensions.ElementToBeClickable(Objects.Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)));
+            Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Click();
         }
 
         public bool CreateNewOrderButtonDisplayed()
         {
             try
             {
-                Wait.Until(d => d.FindElements(Pages.OrganisationsOrdersDashboard.CreateOrderButton).Count == 1);
+                Wait.Until(d => d.FindElements(Objects.Pages.OrganisationsOrdersDashboard.CreateOrderButton).Count == 1);
                 return true;
             }
             catch
@@ -43,126 +43,126 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public void CreateNewOrder()
         {
             CreateNewOrderButtonDisplayed();
-            Driver.FindElement(Pages.OrganisationsOrdersDashboard.CreateOrderButton).Click();
+            Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.CreateOrderButton).Click();
         }
 
         public (string TagName, string Text, string Url) GetOrderSummaryLink(string callOffAgreementId)
         {
-            var link = Driver.FindElement(Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId));
+            var link = Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId));
             return (link.TagName, link.Text, link.GetAttribute("href"));
         }
 
         public int GetNumberOfOrdersDisplayed()
         {
-            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.Orders).Count;
+            return Driver.FindElements(Objects.Pages.OrganisationsOrdersDashboard.Orders).Count;
         }
 
         public int GetNumberOfCallOffAgreementIds()
         {
-            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Count;
+            return Driver.FindElements(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Count;
         }
 
         public int GetNumberOfDescriptions()
         {
-            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Count;
+            return Driver.FindElements(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Count;
         }
 
         public int GetNumberOfLastUpdatedBys()
         {
-            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Count;
+            return Driver.FindElements(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Count;
         }
 
         public int GetNumberOfLastUpdatedDates()
         {
-            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate).Count;
+            return Driver.FindElements(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate).Count;
         }
 
         public int GetNumberOfCreatedDates()
         {
-            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Count;
+            return Driver.FindElements(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Count;
         }
 
         public bool IncompleteOrdersTableDisplayed()
         {
-            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.IncompleteOrdersTable).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrganisationsOrdersDashboard.IncompleteOrdersTable).Count == 1;
         }
 
         public bool CompletedOrdersTableDisplayed()
         {
-            return Driver.FindElements(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable).Count == 1;
+            return Driver.FindElements(Objects.Pages.OrganisationsOrdersDashboard.CompletedOrdersTable).Count == 1;
         }
 
         public bool CompletedOrdersTableHasNoLastUpdateDate()
         {
             return Driver
-                .FindElement(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable)
-                .FindElements(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate)
+                .FindElement(Objects.Pages.OrganisationsOrdersDashboard.CompletedOrdersTable)
+                .FindElements(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate)
                 .Count == 0;
         }
 
         public bool CompletedOrdersTableHasDateCompleted()
         {
             IReadOnlyCollection<IWebElement> columnHeadings = Driver
-                .FindElement(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable)
-                .FindElements(Pages.OrganisationsOrdersDashboard.GenericColumnHeadingData);
+                .FindElement(Objects.Pages.OrganisationsOrdersDashboard.CompletedOrdersTable)
+                .FindElements(Objects.Pages.OrganisationsOrdersDashboard.GenericColumnHeadingData);
 
             return columnHeadings.Count(c => c.Text.Equals("Date completed", StringComparison.OrdinalIgnoreCase)) == 1;
         }
 
         public bool BackLinkDisplayed()
         {
-            return Driver.FindElements(Pages.Common.BackLink).Count == 1;
+            return Driver.FindElements(Objects.Pages.Common.BackLink).Count == 1;
         }
 
         public void ClickBackLink()
         {
-            Driver.FindElement(Pages.Common.BackLink).Click();
+            Driver.FindElement(Objects.Pages.Common.BackLink).Click();
         }
 
         public bool FooterDisplayed()
         {
-            return Driver.FindElements(Pages.Common.Footer).Count == 1;
+            return Driver.FindElements(Objects.Pages.Common.Footer).Count == 1;
         }
 
         public bool HeaderDisplayed()
         {
-            return Driver.FindElements(Pages.Common.Header).Count == 1;
+            return Driver.FindElements(Objects.Pages.Common.Header).Count == 1;
         }
 
         public bool BetaBannerDisplayed()
         {
-            return Driver.FindElements(Pages.Common.BetaBanner).Count == 1;
+            return Driver.FindElements(Objects.Pages.Common.BetaBanner).Count == 1;
         }
 
         public int GetNumberOfIncompleteOrders()
         {
-            return GetNumberOfTableRows(Pages.OrganisationsOrdersDashboard.IncompleteOrdersTable);
+            return GetNumberOfTableRows(Objects.Pages.OrganisationsOrdersDashboard.IncompleteOrdersTable);
         }
 
         public int GetNumberOfCompleteOrders()
         {
-            return GetNumberOfTableRows(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable);
+            return GetNumberOfTableRows(Objects.Pages.OrganisationsOrdersDashboard.CompletedOrdersTable);
         }
 
         public bool IncompleteOrdersPrecedesCompletedOrders()
         {
-            return Driver.FindElement(Pages.OrganisationsOrdersDashboard.IncompleteOrdersBeforeCompletedOrders).Displayed;
+            return Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.IncompleteOrdersBeforeCompletedOrders).Displayed;
         }
 
         public List<Order> GetListOfIncompleteOrders()
         {
             var listOfIncompleteOrders = new List<Order>();
 
-            var table = Driver.FindElement(Pages.OrganisationsOrdersDashboard.IncompleteOrdersTable);
-            var tableRows = table.FindElements(Pages.Common.TableRows);
+            var table = Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.IncompleteOrdersTable);
+            var tableRows = table.FindElements(Objects.Pages.Common.TableRows);
 
             foreach (var row in tableRows)
             {
-                var id = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Text;
-                var description = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Text;
-                var lastUpdateDisplayName = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text;
-                var lastUpdatedDate = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate).Text;
-                var createdDate = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text;
+                var id = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Text;
+                var description = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Text;
+                var lastUpdateDisplayName = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text;
+                var lastUpdatedDate = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate).Text;
+                var createdDate = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text;
                 var currentRowOrder = new Order
                 {
                     OrderId = id,
@@ -181,17 +181,17 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             var listOfCompletedOrders = new List<Order>();
 
-            var table = Driver.FindElement(Pages.OrganisationsOrdersDashboard.CompletedOrdersTable);
-            var tableRows = table.FindElements(Pages.Common.TableRows);
+            var table = Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.CompletedOrdersTable);
+            var tableRows = table.FindElements(Objects.Pages.Common.TableRows);
 
             foreach (var row in tableRows)
             {
-                var id = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Text;
-                var description = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Text;
-                var lastUpdateDisplayName = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text;
-                var dateCompleted = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderCompletedDate).Text;
-                var createdDate = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text;
-                var automaticallyProcessed = row.FindElement(Pages.OrganisationsOrdersDashboard.GenericExistingOrderAutomaticallyProcessed).Text;
+                var id = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Text;
+                var description = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Text;
+                var lastUpdateDisplayName = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text;
+                var dateCompleted = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCompletedDate).Text;
+                var createdDate = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text;
+                var automaticallyProcessed = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderAutomaticallyProcessed).Text;
 
                 var currentRowOrder = new Order
                 {
@@ -211,7 +211,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         private int GetNumberOfTableRows(By tableSelector)
         {
             var table = Driver.FindElement(tableSelector);
-            IReadOnlyCollection<IWebElement> tableRows = table.FindElements(Pages.Common.TableRows);
+            IReadOnlyCollection<IWebElement> tableRows = table.FindElements(Objects.Pages.Common.TableRows);
 
             return tableRows.Count;
         }
