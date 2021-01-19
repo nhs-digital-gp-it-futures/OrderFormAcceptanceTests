@@ -72,7 +72,7 @@ namespace OrderFormAcceptanceTests.TestData
             return SqlExecutor.Execute<int>(connectionString, query, this);
         }
 
-        public Order Generate(Organisation organisation = null)
+        public static Order Generate(Organisation organisation = null)
         {
             var faker = new Faker();
             return new Order

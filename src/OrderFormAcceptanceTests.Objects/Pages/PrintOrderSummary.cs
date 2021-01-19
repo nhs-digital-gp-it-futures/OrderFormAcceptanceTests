@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OrderFormAcceptanceTests.Objects.Utils;
 
 namespace OrderFormAcceptanceTests.Objects.Pages
 {
-    public class PrintOrderSummary
+    public static class PrintOrderSummary
     {
-        public By PrintableOrderSummary => CustomBy.DataTestId("summary-page-title");
-        public By PrintPreview => By.TagName("print-preview-app");
+        public static By PrintableOrderSummary => CustomBy.DataTestId("summary-page-title");
+        public static By PrintPreview => By.TagName("print-preview-app");
     }
 }

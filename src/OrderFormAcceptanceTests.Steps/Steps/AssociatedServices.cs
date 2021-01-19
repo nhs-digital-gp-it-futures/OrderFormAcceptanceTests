@@ -155,7 +155,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
             SetOrderAssociatedServicesSectionToComplete();
-            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.Create(Test.OrdapiConnectionString);
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
@@ -165,7 +165,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder()
         {
             SetOrderAssociatedServicesSectionToComplete();
-            var orderItem = new OrderItem().GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
+            var orderItem = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.Create(Test.OrdapiConnectionString);
             if (!Context.ContainsKey(ContextKeys.CreatedOrderItem))
             {
@@ -216,7 +216,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenTheAssociatedServiceIsSavedInTheDB()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            var orderItem = new OrderItem().RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 3).First();
+            var orderItem = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 3).First();
             Context.Add(ContextKeys.CreatedOrderItem, orderItem);
             orderItem.Should().NotBeNull();
         }

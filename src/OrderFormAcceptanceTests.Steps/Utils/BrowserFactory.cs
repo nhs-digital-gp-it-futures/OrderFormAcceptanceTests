@@ -17,9 +17,9 @@ namespace OrderFormAcceptanceTests.Steps.Utils
 
         public IWebDriver Driver { get; }
 
-        private IWebDriver Browser(string browser, string hubUrl)
+        private static IWebDriver Browser(string browser, string hubUrl)
         {
-            Enum.TryParse(browser, out BrowserTypes browserType);
+            _ = Enum.TryParse(browser, out BrowserTypes browserType);
 
             if (Debugger.IsAttached)
                 browserType = BrowserTypes.ChromeLocal;

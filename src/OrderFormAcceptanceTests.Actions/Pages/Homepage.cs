@@ -12,20 +12,20 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void PageDisplayed()
         {
-            Wait.Until(s => s.FindElement(Pages.Homepage.Title).Displayed);
+            Wait.Until(s => s.FindElement(Objects.Pages.Homepage.Title).Displayed);
         }
 
         public void ClickLoginButton()
         {
-            Wait.Until(s => s.FindElements(Pages.Homepage.LoginLogoutLink).Count > 0);
-            Driver.FindElement(Pages.Homepage.LoginLogoutLink).Click();
-            Wait.Until(s => s.FindElements(Pages.Homepage.LoginLogoutLink).Count == 0);
+            Wait.Until(s => s.FindElements(Objects.Pages.Homepage.LoginLogoutLink).Count > 0);
+            Driver.FindElement(Objects.Pages.Homepage.LoginLogoutLink).Click();
+            Wait.Until(s => s.FindElements(Objects.Pages.Homepage.LoginLogoutLink).Count == 0);
         }
 
         public bool LoginLogoutLinkText(string expectedValue)
         {
-            Wait.Until(s => s.FindElements(Pages.Homepage.LoginLogoutLink).Count > 0);
-            Wait.Until(s => s.FindElement(Pages.Homepage.LoginLogoutLink).Text.Contains(expectedValue, StringComparison.OrdinalIgnoreCase));
+            Wait.Until(s => s.FindElements(Objects.Pages.Homepage.LoginLogoutLink).Count > 0);
+            Wait.Until(s => s.FindElement(Objects.Pages.Homepage.LoginLogoutLink).Text.Contains(expectedValue, StringComparison.OrdinalIgnoreCase));
             return true;
         }
 
@@ -33,7 +33,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             if (LoginLogoutLinkText("Log out"))
             {
-                Driver.FindElement(Pages.Homepage.LoginLogoutLink).Click();
+                Driver.FindElement(Objects.Pages.Homepage.LoginLogoutLink).Click();
             }
             else
             {
@@ -43,7 +43,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public void ClickOrderTile()
         {
-            Driver.FindElement(Pages.Homepage.OrderTile).Click();
+            Driver.FindElement(Objects.Pages.Homepage.OrderTile).Click();
         }
     }
 }

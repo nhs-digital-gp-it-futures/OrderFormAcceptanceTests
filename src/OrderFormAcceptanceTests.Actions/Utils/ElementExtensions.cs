@@ -36,10 +36,11 @@ namespace OrderFormAcceptanceTests.Actions.Utils
                 driver.FindElements(elementBy)[index], value);
         }
 
-        public static void WaitForJsToComplete(this IWebDriver driver, WebDriverWait wait)
+        public static void ForJsToComplete(this WebDriverWait wait)
         {
             wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
         }
+
 
         internal static Func<IWebDriver, bool> InvisibilityOfElement(By locator)
         {

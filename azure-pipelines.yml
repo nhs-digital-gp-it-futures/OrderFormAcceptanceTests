@@ -11,7 +11,7 @@ variables:
   - name: buildConfiguration
     value: 'Release'
   - name: dotnetVersion
-    value: '3.1.x'
+    value: '5.0.x'
   - name: MSBUILDSINGLELOADCONTEXT
     value: '1'
   - name: BROWSER
@@ -38,7 +38,7 @@ steps:
     versionSpec: '5.x'
 
 - task: UseDotNet@2
-  displayName: 'Use DotNet Core $(dotnetVersion)'
+  displayName: 'Use DotNet $(dotnetVersion)'
   inputs:
     version: $(dotnetVersion)
     includePreviewVersions: false

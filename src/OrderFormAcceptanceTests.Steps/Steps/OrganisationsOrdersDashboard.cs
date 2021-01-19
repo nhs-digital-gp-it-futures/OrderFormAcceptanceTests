@@ -92,7 +92,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"each item includes the date of the most recent edit")]
         public void ThenEachItemIncludesTheDateOfTheMostRecentEdit()
         {
-            var numberOfOrdersDisplayed = (int)Context[ContextKeys.NumberOfOrdersDisplayed];
+            var numberOfOrdersDisplayed = Test.Pages.OrganisationsOrdersDashboard.GetNumberOfIncompleteOrders();
             Test.Pages.OrganisationsOrdersDashboard.GetNumberOfLastUpdatedDates().Should().Be(numberOfOrdersDisplayed);
         }
 

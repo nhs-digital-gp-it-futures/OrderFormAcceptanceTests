@@ -10,7 +10,7 @@ namespace OrderFormAcceptanceTests.TestData
         public string OdsCode { get; set; }
 
 
-        public ServiceRecipient Generate(string orderId, string odsCode = "00C", string name = "NHS Darlington CCG")
+        public static ServiceRecipient Generate(string orderId, string odsCode = "00C", string name = "NHS Darlington CCG")
         {
             return new ServiceRecipient
             {
@@ -43,7 +43,7 @@ namespace OrderFormAcceptanceTests.TestData
             return SqlExecutor.Execute<ServiceRecipient>(connectionString, query, this);
         }
 
-        public IEnumerable<ServiceRecipient> RetrieveByOrderId(string connectionString, string orderId)
+        public static IEnumerable<ServiceRecipient> RetrieveByOrderId(string connectionString, string orderId)
         {
             var query = "SELECT * from [dbo].[ServiceRecipient] WHERE OrderId=@orderId";
 
@@ -67,7 +67,7 @@ namespace OrderFormAcceptanceTests.TestData
             SqlExecutor.Execute<Order>(connectionString, query, this);
         }
 
-        public void DeleteAllServiceRecipientsForOrderId(string connectionString, string orderId)
+        public static void DeleteAllServiceRecipientsForOrderId(string connectionString, string orderId)
         {
             var query = @"DELETE FROM [dbo].[ServiceRecipient] WHERE OrderId=@orderId";
             SqlExecutor.Execute<Order>(connectionString, query, new { orderId });

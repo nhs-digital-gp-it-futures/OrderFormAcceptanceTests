@@ -28,7 +28,7 @@ namespace OrderFormAcceptanceTests.TestData
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }
 
-        public OrderItem GenerateOrderItemWithFlatPricedVariableOnDemand(Order order)
+        public static OrderItem GenerateOrderItemWithFlatPricedVariableOnDemand(Order order)
         {
             return new OrderItem
             {
@@ -53,7 +53,7 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
-        public OrderItem GenerateOrderItemWithFlatPricedVariablePerPatient(Order order)
+        public static OrderItem GenerateOrderItemWithFlatPricedVariablePerPatient(Order order)
         {
             return new OrderItem
             {
@@ -78,7 +78,7 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
-        public OrderItem GenerateOrderItemWithFlatPricedVariableDeclarative(Order order)
+        public static OrderItem GenerateOrderItemWithFlatPricedVariableDeclarative(Order order)
         {
             return new OrderItem
             {
@@ -103,7 +103,7 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
-        public OrderItem GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient(Order order)
+        public static OrderItem GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient(Order order)
         {
             return new OrderItem
             {
@@ -128,7 +128,7 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
-        public OrderItem GenerateAdditionalServiceWithFlatPricedVariableOnDemand(Order order)
+        public static OrderItem GenerateAdditionalServiceWithFlatPricedVariableOnDemand(Order order)
         {
             return new OrderItem
             {
@@ -153,7 +153,7 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
-        public OrderItem GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient(Order order)
+        public static OrderItem GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient(Order order)
         {
             return new OrderItem
             {
@@ -178,7 +178,7 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
-        public OrderItem GenerateAdditionalServiceOrderItemWithDeclarative(Order order)
+        public static OrderItem GenerateAdditionalServiceOrderItemWithDeclarative(Order order)
         {
             return new OrderItem
             {
@@ -203,7 +203,7 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
-        public OrderItem GenerateAssociatedServiceWithFlatPricedVariableOnDemand(Order order)
+        public static OrderItem GenerateAssociatedServiceWithFlatPricedVariableOnDemand(Order order)
         {
             return new OrderItem
             {
@@ -228,7 +228,7 @@ namespace OrderFormAcceptanceTests.TestData
             };
         }
 
-        public OrderItem GenerateAssociatedServiceWithFlatPricedDeclarative(Order order)
+        public static OrderItem GenerateAssociatedServiceWithFlatPricedDeclarative(Order order)
         {
             return new OrderItem
             {
@@ -302,7 +302,7 @@ namespace OrderFormAcceptanceTests.TestData
             return this.OrderItemId;
         }
 
-        public IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
+        public static IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
         {
             var query = "SELECT * from [dbo].[OrderItem] WHERE OrderId=@orderId AND CatalogueItemTypeId=@catalogueItemTypeId";
             return SqlExecutor.Execute<OrderItem>(connectionString, query, new { OrderId, CatalogueItemTypeId });
@@ -343,7 +343,7 @@ namespace OrderFormAcceptanceTests.TestData
             SqlExecutor.Execute<OrderItem>(connectionString, query, this);
         }
 
-        public void DeleteAllOrderItemsForOrderId(string connectionString, string orderId)
+        public static void DeleteAllOrderItemsForOrderId(string connectionString, string orderId)
         {
             var query = @"DELETE FROM [dbo].[OrderItem] WHERE OrderId=@orderId";
             SqlExecutor.Execute<Order>(connectionString, query, new { orderId });
