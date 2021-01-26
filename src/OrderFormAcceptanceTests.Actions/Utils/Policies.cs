@@ -1,9 +1,9 @@
-﻿using OpenQA.Selenium;
-using Polly;
-using System;
-
-namespace OrderFormAcceptanceTests.Actions.Utils
+﻿namespace OrderFormAcceptanceTests.Actions.Utils
 {
+    using System;
+    using OpenQA.Selenium;
+    using Polly;
+
     internal static class Policies
     {
         internal static ISyncPolicy GetPolicy()

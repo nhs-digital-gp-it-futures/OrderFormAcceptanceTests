@@ -1,13 +1,14 @@
-﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Steps.Utils;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public class CreateAnOrder : TestBase
     {
-        public CreateAnOrder(UITest test, ScenarioContext context) : base(test, context)
+        public CreateAnOrder(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 

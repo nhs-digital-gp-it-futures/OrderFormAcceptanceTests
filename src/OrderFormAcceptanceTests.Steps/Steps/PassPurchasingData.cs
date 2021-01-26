@@ -1,24 +1,20 @@
-﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Actions.Utils;
-using OrderFormAcceptanceTests.Steps.Utils;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using TechTalk.SpecFlow;
-using System.Threading.Tasks;
-using NHSD.BuyingCatalogue.EmailClient.IntegrationTesting.Drivers;
-using NHSD.BuyingCatalogue.EmailClient.IntegrationTesting.Data;
-using Bogus.DataSets;
-using OrderFormAcceptanceTests.TestData;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using NHSD.BuyingCatalogue.EmailClient.IntegrationTesting.Data;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     internal sealed class PassPurchasingData : TestBase
     {
-        public PassPurchasingData(UITest test, ScenarioContext context) : base(test, context)
+        public PassPurchasingData(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 
@@ -34,7 +30,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [Then(@"the \.CSV to the desired specification is produced \(call off-id only\)")]
         public void ThenThe_CSVToTheDesiredSpecificationIsProducedCallOff_IdOnly()
-        {            
+        {
             var email = (Email)Context[ContextKeys.SentEmail];
             var attachmentFileName = email.Attachments.First().FileName;
             var attachmentFileType = email.Attachments.First().ContentType.MediaType;

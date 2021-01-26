@@ -1,12 +1,13 @@
-﻿using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Utils;
-using System;
-
-namespace OrderFormAcceptanceTests.Actions.Pages
+﻿namespace OrderFormAcceptanceTests.Actions.Pages
 {
+    using System;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Actions.Utils;
+
     public sealed class CommencementDate : PageAction
     {
-        public CommencementDate(IWebDriver driver) : base(driver)
+        public CommencementDate(IWebDriver driver)
+            : base(driver)
         {
         }
 

@@ -1,14 +1,15 @@
-﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     internal sealed class FundingSource : TestBase
     {
-        public FundingSource(UITest test, ScenarioContext context) : base(test, context)
+        public FundingSource(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 

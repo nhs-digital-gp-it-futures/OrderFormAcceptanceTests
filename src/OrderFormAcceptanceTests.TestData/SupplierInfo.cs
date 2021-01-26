@@ -1,10 +1,9 @@
-﻿using OrderFormAcceptanceTests.TestData.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace OrderFormAcceptanceTests.TestData
+﻿namespace OrderFormAcceptanceTests.TestData
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using OrderFormAcceptanceTests.TestData.Utils;
+
     public static class SupplierInfo
     {
         public static bool SupplierHasContactInfo(string connectionString, string supplierName)
@@ -76,18 +75,6 @@ namespace OrderFormAcceptanceTests.TestData
             return SqlExecutor.Execute<string>(connectionString, query, new { supplierId }).FirstOrDefault();
         }
 
-        private static IEnumerable<SupplierDetails> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
-        {
-            var query = @"SELECT ci.[SupplierId], su.[Name]      
-                            FROM [dbo].[CatalogueItem] ci
-                            INNER JOIN CataloguePrice pr ON ci.CatalogueItemId=pr.CatalogueItemId
-                            INNER JOIN Supplier su On ci.SupplierId=su.Id
-                            WHERE ci.CatalogueItemTypeId=@catalogueItemType
-                            AND pr.ProvisioningTypeId=@provisioningType";
-
-            return SqlExecutor.Execute<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType, provisioningType = (int)provisioningType });
-        }
-
         public static int SupplierWithMoreThanOneSolution(string connectionString)
         {
             var query =
@@ -109,6 +96,18 @@ namespace OrderFormAcceptanceTests.TestData
             var query = $@"SELECT Name FROM dbo.CatalogueItem WHERE SupplierId = @supplierId AND PublishedStatusId = 3 AND CatalogueItemTypeId = @itemType;";
 
             return SqlExecutor.Execute<string>(connectionString, query, new { supplierId, itemType });
+        }
+
+        private static IEnumerable<SupplierDetails> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
+        {
+            var query = @"SELECT ci.[SupplierId], su.[Name]      
+                            FROM [dbo].[CatalogueItem] ci
+                            INNER JOIN CataloguePrice pr ON ci.CatalogueItemId=pr.CatalogueItemId
+                            INNER JOIN Supplier su On ci.SupplierId=su.Id
+                            WHERE ci.CatalogueItemTypeId=@catalogueItemType
+                            AND pr.ProvisioningTypeId=@provisioningType";
+
+            return SqlExecutor.Execute<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType, provisioningType = (int)provisioningType });
         }
     }
 }

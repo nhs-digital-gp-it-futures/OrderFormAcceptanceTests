@@ -1,14 +1,15 @@
-﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Steps.Utils;
-using System;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps
+﻿namespace OrderFormAcceptanceTests.Steps
 {
+    using System;
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public class CommencementDate : TestBase
     {
-        public CommencementDate(UITest test, ScenarioContext context) : base(test, context)
+        public CommencementDate(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 
@@ -18,7 +19,6 @@ namespace OrderFormAcceptanceTests.Steps
             var today = DateTime.Today;
             Test.Pages.CommencementDate.SetDate(today);
         }
-
 
         [Given(@"the Day is set to (.*)")]
         public void GivenTheDayIsSetTo(string day)
@@ -42,7 +42,7 @@ namespace OrderFormAcceptanceTests.Steps
         public void GivenTheCommencementDateEnteredIsDaysEarlierThanTodaySDate(int days)
         {
             // No option
-            var date = DateTime.Today.AddDays((days * -1));
+            var date = DateTime.Today.AddDays(days * -1);
             Test.Pages.CommencementDate.SetDate(date);
         }
 

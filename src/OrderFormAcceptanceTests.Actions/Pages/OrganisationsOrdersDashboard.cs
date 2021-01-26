@@ -1,15 +1,16 @@
-﻿using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Utils;
-using OrderFormAcceptanceTests.TestData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace OrderFormAcceptanceTests.Actions.Pages
+﻿namespace OrderFormAcceptanceTests.Actions.Pages
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Actions.Utils;
+    using OrderFormAcceptanceTests.TestData;
+
     public class OrganisationsOrdersDashboard : PageAction
     {
-        public OrganisationsOrdersDashboard(IWebDriver driver) : base(driver)
+        public OrganisationsOrdersDashboard(IWebDriver driver)
+            : base(driver)
         {
         }
 
@@ -169,7 +170,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                     Description = description,
                     LastUpdatedByName = lastUpdateDisplayName,
                     LastUpdated = Convert.ToDateTime(lastUpdatedDate),
-                    Created = Convert.ToDateTime(createdDate)
+                    Created = Convert.ToDateTime(createdDate),
                 };
                 listOfIncompleteOrders.Add(currentRowOrder);
             }
@@ -200,7 +201,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                     LastUpdatedByName = lastUpdateDisplayName,
                     Created = Convert.ToDateTime(createdDate),
                     DateCompleted = Convert.ToDateTime(dateCompleted),
-                    FundingSourceOnlyGMS = automaticallyProcessed == "Yes" ? 1 : 0
+                    FundingSourceOnlyGMS = automaticallyProcessed == "Yes" ? 1 : 0,
                 };
                 listOfCompletedOrders.Add(currentRowOrder);
             }

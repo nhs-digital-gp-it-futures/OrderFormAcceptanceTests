@@ -1,21 +1,21 @@
-﻿using BoDi;
-using Microsoft.Extensions.Configuration;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using BoDi;
+    using Microsoft.Extensions.Configuration;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public sealed class Hooks
     {
-        private readonly ScenarioContext _context;
-        private readonly IObjectContainer _objectContainer;
+        private readonly ScenarioContext context;
+        private readonly IObjectContainer objectContainer;
 
         public Hooks(ScenarioContext context, IObjectContainer objectContainer)
         {
-            _context = context;
-            _objectContainer = objectContainer;
+            this.context = context;
+            this.objectContainer = objectContainer;
         }
 
         [BeforeScenario(Order = 0)]
@@ -26,21 +26,21 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 .AddEnvironmentVariables()
                 .Build();
 
-            _objectContainer.RegisterInstanceAs<IConfiguration>(configurationBuilder);
-            var test = _objectContainer.Resolve<UITest>();
+            objectContainer.RegisterInstanceAs<IConfiguration>(configurationBuilder);
+            var test = objectContainer.Resolve<UITest>();
             test.GoToUrl();
-            new CommonSteps(test, _context).GivenThatABuyerUserHasLoggedIn();
+            new CommonSteps(test, context).GivenThatABuyerUserHasLoggedIn();
         }
 
         [AfterScenario]
         public void AfterScenario()
         {
-            var test = _objectContainer.Resolve<UITest>();
+            var test = objectContainer.Resolve<UITest>();
             test.Driver?.Quit();
 
-            if (_context.ContainsKey(ContextKeys.CreatedOrder))
+            if (context.ContainsKey(ContextKeys.CreatedOrder))
             {
-                var order = ((Order)_context[ContextKeys.CreatedOrder]).Retrieve(test.OrdapiConnectionString);
+                var order = ((Order)context[ContextKeys.CreatedOrder]).Retrieve(test.OrdapiConnectionString);
 
                 OrderItem.DeleteAllOrderItemsForOrderId(test.OrdapiConnectionString, order.OrderId);
 
@@ -55,9 +55,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                 new Contact() { ContactId = order.SupplierContactId }.Delete(test.OrdapiConnectionString);
             }
 
-            if (_context.ContainsKey(ContextKeys.User))
+            if (context.ContainsKey(ContextKeys.User))
             {
-                ((User)_context[ContextKeys.User]).Delete(test.IsapiConnectionString);
+                ((User)context[ContextKeys.User]).Delete(test.IsapiConnectionString);
             }
         }
     }

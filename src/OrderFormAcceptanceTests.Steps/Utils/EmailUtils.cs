@@ -1,15 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using NHSD.BuyingCatalogue.EmailClient.IntegrationTesting.Drivers;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps
+﻿namespace OrderFormAcceptanceTests.Steps
 {
+    using System;
+    using TechTalk.SpecFlow;
+
     [Binding]
     internal static class EmailUtils
     {
+        public static Uri GetEmailUrl(string hostUrl)
+        {
+            Uri uri;
+            if (IsRunningLocal(hostUrl))
+            {
+                uri = new Uri(DowngradeHttps($"{hostUrl}:1080/email"));
+            }
+            else
+            {
+                uri = new Uri($"{hostUrl}/email");
+            }
+
+            return uri;
+        }
+
         private static string DowngradeHttps(string value)
         {
             return value.Replace("https", "http");
@@ -18,15 +29,6 @@ namespace OrderFormAcceptanceTests.Steps
         private static bool IsRunningLocal(string hostUrl)
         {
             return hostUrl.Contains("host", StringComparison.OrdinalIgnoreCase);
-        }
-
-        public static Uri GetEmailUrl(string hostUrl)
-        {
-            if (IsRunningLocal(hostUrl))
-            {
-                return new Uri(DowngradeHttps($"{hostUrl}:1080/email"));
-            }
-            return new Uri($"{hostUrl}/email");
         }
     }
 }

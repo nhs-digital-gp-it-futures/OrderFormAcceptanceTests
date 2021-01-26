@@ -1,14 +1,15 @@
-﻿using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace OrderFormAcceptanceTests.Actions.Pages
+﻿namespace OrderFormAcceptanceTests.Actions.Pages
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Actions.Utils;
+
     public sealed class AdditionalServices : PageAction
     {
-        public AdditionalServices(IWebDriver driver) : base(driver)
+        public AdditionalServices(IWebDriver driver)
+            : base(driver)
         {
         }
 

@@ -1,8 +1,8 @@
-﻿using Bogus;
-using System.Collections.Generic;
-
-namespace OrderFormAcceptanceTests.TestData.Information
+﻿namespace OrderFormAcceptanceTests.TestData.Information
 {
+    using System.Collections.Generic;
+    using Bogus;
+
     public static class RandomInformation
     {
         public static string RandomInformationText(int numWords = 10)
@@ -15,7 +15,7 @@ namespace OrderFormAcceptanceTests.TestData.Information
         public static string RandomString(int count)
         {
             var faker = new Faker("en_GB");
-            return string.Join("", faker.Random.AlphaNumeric(count));
+            return string.Join(string.Empty, faker.Random.AlphaNumeric(count));
         }
 
         public static T GetRandomItem<T>(IEnumerable<T> items)

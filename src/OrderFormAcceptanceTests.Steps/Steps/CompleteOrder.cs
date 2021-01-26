@@ -1,21 +1,19 @@
-﻿using FluentAssertions;
-using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Utils;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TechTalk.SpecFlow;
-using System.Threading.Tasks;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     internal sealed class CompleteOrder : TestBase
     {
-        public CompleteOrder(UITest test, ScenarioContext context) : base(test, context)
+        public CompleteOrder(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 
@@ -27,7 +25,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         [StepDefinition(@"the User confirms to complete the Order")]
         public async Task WhenTheUserConfirmsToCompleteTheOrderAsync()
-        {            
+        {
             var precount = await Test.EmailServerDriver.GetEmailCountAsync();
             Context.Add(ContextKeys.EmailCount, precount);
             Test.Pages.CompleteOrder.ClickCompleteOrderButton();
@@ -113,7 +111,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Pages.PreviewOrderSummary.TopGetOrderSummaryIsDisplayed().Should().BeTrue();
             Test.Pages.PreviewOrderSummary.BottomGetOrderSummaryIsDisplayed().Should().BeTrue();
         }
-        
+
         [Given(@"the order is complete enough so that the Complete order button is enabled with Funding Source option '(.*)' selected")]
         public void GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled(string fsValue)
         {
@@ -190,7 +188,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var expectedDate = order.DateCompleted.Value.ToString("d MMMM yyyy");
             date.Should().EndWithEquivalent(expectedDate);
         }
-        
+
         [StepDefinition(@"the Completed Order Summary is displayed")]
         public void WhenTheCompletedOrderSummaryIsDisplayed()
         {

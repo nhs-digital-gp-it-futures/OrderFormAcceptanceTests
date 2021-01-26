@@ -1,21 +1,12 @@
-﻿using NHSD.BuyingCatalogue.EmailClient.IntegrationTesting.Drivers;
-using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions;
-using OrderFormAcceptanceTests.Actions.Collections;
-
-namespace OrderFormAcceptanceTests.Steps.Utils
+﻿namespace OrderFormAcceptanceTests.Steps.Utils
 {
+    using NHSD.BuyingCatalogue.EmailClient.IntegrationTesting.Drivers;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Actions;
+    using OrderFormAcceptanceTests.Actions.Collections;
+
     public sealed class UITest
     {
-        internal string OrdapiConnectionString;
-        internal string BapiConnectionString;
-        internal string IsapiConnectionString;
-        internal IWebDriver Driver;
-        internal EmailServerDriver EmailServerDriver;
-        internal PageActionCollection Pages;
-        internal readonly string Url;
-        internal readonly string PbUrl;
-
         public UITest(Settings settings)
         {
             OrdapiConnectionString = settings.GetDbString("ordapidb");
@@ -28,6 +19,22 @@ namespace OrderFormAcceptanceTests.Steps.Utils
             PbUrl = settings.PbUrl;
             EmailServerDriver = InstantiateEmailServerDriver();
         }
+
+        internal string OrdapiConnectionString { get; }
+
+        internal string BapiConnectionString { get; }
+
+        internal string IsapiConnectionString { get; }
+
+        internal IWebDriver Driver { get; }
+
+        internal EmailServerDriver EmailServerDriver { get; }
+
+        internal PageActionCollection Pages { get; }
+
+        internal string Url { get; }
+
+        internal string PbUrl { get; }
 
         public void GoToUrl()
         {

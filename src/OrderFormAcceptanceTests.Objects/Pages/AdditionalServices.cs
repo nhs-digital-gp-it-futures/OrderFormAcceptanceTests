@@ -1,8 +1,8 @@
-﻿using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Objects.Utils;
-
-namespace OrderFormAcceptanceTests.Objects.Pages
+﻿namespace OrderFormAcceptanceTests.Objects.Pages
 {
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Objects.Utils;
+
     public static class AdditionalServices
     {
         public static By AddAdditionalServices => CustomBy.DataTestId("add-orderItem-button");

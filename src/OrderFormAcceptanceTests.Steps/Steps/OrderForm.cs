@@ -1,20 +1,20 @@
-﻿using FluentAssertions;
-using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using OrderFormAcceptanceTests.TestData.Information;
-using System.Collections.Generic;
-using System.Linq;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
-    [Binding]
-    class OrderForm : TestBase
-    {
-        public OrderForm(UITest test, ScenarioContext context) : base(test, context)
-        {
+    using System.Collections.Generic;
+    using System.Linq;
+    using FluentAssertions;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Information;
+    using TechTalk.SpecFlow;
 
+    [Binding]
+    internal sealed class OrderForm : TestBase
+    {
+        public OrderForm(UITest test, ScenarioContext context)
+            : base(test, context)
+        {
         }
 
         [Then(@"there is the Order description section")]
@@ -283,6 +283,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             {
                 item.Delete(Test.OrdapiConnectionString);
             }
+
             order.Update(Test.OrdapiConnectionString);
         }
 
@@ -296,6 +297,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             {
                 item.Delete(Test.OrdapiConnectionString);
             }
+
             order.Update(Test.OrdapiConnectionString);
         }
 

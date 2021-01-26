@@ -1,7 +1,7 @@
-﻿using OpenQA.Selenium;
-
-namespace OrderFormAcceptanceTests.Objects.Utils
+﻿namespace OrderFormAcceptanceTests.Objects.Utils
 {
+    using OpenQA.Selenium;
+
     internal sealed class CustomBy : By
     {
         /// <summary>

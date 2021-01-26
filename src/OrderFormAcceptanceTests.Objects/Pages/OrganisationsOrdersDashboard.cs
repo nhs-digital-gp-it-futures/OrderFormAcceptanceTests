@@ -1,9 +1,9 @@
-﻿using System;
-using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Objects.Utils;
-
-namespace OrderFormAcceptanceTests.Objects.Pages
+﻿namespace OrderFormAcceptanceTests.Objects.Pages
 {
+    using System;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Objects.Utils;
+
     public static class OrganisationsOrdersDashboard
     {
         public static By PageTitle => CustomBy.DataTestId("dashboard-page-title");

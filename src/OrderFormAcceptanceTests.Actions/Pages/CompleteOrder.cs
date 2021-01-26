@@ -1,12 +1,13 @@
-﻿using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Utils;
-using System;
-
-namespace OrderFormAcceptanceTests.Actions.Pages
+﻿namespace OrderFormAcceptanceTests.Actions.Pages
 {
+    using System;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Actions.Utils;
+
     public class CompleteOrder : PageAction
     {
-        public CompleteOrder(IWebDriver driver) : base(driver)
+        public CompleteOrder(IWebDriver driver)
+            : base(driver)
         {
         }
 

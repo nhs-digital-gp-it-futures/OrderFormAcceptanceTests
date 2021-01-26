@@ -1,14 +1,15 @@
-﻿using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace OrderFormAcceptanceTests.Actions.Pages
+﻿namespace OrderFormAcceptanceTests.Actions.Pages
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Actions.Utils;
+
     public class PreviewOrderSummary : PageAction
     {
-        public PreviewOrderSummary(IWebDriver driver) : base(driver)
+        public PreviewOrderSummary(IWebDriver driver)
+            : base(driver)
         {
         }
 
@@ -19,7 +20,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             Driver.FindElement(Objects.Pages.PreviewOrderSummary.TopGetOrderSummaryLink)
                 .Click();
         }
-
 
         public bool TopGetOrderSummaryIsDisplayed()
         {
@@ -105,6 +105,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             return Driver.FindElement(Objects.Pages.PreviewOrderSummary.ItemId).Text;
         }
+
         public string GetItemName()
         {
             return Driver.FindElement(Objects.Pages.PreviewOrderSummary.ItemName).Text;
@@ -124,6 +125,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         {
             return Driver.FindElement(Objects.Pages.PreviewOrderSummary.ItemPrice).Text;
         }
+
         public string GetItemQuantity()
         {
             return Driver.FindElement(Objects.Pages.PreviewOrderSummary.ItemQuantity).Text;

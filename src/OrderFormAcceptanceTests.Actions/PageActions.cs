@@ -1,9 +1,9 @@
-﻿using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Collections;
-using OrderFormAcceptanceTests.Actions.Pages;
-
-namespace OrderFormAcceptanceTests.Actions
+﻿namespace OrderFormAcceptanceTests.Actions
 {
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Actions.Collections;
+    using OrderFormAcceptanceTests.Actions.Pages;
+
     public sealed class PageActions
     {
         public PageActions(IWebDriver driver)
@@ -18,10 +18,10 @@ namespace OrderFormAcceptanceTests.Actions
                 AdditionalServices = new AdditionalServices(driver),
                 CompleteOrder = new CompleteOrder(driver),
                 DeleteOrder = new DeleteOrder(driver),
-                PreviewOrderSummary = new PreviewOrderSummary(driver)
+                PreviewOrderSummary = new PreviewOrderSummary(driver),
             };
         }
 
-        public PageActionCollection PageActionCollection { get; set; }
+        public PageActionCollection PageActionCollection { get; }
     }
 }

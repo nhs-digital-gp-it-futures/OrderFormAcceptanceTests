@@ -1,21 +1,21 @@
-﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using Bogus;
-using FluentAssertions;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using OrderFormAcceptanceTests.TestData.Utils;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using Bogus;
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Utils;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public sealed class CatalogueSolutions : TestBase
     {
-        public CatalogueSolutions(UITest test, ScenarioContext context) : base(test, context)
+        public CatalogueSolutions(UITest test, ScenarioContext context)
+            : base(test, context)
         {
-
         }
 
         [Given(@"the Commencement date section is complete")]
@@ -55,7 +55,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"there is no Catalogue Solution in the order")]
         public void GivenThereIsNoCatalogueSolutionInTheOrder()
         {
-
             Context.Should().NotContainKey(ContextKeys.CreatedOrderItem);
 
             var order = (Order)Context[ContextKeys.CreatedOrder];
@@ -177,9 +176,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void ThenAllTheAvailablePricesForThatCatalogueSolutionArePresented()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("List price").Should().BeTrue();
-            var SolutionId = (string)Context[ContextKeys.ChosenSolutionId];
+            var solutionId = (string)Context[ContextKeys.ChosenSolutionId];
             var query = "Select count(*) FROM [dbo].[CataloguePrice] where CatalogueItemId=@SolutionId";
-            var expectedNumberOfPrices = SqlExecutor.Execute<int>(Test.BapiConnectionString, query, new { SolutionId }).Single();
+            var expectedNumberOfPrices = SqlExecutor.Execute<int>(Test.BapiConnectionString, query, new { solutionId }).Single();
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
         }
 
@@ -240,19 +239,19 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Then(@"the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form")]
         public void ThenTheNameOfTheSelectedCatalogueSolutionIsDisplayedOnTheCatalogueSolutionEditForm()
         {
-            var SolutionId = (string)Context[ContextKeys.ChosenSolutionId];
+            var solutionId = (string)Context[ContextKeys.ChosenSolutionId];
             var query = "Select Name FROM [dbo].[CatalogueItem] where CatalogueItemId=@SolutionId";
-            var expectedSolutionName = SqlExecutor.Execute<string>(Test.BapiConnectionString, query, new { SolutionId }).Single();
+            var expectedSolutionName = SqlExecutor.Execute<string>(Test.BapiConnectionString, query, new { solutionId }).Single();
             Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedSolutionName).Should().BeTrue();
         }
 
         [Then(@"the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form")]
         public void ThenTheSelectedServiceRecipientWithTheirODSCodeIsDisplayedOnTheCatalogueSolutionEditForm()
         {
-            var ChosenOdsCode = (string)Context[ContextKeys.ChosenOdsCode];
+            var chosenOdsCode = (string)Context[ContextKeys.ChosenOdsCode];
             var query = "Select Name FROM [dbo].[Organisations] where OdsCode=@ChosenOdsCode";
-            var expectedOrganisationName = SqlExecutor.Execute<string>(Test.IsapiConnectionString, query, new { ChosenOdsCode }).Single();
-            var expectedFormattedValue = string.Format("{0} ({1})", expectedOrganisationName, ChosenOdsCode);
+            var expectedOrganisationName = SqlExecutor.Execute<string>(Test.IsapiConnectionString, query, new { chosenOdsCode }).Single();
+            var expectedFormattedValue = string.Format("{0} ({1})", expectedOrganisationName, chosenOdsCode);
             Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedFormattedValue).Should().BeTrue();
         }
 
@@ -345,6 +344,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             {
                 new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             }
+
             ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 

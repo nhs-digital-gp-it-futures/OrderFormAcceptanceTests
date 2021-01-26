@@ -1,7 +1,7 @@
-﻿using OrderFormAcceptanceTests.TestData.Utils;
-
-namespace OrderFormAcceptanceTests.TestData
+﻿namespace OrderFormAcceptanceTests.TestData
 {
+    using OrderFormAcceptanceTests.TestData.Utils;
+
     public static class OrganisationInfo
     {
         public static void DeleteContactsForOrdersNoLongerInDb(string connectionString)

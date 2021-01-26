@@ -1,16 +1,13 @@
-﻿using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Utils;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace OrderFormAcceptanceTests.Actions.Pages
+﻿namespace OrderFormAcceptanceTests.Actions.Pages
 {
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Actions.Utils;
+
     public sealed class DeleteOrder : PageAction
     {
-        public DeleteOrder(IWebDriver driver) : base(driver)
+        public DeleteOrder(IWebDriver driver)
+            : base(driver)
         {
-
         }
 
         public void ClickDeleteButtonYes()

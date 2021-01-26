@@ -1,14 +1,15 @@
-﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public sealed class SupplierInformation : TestBase
     {
-        public SupplierInformation(UITest test, ScenarioContext context) : base(test, context)
+        public SupplierInformation(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 
@@ -204,7 +205,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             Test.Driver.Navigate().GoToUrl(currentUrl + "/supplier/search/select");
         }
 
-
         [Then(@"they are redirected to the Edit Supplier page")]
         public void ThenTheyAreRedirectedToTheEditSupplierPage()
         {
@@ -212,6 +212,5 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var currentUrl = Test.Driver.Url;
             currentUrl.Should().NotContain("/supplier/search");
         }
-
     }
 }

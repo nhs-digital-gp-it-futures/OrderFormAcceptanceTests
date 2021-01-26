@@ -1,20 +1,20 @@
-﻿using Bogus;
-using FluentAssertions;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using OrderFormAcceptanceTests.TestData.Utils;
-using System;
-using System.Linq;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
-    [Binding]
-    class AssociatedServices : TestBase
-    {
-        public AssociatedServices(UITest test, ScenarioContext context) : base(test, context)
-        {
+    using System;
+    using System.Linq;
+    using Bogus;
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Utils;
+    using TechTalk.SpecFlow;
 
+    [Binding]
+    internal sealed class AssociatedServices : TestBase
+    {
+        public AssociatedServices(UITest test, ScenarioContext context)
+            : base(test, context)
+        {
         }
 
         [Then(@"the User is able to manage the Associated Services section")]

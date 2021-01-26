@@ -1,12 +1,13 @@
-﻿using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Utils;
-using System;
-
-namespace OrderFormAcceptanceTests.Actions.Pages
+﻿namespace OrderFormAcceptanceTests.Actions.Pages
 {
+    using System;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Actions.Utils;
+
     public sealed class Homepage : PageAction
     {
-        public Homepage(IWebDriver driver) : base(driver)
+        public Homepage(IWebDriver driver)
+            : base(driver)
         {
         }
 
