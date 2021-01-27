@@ -1,15 +1,16 @@
-﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using System.Linq;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System.Linq;
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public sealed class DeleteOrder : TestBase
     {
-        public DeleteOrder(UITest test, ScenarioContext context) : base(test, context)
+        public DeleteOrder(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 

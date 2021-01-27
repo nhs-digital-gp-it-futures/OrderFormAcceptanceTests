@@ -1,19 +1,25 @@
-﻿using System;
-using System.Linq;
-using Bogus;
-using OrderFormAcceptanceTests.TestData.Utils;
-
-namespace OrderFormAcceptanceTests.TestData
+﻿namespace OrderFormAcceptanceTests.TestData
 {
+    using System;
+    using System.Linq;
+    using Bogus;
+    using OrderFormAcceptanceTests.TestData.Utils;
+
     public sealed class Organisation
     {
         public Guid OrganisationId { get; set; }
+
         public string Name { get; set; }
+
         public string Address { get; set; }
+
         public string OdsCode { get; set; }
+
         public string PrimaryRoleId { get; set; }
+
         public int CatalogueAgreementSigned { get; set; } = 0;
-        public DateTime LastUpdated { get; set; }        
+
+        public DateTime LastUpdated { get; set; }
 
         public Organisation RetrieveRandomOrganisationWithNoUsers(string connectionString)
         {

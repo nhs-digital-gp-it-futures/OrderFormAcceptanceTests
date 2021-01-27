@@ -1,7 +1,7 @@
-﻿using OpenQA.Selenium;
-
-namespace OrderFormAcceptanceTests.Actions.Utils
+﻿namespace OrderFormAcceptanceTests.Actions.Utils
 {
+    using OpenQA.Selenium;
+
     internal static class DriverExtensions
     {
         internal static bool ElementVisible(this IWebDriver driver, By selector)

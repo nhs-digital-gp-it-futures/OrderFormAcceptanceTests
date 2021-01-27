@@ -1,13 +1,13 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Remote;
-using System;
-using System.Diagnostics;
-using System.IO;
-
-namespace OrderFormAcceptanceTests.Steps.Utils
+﻿namespace OrderFormAcceptanceTests.Steps.Utils
 {
+    using System;
+    using System.Diagnostics;
+    using System.IO;
+    using OpenQA.Selenium;
+    using OpenQA.Selenium.Chrome;
+    using OpenQA.Selenium.Firefox;
+    using OpenQA.Selenium.Remote;
+
     public sealed class BrowserFactory
     {
         public BrowserFactory(string browser, string hubUrl)
@@ -22,14 +22,16 @@ namespace OrderFormAcceptanceTests.Steps.Utils
             _ = Enum.TryParse(browser, out BrowserTypes browserType);
 
             if (Debugger.IsAttached)
+            {
                 browserType = BrowserTypes.ChromeLocal;
+            }
 
             return browserType switch
             {
                 BrowserTypes.Chrome => ChromeDriver(hubUrl),
                 BrowserTypes.Firefox => FirefoxDriver(hubUrl),
                 BrowserTypes.ChromeLocal => LocalChromeDriver(),
-                _ => LocalChromeDriver()
+                _ => LocalChromeDriver(),
             };
         }
 
@@ -69,18 +71,15 @@ namespace OrderFormAcceptanceTests.Steps.Utils
             var options = new ChromeOptions();
             options.AddArguments("no-sandbox", "disable-dev-shm-usage", "ignore-certificate-errors");
             if (headless)
+            {
                 options.AddArguments("headless", "window-size=1920,1080");
+            }
             else
+            {
                 options.AddArguments("start-maximized", "auto-open-devtools-for-tabs");
+            }
 
             return options;
         }
-    }
-
-    internal enum BrowserTypes
-    {
-        Chrome,
-        Firefox,
-        ChromeLocal
     }
 }

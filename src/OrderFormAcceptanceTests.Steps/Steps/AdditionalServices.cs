@@ -1,16 +1,17 @@
-﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using System;
-using System.Linq;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System;
+    using System.Linq;
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public sealed class AdditionalServices : TestBase
     {
-        public AdditionalServices(UITest test, ScenarioContext context) : base(test, context)
+        public AdditionalServices(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 

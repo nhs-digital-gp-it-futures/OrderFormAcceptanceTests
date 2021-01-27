@@ -1,41 +1,55 @@
-﻿using Bogus;
-using FluentAssertions;
-using OrderFormAcceptanceTests.TestData.Utils;
-using System.Linq;
-
-namespace OrderFormAcceptanceTests.TestData
+﻿namespace OrderFormAcceptanceTests.TestData
 {
+    using System.Linq;
+    using Bogus;
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.TestData.Utils;
+
     public sealed class Contact
     {
         public int? ContactId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
 
-        public void Equals(Contact contact)
-        {
-            this.FirstName.Should().BeEquivalentTo(contact.FirstName);
-            this.LastName.Should().BeEquivalentTo(contact.LastName);
-            this.Email.Should().BeEquivalentTo(contact.Email);
-            this.Phone.Should().BeEquivalentTo(contact.Phone);
-        }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string Email { get; set; }
+
+        public string Phone { get; set; }
 
         public static Contact Generate()
         {
-            Faker faker = new Faker();
+            Faker faker = new();
             return new Contact()
             {
                 FirstName = faker.Name.FirstName(),
                 LastName = faker.Name.LastName(),
                 Email = faker.Internet.Email(),
-                Phone = faker.Phone.PhoneNumber()
+                Phone = faker.Phone.PhoneNumber(),
             };
+        }
+
+        public static void DeleteOrphanedContacts(string connectionString)
+        {
+            var query = @"DELETE FROM dbo.[Contact] 
+                        WHERE ContactId NOT IN (
+	                        (SELECT SupplierContactId FROM dbo.[Order]) 
+	                        UNION 
+	                        (SELECT OrganisationContactId FROM dbo.[Order])
+                        );";
+            SqlExecutor.Execute<Contact>(connectionString, query, null);
+        }
+
+        public void Equals(Contact contact)
+        {
+            FirstName.Should().BeEquivalentTo(contact.FirstName);
+            LastName.Should().BeEquivalentTo(contact.LastName);
+            Email.Should().BeEquivalentTo(contact.Email);
+            Phone.Should().BeEquivalentTo(contact.Phone);
         }
 
         public int? Create(string connectionString)
         {
-
             var query = @"INSERT INTO [dbo].[Contact]
                                 (FirstName,
                                  LastName,
@@ -50,8 +64,8 @@ namespace OrderFormAcceptanceTests.TestData
                         );
     
                         SELECT ContactId = SCOPE_IDENTITY()";
-            this.ContactId = SqlExecutor.Execute<int>(connectionString, query, this).Single();
-            return this.ContactId;
+            ContactId = SqlExecutor.Execute<int>(connectionString, query, this).Single();
+            return ContactId;
         }
 
         public Contact Retrieve(string connectionString)
@@ -75,17 +89,6 @@ namespace OrderFormAcceptanceTests.TestData
         {
             var query = @"DELETE FROM [dbo].[Contact] WHERE ContactId=@ContactId";
             SqlExecutor.Execute<Contact>(connectionString, query, this);
-        }
-
-        public static void DeleteOrphanedContacts(string connectionString)
-        {
-            var query = @"DELETE FROM dbo.[Contact] 
-                        WHERE ContactId NOT IN (
-	                        (SELECT SupplierContactId FROM dbo.[Order]) 
-	                        UNION 
-	                        (SELECT OrganisationContactId FROM dbo.[Order])
-                        );";
-            SqlExecutor.Execute<Contact>(connectionString, query, null);
         }
     }
 }

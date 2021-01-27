@@ -1,31 +1,50 @@
-﻿using OrderFormAcceptanceTests.TestData.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace OrderFormAcceptanceTests.TestData
+﻿namespace OrderFormAcceptanceTests.TestData
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using OrderFormAcceptanceTests.TestData.Utils;
+
     public sealed class OrderItem
     {
         public int OrderItemId { get; set; }
+
         public string OrderId { get; set; }
+
         public string CatalogueItemId { get; set; }
+
         public CatalogueItemType CatalogueItemTypeId { get; set; }
+
         public string CatalogueItemName { get; set; }
+
         public string ParentCatalogueItemId { get; set; }
+
         public string OdsCode { get; set; }
+
         public ProvisioningType ProvisioningTypeId { get; set; }
+
         public int CataloguePriceTypeId { get; set; }
+
         public string PricingUnitTierName { get; set; }
+
         public string PricingUnitName { get; set; }
+
         public string PricingUnitDescription { get; set; }
+
         public int? TimeUnitId { get; set; }
+
         public string CurrencyCode { get; set; }
+
         public int Quantity { get; set; }
+
         public TimeUnit? EstimationPeriodId { get; set; }
+
         public DateTime? DeliveryDate { get; set; }
+
         public decimal Price { get; set; }
+
         public DateTime Created { get; set; }
+
         public DateTime LastUpdated { get; set; }
 
         public static OrderItem GenerateOrderItemWithFlatPricedVariableOnDemand(Order order)
@@ -49,7 +68,7 @@ namespace OrderFormAcceptanceTests.TestData
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 1001.010M,
                 Created = DateTime.Now,
-                LastUpdated = DateTime.Now
+                LastUpdated = DateTime.Now,
             };
         }
 
@@ -74,7 +93,7 @@ namespace OrderFormAcceptanceTests.TestData
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 99.99M,
                 Created = DateTime.Now,
-                LastUpdated = DateTime.Now
+                LastUpdated = DateTime.Now,
             };
         }
 
@@ -99,7 +118,7 @@ namespace OrderFormAcceptanceTests.TestData
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 7.00M,
                 Created = DateTime.Now,
-                LastUpdated = DateTime.Now
+                LastUpdated = DateTime.Now,
             };
         }
 
@@ -124,7 +143,7 @@ namespace OrderFormAcceptanceTests.TestData
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 199.990M,
                 Created = DateTime.Now,
-                LastUpdated = DateTime.Now
+                LastUpdated = DateTime.Now,
             };
         }
 
@@ -149,7 +168,7 @@ namespace OrderFormAcceptanceTests.TestData
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 150.030M,
                 Created = DateTime.Now,
-                LastUpdated = DateTime.Now
+                LastUpdated = DateTime.Now,
             };
         }
 
@@ -174,7 +193,7 @@ namespace OrderFormAcceptanceTests.TestData
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 99.99M,
                 Created = DateTime.Now,
-                LastUpdated = DateTime.Now
+                LastUpdated = DateTime.Now,
             };
         }
 
@@ -199,7 +218,7 @@ namespace OrderFormAcceptanceTests.TestData
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 150.100M,
                 Created = DateTime.Now,
-                LastUpdated = DateTime.Now
+                LastUpdated = DateTime.Now,
             };
         }
 
@@ -224,7 +243,7 @@ namespace OrderFormAcceptanceTests.TestData
                 DeliveryDate = DateTime.Now.AddYears(1),
                 Price = 150.000M,
                 Created = DateTime.Now,
-                LastUpdated = DateTime.Now
+                LastUpdated = DateTime.Now,
             };
         }
 
@@ -249,8 +268,20 @@ namespace OrderFormAcceptanceTests.TestData
                 DeliveryDate = null,
                 Price = 150.000M,
                 Created = DateTime.Now,
-                LastUpdated = DateTime.Now
+                LastUpdated = DateTime.Now,
             };
+        }
+
+        public static IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string orderId, int catalogueItemTypeId = 1)
+        {
+            var query = "SELECT * from [dbo].[OrderItem] WHERE OrderId=@orderId AND CatalogueItemTypeId=@catalogueItemTypeId";
+            return SqlExecutor.Execute<OrderItem>(connectionString, query, new { orderId, catalogueItemTypeId });
+        }
+
+        public static void DeleteAllOrderItemsForOrderId(string connectionString, string orderId)
+        {
+            var query = @"DELETE FROM [dbo].[OrderItem] WHERE OrderId=@orderId";
+            SqlExecutor.Execute<Order>(connectionString, query, new { orderId });
         }
 
         public int Create(string connectionString)
@@ -298,14 +329,8 @@ namespace OrderFormAcceptanceTests.TestData
                         );
 
                         SELECT OrderItemId = SCOPE_IDENTITY()";
-            this.OrderItemId = SqlExecutor.Execute<int>(connectionString, query, this).Single();
-            return this.OrderItemId;
-        }
-
-        public static IEnumerable<OrderItem> RetrieveByOrderId(string connectionString, string OrderId, int CatalogueItemTypeId = 1)
-        {
-            var query = "SELECT * from [dbo].[OrderItem] WHERE OrderId=@orderId AND CatalogueItemTypeId=@catalogueItemTypeId";
-            return SqlExecutor.Execute<OrderItem>(connectionString, query, new { OrderId, CatalogueItemTypeId });
+            OrderItemId = SqlExecutor.Execute<int>(connectionString, query, this).Single();
+            return OrderItemId;
         }
 
         public void Update(string connectionString)
@@ -343,12 +368,6 @@ namespace OrderFormAcceptanceTests.TestData
             SqlExecutor.Execute<OrderItem>(connectionString, query, this);
         }
 
-        public static void DeleteAllOrderItemsForOrderId(string connectionString, string orderId)
-        {
-            var query = @"DELETE FROM [dbo].[OrderItem] WHERE OrderId=@orderId";
-            SqlExecutor.Execute<Order>(connectionString, query, new { orderId });
-        }
-
         public string GetEstimationPeriod(string connectionString)
         {
             const string query = @"Select [Description] FROM [dbo].[TimeUnit] WHERE TimeUnitId=@EstimationPeriodId";
@@ -368,8 +387,8 @@ namespace OrderFormAcceptanceTests.TestData
 
         private decimal GetItemCostOffset()
         {
-            if (ProvisioningTypeId == ProvisioningType.OnDemand
-                && EstimationPeriodId == TimeUnit.Month ||
+            if ((ProvisioningTypeId == ProvisioningType.OnDemand
+                 && EstimationPeriodId == TimeUnit.Month) ||
                 (ProvisioningTypeId == ProvisioningType.Declarative
                  && (CatalogueItemTypeId == CatalogueItemType.Solution
                      || CatalogueItemTypeId == CatalogueItemType.AdditionalService)))

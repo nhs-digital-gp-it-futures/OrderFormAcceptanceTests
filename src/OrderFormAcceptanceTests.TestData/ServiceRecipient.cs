@@ -1,14 +1,15 @@
-﻿using OrderFormAcceptanceTests.TestData.Utils;
-using System.Collections.Generic;
-
-namespace OrderFormAcceptanceTests.TestData
+﻿namespace OrderFormAcceptanceTests.TestData
 {
+    using System.Collections.Generic;
+    using OrderFormAcceptanceTests.TestData.Utils;
+
     public sealed class ServiceRecipient
     {
         public string OrderId { get; set; }
-        public string Name { get; set; }
-        public string OdsCode { get; set; }
 
+        public string Name { get; set; }
+
+        public string OdsCode { get; set; }
 
         public static ServiceRecipient Generate(string orderId, string odsCode = "00C", string name = "NHS Darlington CCG")
         {
@@ -16,8 +17,21 @@ namespace OrderFormAcceptanceTests.TestData
             {
                 OrderId = orderId,
                 Name = name,
-                OdsCode = odsCode
+                OdsCode = odsCode,
             };
+        }
+
+        public static IEnumerable<ServiceRecipient> RetrieveByOrderId(string connectionString, string orderId)
+        {
+            var query = "SELECT * from [dbo].[ServiceRecipient] WHERE OrderId=@orderId";
+
+            return SqlExecutor.Execute<ServiceRecipient>(connectionString, query, new { orderId });
+        }
+
+        public static void DeleteAllServiceRecipientsForOrderId(string connectionString, string orderId)
+        {
+            var query = @"DELETE FROM [dbo].[ServiceRecipient] WHERE OrderId=@orderId";
+            SqlExecutor.Execute<Order>(connectionString, query, new { orderId });
         }
 
         public void Create(string connectionString)
@@ -43,13 +57,6 @@ namespace OrderFormAcceptanceTests.TestData
             return SqlExecutor.Execute<ServiceRecipient>(connectionString, query, this);
         }
 
-        public static IEnumerable<ServiceRecipient> RetrieveByOrderId(string connectionString, string orderId)
-        {
-            var query = "SELECT * from [dbo].[ServiceRecipient] WHERE OrderId=@orderId";
-
-            return SqlExecutor.Execute<ServiceRecipient>(connectionString, query, new { orderId });
-        }
-
         public void Update(string connectionString)
         {
             var query = @"UPDATE [dbo].[ServiceRecipient]
@@ -65,12 +72,6 @@ namespace OrderFormAcceptanceTests.TestData
         {
             var query = @"DELETE FROM [dbo].[ServiceRecipient] WHERE OrderId=@OrderId";
             SqlExecutor.Execute<Order>(connectionString, query, this);
-        }
-
-        public static void DeleteAllServiceRecipientsForOrderId(string connectionString, string orderId)
-        {
-            var query = @"DELETE FROM [dbo].[ServiceRecipient] WHERE OrderId=@orderId";
-            SqlExecutor.Execute<Order>(connectionString, query, new { orderId });
         }
     }
 }

@@ -1,52 +1,29 @@
-﻿using Bogus;
-using FluentAssertions;
-using OrderFormAcceptanceTests.TestData.Utils;
-using System.Linq;
-
-
-namespace OrderFormAcceptanceTests.TestData
+﻿namespace OrderFormAcceptanceTests.TestData
 {
+    using System.Linq;
+    using Bogus;
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.TestData.Utils;
+
     public sealed class Address
     {
         public int? AddressId { get; set; }
+
         public string Line1 { get; set; }
+
         public string Line2 { get; set; }
+
         public string Line3 { get; set; }
+
         public string Line4 { get; set; }
+
         public string Town { get; set; }
+
         public string County { get; set; }
+
         public string Postcode { get; set; }
+
         public string Country { get; set; }
-
-        public void Equals(Address address)
-        {
-            this.Line1 = this.Line1 == "" ? null : this.Line1;
-            this.Line2 = this.Line2 == "" ? null : this.Line2;
-            this.Line3 = this.Line3 == "" ? null : this.Line3;
-            this.Line4 = this.Line4 == "" ? null : this.Line4;
-            this.Town = this.Town == "" ? null : this.Town;
-            this.County = this.County == "" ? null : this.County;
-            this.Postcode = this.Postcode == "" ? null : this.Postcode;
-            this.Country = this.Country == "" ? null : this.Country;
-
-            address.Line1 = address.Line1 == "" ? null : address.Line1;
-            address.Line2 = address.Line2 == "" ? null : address.Line2;
-            address.Line3 = address.Line3 == "" ? null : address.Line3;
-            address.Line4 = address.Line4 == "" ? null : address.Line4;
-            address.Town = address.Town == "" ? null : address.Town;
-            address.County = address.County == "" ? null : address.County;
-            address.Postcode = address.Postcode == "" ? null : address.Postcode;
-            address.Country = address.Country == "" ? null : address.Country;
-
-            this.Line1.Should().BeEquivalentTo(address.Line1);
-            this.Line2.Should().BeEquivalentTo(address.Line2);
-            this.Line3.Should().BeEquivalentTo(address.Line3);
-            this.Line4.Should().BeEquivalentTo(address.Line4);
-            this.Town.Should().BeEquivalentTo(address.Town);
-            this.County.Should().BeEquivalentTo(address.County);
-            this.Postcode.Should().BeEquivalentTo(address.Postcode);
-            this.Country.Should().BeEquivalentTo(address.Country);
-        }
 
         public static Address Generate()
         {
@@ -58,8 +35,49 @@ namespace OrderFormAcceptanceTests.TestData
                 Town = randomAddress.City(),
                 County = randomAddress.County(),
                 Postcode = randomAddress.ZipCode(),
-                Country = randomAddress.Country()
+                Country = randomAddress.Country(),
             };
+        }
+
+        public static void DeleteOrphanedAddresses(string connectionString)
+        {
+            var query = @"DELETE FROM dbo.[Address] 
+                            WHERE AddressId NOT IN(
+                            (SELECT OrganisationAddressId FROM dbo.[Order])
+                            UNION
+                            (SELECT SupplierAddressId FROM dbo.[Order])
+                            );";
+            SqlExecutor.Execute<Address>(connectionString, query, null);
+        }
+
+        public void Equals(Address address)
+        {
+            Line1 = Line1 == string.Empty ? null : Line1;
+            Line2 = Line2 == string.Empty ? null : Line2;
+            Line3 = Line3 == string.Empty ? null : Line3;
+            Line4 = Line4 == string.Empty ? null : Line4;
+            Town = Town == string.Empty ? null : Town;
+            County = County == string.Empty ? null : County;
+            Postcode = Postcode == string.Empty ? null : Postcode;
+            Country = Country == string.Empty ? null : Country;
+
+            address.Line1 = address.Line1 == string.Empty ? null : address.Line1;
+            address.Line2 = address.Line2 == string.Empty ? null : address.Line2;
+            address.Line3 = address.Line3 == string.Empty ? null : address.Line3;
+            address.Line4 = address.Line4 == string.Empty ? null : address.Line4;
+            address.Town = address.Town == string.Empty ? null : address.Town;
+            address.County = address.County == string.Empty ? null : address.County;
+            address.Postcode = address.Postcode == string.Empty ? null : address.Postcode;
+            address.Country = address.Country == string.Empty ? null : address.Country;
+
+            Line1.Should().BeEquivalentTo(address.Line1);
+            Line2.Should().BeEquivalentTo(address.Line2);
+            Line3.Should().BeEquivalentTo(address.Line3);
+            Line4.Should().BeEquivalentTo(address.Line4);
+            Town.Should().BeEquivalentTo(address.Town);
+            County.Should().BeEquivalentTo(address.County);
+            Postcode.Should().BeEquivalentTo(address.Postcode);
+            Country.Should().BeEquivalentTo(address.Country);
         }
 
         public int? Create(string connectionString)
@@ -117,17 +135,6 @@ namespace OrderFormAcceptanceTests.TestData
         {
             var query = @"DELETE FROM [dbo].[Address] WHERE AddressId=@AddressId";
             SqlExecutor.Execute<Address>(connectionString, query, this);
-        }
-
-        public static void DeleteOrphanedAddresses(string connectionString)
-        {
-            var query = @"DELETE FROM dbo.[Address] 
-                            WHERE AddressId NOT IN(
-                            (SELECT OrganisationAddressId FROM dbo.[Order])
-                            UNION
-                            (SELECT SupplierAddressId FROM dbo.[Order])
-                            );";
-            SqlExecutor.Execute<Address>(connectionString, query, null);
         }
     }
 }

@@ -1,14 +1,15 @@
-﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public class Login_Authorisation : TestBase
     {
-        public Login_Authorisation(UITest test, ScenarioContext context) : base(test, context)
+        public Login_Authorisation(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 

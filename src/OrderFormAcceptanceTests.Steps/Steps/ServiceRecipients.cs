@@ -1,14 +1,15 @@
-﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public sealed class ServiceRecipients : TestBase
     {
-        public ServiceRecipients(UITest test, ScenarioContext context) : base(test, context)
+        public ServiceRecipients(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 
@@ -58,7 +59,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [Given(@"the Call Off Ordering Party is selected")]
         public void GivenTheCallOffOrderingPartyIsSelected()
         {
-            //this is an action to select the service recipient, one about is an assertion that the recipient is selected
+            // this is an action to select the service recipient, one about is an assertion that the recipient is selected
             Test.Pages.OrderForm.ClickCheckbox();
         }
 

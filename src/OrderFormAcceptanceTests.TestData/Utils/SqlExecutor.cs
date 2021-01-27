@@ -1,9 +1,9 @@
-﻿using Dapper;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-
-namespace OrderFormAcceptanceTests.TestData.Utils
+﻿namespace OrderFormAcceptanceTests.TestData.Utils
 {
+    using System.Collections.Generic;
+    using System.Data.SqlClient;
+    using Dapper;
+
     public static class SqlExecutor
     {
         public static IEnumerable<T> Execute<T>(string connectionString, string query, object param)

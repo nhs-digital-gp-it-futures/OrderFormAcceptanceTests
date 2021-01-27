@@ -1,11 +1,12 @@
-﻿using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Utils;
-
-namespace OrderFormAcceptanceTests.Actions.Pages
+﻿namespace OrderFormAcceptanceTests.Actions.Pages
 {
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Actions.Utils;
+
     public class Authentication : PageAction
     {
-        public Authentication(IWebDriver driver) : base(driver)
+        public Authentication(IWebDriver driver)
+            : base(driver)
         {
         }
 
@@ -14,6 +15,11 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             EnterUsername(username);
             EnterPassword(password);
             Driver.FindElement(Objects.Pages.Login.LoginButton).Click();
+        }
+
+        public void PageDisplayed()
+        {
+            Wait.Until(s => s.FindElements(Objects.Pages.Login.Username).Count == 1);
         }
 
         private void EnterPassword(string password)
@@ -34,12 +40,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             usernameInput.SendKeys(Keys.Delete);
 
             Driver.EnterTextViaJs(Wait, Objects.Pages.Login.Username, username);
-            Wait.Until(d => d.FindElement(Objects.Pages.Login.Username).GetAttribute("value") != "");
-        }
-
-        public void PageDisplayed()
-        {
-            Wait.Until(s => s.FindElements(Objects.Pages.Login.Username).Count == 1);
+            Wait.Until(d => d.FindElement(Objects.Pages.Login.Username).GetAttribute("value") != string.Empty);
         }
     }
 }

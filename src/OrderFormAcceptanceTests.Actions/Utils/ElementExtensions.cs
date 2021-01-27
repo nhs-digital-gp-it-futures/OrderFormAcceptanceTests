@@ -1,9 +1,9 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
-
-namespace OrderFormAcceptanceTests.Actions.Utils
+﻿namespace OrderFormAcceptanceTests.Actions.Utils
 {
+    using System;
+    using OpenQA.Selenium;
+    using OpenQA.Selenium.Support.UI;
+
     public static class ElementExtensions
     {
         public static bool ContainsElement(this IWebElement element, By message)
@@ -28,19 +28,24 @@ namespace OrderFormAcceptanceTests.Actions.Utils
         /// <param name="elementBy"></param>
         /// <param name="value">default is empty string</param>
         /// <param name="index">default is 0</param>
-        public static void EnterTextViaJs(this IWebDriver driver, WebDriverWait wait, By elementBy, string value = "",
+        public static void EnterTextViaJs(
+            this IWebDriver driver,
+            WebDriverWait wait,
+            By elementBy,
+            string value = "",
             int index = 0)
         {
             wait.Until(s => s.FindElements(elementBy)[index].Enabled);
-            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].value=arguments[1];",
-                driver.FindElements(elementBy)[index], value);
+            ((IJavaScriptExecutor)driver).ExecuteScript(
+                "arguments[0].value=arguments[1];",
+                driver.FindElements(elementBy)[index],
+                value);
         }
 
         public static void ForJsToComplete(this WebDriverWait wait)
         {
             wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
         }
-
 
         internal static Func<IWebDriver, bool> InvisibilityOfElement(By locator)
         {
@@ -53,8 +58,8 @@ namespace OrderFormAcceptanceTests.Actions.Utils
                 }
                 catch (NoSuchElementException)
                 {
-                    // Returns true because the element is not present in DOM. 
-                    //The try block checks if the element is present but is invisible.
+                    // Returns true because the element is not present in DOM.
+                    // The try block checks if the element is present but is invisible.
                     return true;
                 }
                 catch (StaleElementReferenceException)
@@ -73,7 +78,10 @@ namespace OrderFormAcceptanceTests.Actions.Utils
                 try
                 {
                     if (element != null && element.Enabled)
+                    {
                         return element;
+                    }
+
                     return null;
                 }
                 catch (StaleElementReferenceException)

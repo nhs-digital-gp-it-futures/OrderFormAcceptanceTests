@@ -1,11 +1,11 @@
-﻿using Bogus;
-using OrderFormAcceptanceTests.TestData.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace OrderFormAcceptanceTests.TestData
+﻿namespace OrderFormAcceptanceTests.TestData
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Bogus;
+    using OrderFormAcceptanceTests.TestData.Utils;
+
     public sealed class Order
     {
         public string OrderId { get; set; }
@@ -58,20 +58,6 @@ namespace OrderFormAcceptanceTests.TestData
 
         public int IsDeleted { get; set; }
 
-        public Order Retrieve(string connectionString)
-        {
-            var query = "SELECT * from [dbo].[Order] WHERE OrderId=@orderId";
-
-            return SqlExecutor.Execute<Order>(connectionString, query, this).Single();
-        }
-
-        public IEnumerable<int> GetContactIdsForOrder(string connectionString)
-        {
-            var query = "(SELECT OrganisationContactId FROM dbo.[Order] WHERE OrderId = @orderId) " +
-                "UNION (SELECT SupplierContactId FROM dbo.[Order] WHERE OrderId = @orderId);";
-            return SqlExecutor.Execute<int>(connectionString, query, this);
-        }
-
         public static Order Generate(Organisation organisation = null)
         {
             var faker = new Faker();
@@ -92,8 +78,22 @@ namespace OrderFormAcceptanceTests.TestData
                 LastUpdated = DateTime.Now,
                 LastUpdatedBy = Guid.Parse("BC0A6D7B-B44B-436D-8916-1E64EBCAAE64"),
                 LastUpdatedByName = "Alice Smith",
-                IsDeleted = 0
+                IsDeleted = 0,
             };
+        }
+
+        public Order Retrieve(string connectionString)
+        {
+            var query = "SELECT * from [dbo].[Order] WHERE OrderId=@orderId";
+
+            return SqlExecutor.Execute<Order>(connectionString, query, this).Single();
+        }
+
+        public IEnumerable<int> GetContactIdsForOrder(string connectionString)
+        {
+            var query = "(SELECT OrganisationContactId FROM dbo.[Order] WHERE OrderId = @orderId) " +
+                "UNION (SELECT SupplierContactId FROM dbo.[Order] WHERE OrderId = @orderId);";
+            return SqlExecutor.Execute<int>(connectionString, query, this);
         }
 
         public void Create(string connectionString)

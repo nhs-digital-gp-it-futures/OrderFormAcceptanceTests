@@ -4,5 +4,5 @@
 #if DEBUG
 [assembly: LevelOfParallelism(4)]
 #else
-    [assembly: LevelOfParallelism(2)]
+[assembly: LevelOfParallelism(2)]
 #endif

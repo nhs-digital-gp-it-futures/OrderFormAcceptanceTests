@@ -1,19 +1,19 @@
-﻿using FluentAssertions;
-using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Actions.Utils;
-using OrderFormAcceptanceTests.TestData;
-using OrderFormAcceptanceTests.TestData.Information;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using OrderFormAcceptanceTests.Objects.Utils;
-
-namespace OrderFormAcceptanceTests.Actions.Pages
+﻿namespace OrderFormAcceptanceTests.Actions.Pages
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using FluentAssertions;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Actions.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Information;
+
     public class OrderForm : PageAction
     {
-        public OrderForm(IWebDriver driver) : base(driver)
+        public OrderForm(IWebDriver driver)
+            : base(driver)
         {
         }
 
@@ -25,13 +25,14 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 string loggedInText = Driver.FindElement(Objects.Pages.Common.LoggedInDisplayName).Text;
                 string displayName = loggedInText.Split(":")[1].Split("for")[0].Trim();
                 string organisationName = loggedInText.Split("for")[1].Trim();
-                return displayName != "" && organisationName != "";
+                return displayName != string.Empty && organisationName != string.Empty;
             }
             catch
             {
                 return false;
             }
         }
+
         public bool FooterDisplayed()
         {
             return Driver.FindElements(Objects.Pages.Common.Footer).Count == 1;
@@ -158,14 +159,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 }
             }
 
-            if (string.IsNullOrEmpty(selectedSupplier)) throw new NullReferenceException(nameof(selectedSupplier));
+            if (string.IsNullOrEmpty(selectedSupplier))
+            {
+                throw new NullReferenceException(nameof(selectedSupplier));
+            }
 
             suppliers.Single(s => s.Text == selectedSupplier).Click();
-        }
-
-        private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
-        {
-            return Driver.FindElements(Objects.Pages.OrderForm.SupplierOptionsLabels);
         }
 
         public bool CompleteOrderButtonIsDisabled()
@@ -231,7 +230,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool EditDescriptionSectionDisplayed()
         {
-
             try
             {
                 Wait.Until(d => SectionIsDisplayed("Description"));
@@ -250,7 +248,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
 
         public bool EditCallOffOrderingPartySectionDisplayed()
         {
-
             try
             {
                 Wait.Until(d => SectionIsDisplayed("Call-Off Ordering"));
@@ -298,7 +295,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
             {
                 return false;
             }
-
         }
 
         public void ClickEditSupplier()
@@ -423,7 +419,10 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 var notEditable = Driver.FindElement(Objects.Pages.OrderForm.OrganisationOdsCode).TagName == "div";
                 return displayed && notEditable;
             }
-            catch { return false; }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool OrganisationNameDisplayedAndNotEditable()
@@ -434,8 +433,12 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 var notEditable = Driver.FindElement(Objects.Pages.OrderForm.OrganisationName).TagName == "div";
                 return displayed && notEditable;
             }
-            catch { return false; }
+            catch
+            {
+                return false;
+            }
         }
+
         public bool AddressDisplayedAndNotEditable()
         {
             try
@@ -450,7 +453,10 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 var postcodeNotEditable = Driver.FindElement(Objects.Pages.OrderForm.AddressPostcode).TagName == "div";
                 return lineDisplayed && lineNotEditable && townDisplayed && townNotEditable && countyDisplayed && countyNotEditable && postcodeDisplayed && postcodeNotEditable;
             }
-            catch { return false; }
+            catch
+            {
+                return false;
+            }
         }
 
         public string GetOdsCode()
@@ -479,7 +485,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 Town = Driver.FindElement(Objects.Pages.OrderForm.AddressTown).Text,
                 County = Driver.FindElement(Objects.Pages.OrderForm.AddressCounty).Text,
                 Postcode = Driver.FindElement(Objects.Pages.OrderForm.AddressPostcode).Text,
-                Country = Driver.FindElement(Objects.Pages.OrderForm.AddressCountry).Text
+                Country = Driver.FindElement(Objects.Pages.OrderForm.AddressCountry).Text,
             };
         }
 
@@ -504,7 +510,7 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 FirstName = Driver.FindElement(Objects.Pages.OrderForm.ContactFirstName).GetAttribute("value"),
                 LastName = Driver.FindElement(Objects.Pages.OrderForm.ContactLastName).GetAttribute("value"),
                 Email = Driver.FindElement(Objects.Pages.OrderForm.ContactEmail).GetAttribute("value"),
-                Phone = Driver.FindElement(Objects.Pages.OrderForm.ContactTelephone).GetAttribute("value")
+                Phone = Driver.FindElement(Objects.Pages.OrderForm.ContactTelephone).GetAttribute("value"),
             };
         }
 
@@ -728,7 +734,6 @@ namespace OrderFormAcceptanceTests.Actions.Pages
                 quantity.Clear();
                 quantity.SendKeys(value);
             }
-            
         }
 
         public string GetQuantity()
@@ -860,8 +865,13 @@ namespace OrderFormAcceptanceTests.Actions.Pages
         public bool SectionIsDisplayed(string text)
         {
             var titles = Driver.FindElements(Objects.Pages.OrderForm.SectionDescription);
-            var selectedSection = titles.Where(s=>s.Text.Contains(text, StringComparison.OrdinalIgnoreCase));
+            var selectedSection = titles.Where(s => s.Text.Contains(text, StringComparison.OrdinalIgnoreCase));
             return selectedSection.Any();
+        }
+
+        private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
+        {
+            return Driver.FindElements(Objects.Pages.OrderForm.SupplierOptionsLabels);
         }
     }
 }

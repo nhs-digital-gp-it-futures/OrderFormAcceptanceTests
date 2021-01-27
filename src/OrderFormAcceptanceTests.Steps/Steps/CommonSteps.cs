@@ -1,21 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Bogus;
-using FluentAssertions;
-using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Bogus;
+    using FluentAssertions;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public sealed class CommonSteps : TestBase
     {
-        public CommonSteps(UITest test, ScenarioContext context) : base(test, context)
+        public CommonSteps(UITest test, ScenarioContext context)
+            : base(test, context)
         {
+        }
+
+        [Then(@"the Order is deleted")]
+        [Given(@"the User has not completed the Order")]
+        [Given(@"no Funding Source option is selected")]
+        [StepDefinition(@"the Associated Service is saved")]
+        [Then(@"the Associated Service is not saved")]
+        [Given(@"no Associated Service price is selected")]
+        [Then(@".* section is not saved")]
+        [Then(@"the Catalogue Solution is not saved")]
+        [StepDefinition(@"the Catalogue Solution is saved")]
+        [Given(@"no Supplier is selected")]
+        [Then("the Commencement Date information is not saved")]
+        [Given(@"the Call Off Ordering Party is not selected")]
+        [Given(@"the User chooses not to add a Catalogue Solution")]
+        [Given(@"no Catalogue Solution is selected")]
+        [Given(@"no Catalogue Solution price is selected")]
+        [StepDefinition(@"no Service Recipient is selected")]
+        [Given(@"there are no Catalogue Solution items in the order")]
+        [Given(@"no Additional Service is selected")]
+        [StepDefinition(@"there is no Additional Service added to the order")]
+        [Then("the Additional Service price is not saved")]
+        [When(@"there is no Associated Service added to the order")]
+        [Given(@"the User chooses not to add an Associated Service")]
+        [Given(@"no Associated Service is selected")]
+        [Then("the Additional Service is not saved")]
+        public static void DoNothing()
+        {
+            // do nothing
+        }
+
+        public static void AssertListOfStringsIsInAscendingOrder(IEnumerable<string> stringList)
+        {
+            var hexList = stringList
+                .Select(s => Encoding.UTF8.GetBytes(s)) // Convert to byte[]
+                .Select(h => BitConverter.ToString(h)) // convert byte[] to hex string
+                .Select(r => r.Replace("-", string.Empty)) // remove any '-' characters
+                .ToList();
+            hexList.Should().BeInAscendingOrder();
         }
 
         [Given(@"that a buyer user has logged in")]
@@ -49,42 +89,13 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         [When(@"the User has not entered a Supplier search criterion")]
         public void GivenMandatoryDataAreMissing()
         {
-            //clear fields
-            //var listOfTextAreas = Test.Driver.FindElements(By.TagName("textarea"));
+            // clear fields
+            // var listOfTextAreas = Test.Driver.FindElements(By.TagName("textarea"));
             var listOfInputs = Test.Driver.FindElements(By.ClassName("nhsuk-input"));
             foreach (var element in listOfInputs)
             {
                 element.Clear();
             }
-        }
-
-        [Then(@"the Order is deleted")]
-        [Given(@"the User has not completed the Order")]
-        [Given(@"no Funding Source option is selected")]
-        [StepDefinition(@"the Associated Service is saved")]
-        [Then(@"the Associated Service is not saved")]
-        [Given(@"no Associated Service price is selected")]
-        [Then(@".* section is not saved")]
-        [Then(@"the Catalogue Solution is not saved")]
-        [StepDefinition(@"the Catalogue Solution is saved")]
-        [Given(@"no Supplier is selected")]
-        [Then("the Commencement Date information is not saved")]
-        [Given(@"the Call Off Ordering Party is not selected")]
-        [Given(@"the User chooses not to add a Catalogue Solution")]
-        [Given(@"no Catalogue Solution is selected")]
-        [Given(@"no Catalogue Solution price is selected")]
-        [StepDefinition(@"no Service Recipient is selected")]
-        [Given(@"there are no Catalogue Solution items in the order")]
-        [Given(@"no Additional Service is selected")]
-        [StepDefinition(@"there is no Additional Service added to the order")]
-        [Then("the Additional Service price is not saved")]
-        [When(@"there is no Associated Service added to the order")]
-        [Given(@"the User chooses not to add an Associated Service")]
-        [Given(@"no Associated Service is selected")]
-        [Then("the Additional Service is not saved")]
-        public static void DoNothing()
-        {
-            //do nothing
         }
 
         [Given(@"an incomplete order exists")]
@@ -103,7 +114,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             var organisation = (Organisation)Context[ContextKeys.Organisation];
 
             var order = Order.Generate(organisation);
-            
+
             order.SupplierId = 100000;
             order.SupplierName = "Really Kool Corporation";
 
@@ -134,6 +145,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             {
                 Context.Add(ContextKeys.CreatedOrder, order);
             }
+
             Context.TryGetValue(ContextKeys.CreatedIncompleteOrders, out IList<Order> createdOrders);
             createdOrders ??= new List<Order>();
             createdOrders.Add(order);
@@ -393,16 +405,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             ThenTheyCanSelectOneRadioButton();
         }
 
-        public static void AssertListOfStringsIsInAscendingOrder(IEnumerable<string> stringList)
-        {
-            var hexList = stringList
-                .Select(s => Encoding.UTF8.GetBytes(s)) // Convert to byte[]
-                .Select(h => BitConverter.ToString(h)) // convert byte[] to hex string
-                .Select(r => r.Replace("-", "")) // remove any '-' characters
-                .ToList();
-            hexList.Should().BeInAscendingOrder();
-        }
-
         public void CreateUser(UserType userType)
         {
             if (!Context.ContainsKey(ContextKeys.Organisation))
@@ -420,7 +422,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
 
         private static CatalogueItemType ConvertType(string itemType)
         {
-            return (itemType.ToLower()) switch
+            return itemType.ToLower() switch
             {
                 "catalogue solution" => CatalogueItemType.Solution,
                 "additional services" => CatalogueItemType.AdditionalService,

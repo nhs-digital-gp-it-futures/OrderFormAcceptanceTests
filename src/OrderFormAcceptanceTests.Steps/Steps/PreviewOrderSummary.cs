@@ -1,16 +1,17 @@
-﻿using FluentAssertions;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using System;
-using System.Globalization;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System;
+    using System.Globalization;
+    using FluentAssertions;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public sealed class PreviewOrderSummary : TestBase
     {
-        public PreviewOrderSummary(UITest test, ScenarioContext context) : base(test, context)
+        public PreviewOrderSummary(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 
@@ -296,7 +297,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             orderItem.Create(Test.OrdapiConnectionString);
 
             if (!Context.ContainsKey(ContextKeys.CreatedOrderItem))
+            {
                 Context.Add(ContextKeys.CreatedOrderItem, orderItem);
+            }
         }
 
         [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per month is saved to the order")]
@@ -408,15 +411,15 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenThereAreOneOrMoreAssociatedServiceItemsSummarisedInTheOrderItemsOne_OffCostTable()
         {
             SetOrderCatalogueSectionToComplete();
-            var AssociatedServicesSteps = new AssociatedServices(Test, Context);
-            AssociatedServicesSteps.SetOrderAssociatedServicesSectionToComplete();
-            AssociatedServicesSteps.GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative();
+            var associatedServicesSteps = new AssociatedServices(Test, Context);
+            associatedServicesSteps.SetOrderAssociatedServicesSectionToComplete();
+            associatedServicesSteps.GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative();
             var declarativeOrderItem1 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             var declarativeOrderItem2 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             declarativeOrderItem1.Create(Test.OrdapiConnectionString);
             declarativeOrderItem2.Create(Test.OrdapiConnectionString);
 
-            var createdOrderItems = new OrderItemList(declarativeOrderItem1, declarativeOrderItem2);            
+            var createdOrderItems = new OrderItemList(declarativeOrderItem1, declarativeOrderItem2);
             AddOrderItemsToContext(createdOrderItems);
             Context.Add(ContextKeys.CreatedOneOffOrderItems, createdOrderItems);
         }
@@ -572,9 +575,9 @@ namespace OrderFormAcceptanceTests.Steps.Steps
         public void GivenMultipleOne_OffOrderItemsHaveBeenAddedToTheOrder()
         {
             SetOrderCatalogueSectionToComplete();
-            var AssociatedServicesSteps = new AssociatedServices(Test, Context);
-            AssociatedServicesSteps.SetOrderAssociatedServicesSectionToComplete();
-            AssociatedServicesSteps.GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative();
+            var associatedServicesSteps = new AssociatedServices(Test, Context);
+            associatedServicesSteps.SetOrderAssociatedServicesSectionToComplete();
+            associatedServicesSteps.GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative();
             var declarativeOrderItem1 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             var declarativeOrderItem2 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
             var declarativeOrderItem3 = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
@@ -608,13 +611,6 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             return quantity.ToString("#,0", new NumberFormatInfo { NumberGroupSeparator = "," });
         }
 
-        private void SetOrderCatalogueSectionToComplete()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.CatalogueSolutionsViewed = 1;
-            order.Update(Test.OrdapiConnectionString);
-        }
-
         private static void ValueExpressedAsTwoDecimalPlaces(string value)
         {
             const int decimalPointPartIndex = 1;
@@ -624,12 +620,20 @@ namespace OrderFormAcceptanceTests.Steps.Steps
             actual.Should().Be(expectedDecimalPointLength);
         }
 
+        private void SetOrderCatalogueSectionToComplete()
+        {
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+            order.CatalogueSolutionsViewed = 1;
+            order.Update(Test.OrdapiConnectionString);
+        }
+
         private void AddOrderItemsToContext(OrderItemList inputList)
         {
             if (Context.ContainsKey(ContextKeys.CreatedOrderItems))
             {
                 Context.Remove(ContextKeys.CreatedOrderItems);
             }
+
             Context.Add(ContextKeys.CreatedOrderItems, inputList);
         }
     }

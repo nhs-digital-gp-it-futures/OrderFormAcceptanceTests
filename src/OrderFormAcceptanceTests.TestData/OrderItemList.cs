@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace OrderFormAcceptanceTests.TestData
+﻿namespace OrderFormAcceptanceTests.TestData
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public sealed class OrderItemList
     {
-        private readonly Dictionary<int, OrderItem> _cache = new Dictionary<int, OrderItem>();
+        private readonly Dictionary<int, OrderItem> cache = new();
 
         public OrderItemList(params OrderItem[] orderItems)
         {
             if (orderItems is null)
+            {
                 throw new ArgumentNullException(nameof(orderItems));
+            }
 
             foreach (var orderItem in orderItems)
             {
@@ -20,14 +22,16 @@ namespace OrderFormAcceptanceTests.TestData
         }
 
         public IEnumerable<OrderItem> GetAll() =>
-            _cache.Values;
+            cache.Values;
 
         public void Add(OrderItem orderItem)
         {
             if (orderItem is null)
+            {
                 throw new ArgumentNullException(nameof(orderItem));
+            }
 
-            _cache.Add(orderItem.OrderItemId, orderItem);
+            cache.Add(orderItem.OrderItemId, orderItem);
         }
 
         public decimal GetTotalOneOffCost() => GetTotalAnnualCost();

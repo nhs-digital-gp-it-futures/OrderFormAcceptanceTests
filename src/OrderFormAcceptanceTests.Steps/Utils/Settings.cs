@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace OrderFormAcceptanceTests.Steps.Utils
+﻿namespace OrderFormAcceptanceTests.Steps.Utils
 {
+    using Microsoft.Extensions.Configuration;
+
     public class Settings
     {
         private readonly IConfiguration configuration;
@@ -16,8 +16,11 @@ namespace OrderFormAcceptanceTests.Steps.Utils
         }
 
         public string HubUrl { get; }
+
         public string OrderFormUrl { get; }
+
         public string Browser { get; }
+
         public string PbUrl { get; set; }
 
         internal string GetDbString(string db)

@@ -1,17 +1,18 @@
-﻿using FluentAssertions;
-using OpenQA.Selenium;
-using OrderFormAcceptanceTests.Steps.Utils;
-using OrderFormAcceptanceTests.TestData;
-using System.Collections.Generic;
-using System.Linq;
-using TechTalk.SpecFlow;
-
-namespace OrderFormAcceptanceTests.Steps.Steps
+﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using FluentAssertions;
+    using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using TechTalk.SpecFlow;
+
     [Binding]
     internal class OrganisationsOrdersDashboard : TestBase
     {
-        public OrganisationsOrdersDashboard(UITest test, ScenarioContext context) : base(test, context)
+        public OrganisationsOrdersDashboard(UITest test, ScenarioContext context)
+            : base(test, context)
         {
         }
 
@@ -169,6 +170,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                     break;
                 }
             }
+
             found.Should().BeTrue();
         }
 
@@ -187,6 +189,7 @@ namespace OrderFormAcceptanceTests.Steps.Steps
                     break;
                 }
             }
+
             found.Should().BeTrue();
         }
 
