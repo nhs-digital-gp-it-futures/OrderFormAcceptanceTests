@@ -664,6 +664,38 @@
             Test.Pages.OrderForm.ClickAddedCatalogueItem();
         }
 
+        [Given(@"a User has added multiple solutions to the order")]
+        public void GivenAUserHasAddedMultipleSolutionsToTheOrder()
+        {
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+            var orderItem1 = OrderItem.GenerateOrderItemWithFlatPricedVariablePerPatient(order);
+            orderItem1.Create(Test.OrdapiConnectionString);
+
+            var orderItem2 = OrderItem.GenerateOrderItemWithFlatPricedVariablePerPatient(order);
+            orderItem2.Create(Test.OrdapiConnectionString);
+
+            OrderItemList itemList = new();
+            itemList.Add(orderItem1);
+            itemList.Add(orderItem2);
+
+            if (Context.ContainsKey(ContextKeys.CreatedOrderItems))
+            {
+                Context.Remove(ContextKeys.CreatedOrderItems);
+            }
+
+            Context.Add(ContextKeys.CreatedOrderItems, itemList);
+        }
+
+        [Then(@"the Catalogue Solutions are in alphabetical order")]
+        public void ThenTheCatalogueSoltutionsAreInAlphabeticalOrder()
+        {
+            var solutions = Test.Pages.OrderForm.GetAddedCatalogueItems();
+
+            var sortedSolutions = solutions.OrderBy(s => s);
+
+            solutions.Should().BeEquivalentTo(sortedSolutions);
+        }
+
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
         {
             return SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
