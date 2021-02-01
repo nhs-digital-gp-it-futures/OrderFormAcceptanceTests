@@ -869,6 +869,11 @@
             return selectedSection.Any();
         }
 
+        public IEnumerable<string> GetAddedCatalogueItems()
+        {
+            return Driver.FindElements(Objects.Pages.OrderForm.AddedOrderItemName).Select(s => s.Text);
+        }
+
         private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
         {
             return Driver.FindElements(Objects.Pages.OrderForm.SupplierOptionsLabels);
