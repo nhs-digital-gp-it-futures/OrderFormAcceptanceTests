@@ -693,7 +693,7 @@
 
             var sortedSolutions = solutions.OrderBy(s => s);
 
-            solutions.Should().BeEquivalentTo(sortedSolutions);
+            solutions.Should().ContainInOrder(sortedSolutions);
         }
 
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
