@@ -671,7 +671,7 @@
             var orderItem1 = OrderItem.GenerateOrderItemWithFlatPricedVariablePerPatient(order);
             orderItem1.Create(Test.OrdapiConnectionString);
 
-            var orderItem2 = OrderItem.GenerateOrderItemWithFlatPricedVariablePerPatient(order);
+            var orderItem2 = OrderItem.GenerateOrderItemWithFlatPricedVariableDeclarative(order);
             orderItem2.Create(Test.OrdapiConnectionString);
 
             OrderItemList itemList = new();
@@ -690,10 +690,7 @@
         public void ThenTheCatalogueSoltutionsAreInAlphabeticalOrder()
         {
             var solutions = Test.Pages.OrderForm.GetAddedCatalogueItems();
-
-            var sortedSolutions = solutions.OrderBy(s => s);
-
-            solutions.Should().ContainInOrder(sortedSolutions);
+            solutions.Should().BeInAscendingOrder();
         }
 
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
