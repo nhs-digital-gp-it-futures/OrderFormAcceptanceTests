@@ -50,7 +50,6 @@
 
                 new Address() { AddressId = order.SupplierAddressId }.Delete(test.OrdapiConnectionString);
                 new Address() { AddressId = order.OrganisationAddressId }.Delete(test.OrdapiConnectionString);
-                new Address() { AddressId = order.OrganisationBillingAddressId }.Delete(test.OrdapiConnectionString);
                 new Contact() { ContactId = order.OrganisationContactId }.Delete(test.OrdapiConnectionString);
                 new Contact() { ContactId = order.SupplierContactId }.Delete(test.OrdapiConnectionString);
             }

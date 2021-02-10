@@ -17,14 +17,13 @@
         public void WaitForDashboardToBeDisplayed()
         {
             Wait.ForJsToComplete();
-            Wait.Until(d => d.FindElements(Objects.Pages.OrganisationsOrdersDashboard.PageTitle).Count == 1);
             Wait.Until(d => CreateNewOrderButtonDisplayed());
         }
 
         public void SelectExistingOrder(string callOffAgreementId)
         {
-            Wait.Until(d => d.FindElements(Objects.Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Count == 1);
-            Wait.Until(ElementExtensions.ElementToBeClickable(Objects.Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)));
+            Driver.Navigate().Refresh();
+            Wait.Until(d => d.FindElement(Objects.Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Displayed);
             Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Click();
         }
 
@@ -32,7 +31,7 @@
         {
             try
             {
-                Wait.Until(d => d.FindElements(Objects.Pages.OrganisationsOrdersDashboard.CreateOrderButton).Count == 1);
+                Driver.FindElements(Objects.Pages.OrganisationsOrdersDashboard.CreateOrderButton);
                 return true;
             }
             catch

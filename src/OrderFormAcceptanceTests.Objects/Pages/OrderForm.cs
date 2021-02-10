@@ -10,7 +10,7 @@
 
         public static By PreviewOrderButton => CustomBy.DataTestId("preview-order-button");
 
-        public static By CompleteOrderLink => CustomBy.DataTestId("complete-order-button", "a");
+        public static By CompleteOrderLink => CustomBy.DataTestId("complete-order-button");
 
         public static By CompleteOrderButton => CustomBy.DataTestId("complete-order-button", "button");
 
