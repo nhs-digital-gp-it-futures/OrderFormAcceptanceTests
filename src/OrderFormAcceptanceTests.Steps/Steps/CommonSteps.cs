@@ -135,7 +135,6 @@
             Context.Add(ContextKeys.CreatedSupplierContact, supplierContact);
 
             order.OrganisationAddressId = orgAddress.AddressId;
-            order.OrganisationBillingAddressId = orgAddress.AddressId;
             order.OrganisationContactId = orgContact.ContactId;
             order.SupplierAddressId = supplierAddress.AddressId;
             order.SupplierContactId = supplierContact.ContactId;
@@ -178,7 +177,6 @@
 
             var order = Order.Generate(organisation);
             order.OrganisationAddressId = orgAddress.AddressId;
-            order.OrganisationBillingAddressId = orgAddress.AddressId;
             order.OrganisationContactId = orgContact.ContactId;
             order.SupplierAddressId = supplierAddress.AddressId;
             order.SupplierContactId = supplierContact.ContactId;
@@ -247,7 +245,6 @@
 
             var order = Order.Generate(organisation);
             order.OrganisationAddressId = orgAddress.AddressId;
-            order.OrganisationBillingAddressId = orgAddress.AddressId;
             order.OrganisationContactId = orgContact.ContactId;
             order.SupplierAddressId = supplierAddress.AddressId;
             order.SupplierContactId = supplierContact.ContactId;

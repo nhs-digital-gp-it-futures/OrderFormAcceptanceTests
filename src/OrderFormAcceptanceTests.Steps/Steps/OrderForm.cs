@@ -201,7 +201,6 @@
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.OrganisationAddressId = null;
-            order.OrganisationBillingAddressId = null;
             order.OrganisationContactId = null;
             order.Update(Test.OrdapiConnectionString);
         }

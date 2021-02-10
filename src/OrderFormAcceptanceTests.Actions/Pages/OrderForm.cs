@@ -122,7 +122,15 @@
 
         public bool DeleteOrderButtonIsDisabled()
         {
-            return Driver.FindElement(Objects.Pages.OrderForm.DeleteOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
+            try
+            {
+                Driver.FindElement(Objects.Pages.OrderForm.DeleteOrderButton).FindElement(By.TagName("span"));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool DeleteSolutionButtonIsDisabled()
@@ -132,7 +140,15 @@
 
         public bool PreviewOrderButtonIsDisabled()
         {
-            return Driver.FindElement(Objects.Pages.OrderForm.PreviewOrderButton).FindElement(By.TagName("a")).GetAttribute("aria-disabled") != null;
+            try
+            {
+                Driver.FindElement(Objects.Pages.OrderForm.PreviewOrderButton).FindElement(By.TagName("span"));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void SelectSupplierWithContactDetails(string bapiConnString)
@@ -169,7 +185,15 @@
 
         public bool CompleteOrderButtonIsDisabled()
         {
-            return Driver.FindElement(Objects.Pages.OrderForm.CompleteOrderLink).GetAttribute("aria-disabled") != null;
+            try
+            {
+                Driver.FindElement(Objects.Pages.OrderForm.CompleteOrderLink).FindElement(By.TagName("span"));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void DeleteOrderButtonHasAltTest()
@@ -374,7 +398,7 @@
 
         public void ClickCompleteOrderLink()
         {
-            Driver.FindElement(Objects.Pages.OrderForm.CompleteOrderLink).Click();
+            Driver.FindElement(Objects.Pages.OrderForm.CompleteOrderLink).FindElement(By.TagName("a")).Click();
         }
 
         public void ClickDeleteButton()

@@ -20,8 +20,6 @@
 
         public int? OrganisationAddressId { get; set; }
 
-        public int? OrganisationBillingAddressId { get; set; }
-
         public int? OrganisationContactId { get; set; }
 
         public int OrderStatusId { get; set; }
@@ -105,7 +103,6 @@
                                  OrganisationName
                                 ,OrganisationOdsCode
                                 ,OrganisationAddressId
-                                ,OrganisationBillingAddressId
                                 ,OrganisationContactId,
                                  OrderStatusId,
                                  ServiceRecipientsViewed,
@@ -132,7 +129,6 @@
                                  @OrganisationName
                                 ,@OrganisationOdsCode
                                 ,@OrganisationAddressId
-                                ,@OrganisationBillingAddressId
                                 ,@OrganisationContactId,
                                  @OrderStatusId,
                                  @ServiceRecipientsViewed,
@@ -165,7 +161,6 @@
                             OrganisationName=@OrganisationName
                            ,OrganisationOdsCode=@OrganisationOdsCode
                            ,OrganisationAddressId=@OrganisationAddressId
-                           ,OrganisationBillingAddressId=@OrganisationBillingAddressId
                            ,OrganisationContactId=@OrganisationContactId,
                             OrderStatusId=@orderStatusId,
                             ServiceRecipientsViewed=@ServiceRecipientsViewed,
