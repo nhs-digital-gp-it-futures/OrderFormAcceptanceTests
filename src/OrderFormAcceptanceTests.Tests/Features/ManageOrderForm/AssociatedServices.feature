@@ -196,11 +196,11 @@ Scenario Outline: Associated Service - edit price screen - Flat price Mandatory 
 	| declarative      |
 	| variable         |
 
-Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price with 4 decimal place
+Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price with 5 decimal place
 	Given there are no Service Recipients in the order
 	And the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data
-	And the price has 4 decimal places
+	And the price has 5 decimal places
 	When the User chooses to save
 	Then the Associated Service is not saved
 	And the reason is displayed
