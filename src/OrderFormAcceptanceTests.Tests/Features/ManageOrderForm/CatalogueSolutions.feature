@@ -197,10 +197,10 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
         # | variable      |  |
         | per patient      | quantity  |
 
-Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price with 4 decimal place
+Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price with 5 decimal place
     Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
     And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
-    And the price has 4 decimal places
+    And the price has 5 decimal places
     When the User chooses to save
     Then the Catalogue Solution is not saved
     And the reason is displayed

@@ -31,7 +31,6 @@
         private void EnterUsername(string username)
         {
             Wait.ForJsToComplete();
-            Wait.Until(d => d.FindElements(Objects.Pages.Login.Username).Count == 1);
             var usernameInput = Driver.FindElement(Objects.Pages.Login.Username);
             usernameInput.Click();
 

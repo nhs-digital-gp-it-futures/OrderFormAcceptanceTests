@@ -386,10 +386,11 @@
             Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
         }
 
-        [Given(@"the price has 4 decimal places")]
-        public void GivenThePriceHasDecimalPlaces()
+        [Given(@"the price has (.*) decimal places")]
+        public void GivenThePriceHasDecimalPlaces(int decimalPlaces)
         {
-            Test.Pages.OrderForm.EnterPriceInputValue("1.1234");
+            decimal number = 1.1234567890M;
+            Test.Pages.OrderForm.EnterPriceInputValue(decimal.Round(number, decimalPlaces).ToString());
         }
 
         [Given(@"the price is negative")]
