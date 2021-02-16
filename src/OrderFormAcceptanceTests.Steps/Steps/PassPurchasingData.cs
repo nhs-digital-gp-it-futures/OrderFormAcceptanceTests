@@ -32,11 +32,11 @@
         public void ThenThe_CSVToTheDesiredSpecificationIsProducedCallOff_IdOnly()
         {
             var email = (Email)Context[ContextKeys.SentEmail];
-            var attachmentFileName = email.Attachments.First().FileName;
-            var attachmentFileType = email.Attachments.First().ContentType.MediaType;
+            var attachmentFileName = email.Attachments[0].FileName;
+            var attachmentFileType = email.Attachments[0].ContentType.MediaType;
             attachmentFileName.Should().EndWithEquivalent(".csv");
             attachmentFileType.Should().ContainEquivalentOf("csv");
-            var data = email.Attachments.First().AttachmentData;
+            var data = email.Attachments[0].AttachmentData;
             var decoded = Encoding.UTF8.GetString(data.ToArray());
             var order = ((List<Order>)Context[ContextKeys.CreatedIncompleteOrders]).First();
             decoded.Should().ContainEquivalentOf("Call off Ordering Party Id");

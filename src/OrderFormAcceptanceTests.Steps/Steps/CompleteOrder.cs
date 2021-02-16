@@ -163,7 +163,7 @@
         public void WhenTheyChooseToViewTheCompletedOrderFromTheirOrganisationSOrdersDashboard()
         {
             new OrganisationsOrdersDashboard(Test, Context).WhenTheUserIsPresentedWithTheOrganisationSOrdersDashboard();
-            Test.Pages.OrganisationsOrdersDashboard.SelectExistingOrder(Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders).First().OrderId);
+            Test.Pages.OrganisationsOrdersDashboard.SelectCompletedOrder(Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders)[0].OrderId);
         }
 
         [Then(@"the Completed version of the Order Summary is presented")]

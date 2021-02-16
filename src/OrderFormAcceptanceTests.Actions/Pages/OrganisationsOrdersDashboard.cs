@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Flurl;
     using OpenQA.Selenium;
     using OrderFormAcceptanceTests.Actions.Utils;
     using OrderFormAcceptanceTests.TestData;
@@ -20,11 +21,14 @@
             Wait.Until(d => CreateNewOrderButtonDisplayed());
         }
 
-        public void SelectExistingOrder(string callOffAgreementId)
+        public void SelectExistingOrder(string callOffAgreementId, string baseUrl)
         {
-            Driver.Navigate().Refresh();
-            Wait.Until(d => d.FindElement(Objects.Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Displayed);
-            Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(callOffAgreementId)).Click();
+            var url = baseUrl
+                .AppendPathSegment("organisation")
+                .AppendPathSegment(callOffAgreementId).ToString();
+
+            Driver.Navigate().GoToUrl(url);
+            Wait.Until(s => s.FindElement(Objects.Pages.OrderForm.TaskList).Displayed);
         }
 
         public bool CreateNewOrderButtonDisplayed()
@@ -206,6 +210,11 @@
             }
 
             return listOfCompletedOrders;
+        }
+
+        public void SelectCompletedOrder(string orderId)
+        {
+            Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.SpecificExistingOrder(orderId)).Click();
         }
 
         private int GetNumberOfTableRows(By tableSelector)
