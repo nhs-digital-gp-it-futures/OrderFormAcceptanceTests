@@ -290,7 +290,7 @@
         {
             Test.Driver.Navigate().Refresh();
             Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
-            Test.Pages.OrganisationsOrdersDashboard.SelectExistingOrder(((Order)Context[ContextKeys.CreatedOrder]).OrderId);
+            Test.Pages.OrganisationsOrdersDashboard.SelectExistingOrder(((Order)Context[ContextKeys.CreatedOrder]).OrderId, Test.Url);
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
         }
 
