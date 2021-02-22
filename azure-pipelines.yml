@@ -44,15 +44,14 @@ steps:
     includePreviewVersions: false
 
 - bash: |
-    echo $(echo $(gpitfuturesdevdbpassword) | cut -c-3)
-    echo $(echo $gpitfuturesdevdbpassword | cut -c-3)
+    echo $(echo $(gpitfuturesdevdbpassword) | cut -c-3)    
   displayName: "Debug password step"
 
-#- bash: |
-#    echo "##vso[task.setvariable variable=BAPIDB__PASSWORD]$(echo "$(gpitfuturesdevdbpassword)")"  
-#    BAPIDB__PASSWORD: $(gpitfuturesdevdbpassword) 
-#  - ISAPIDB__PASSWORD: $(gpitfuturesdevdbpassword)
-#  - ORDAPIDB__PASSWORD: $(gpitfuturesdevdbpassword)
+- bash: |
+    echo $("##vso[task.setvariable variable=BAPIDB__PASSWORD]$(echo $(gpitfuturesdevdbpassword))" | cut -c-3 )      
+    echo $("##vso[task.setvariable variable=ISAPIDB__PASSWORD]$(echo $(gpitfuturesdevdbpassword))" | cut -c-3 )
+    echo $("##vso[task.setvariable variable=ORDAPIDB__PASSWORD]$(echo $(gpitfuturesdevdbpassword))"| cut -c-3 )  
+  displayName: "Set env variables"
 
 - bash: |
     echo "##vso[task.setvariable variable=PBHOSTURL]$(echo "${PBURL##*://}")"  
