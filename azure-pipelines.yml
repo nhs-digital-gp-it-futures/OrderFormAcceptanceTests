@@ -28,12 +28,18 @@ variables:
     value: $(SERVERURL)
   - name: ORDAPIDB__DATABASENAME
     value: bc-development-ordapi
+  - name: ORDAPIDB__USER
+    value: $(gpitdevsqladminusername)
   - name: ORDAPIDB__PASSWORD
-    value: $(gpitfuturesdevdbpassword)
+    value: $(gpitdevsqladminpassword)
+  - name: ISAPIDB__USER
+    value: $(gpitdevsqladminusername)
   - name: ISAPIDB__PASSWORD
-    value: $(gpitfuturesdevdbpassword)
+    value: $(gpitdevsqladminpassword)
+  - name: BAPIDB__USER
+    value: $(gpitdevsqladminusername)
   - name: BAPIDB__PASSWORD
-    value: $(gpitfuturesdevdbpassword)
+    value: $(gpitdevsqladminpassword)
   # - group: dev-secrets
 
 steps:
