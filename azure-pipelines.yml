@@ -28,6 +28,12 @@ variables:
     value: $(SERVERURL)
   - name: ORDAPIDB__DATABASENAME
     value: bc-development-ordapi
+  - name: ORDAPIDB__PASSWORD
+    value: $(gpitfuturesdevdbpassword)
+  - name: ISAPIDB__PASSWORD
+    value: $(gpitfuturesdevdbpassword)
+  - name: BAPIDB__PASSWORD
+    value: $(gpitfuturesdevdbpassword)
   # - group: dev-secrets
 
 steps:
@@ -80,12 +86,6 @@ steps:
     command: build
     projects: '**/*.csproj'
     arguments: "--no-restore"
-
-- bash: |
-    echo "##vso[task.setvariable variable=BAPIDB__PASSWORD;isOutput=true]$(gpitfuturesdevdbpassword)"
-    echo "##vso[task.setvariable variable=ISAPIDB__PASSWORD;isOutput=true]$(gpitfuturesdevdbpassword)"
-    echo "##vso[task.setvariable variable=ORDAPIDB__PASSWORD;isOutput=true]$(gpitfuturesdevdbpassword)"
-  displayName: 'Add Variables'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run tests'
