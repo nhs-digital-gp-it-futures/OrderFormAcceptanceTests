@@ -7,6 +7,7 @@
     using FluentAssertions;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Information;
     using OrderFormAcceptanceTests.TestData.Utils;
     using TechTalk.SpecFlow;
 
@@ -145,6 +146,12 @@
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("selectSolution");
         }
 
+        [When(@"a quantity is entered")]
+        public void WhenAQuantityIsEntered()
+        {
+            Test.Pages.OrderForm.EnterQuantity(new Random().Next(1000).ToString());
+        }
+
         [Then(@"the User is informed they have to select a Catalogue Solution price")]
         public void ThenTheUserIsInformedTheyHaveToSelectACatalogueSolutionPrice()
         {
@@ -236,6 +243,12 @@
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("information for").Should().BeTrue();
         }
 
+        [When(@"an Estimation period is selected")]
+        public void WhenAnEstimationPeriodIsSelected()
+        {
+            Test.Pages.OrderForm.ClickRadioButton();
+        }
+
         [Then(@"the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form")]
         public void ThenTheNameOfTheSelectedCatalogueSolutionIsDisplayedOnTheCatalogueSolutionEditForm()
         {
@@ -313,22 +326,32 @@
         [Given(@"the User is presented with the Catalogue Solution edit form for a variable flat price")]
         public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormVariableFlatPrice()
         {
+            CommonSteps common = new(Test, Context);
+
             GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder();
             GivenAServiceRecipientIsSelected();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            common.WhenTheyChooseToContinue();
+            common.WhenTheyChooseToContinue();
+            WhenAQuantityIsEntered();
+            WhenAnEstimationPeriodIsSelected();
+            common.WhenTheyChooseToContinue();
             ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
         [Given(@"the User is presented with the Catalogue Solution edit form for a declarative flat price")]
         public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormDeclarativeFlatPrice()
         {
+            CommonSteps common = new(Test, Context);
+
             GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
-            new CommonSteps(Test, Context).ContinueAndWaitForCheckboxes();
+            common.ContinueAndWaitForCheckboxes();
             GivenAServiceRecipientIsSelected();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            common.WhenTheyChooseToContinue();
+            common.WhenTheyChooseToContinue();
+            WhenAQuantityIsEntered();
+            common.WhenTheyChooseToContinue();
             ThenTheyArePresentedWithTheOrderItemPriceEditForm();
         }
 
@@ -414,7 +437,7 @@
         [Then(@"the price is displayed to two decimal places")]
         public void ThenThePriceIsDisplayedToTwoDecimalPlaces()
         {
-            var actualPrice = Test.Pages.OrderForm.GetPriceInputValue();
+            var actualPrice = Test.Pages.OrderForm.GetPriceInputValue().Replace(",", string.Empty);
             var match2Decimals = Regex.Match(actualPrice, @"^[0-9]*\.[0-9]{2,3}$").Success;
             var match0Decimals = Regex.Match(actualPrice, @"^[0-9]*$").Success;
             if (!match2Decimals && !match0Decimals)
@@ -653,10 +676,10 @@
             new CommonSteps(Test, Context).ContinueAndWaitForCheckboxes();
         }
 
-        [Then(@"they are presented with the Delivery Date for the order")]
-        public void ThenTheyArePresentedWithTheCommencementDateForTheOrder()
+        [Then(@"they are presented with the (.*) for the order")]
+        public void ThenTheyArePresentedWithTheCommencementDateForTheOrder(string pageName)
         {
-            Test.Pages.OrderForm.TextDisplayedInPageTitle("Delivery date").Should().BeTrue();
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(pageName).Should().BeTrue();
         }
 
         [Given(@"the User chooses to edit a saved Catalogue Solution")]
