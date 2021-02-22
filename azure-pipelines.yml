@@ -78,6 +78,10 @@ steps:
     if [ $? -ne 0 ]; then exit 1; fi
   displayName: Selenium Grid Setup
 
+- bash: |
+    echo $ORDAPIDB__PASSWORD
+  displayName: 'Show Variables (debug)'
+
 - task: DotNetCoreCLI@2
   displayName: 'Run dotnet restore'
   inputs:
