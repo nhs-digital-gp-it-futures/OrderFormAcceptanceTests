@@ -88,9 +88,9 @@ steps:
     projects: '**/*.csproj'
     arguments: '-v n --no-build'
   env:
-    BAPIDB__PASSWORD: $(gpitfuturesdevdbpassword) 
-    ISAPIDB__PASSWORD: $(gpitfuturesdevdbpassword)
-    ORDAPIDB__PASSWORD: $(gpitfuturesdevdbpassword)
+    - BAPIDB__PASSWORD: $(gpitfuturesdevdbpassword) 
+    - ISAPIDB__PASSWORD: $(gpitfuturesdevdbpassword)
+    - ORDAPIDB__PASSWORD: $(gpitfuturesdevdbpassword)
 
 - task: Docker@2
   condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
