@@ -71,6 +71,8 @@ steps:
   inputs:
     command: restore
     projects: '**/*.csproj'
+    feedsToUse: config
+    nugetConfigPath: 'src/NuGet.config'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run dotnet build'
