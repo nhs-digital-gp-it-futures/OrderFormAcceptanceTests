@@ -28,7 +28,7 @@ variables:
     value: $(SERVERURL)
   - name: ORDAPIDB__DATABASENAME
     value: bc-development-ordapi
-  # - group: dev-secrets
+  - group: dev-secrets
 
 steps:
 - task: UseGitVersion@5
@@ -42,6 +42,12 @@ steps:
   inputs:
     version: $(dotnetVersion)
     includePreviewVersions: false
+
+- bash: |
+    echo "##vso[task.setvariable variable=BAPIDB__PASSWORD]$(echo $(gpitfuturesdevdbpassword))"
+    echo "##vso[task.setvariable variable=ISAPIDB__PASSWORD]$(echo $(gpitfuturesdevdbpassword))"
+    echo "##vso[task.setvariable variable=ORDAPIDB__PASSWORD]$(echo $(gpitfuturesdevdbpassword))"
+  displayName: Set env variables
 
 - bash: |
     echo "##vso[task.setvariable variable=PBHOSTURL]$(echo "${PBURL##*://}")"  
@@ -87,10 +93,6 @@ steps:
     command: test
     projects: '**/*.csproj'
     arguments: '-v n --no-build'
-  env:
-    BAPIDB__PASSWORD: $(gpitfuturesdevdbpassword) 
-    ISAPIDB__PASSWORD: $(gpitfuturesdevdbpassword)
-    ORDAPIDB__PASSWORD: $(gpitfuturesdevdbpassword)
 
 - task: Docker@2
   condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
@@ -119,19 +121,6 @@ steps:
   condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   name: helmPackage
   displayName: 'Helm package'
-
-# - bash: |
-#     cd charts
-#     chartPackage=$(ls of-ac-tests-*.tgz)
-#     az acr helm push --force \
-#         -n "gpitfuturesdevacr" \
-#         -u "gpitfuturesdevacr" \
-#         -p $(gpitfuturesdevacr-pass) \
-#         $chartPackage
-#   failOnStderr: false
-#   condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-#   name: helmPush
-#   displayName: 'Push helm chart to acr'
 
 - task: AzureCLI@2
   name: helmPush
