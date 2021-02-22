@@ -85,7 +85,7 @@ steps:
     echo "##vso[task.setvariable variable=BAPIDB__PASSWORD;isOutput=true]$(gpitfuturesdevdbpassword)"
     echo "##vso[task.setvariable variable=ISAPIDB__PASSWORD;isOutput=true]$(gpitfuturesdevdbpassword)"
     echo "##vso[task.setvariable variable=ORDAPIDB__PASSWORD;isOutput=true]$(gpitfuturesdevdbpassword)"
-  name: Add Variables
+  displayName: 'Add Variables'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run tests'
