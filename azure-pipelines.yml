@@ -47,11 +47,6 @@ steps:
     echo "##vso[task.setvariable variable=PBHOSTURL]$(echo "${PBURL##*://}")"  
   displayName: Set up Host URL
 
-# - bash: |
-#     echo "51.11.46.27    $PBHOSTURL" | sudo tee -a /etc/hosts
-#     curl -k -i $(PBURL) --fail --connect-timeout 30
-#   displayName: 'Check URL is reachable'
-
 - task: AzureCLI@2
   name: checkURL
   displayName: Check URL is reachable
