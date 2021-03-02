@@ -12,5 +12,12 @@
                 .Or<TimeoutException>()
                 .WaitAndRetry(3, retryAttempt => TimeSpan.FromMilliseconds(500));
         }
+
+        internal static IAsyncPolicy RetryPolicyAsync()
+        {
+            return Policy.Handle<SqlException>()
+                .Or<TimeoutException>()
+                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromMilliseconds(500));
+        }
     }
 }

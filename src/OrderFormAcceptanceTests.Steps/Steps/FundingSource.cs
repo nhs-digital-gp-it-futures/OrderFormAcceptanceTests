@@ -1,5 +1,6 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System.Threading.Tasks;
     using FluentAssertions;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
@@ -35,9 +36,9 @@
         }
 
         [Given(@"the minimum data needed to enable the Funding Source section exists")]
-        public void GivenTheMinimumDataNeededToEnableTheFundingSourceSectionExists()
+        public async Task GivenTheMinimumDataNeededToEnableTheFundingSourceSectionExists()
         {
-            new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
+            await new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
             new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
         }
 

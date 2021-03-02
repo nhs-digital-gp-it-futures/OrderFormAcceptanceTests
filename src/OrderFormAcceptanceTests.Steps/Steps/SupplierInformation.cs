@@ -1,5 +1,6 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System.Threading.Tasks;
     using FluentAssertions;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
@@ -79,9 +80,9 @@
         }
 
         [Given(@"the User has been presented with matching Suppliers")]
-        public void GivenTheUserHasBeenPresentedWithMatchingSuppliers()
+        public async Task GivenTheUserHasBeenPresentedWithMatchingSuppliers()
         {
-            new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
+            await new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
             new OrderForm(Test, Context).GivenTheSupplierSectionIsNotComplete();
             WhenTheUserChoosesToEditTheSupplierSectionForTheFirstTime();
             WhenTheUserHasEnteredAValidSupplierSearchCriterion();
@@ -131,9 +132,9 @@
         }
 
         [Given(@"the User has selected a supplier for the first time")]
-        public void GivenTheUserHasSelectedASupplierForTheFirstTime()
+        public async Task GivenTheUserHasSelectedASupplierForTheFirstTime()
         {
-            GivenTheUserHasBeenPresentedWithMatchingSuppliers();
+            await GivenTheUserHasBeenPresentedWithMatchingSuppliers();
             WhenTheySelectASupplier();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
             ThenTheSupplierInformationScreenIsPresented();

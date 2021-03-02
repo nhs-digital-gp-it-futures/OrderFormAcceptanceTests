@@ -1,6 +1,7 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using FluentAssertions;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
@@ -27,19 +28,19 @@
         }
 
         [Given(@"the confirm delete page is displayed")]
-        public void GivenTheConfirmDeletePageIsDisplayed()
+        public async Task GivenTheConfirmDeletePageIsDisplayed()
         {
             var commonSteps = new CommonSteps(Test, Context);
-            commonSteps.GivenAnIncompleteOrderExists();
+            await commonSteps.GivenAnIncompleteOrderExists();
             commonSteps.WhenTheOrderFormForTheExistingOrderIsPresented();
             WhenTheUserChoosesToDeleteTheOrder();
             ThenTheUserIsAskedToConfirmTheChoiceToDelete();
         }
 
         [Given(@"the Order deleted page is presented")]
-        public void GivenTheOrderDeletedPageIsPresented()
+        public async Task GivenTheOrderDeletedPageIsPresented()
         {
-            GivenTheConfirmDeletePageIsDisplayed();
+            await GivenTheConfirmDeletePageIsDisplayed();
             ConfirmDeleteOrder();
             ThenTheUserIsInformedThatTheOrderHasBeenDeleted();
         }
