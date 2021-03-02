@@ -32,5 +32,5 @@ Scenario: View Orders - Headers
 Scenario: View Orders - Go back to homepage
 	Given an incomplete order exists
 	When the User is presented with the Organisation's Orders dashboard
-	When the User choose to go back to the homepage
+	And the User choose to go back to the homepage
 	Then the Public Browse homepage is presented 

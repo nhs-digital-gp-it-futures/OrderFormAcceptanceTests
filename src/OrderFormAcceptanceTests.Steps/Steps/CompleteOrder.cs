@@ -113,9 +113,9 @@
         }
 
         [Given(@"the order is complete enough so that the Complete order button is enabled with Funding Source option '(.*)' selected")]
-        public void GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled(string fsValue)
+        public async Task GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled(string fsValue)
         {
-            new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
+            await new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
             new CatalogueSolutions(Test, Context).GivenThereAreNoServiceRecipientsInTheOrder();
             new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
             if (fsValue.ToLower().Equals("yes"))
@@ -129,9 +129,9 @@
         }
 
         [Given(@"that the User is on the confirm complete order screen with Funding Source option '(.*)' selected")]
-        public void GivenThatTheUserIsOnTheConfirmCompleteOrderScreen(string fsValue)
+        public async Task GivenThatTheUserIsOnTheConfirmCompleteOrderScreen(string fsValue)
         {
-            GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled(fsValue);
+            await GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled(fsValue);
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             WhenTheUserChoosesToCompleteTheOrder();
             ThenTheConfirmCompleteOrderScreenIsDisplayed();
@@ -139,9 +139,9 @@
 
         [Given("the User chooses to preview the Order Summary")]
         [Given("that the User is on the Order Summary")]
-        public void GivenThatTheUserIsOnTheOrderSummary()
+        public async Task GivenThatTheUserIsOnTheOrderSummary()
         {
-            GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled("yes");
+            await GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled("yes");
             new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
         }
 
@@ -154,7 +154,7 @@
         [Given(@"that the User has completed their Order")]
         public async Task GivenThatTheUserHasCompletedTheirOrderAsync()
         {
-            GivenThatTheUserIsOnTheConfirmCompleteOrderScreen("no");
+            await GivenThatTheUserIsOnTheConfirmCompleteOrderScreen("no");
             await WhenTheUserConfirmsToCompleteTheOrderAsync();
             ThenTheOrderCompletedScreenIsDisplayed();
         }

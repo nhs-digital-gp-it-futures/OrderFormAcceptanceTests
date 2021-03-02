@@ -5,7 +5,7 @@
 
     public static class Homepage
     {
-        public static By Title => By.CssSelector(".nhsuk-hero__wrapper h1");
+        public static By Title => CustomBy.DataTestId("homepage-hero", "h1");
 
         public static By LoginLogoutLink => CustomBy.DataTestId("login-logout-component", "a");
 

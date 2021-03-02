@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Data.SqlClient;
+    using System.Threading.Tasks;
     using Dapper;
 
     public static class SqlExecutor
@@ -15,6 +16,15 @@
                 Policies.RetryPolicy().Execute(() => { returnValue = connection.Query<T>(query, param); });
             }
 
+            return returnValue;
+        }
+
+        public static async Task<IEnumerable<T>> ExecuteAsync<T>(string connectionString, string query, object param)
+        {
+            IEnumerable<T> returnValue = null;
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            await Policies.RetryPolicyAsync().ExecuteAsync(async () => { returnValue = await connection.QueryAsync<T>(query, param); });
             return returnValue;
         }
 

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Threading.Tasks;
     using Bogus;
     using FluentAssertions;
     using OpenQA.Selenium;
@@ -99,7 +100,7 @@
         }
 
         [Given(@"an incomplete order exists")]
-        public void GivenAnIncompleteOrderExists()
+        public async Task GivenAnIncompleteOrderExists()
         {
             var orgAddress = Address.Generate();
             var orgContact = Contact.Generate();
@@ -139,7 +140,7 @@
             order.SupplierAddressId = supplierAddress.AddressId;
             order.SupplierContactId = supplierContact.ContactId;
 
-            order.Create(Test.OrdapiConnectionString);
+            order = await order.Create(Test.OrdapiConnectionString);
             if (!Context.ContainsKey(ContextKeys.CreatedOrder))
             {
                 Context.Add(ContextKeys.CreatedOrder, order);
@@ -152,7 +153,7 @@
         }
 
         [Given(@"an incomplete order exists without a commencement date")]
-        public void GivenAnIncompleteOrderExistsNoCommencement()
+        public async Task GivenAnIncompleteOrderExistsNoCommencement()
         {
             var orgAddress = Address.Generate();
             orgAddress.Create(Test.OrdapiConnectionString);
@@ -183,7 +184,7 @@
             order.SupplierId = 100000;
             order.SupplierName = "Really Kool Corporation";
 
-            order.Create(Test.OrdapiConnectionString);
+            order = await order.Create(Test.OrdapiConnectionString);
             if (!Context.ContainsKey(ContextKeys.CreatedOrder))
             {
                 Context.Add(ContextKeys.CreatedOrder, order);
@@ -196,9 +197,9 @@
         }
 
         [Given(@"an incomplete order with catalogue items exists")]
-        public void GivenAnIncompleteOrderWithCatalogueItemsExists()
+        public async Task GivenAnIncompleteOrderWithCatalogueItemsExists()
         {
-            GivenAnIncompleteOrderExists();
+            await GivenAnIncompleteOrderExists();
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.CatalogueSolutionsViewed = 1;
 
@@ -214,17 +215,17 @@
         }
 
         [Given(@"my organisation has one or more orders")]
-        public void GivenOneOrMoreOrdersExist()
+        public async Task GivenOneOrMoreOrdersExist()
         {
-            GivenACompleteOrderExists();
-            GivenACompleteOrderExists();
-            GivenAnIncompleteOrderExists();
+            await GivenACompleteOrderExists();
+            await GivenACompleteOrderExists();
+            await GivenAnIncompleteOrderExists();
         }
 
         [Given(@"a complete order exists")]
         [Given(@"an order is completed")]
         [Given(@"a User has completed an Order")]
-        public void GivenACompleteOrderExists()
+        public async Task GivenACompleteOrderExists()
         {
             var orgAddress = Address.Generate();
             orgAddress.Create(Test.OrdapiConnectionString);
@@ -268,7 +269,7 @@
             const int completed = 1;
             order.OrderStatusId = completed;
 
-            order.Create(Test.OrdapiConnectionString);
+            order = await order.Create(Test.OrdapiConnectionString);
             if (!Context.ContainsKey(ContextKeys.CreatedOrder))
             {
                 Context.Add(ContextKeys.CreatedOrder, order);
@@ -277,6 +278,7 @@
             var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand(order);
             orderItem.LastUpdated = dateCompleted;
             orderItem.Create(Test.OrdapiConnectionString);
+            serviceRecipient.OrderId = order.OrderId;
             serviceRecipient.Create(Test.OrdapiConnectionString);
 
             Context.TryGetValue(ContextKeys.CreatedCompletedOrders, out IList<Order> createdOrders);

@@ -1,5 +1,6 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System.Threading.Tasks;
     using FluentAssertions;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
@@ -55,9 +56,9 @@
         }
 
         [Given(@"the user is managing the Call Off Ordering Party section")]
-        public void GivenTheUserIsManagingTheCallOffOrderingPartySection()
+        public async Task GivenTheUserIsManagingTheCallOffOrderingPartySection()
         {
-            new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
+            await new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
             new OrderForm(Test, Context).GivenTheCallOffOrderingPartySectionIsNotComplete();
             WhenTheUserChoosesToEditTheCallOffOrderingPartyInformation();
         }
