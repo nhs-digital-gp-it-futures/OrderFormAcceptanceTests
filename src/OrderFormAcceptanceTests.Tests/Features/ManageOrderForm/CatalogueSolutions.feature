@@ -468,3 +468,12 @@ Scenario: Catalogue Solutions - Multiple added solutions displayed alphabeticall
     When the Catalogue Solution dashboard is presented
     Then the Catalogue Solutions are presented
     And the Catalogue Solutions are in alphabetical order
+
+Scenario Outline: Catalogue Solutions - Edit Service Recipients
+    Given a User has added a solution to the order
+    And the User has chosen to manage the Catalogue Solution section
+    And the User chooses to edit a saved Catalogue Solution
+    When the User chooses to edit the service recipients
+    And the User adds another service recipient to the order
+    And the User chooses to continue
+    Then the Edit Price form displays the expected number of recipients

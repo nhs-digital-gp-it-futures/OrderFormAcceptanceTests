@@ -72,7 +72,7 @@
 
         public static By AddedOrderItemName => By.CssSelector("[data-test-id$='-catalogueItemName']");
 
-        public static By AddedSolutionServiceRecipient => By.CssSelector("[data-test-id$='-serviceRecipient']");
+        public static By AddedSolutionServiceRecipient => By.CssSelector("[data-test-id$='-recipient']");
 
         public static By PriceInput => By.Id("price");
 
@@ -93,5 +93,7 @@
         public static By PracticeListSizeInput => By.Id("quantity");
 
         public static Func<string, By> GenericSection => (sectionHrefRoute) => By.CssSelector(string.Format("[href$='{0}']", sectionHrefRoute));
+
+        public static By EditServiceRecipientsButton => CustomBy.DataTestId("edit-button", "a");
     }
 }
