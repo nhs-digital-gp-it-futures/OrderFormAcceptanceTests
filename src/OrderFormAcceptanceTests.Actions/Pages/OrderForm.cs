@@ -687,6 +687,11 @@
             return Driver.FindElement(Objects.Pages.OrderForm.AddedSolutionServiceRecipient).Text;
         }
 
+        public int GetNumberOfAddedRecipients()
+        {
+            return Driver.FindElements(Objects.Pages.OrderForm.AddedSolutionServiceRecipient).Count;
+        }
+
         public int NumberOfRadioButtonsDisplayed()
         {
             return Driver.FindElements(Objects.Pages.Common.RadioButton).Count;
@@ -896,6 +901,24 @@
         public IEnumerable<string> GetAddedCatalogueItems()
         {
             return Driver.FindElements(Objects.Pages.OrderForm.AddedOrderItemName).Select(s => s.Text);
+        }
+
+        public void ClickEditServiceRecipientsButton()
+        {
+            Driver.FindElement(Objects.Pages.OrderForm.EditServiceRecipientsButton).Click();
+        }
+
+        public void ClickUnselectedCheckbox()
+        {
+            var checkboxes = Driver.FindElements(Objects.Pages.Common.Checkbox);
+            foreach (var checkbox in checkboxes)
+            {
+                if (checkbox.GetAttribute("checked") is null)
+                {
+                    checkbox.Click();
+                    break;
+                }
+            }
         }
 
         private ReadOnlyCollection<IWebElement> ListOfSupplierNames()

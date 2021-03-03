@@ -717,6 +717,26 @@
             solutions.Should().BeInAscendingOrder();
         }
 
+        [When(@"the User chooses to edit the service recipients")]
+        public void WhenTheUserChoosesToEditTheServiceRecipients()
+        {
+            Context.Add("AddedRecipientCount", Test.Pages.OrderForm.GetNumberOfAddedRecipients());
+            Test.Pages.OrderForm.ClickEditServiceRecipientsButton();
+        }
+
+        [When(@"the User adds another service recipient to the order")]
+        public void WhenTheUserAddsAnotherServiceRecipientToTheOrder()
+        {
+            Test.Pages.OrderForm.ClickUnselectedCheckbox();
+        }
+
+        [Then(@"the Edit Price form displays the expected number of recipients")]
+        public void ThenTheEditPriceFormDisplaysTheExpectedNumberOfRecipients()
+        {
+            var newRecipients = Test.Pages.OrderForm.GetNumberOfAddedRecipients();
+            newRecipients.Should().Be((int)Context["AddedRecipientCount"] + 1);
+        }
+
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
         {
             return SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
