@@ -916,7 +916,11 @@
                 if (checkbox.GetAttribute("checked") is null)
                 {
                     checkbox.Click();
-                    break;
+
+                    if (checkbox.GetAttribute("checked") != null)
+                    {
+                        break;
+                    }
                 }
             }
         }

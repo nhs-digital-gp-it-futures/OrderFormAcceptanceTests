@@ -46,6 +46,7 @@ Scenario: Associated Services - Catalogue Solution now complete, >= 1 Service Re
 
 Scenario: Associated Services - Additional Service now complete, >= 1 Service Recipient, >=1 Catalogue Solution, 0 Additional Services
 	Given a Catalogue Solution is added to the order
+    And the Catalogue Solution section is complete
 	And the Additional Services section is complete
 	And there are no Additional Services in the order
 	When the Order Form for the existing order is presented
@@ -63,6 +64,7 @@ Scenario: Associated Services - Additional Service now complete, >= 1 Service Re
 
 Scenario: Associated Services - Additional Service now complete, >= 1 Service Recipient, >=1 Catalogue Solution, =>1 Additional Service
 	Given a Catalogue Solution is added to the order
+    And the Catalogue Solution section is complete
 	And an Additional Service is added to the order
 	When the Order Form for the existing order is presented
 	Then the Call Off Agreement ID is displayed
