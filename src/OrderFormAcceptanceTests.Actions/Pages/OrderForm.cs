@@ -917,7 +917,7 @@
                 {
                     checkbox.Click();
 
-                    if (checkbox.GetAttribute("checked") != null)
+                    if (checkbox.GetAttribute("checked") is not null)
                     {
                         break;
                     }
