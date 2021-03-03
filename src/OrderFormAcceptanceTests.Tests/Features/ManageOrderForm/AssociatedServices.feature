@@ -46,6 +46,7 @@ Scenario: Associated Services - Catalogue Solution now complete, >= 1 Service Re
 
 Scenario: Associated Services - Additional Service now complete, >= 1 Service Recipient, >=1 Catalogue Solution, 0 Additional Services
 	Given a Catalogue Solution is added to the order
+	And the Catalogue Solution section is complete
 	And the Additional Services section is complete
 	And there are no Additional Services in the order
 	When the Order Form for the existing order is presented
@@ -63,6 +64,7 @@ Scenario: Associated Services - Additional Service now complete, >= 1 Service Re
 
 Scenario: Associated Services - Additional Service now complete, >= 1 Service Recipient, >=1 Catalogue Solution, =>1 Additional Service
 	Given a Catalogue Solution is added to the order
+	And the Catalogue Solution section is complete
 	And an Additional Service is added to the order
 	When the Order Form for the existing order is presented
 	Then the Call Off Agreement ID is displayed
@@ -393,6 +395,6 @@ Scenario: Associated Service added - section marked as complete
 	And the content validation status of the associated-services section is complete
 
 Scenario: Associated Services - Published associated services display
-    Given the User has chosen to manage the Associated Service section
-    When the User has chosen to Add a single Associated Service
-    Then only the published associated services are available for selection
+	Given the User has chosen to manage the Associated Service section
+	When the User has chosen to Add a single Associated Service
+	Then only the published associated services are available for selection

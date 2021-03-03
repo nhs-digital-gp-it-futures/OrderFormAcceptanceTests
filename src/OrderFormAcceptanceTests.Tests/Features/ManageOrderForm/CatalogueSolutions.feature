@@ -424,13 +424,6 @@ Scenario: Catalogue Solutions - Catalogue Solution added section complete
     Then the Order dashboard is presented
     And the content validation status of the catalogue-solutions section is complete
 
-@ignore
-Scenario: Catalogue Solutions - edit price screen - Flat price values populated after editing and saving
-    Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
-    And the User amends the existing catalogue solution details
-    When the User re-visits the Catalogue Solution
-    Then the values will be populated with the values that was saved by the User
-
 Scenario: Catalogue Solutions - Catalogue Solution displayed in alphabetical order
     Given the supplier chosen has more than one solution
     When the User has chosen to manage the Catalogue Solution section
@@ -469,7 +462,7 @@ Scenario: Catalogue Solutions - Multiple added solutions displayed alphabeticall
     Then the Catalogue Solutions are presented
     And the Catalogue Solutions are in alphabetical order
 
-Scenario Outline: Catalogue Solutions - Edit Service Recipients
+Scenario: Catalogue Solutions - Edit Service Recipients
     Given a User has added a solution to the order
     And the User has chosen to manage the Catalogue Solution section
     And the User chooses to edit a saved Catalogue Solution
@@ -477,3 +470,19 @@ Scenario Outline: Catalogue Solutions - Edit Service Recipients
     And the User adds another service recipient to the order
     And the User chooses to continue
     Then the Edit Price form displays the expected number of recipients
+
+Scenario: Catalogue Solutions - Edit Service Recipients - No Additional Recipients
+    Given a User has added a solution to the order
+    And the User has chosen to manage the Catalogue Solution section
+    And the User chooses to edit a saved Catalogue Solution
+    When the User chooses to edit the service recipients
+    And the User chooses to continue
+    Then the Edit Price form displays the same number of recipients as earlier
+
+Scenario: Catalogue Solutions - Edit Service Recipients - Go Back
+    Given a User has added a solution to the order
+    And the User has chosen to manage the Catalogue Solution section
+    And the User chooses to edit a saved Catalogue Solution
+    When the User chooses to edit the service recipients
+    And the User chooses to go back
+    Then the Edit Price form displays the same number of recipients as earlier

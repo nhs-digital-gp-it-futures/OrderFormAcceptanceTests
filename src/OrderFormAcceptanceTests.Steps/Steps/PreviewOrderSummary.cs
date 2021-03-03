@@ -291,7 +291,6 @@
         [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
         public void GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
-            SetOrderCatalogueSectionToComplete();
             var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
             orderItem.EstimationPeriodId = TimeUnit.Year;
             orderItem.Create(Test.OrdapiConnectionString);

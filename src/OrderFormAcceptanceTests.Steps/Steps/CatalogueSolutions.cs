@@ -737,6 +737,13 @@
             newRecipients.Should().Be((int)Context["AddedRecipientCount"] + 1);
         }
 
+        [Then(@"the Edit Price form displays the same number of recipients as earlier")]
+        public void ThenTheEditPriceFormDisplaysTheSameNumberOfRecipientsAsEarlier()
+        {
+            var newRecipients = Test.Pages.OrderForm.GetNumberOfAddedRecipients();
+            newRecipients.Should().Be((int)Context["AddedRecipientCount"]);
+        }
+
         private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
         {
             return SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
