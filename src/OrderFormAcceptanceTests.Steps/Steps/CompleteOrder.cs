@@ -176,7 +176,7 @@
         [Then(@"the completed order summary has specific content related to the order being completed")]
         public void ThenTheCompletedOrderSummaryHasSpecificContentRelatedToTheOrderBeingCompleted()
         {
-            Test.Driver.FindElement(By.TagName("h2")).Text.Should().ContainEquivalentOf("This order is complete");
+            Test.Pages.PreviewOrderSummary.DescriptionContains("This order is complete");
         }
 
         [Then(@"the completed order summary contains the date the Order was completed")]

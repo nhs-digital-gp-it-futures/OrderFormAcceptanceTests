@@ -46,5 +46,7 @@
         public static By TotalOwnershipCost => CustomBy.DataTestId("total-ownership-cost-value");
 
         public static By ServiceInstanceIdColumn => CustomBy.DataTestId("column-heading-3", "div");
+
+        public static By SummaryDescription => CustomBy.DataTestId("summary-page-description");
     }
 }

@@ -60,11 +60,11 @@
         }
 
         [Given(@"that a buyer user has logged in")]
-        public void GivenThatABuyerUserHasLoggedIn()
+        public async Task GivenThatABuyerUserHasLoggedIn()
         {
             if (!Context.ContainsKey(ContextKeys.User))
             {
-                CreateUser(UserType.Buyer);
+                await CreateUser(UserType.Buyer);
             }
 
             User user = (User)Context[ContextKeys.User];
@@ -109,7 +109,7 @@
 
             if (!Context.ContainsKey(ContextKeys.Organisation))
             {
-                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisationWithNoUsers(Test.IsapiConnectionString));
+                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisation(Test.IsapiConnectionString));
             }
 
             var organisation = (Organisation)Context[ContextKeys.Organisation];
@@ -171,7 +171,7 @@
 
             if (!Context.ContainsKey(ContextKeys.Organisation))
             {
-                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisationWithNoUsers(Test.IsapiConnectionString));
+                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisation(Test.IsapiConnectionString));
             }
 
             var organisation = (Organisation)Context[ContextKeys.Organisation];
@@ -239,7 +239,7 @@
 
             if (!Context.ContainsKey(ContextKeys.Organisation))
             {
-                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisationWithNoUsers(Test.IsapiConnectionString));
+                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisation(Test.IsapiConnectionString));
             }
 
             var organisation = (Organisation)Context[ContextKeys.Organisation];
@@ -404,14 +404,18 @@
             ThenTheyCanSelectOneRadioButton();
         }
 
-        public void CreateUser(UserType userType)
+        public async Task CreateUser(UserType userType)
         {
+            Organisation organisation;
             if (!Context.ContainsKey(ContextKeys.Organisation))
             {
-                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisationWithNoUsers(Test.IsapiConnectionString));
+                organisation = await Organisation.GetByODSCode("27D", Test.IsapiConnectionString);
+                Context.Add(ContextKeys.Organisation, organisation);
             }
-
-            var organisation = (Organisation)Context[ContextKeys.Organisation];
+            else
+            {
+                organisation = (Organisation)Context[ContextKeys.Organisation];
+            }
 
             var user = new User() { UserType = userType }.GenerateRandomUser(organisation.OrganisationId);
             user.Create(Test.IsapiConnectionString);
