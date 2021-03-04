@@ -1,5 +1,6 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System.Threading.Tasks;
     using FluentAssertions;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
@@ -32,15 +33,15 @@
         }
 
         [When(@"the User is a Buyer User")]
-        public void WhenTheUserIsABuyerUser()
+        public async Task WhenTheUserIsABuyerUser()
         {
-            new CommonSteps(Test, Context).CreateUser(UserType.Authority);
+            await new CommonSteps(Test, Context).CreateUser(UserType.Authority);
         }
 
         [When(@"the User is not a Buyer User")]
-        public void WhenTheUserIsNotABuyerUser()
+        public async Task WhenTheUserIsNotABuyerUser()
         {
-            new CommonSteps(Test, Context).CreateUser(UserType.Authority);
+            await new CommonSteps(Test, Context).CreateUser(UserType.Authority);
         }
 
         [Then(@"the User will be logged in")]

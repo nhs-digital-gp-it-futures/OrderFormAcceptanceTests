@@ -1,5 +1,6 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System.Threading.Tasks;
     using BoDi;
     using Microsoft.Extensions.Configuration;
     using OrderFormAcceptanceTests.Steps.Utils;
@@ -19,7 +20,7 @@
         }
 
         [BeforeScenario(Order = 0)]
-        public void BeforeScenario()
+        public async Task BeforeScenario()
         {
             var configurationBuilder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -29,7 +30,7 @@
             objectContainer.RegisterInstanceAs<IConfiguration>(configurationBuilder);
             var test = objectContainer.Resolve<UITest>();
             test.GoToUrl();
-            new CommonSteps(test, context).GivenThatABuyerUserHasLoggedIn();
+            await new CommonSteps(test, context).GivenThatABuyerUserHasLoggedIn();
         }
 
         [AfterScenario]

@@ -906,19 +906,22 @@
         public void ClickEditServiceRecipientsButton()
         {
             Driver.FindElement(Objects.Pages.OrderForm.EditServiceRecipientsButton).Click();
+            Wait.Until(s => TextDisplayedInPageTitle("Service Recipients"));
         }
 
         public void ClickUnselectedCheckbox()
         {
+            var checkedCheckboxes = Driver.FindElements(Objects.Pages.Common.Checkbox).Where(s => bool.Parse(s.GetProperty("checked"))).Count();
             var checkboxes = Driver.FindElements(Objects.Pages.Common.Checkbox);
             foreach (var checkbox in checkboxes)
             {
-                if (checkbox.GetAttribute("checked") is null)
+                if (!bool.Parse(checkbox.GetProperty("checked")))
                 {
                     checkbox.Click();
 
-                    if (checkbox.GetAttribute("checked") is not null)
+                    if (bool.Parse(checkbox.GetProperty("checked")))
                     {
+                        Wait.Until(d => d.FindElements(Objects.Pages.Common.Checkbox).Where(s => bool.Parse(s.GetProperty("checked"))).Count() == checkedCheckboxes + 1);
                         break;
                     }
                 }

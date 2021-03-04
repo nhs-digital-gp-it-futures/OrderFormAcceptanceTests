@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using FluentAssertions;
     using OpenQA.Selenium;
     using OrderFormAcceptanceTests.Actions.Utils;
 
@@ -165,6 +166,11 @@
         {
             return Driver.FindElement(Objects.Pages.PreviewOrderSummary.RecurringCostsTable)
                 .FindElement(Objects.Pages.PreviewOrderSummary.ServiceInstanceIdColumn).Text.Equals("Service Instance ID", StringComparison.Ordinal);
+        }
+
+        public void DescriptionContains(string expectedText)
+        {
+            Driver.FindElement(Objects.Pages.PreviewOrderSummary.SummaryDescription).Text.Should().ContainEquivalentOf(expectedText);
         }
     }
 }
