@@ -47,7 +47,5 @@
         public string LastName { get; set; }
 
         public UserType UserType { get; set; }
-
-        
     }
 }
