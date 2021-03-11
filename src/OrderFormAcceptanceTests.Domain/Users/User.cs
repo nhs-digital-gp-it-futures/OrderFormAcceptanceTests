@@ -1,8 +1,6 @@
 ﻿namespace OrderFormAcceptanceTests.Domain.Users
 {
     using System;
-    using Bogus;
-    using Microsoft.AspNet.Identity;
 
     public class User
     {
