@@ -10,7 +10,6 @@
 
         internal OrderingPartyModel(OrderingParty orderingParty, Contact primaryContact)
         {
-
             Name = orderingParty.Name;
             OdsCode = orderingParty.OdsCode;
 

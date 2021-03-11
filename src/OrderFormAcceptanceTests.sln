@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderFormAcceptanceTests.Domain", "OrderFormAcceptanceTests.Domain\OrderFormAcceptanceTests.Domain.csproj", "{F6914DD3-5233-499A-AEEC-B2455F7E1B0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderFormAcceptanceTests.Persistence", "OrderFormAcceptanceTests.Persistence\OrderFormAcceptanceTests.Persistence.csproj", "{8FA9FDCD-2171-4EED-A02D-FAA811F8C7AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +48,14 @@ Global
 		{B8698A93-67E3-43F2-9568-DEA4DF518B5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8698A93-67E3-43F2-9568-DEA4DF518B5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8698A93-67E3-43F2-9568-DEA4DF518B5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6914DD3-5233-499A-AEEC-B2455F7E1B0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6914DD3-5233-499A-AEEC-B2455F7E1B0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6914DD3-5233-499A-AEEC-B2455F7E1B0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6914DD3-5233-499A-AEEC-B2455F7E1B0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FA9FDCD-2171-4EED-A02D-FAA811F8C7AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FA9FDCD-2171-4EED-A02D-FAA811F8C7AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FA9FDCD-2171-4EED-A02D-FAA811F8C7AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FA9FDCD-2171-4EED-A02D-FAA811F8C7AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
