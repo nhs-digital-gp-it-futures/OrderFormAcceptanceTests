@@ -1,4 +1,4 @@
-﻿namespace OrderFormAcceptanceTests.TestData
+﻿namespace OrderFormAcceptanceTests.Domain
 {
     public enum ProvisioningType
     {

@@ -1,62 +1,20 @@
-﻿namespace OrderFormAcceptanceTests.TestData
+﻿namespace OrderFormAcceptanceTests.TestData.Helpers
 {
     using System;
+    using System.Threading.Tasks;
     using Bogus;
     using Microsoft.AspNetCore.Identity;
+    using OrderFormAcceptanceTests.Domain.Users;
     using OrderFormAcceptanceTests.TestData.Utils;
 
-    public class User
+    public class UsersHelper
     {
-        public Guid Id { get; set; } = default;
-
-        public string UserName { get; set; }
-
-        public string NormalizedUserName { get; set; }
-
-        public string Email { get; set; }
-
-        public string NormalizedEmail { get; set; }
-
-        public int EmailConfirmed { get; set; }
-
-        public string PasswordHash { get; set; }
-
-        public string SecurityStamp { get; set; }
-
-        public Guid ConcurrencyStamp { get; set; } = default;
-
-        public string PhoneNumber { get; set; }
-
-        public int PhoneNumberConfirmed { get; set; }
-
-        public int TwoFactorEnabled { get; set; }
-
-        public string LockoutEnd { get; set; }
-
-        public int LockoutEnabled { get; set; }
-
-        public int AccessFailedCount { get; set; }
-
-        public Guid PrimaryOrganisationId { get; set; }
-
-        public string OrganisationFunction { get; set; }
-
-        public int Disabled { get; set; }
-
-        public int CatalogueAgreementSigned { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public UserType UserType { get; set; }
-
         public static string GenericTestPassword()
         {
             return "BuyingC@t4logue";
         }
 
-        public User GenerateRandomUser(Guid primaryOrganisationId)
+        public static User GenerateRandomUser(Guid primaryOrganisationId, User user)
         {
             Faker faker = new Faker();
             var generatedEmail = faker.Internet.Email();
@@ -68,7 +26,7 @@
                 NormalizedUserName = generatedEmail.ToUpper(),
                 NormalizedEmail = generatedEmail.ToUpper(),
                 EmailConfirmed = 1,
-                PasswordHash = new PasswordHasher<User>().HashPassword(this, GenericTestPassword()),
+                PasswordHash = new PasswordHasher<User>().HashPassword(user, GenericTestPassword()),
                 SecurityStamp = faker.Random.Hash(),
                 ConcurrencyStamp = faker.Random.Guid(),
                 PhoneNumber = faker.Phone.PhoneNumber(),
@@ -78,7 +36,7 @@
                 LockoutEnabled = 1,
                 AccessFailedCount = 0,
                 PrimaryOrganisationId = primaryOrganisationId,
-                OrganisationFunction = UserType.ToString(),
+                OrganisationFunction = user.UserType.ToString(),
                 Disabled = 0,
                 CatalogueAgreementSigned = 0,
                 FirstName = faker.Name.FirstName(),
@@ -86,7 +44,7 @@
             };
         }
 
-        public void Create(string connectionString)
+        public static async Task Create(string connectionString, User user)
         {
             var query = @"INSERT INTO dbo.AspNetUsers (
                             Id,
@@ -135,14 +93,14 @@
                             @lastName
                         );";
 
-            SqlExecutor.Execute<User>(connectionString, query, this);
+            await SqlExecutor.ExecuteAsync<User>(connectionString, query, user);
         }
 
-        public void Delete(string connectionString)
+        public static async Task Delete(string connectionString, User user)
         {
             var query = @"DELETE FROM dbo.AspNetUsers WHERE UserName = @userName;";
 
-            SqlExecutor.Execute<User>(connectionString, query, this);
+            await SqlExecutor.ExecuteAsync<User>(connectionString, query, user);
         }
     }
 }

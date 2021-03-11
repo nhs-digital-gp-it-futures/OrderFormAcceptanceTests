@@ -1,10 +1,9 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
-    using System;
-    using System.Linq;
+    using System.Threading.Tasks;
     using FluentAssertions;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
-    using OrderFormAcceptanceTests.TestData;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -13,24 +12,6 @@
         public AdditionalServices(UITest test, ScenarioContext context)
             : base(test, context)
         {
-        }
-
-        [Given(@"there are no Additional Services in the order")]
-        public void GivenThereAreNoAdditionalServicesInTheOrder()
-        {
-            Context.Should().NotContainKey(ContextKeys.CreatedAdditionalServiceOrderItem);
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var searchedOrderItem = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 2);
-            searchedOrderItem.Should().BeEmpty();
-        }
-
-        [Given(@"an Additional Service is added to the order")]
-        public void GivenAnAdditionalServiceIsAddedToTheOrder()
-        {
-            new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = OrderItem.GenerateAdditionalServiceOrderItemWithFlatPricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
         }
 
         [StepDefinition(@"the User is able to manage the Additional Services section")]
@@ -66,7 +47,7 @@
             Test.Pages.AdditionalServices.AddAdditionalServiceButtonDisplayed().Should().BeTrue();
         }
 
-        [When(@"the User chooses to add a single Additional Service")]
+        [StepDefinition(@"the User chooses to add a single Additional Service")]
         public void WhenTheUserChoosesToAddASingleAdditionalService()
         {
             Test.Pages.OrderForm.ClickAddSolutionButton();
@@ -218,49 +199,18 @@
         }
 
         [Given(@"the edit Additional Service form for flat list price with variable \(patient numbers\) order type is presented")]
+        [Given(@"the edit Additional Service form for flat list price with declarative order type is presented")]
+        [Given(@"the edit Additional Service form for flat list price with variable \(on demand\) order type is presented")]
         public void GivenTheEditAdditionalServiceFormForFlatListPriceWithVariablePatientNumbersOrderTypeIsPresented()
         {
-            new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = OrderItem.GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
-            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
-            ThenTheUserIsAbleToManageTheAdditionalServicesSection();
-            GivenTheUserChoosesToEditTheSavedAdditionalService();
-        }
-
-        [Given(@"the edit Additional Service form for flat list price with declarative order type is presented")]
-        public void GivenTheEditAdditionalServiceFormForFlatListPriceWithDeclarativeOrderTypeIsPresented()
-        {
-            new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = OrderItem.GenerateAdditionalServiceOrderItemWithDeclarative((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
-            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
-            ThenTheUserIsAbleToManageTheAdditionalServicesSection();
-            GivenTheUserChoosesToEditTheSavedAdditionalService();
-        }
-
-        [Given(@"the edit Additional Service form for flat list price with variable \(on demand\) order type is presented")]
-        public void GivenTheEditAdditionalServiceFormForFlatListPriceWithVariableOnDemandOrderTypeIsPresented()
-        {
-            new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-            var orderItem = OrderItem.GenerateAdditionalServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
-            new CommonSteps(Test, Context).WhenTheOrderFormForTheExistingOrderIsPresented();
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
             GivenTheUserChoosesToEditTheSavedAdditionalService();
         }
 
         [Given(@"there is one or more Additional Services added to the order")]
-        public void GivenTheThereAreOneOrMoreAddionalServicesAddedtoTheOrder()
+        public async Task GivenTheThereAreOneOrMoreAddionalServicesAddedtoTheOrder()
         {
-            new OrderForm(Test, Context).GivenTheAdditionalServicesSectionIsComplete();
-
-            var orderItem = OrderItem.GenerateAdditionalServiceOrderItemWithVariablePricedPerPatient((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedAdditionalServiceOrderItem, orderItem);
+            await new CommonSteps(Test, Context).GivenAnAdditionalServiceWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder();
         }
 
         [StepDefinition(@"the User chooses to edit the saved Additional service")]
@@ -277,51 +227,16 @@
 
             var orderItem = (OrderItem)Context[ContextKeys.CreatedAdditionalServiceOrderItem];
 
-            quantityFromPage.Should().Be(orderItem.Quantity.ToString());
+            quantityFromPage.Should().Be(orderItem.OrderItemRecipients[0].Quantity.ToString());
             priceFromPage.Should().MatchRegex(@"^[0-9]*(\.[0-9]{2,3})?$");
         }
 
-        [Given(@"the supplier added to the order has an additional service with a declarative flat price")]
-        public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithADeclarativeFlatPrice()
-        {
-            var supplier = GetSupplierDetails(ProvisioningType.Declarative);
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.SupplierId = int.Parse(supplier.SupplierId);
-            order.SupplierName = supplier.Name;
-            order.Update(Test.OrdapiConnectionString);
-        }
-
-        [Given(@"the supplier added to the order has an additional service with a patient flat price")]
-        public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAPatientFlatPrice()
-        {
-            var supplier = GetSupplierDetails(ProvisioningType.Patient);
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.SupplierId = int.Parse(supplier.SupplierId);
-            order.SupplierName = supplier.Name;
-            order.Update(Test.OrdapiConnectionString);
-        }
-
-        [Given(@"the supplier added to the order has an additional service with an on demand flat price")]
-        public void GivenTheSupplierAddedToTheOrderHasAnAdditionalServiceWithAnOnDemandFlatPrice()
-        {
-            var supplier = GetSupplierDetails(ProvisioningType.OnDemand);
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.SupplierId = int.Parse(supplier.SupplierId);
-            order.SupplierName = supplier.Name;
-            order.Update(Test.OrdapiConnectionString);
-        }
-
         [Given(@"there is no Additional Service in the order but the section is complete")]
-        public void GivenThereIsNoAdditionalServiceInTheOrderButTheSectionIsComplete()
+        public async Task GivenThereIsNoAdditionalServiceInTheOrderButTheSectionIsComplete()
         {
             var of = new OrderForm(Test, Context);
-            of.GivenTheAdditionalServicesSectionIsNotCompleteAndNoServicesAreAdded();
-            of.GivenTheAdditionalServicesSectionIsComplete();
-        }
-
-        private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
-        {
-            return SupplierInfo.SuppliersWithAdditionalServices(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
+            await of.GivenTheAdditionalServicesSectionIsNotCompleteAndNoServicesAreAdded();
+            await new CommonSteps(Test, Context).SetOrderAdditionalServicesSectionToComplete();
         }
     }
 }

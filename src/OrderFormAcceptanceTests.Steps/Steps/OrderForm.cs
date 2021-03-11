@@ -1,11 +1,12 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using FluentAssertions;
+    using Microsoft.EntityFrameworkCore;
     using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
-    using OrderFormAcceptanceTests.TestData;
     using OrderFormAcceptanceTests.TestData.Information;
     using TechTalk.SpecFlow;
 
@@ -135,7 +136,6 @@
         {
             var randomText = RandomInformation.RandomString(99);
             Test.Pages.OrderForm.EnterTextIntoTextArea(randomText);
-            Context.Add(ContextKeys.ExpectedDescriptionValue, randomText);
         }
 
         [Then(@"the Order is saved")]
@@ -144,24 +144,16 @@
         public void ThenTheOrderIsSaved()
         {
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
-        }
+            var (success, callOffId) = CallOffId.Parse(Test.Pages.OrderForm.GetCallOffId());
+            var order = DbContext.Order.Single(o => o.Id == callOffId.Id);
 
-        [Given(@"the Order is saved for the first time")]
-        public void GivenTheOrderIsSavedForTheFirstTime()
-        {
-            GivenTheUserIsManagingTheOrderDescriptionSection();
-            GivenTheUserHasEnteredAValidDescriptionForTheOrder();
-            WhenTheUserChoosesToSave();
-            ThenTheOrderIsSaved();
-            ThenTheCallOffAgreementIDIsGenerated();
-            var id = (string)Context[ContextKeys.CallOffAgreementId];
-            var order = new Order { OrderId = id }.Retrieve(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedOrder, order);
+            Context.TryAdd(ContextKeys.CreatedOrder, order);
         }
 
         [Then(@"the content validation status of the (.*) section is complete")]
         public void ThenTheContentValidationStatusOfTheSectionIsComplete(string sectionName)
         {
+            Test.Pages.OrderForm.TaskListDisplayed();
             Test.Pages.OrderForm.SectionComplete(sectionName).Should().BeTrue();
         }
 
@@ -183,146 +175,62 @@
         {
             var id = Test.Pages.OrderForm.GetCallOffId();
             id.Should().NotBeNullOrEmpty();
-            Context.Add(ContextKeys.CallOffAgreementId, id);
         }
 
         [Then(@"the Order Description section is saved in the DB")]
-        public void ThenTheOrderDescriptionSectionIsSavedInTheDB()
+        public async Task ThenTheOrderDescriptionSectionIsSavedInTheDB()
         {
-            var expectedDescriptionValue = (string)Context[ContextKeys.ExpectedDescriptionValue];
-            var id = Test.Pages.OrderForm.GetCallOffId();
-            var order = new Order { OrderId = id }.Retrieve(Test.OrdapiConnectionString);
-            order.Description.Should().BeEquivalentTo(expectedDescriptionValue);
-            Context.Add(ContextKeys.CreatedOrder, order);
-        }
+            var orderId = Context.Get<Order>(ContextKeys.CreatedOrder).Id;
 
-        [Given(@"the Call Off Ordering Party section is not complete")]
-        public void GivenTheCallOffOrderingPartySectionIsNotComplete()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.OrganisationAddressId = null;
-            order.OrganisationContactId = null;
-            order.Update(Test.OrdapiConnectionString);
-        }
-
-        [Given(@"the Supplier section is not complete")]
-        public void GivenTheSupplierSectionIsNotComplete()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.SupplierAddressId = null;
-            order.SupplierContactId = null;
-            order.SupplierId = null;
-            order.SupplierName = null;
-            order.Update(Test.OrdapiConnectionString);
-        }
-
-        [Given(@"the Commencement Date section is not complete")]
-        public void GivenTheCommencementDateSectionIsNotComplete()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.CommencementDate = null;
-            order.Update(Test.OrdapiConnectionString);
-        }
-
-        [Given(@"the Service Recipients section is not complete")]
-        public void GivenTheServiceRecipientsSectionIsNotComplete()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.ServiceRecipientsViewed = 0;
-            order.Update(Test.OrdapiConnectionString);
-
-            var serviceRecipient = (ServiceRecipient)Context[ContextKeys.CreatedServiceRecipient];
-            serviceRecipient.Delete(Test.OrdapiConnectionString);
-            Context.Remove(ContextKeys.CreatedServiceRecipient);
-        }
-
-        [Given(@"the Service Recipients section is complete")]
-        public void GivenTheServiceRecipientsSectionIsComplete()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.ServiceRecipientsViewed = 1;
-            order.Update(Test.OrdapiConnectionString);
-
-            var serviceRecipient = ServiceRecipient.Generate(order.OrderId, order.OrganisationOdsCode);
-            serviceRecipient.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedServiceRecipient, serviceRecipient);
-        }
-
-        [Given(@"the Catalogue Solutions section is not complete")]
-        public void GivenTheCatalogueSolutionsSectionIsNotComplete()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.CatalogueSolutionsViewed = 0;
-            order.Update(Test.OrdapiConnectionString);
+            (await DbContext.Order.FindAsync(orderId)).Description.Should().NotBeNullOrEmpty();
         }
 
         [Given(@"the Catalogue Solution section is complete")]
-        public void GivenTheCatalogueSolutionSectionIsComplete()
+        public async Task GivenTheCatalogueSolutionSectionIsComplete()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.CatalogueSolutionsViewed = 1;
-            order.Update(Test.OrdapiConnectionString);
+            await new CommonSteps(Test, Context).SetOrderCatalogueSectionToComplete();
         }
 
         [Given(@"the Additional Services section is complete")]
-        public void GivenTheAdditionalServicesSectionIsComplete()
+        public async Task GivenTheAdditionalServicesSectionIsComplete()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.AdditionalServicesViewed = 1;
-            order.Update(Test.OrdapiConnectionString);
+            await new CommonSteps(Test, Context).SetOrderAdditionalServicesSectionToComplete();
         }
 
         [Given(@"the Additional Services section is not complete")]
-        public void GivenTheAdditionalServicesSectionIsNotCompleteAndNoServicesAreAdded()
+        public async Task GivenTheAdditionalServicesSectionIsNotCompleteAndNoServicesAreAdded()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.AdditionalServicesViewed = 0;
-            IEnumerable<OrderItem> items = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 2);
-            foreach (var item in items)
-            {
-                item.Delete(Test.OrdapiConnectionString);
-            }
+            var commonSteps = new CommonSteps(Test, Context);
 
-            order.Update(Test.OrdapiConnectionString);
+            await commonSteps.SetOrderCatalogueSectionToComplete();
         }
 
         [Given(@"the Associated Services section is not complete")]
-        public void GivenTheAssociatedServicesSectionIsNotCompleteAndNoServicesAreAdded()
+        public async Task GivenTheAssociatedServicesSectionIsNotCompleteAndNoServicesAreAdded()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.AssociatedServicesViewed = 0;
-            IEnumerable<OrderItem> items = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 3);
-            foreach (var item in items)
-            {
-                item.Delete(Test.OrdapiConnectionString);
-            }
+            var commonSteps = new CommonSteps(Test, Context);
 
-            order.Update(Test.OrdapiConnectionString);
-        }
-
-        [Given(@"the Funding Source section is not complete")]
-        public void GivenTheFundingSourceSectionIsNotComplete()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.FundingSourceOnlyGMS = null;
-            order.Update(Test.OrdapiConnectionString);
+            await commonSteps.SetOrderCatalogueSectionToComplete();
+            await commonSteps.SetOrderAdditionalServicesSectionToComplete();
         }
 
         [Given(@"the Funding Source section is complete with 'no' selected")]
         [Given(@"the Funding Source section is complete")]
-        public void GivenTheFundingSourceSectionIsCompleteWithNoSelected()
+        public async Task GivenTheFundingSourceSectionIsCompleteWithNoSelected()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.FundingSourceOnlyGMS = 0;
-            order.Update(Test.OrdapiConnectionString);
+            order.FundingSourceOnlyGms = false;
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
         }
 
         [Given(@"the Funding Source section is complete with 'yes' selected")]
-        public void GivenTheFundingSourceSectionIsCompleteWithYesSelected()
+        public async Task GivenTheFundingSourceSectionIsCompleteWithYesSelected()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.FundingSourceOnlyGMS = 1;
-            order.Update(Test.OrdapiConnectionString);
+            order.FundingSourceOnlyGms = true;
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
         }
 
         [When(@"the User navigates back to the Organisation's Orders dashboard")]

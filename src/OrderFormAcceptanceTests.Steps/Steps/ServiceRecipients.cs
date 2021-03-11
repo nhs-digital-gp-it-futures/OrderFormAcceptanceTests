@@ -62,32 +62,5 @@
             // this is an action to select the service recipient, one about is an assertion that the recipient is selected
             Test.Pages.OrderForm.ClickCheckbox();
         }
-
-        [Then(@"the Service Recipient section is saved in the DB")]
-        public void ThenTheServiceRecipientSectionIsSavedInTheDB()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.Retrieve(Test.OrdapiConnectionString).ServiceRecipientsViewed.Should().Be(1);
-        }
-
-        [Then(@"the Service Recipient is saved in the DB")]
-        public void ThenTheServiceRecipientIsSavedInTheDB()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var serviceRecipientInDB = ServiceRecipient.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId);
-            Context.Add(ContextKeys.CreatedServiceRecipient, serviceRecipientInDB);
-            serviceRecipientInDB.Should().NotBeNull();
-        }
-
-        [Then(@"the Service Recipient is deleted from the Order")]
-        [Then(@"all the Service Recipients are deleted from the Order")]
-        public void ThenTheServiceRecipientIsDeletedFromTheOrder()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var serviceRecipientInDB = ServiceRecipient.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId);
-            serviceRecipientInDB.Should().BeNullOrEmpty();
-            serviceRecipientInDB = ((ServiceRecipient)Context[ContextKeys.CreatedServiceRecipient]).Retrieve(Test.OrdapiConnectionString);
-            serviceRecipientInDB.Should().BeNullOrEmpty();
-        }
     }
 }

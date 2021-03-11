@@ -3,11 +3,14 @@
     using System;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using Bogus;
     using FluentAssertions;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
-    using OrderFormAcceptanceTests.TestData.Information;
+    using OrderFormAcceptanceTests.TestData.Extensions;
+    using OrderFormAcceptanceTests.TestData.Helpers;
     using OrderFormAcceptanceTests.TestData.Utils;
     using TechTalk.SpecFlow;
 
@@ -19,64 +22,13 @@
         {
         }
 
-        [Given(@"the Commencement date section is complete")]
-        public void GivenTheCommencementDateSectionIsComplete()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.CommencementDate.Should().NotBeNull();
-        }
-
-        [Given(@"there are one or more Service Recipients in the order")]
-        public void GivenThereAreOneOrMoreServiceRecipientsInTheOrder()
-        {
-            if (!Context.ContainsKey(ContextKeys.CreatedServiceRecipient))
-            {
-                var order = (Order)Context[ContextKeys.CreatedOrder];
-                var serviceRecipient = ServiceRecipient.Generate(order.OrderId, order.OrganisationOdsCode, order.OrganisationName);
-                serviceRecipient.Create(Test.OrdapiConnectionString);
-                Context.Add(ContextKeys.CreatedServiceRecipient, serviceRecipient);
-            }
-        }
-
-        [Given(@"there are no Service Recipients in the order")]
-        public void GivenThereAreNoServiceRecipientsInTheOrder()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            ServiceRecipient.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId).ToList().Should().BeNullOrEmpty();
-            order.ServiceRecipientsViewed = 1;
-
-            if (Context.ContainsKey(ContextKeys.CreatedServiceRecipient))
-            {
-                var serviceRecipient = (ServiceRecipient)Context[ContextKeys.CreatedServiceRecipient];
-                serviceRecipient.Delete(Test.OrdapiConnectionString);
-                Context.Remove(ContextKeys.CreatedServiceRecipient);
-            }
-        }
-
-        [Given(@"there is no Catalogue Solution in the order")]
-        public void GivenThereIsNoCatalogueSolutionInTheOrder()
-        {
-            Context.Should().NotContainKey(ContextKeys.CreatedOrderItem);
-
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var searchedOrderItem = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId);
-            searchedOrderItem.Should().BeEmpty();
-        }
-
-        [Given(@"a supplier which has a catalogue soltution with only one list price was chosen")]
-        public void GivenASupplierWhichHasACatalogueSoltutionWithOnlyOneListPriceWasChosen()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.SupplierId = SupplierInfo.SupplierWithSolutionWithOnePrice(Test.BapiConnectionString);
-            order.SupplierName = SupplierInfo.SupplierName(Test.BapiConnectionString, order.SupplierId.Value);
-            order.Update(Test.OrdapiConnectionString);
-        }
-
         [Given(@"there is no Catalogue Solution in the order but the section is complete")]
-        public void SetCatalogueSolutionSectionToCompleteWith0SolutionsAdded()
+        public async Task SetCatalogueSolutionSectionToCompleteWith0SolutionsAdded()
         {
-            new OrderForm(Test, Context).GivenTheCatalogueSolutionSectionIsComplete();
-            GivenThereIsNoCatalogueSolutionInTheOrder();
+            await new OrderForm(Test, Context).GivenTheCatalogueSolutionSectionIsComplete();
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var orderItemsInDb = (await DbContext.Order.FindAsync(order.Id)).OrderItems.Where(s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.Solution);
+            orderItemsInDb.Should().HaveCount(0);
         }
 
         [Then(@"the User is able to manage the Catalogue Solutions section")]
@@ -163,11 +115,9 @@
         [Given(@"the User selects a catalogue solution to add")]
         public void GivenTheUserSelectsACatalogueSolutionToAdd()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var solutionName = SupplierInfo.GetSupplierSolutionNameWithPrice(Test.BapiConnectionString, order.SupplierId.Value.ToString());
-
-            var solutionId = Test.Pages.OrderForm.ClickRadioButtonWithText(solutionName);
-            Context.Add(ContextKeys.ChosenSolutionId, solutionId);
+            var solutionName = Test.Pages.OrderForm.GetRadioButtonText()[0];
+            Test.Pages.OrderForm.ClickRadioButtonWithText(solutionName);
+            Context.Add(ContextKeys.ChosenSolutionName, solutionName);
         }
 
         [Given(@"the User is presented with select Service Recipient form")]
@@ -176,17 +126,17 @@
             GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier();
             GivenTheUserSelectsACatalogueSolutionToAdd();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            new ServiceRecipients(Test, Context).ThenTheyArePresentedWithSelectServiceRecipientForm();
         }
 
         [Then(@"all the available prices for that Catalogue Solution are presented")]
         public void ThenAllTheAvailablePricesForThatCatalogueSolutionArePresented()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("List price").Should().BeTrue();
-            var solutionId = (string)Context[ContextKeys.ChosenSolutionId];
-            var query = "Select count(*) FROM [dbo].[CataloguePrice] where CatalogueItemId=@SolutionId";
-            var expectedNumberOfPrices = SqlExecutor.Execute<int>(Test.BapiConnectionString, query, new { solutionId }).Single();
-            Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
+            var expectedNumberOfPrices = Context.TryGetValue(ContextKeys.NumberOfPrices, out int expectedPrices);
+            if (expectedNumberOfPrices)
+            {
+                Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedPrices);
+            }
         }
 
         [Given(@"the User is presented with the prices for the selected Catalogue Solution")]
@@ -214,9 +164,10 @@
         public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder()
         {
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            var numOfPrices = Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed();
+            Context.Add(ContextKeys.NumberOfPrices, numOfPrices);
             GivenTheUserSelectsAPrice();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            new ServiceRecipients(Test, Context).ThenTheyArePresentedWithSelectServiceRecipientForm();
         }
 
         [Given(@"the User is presented with the Service Recipients for the Order after selecting the per patient flat price")]
@@ -225,7 +176,6 @@
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
-            new ServiceRecipients(Test, Context).ThenTheyArePresentedWithSelectServiceRecipientForm();
         }
 
         [Then(@"the User is informed they have to select a Service Recipient")]
@@ -252,10 +202,8 @@
         [Then(@"the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form")]
         public void ThenTheNameOfTheSelectedCatalogueSolutionIsDisplayedOnTheCatalogueSolutionEditForm()
         {
-            var solutionId = (string)Context[ContextKeys.ChosenSolutionId];
-            var query = "Select Name FROM [dbo].[CatalogueItem] where CatalogueItemId=@SolutionId";
-            var expectedSolutionName = SqlExecutor.Execute<string>(Test.BapiConnectionString, query, new { solutionId }).Single();
-            Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedSolutionName).Should().BeTrue();
+            var addedSolutionName = Context.Get<string>(ContextKeys.ChosenSolutionName);
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(addedSolutionName).Should().BeTrue();
         }
 
         [Then(@"the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form")]
@@ -339,11 +287,11 @@
         }
 
         [Given(@"the User is presented with the Catalogue Solution edit form for a declarative flat price")]
-        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormDeclarativeFlatPrice()
+        public async Task GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormDeclarativeFlatPrice()
         {
             CommonSteps common = new(Test, Context);
 
-            GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
+            await GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
             GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
             Test.Pages.OrderForm.ClickRadioButton(0);
             common.ContinueAndWaitForCheckboxes();
@@ -514,30 +462,19 @@
         }
 
         [StepDefinition(@"the Catalogue Solution is saved in the DB")]
-        public void GivenTheCatalogueSolutionIsSavedInTheDB()
+        public async Task GivenTheCatalogueSolutionIsSavedInTheDB()
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            var orderItem = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId).First();
-            Context.Add(ContextKeys.CreatedOrderItem, orderItem);
-            orderItem.Should().NotBeNull();
-        }
-
-        [Given(@"there is one or more Catalogue Solutions added to the order")]
-        public void GivenThereIsOneOrMoreCatalogueSolutionsAddedToTheOrder()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-
-            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariablePerPatient(order);
-            orderItem.Create(Test.OrdapiConnectionString);
+            var orderItemsInDb = (await DbContext.Order.FindAsync(order.Id)).OrderItems.Where(s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.Solution);
+            orderItemsInDb.Should().NotBeNull();
         }
 
         [Given(@"the supplier chosen has more than one solution")]
-        public void GivenTheSupplierChosenHasMoreThanOneSolution()
+        public async Task GivenTheSupplierChosenHasMoreThanOneSolution()
         {
-            var supplierId = SupplierInfo.SupplierWithMoreThanOneSolution(Test.BapiConnectionString);
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.SupplierId = supplierId;
-            order.Update(Test.OrdapiConnectionString);
+            var commonSteps = new CommonSteps(Test, Context);
+            await commonSteps.GivenACatalogueSolutionWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder();
+            await commonSteps.GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder();
         }
 
         [Then(@"the Catalogue Solutions are presented")]
@@ -548,23 +485,10 @@
             Test.Pages.OrderForm.AddedOrderItemsTableIsPopulated().Should().BeTrue();
         }
 
-        [Given(@"a User has added a solution to the order")]
-        public void GivenAUserHasAddedASolutionToTheOrder()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariableDeclarative(order);
-            orderItem.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedOrderItem, orderItem);
-        }
-
         [Given(@"a User has added a per patient solution to the order")]
-        public void GivenAUserHasAddedAPerPatientSolutionToTheOrder()
+        public async Task GivenAUserHasAddedAPerPatientSolutionToTheOrder()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariablePerPatient(order);
-            orderItem.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedOrderItem, orderItem);
-            Test.Driver.Navigate().Refresh();
+            await new CommonSteps(Test, Context).GivenACatalogueSolutionWithAFlatPriceVariablePer_PatientOrderTypeIsSavedToTheOrder();
         }
 
         [Then(@"the name of each Associated Service is displayed")]
@@ -581,34 +505,6 @@
         public void ThenThereIsAControlToEditEachCatalogueItem()
         {
             Test.Pages.OrderForm.AddedOrderItemNamesAreLinks().Should().BeTrue();
-        }
-
-        [Given(@"the User amends the existing catalogue solution details")]
-        public void GivenTheUserAmendsTheExistingCatalogueSolutionDetails()
-        {
-            WhenTheUserHasChosenToManageTheCatalogueSolutionSection();
-            ThenTheOrderItemsArePresented();
-            Test.Pages.OrderForm.ClickAddedCatalogueItem();
-            ThenTheyArePresentedWithTheOrderItemPriceEditForm();
-
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var deliveryDate = order.CommencementDate.Value.AddMonths(6).AddYears(1);
-            Test.Pages.OrderForm.EnterProposedDate(deliveryDate);
-
-            var estimatedPeriod = Test.Pages.OrderForm.ClickRadioButton();
-
-            var f = new Faker();
-            var quantity = f.Random.Number(min: 1).ToString();
-            var price = f.Random.Number(min: 1).ToString();
-            Test.Pages.OrderForm.EnterQuantity(quantity);
-            Test.Pages.OrderForm.EnterPriceInputValue(price);
-
-            Context.Add(ContextKeys.AmendedDeliveryDate, deliveryDate);
-            Context.Add(ContextKeys.AmendedEstimatedPeriod, estimatedPeriod);
-            Context.Add(ContextKeys.AmendedQuantity, quantity);
-            Context.Add(ContextKeys.AmendedPrice, price);
-            new OrderForm(Test, Context).WhenTheUserChoosesToSave();
-            ThenTheOrderItemsArePresented();
         }
 
         [When(@"the User re-visits the Associated Service")]
@@ -647,25 +543,30 @@
         }
 
         [Given(@"that the Supplier in the order has no associated services")]
-        public void GivenTheSupplierInTheOrderHasNoAssociatedServices()
+        public async Task GivenTheSupplierInTheOrderHasNoAssociatedServices()
         {
-            var supplier = SupplierInfo.SuppliersWithout(Test.BapiConnectionString, CatalogueItemType.AssociatedService).First() ?? throw new NullReferenceException("Supplier not found");
+            var supplier = SupplierInfo.SuppliersWithout(Test.BapiConnectionString, CatalogueItemType.AssociatedService).First().ToDomain() ?? throw new NullReferenceException("Supplier not found");
 
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.SupplierId = int.Parse(supplier.SupplierId);
-            order.SupplierName = supplier.Name;
-            order.Update(Test.OrdapiConnectionString);
+            order.Supplier = supplier;
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
         }
 
         [Given(@"the supplier added to the order has a solution with a declarative flat price")]
-        public void GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice()
+        public async Task GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice()
         {
-            var supplier = GetSupplierDetails(ProvisioningType.Declarative);
+            var supplierInfo = SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, ProvisioningType.Declarative).First().ToDomain();
+
+            var supplier = await DbContext.Supplier.FindAsync(supplierInfo.Id) ?? supplierInfo;
 
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.SupplierId = int.Parse(supplier.SupplierId);
-            order.SupplierName = supplier.Name;
-            order.Update(Test.OrdapiConnectionString);
+            order.Supplier = supplier;
+            order.SupplierContact = ContactHelper.Generate();
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
         }
 
         [Given(@"the User is presented with the Service Recipients for the Order after selecting the declarative flat price")]
@@ -686,28 +587,6 @@
         public void GivenTheUserChoosesToEditASavedCatalogueSolution()
         {
             Test.Pages.OrderForm.ClickAddedCatalogueItem();
-        }
-
-        [Given(@"a User has added multiple solutions to the order")]
-        public void GivenAUserHasAddedMultipleSolutionsToTheOrder()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var orderItem1 = OrderItem.GenerateOrderItemWithFlatPricedVariablePerPatient(order);
-            orderItem1.Create(Test.OrdapiConnectionString);
-
-            var orderItem2 = OrderItem.GenerateOrderItemWithFlatPricedVariableDeclarative(order);
-            orderItem2.Create(Test.OrdapiConnectionString);
-
-            OrderItemList itemList = new();
-            itemList.Add(orderItem1);
-            itemList.Add(orderItem2);
-
-            if (Context.ContainsKey(ContextKeys.CreatedOrderItems))
-            {
-                Context.Remove(ContextKeys.CreatedOrderItems);
-            }
-
-            Context.Add(ContextKeys.CreatedOrderItems, itemList);
         }
 
         [Then(@"the Catalogue Solutions are in alphabetical order")]
@@ -742,11 +621,6 @@
         {
             var newRecipients = Test.Pages.OrderForm.GetNumberOfAddedRecipients();
             newRecipients.Should().Be((int)Context["AddedRecipientCount"]);
-        }
-
-        private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
-        {
-            return SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
         }
     }
 }

@@ -3,9 +3,11 @@
 	I want to view my Orders
 	So that they are correct
 
-Scenario: View Orders
+Background: 
 	Given an incomplete order exists
 	When the User is presented with the Organisation's Orders dashboard
+
+Scenario: View Orders
 	Then there is a list of my Organisation's Orders
 	And each item includes the Call Off Agreement ID
 	And each item includes the Order Description
@@ -18,19 +20,13 @@ Scenario: View Orders
 	And there is a control to create a new order
 
 Scenario: View Orders - Footer 
-	Given an incomplete order exists
-	When the User is presented with the Organisation's Orders dashboard
 	Then the Organisation's Orders dashboard contains the standard Public browse footer 
 	And the new order page displays the standard Public browse footer 
 
 Scenario: View Orders - Headers
-	Given an incomplete order exists
-	When the User is presented with the Organisation's Orders dashboard
 	Then the Organisation's Orders dashboard contains the standard Public browse header including the Beta banner
 	And the new order page displays the standard Public browse header
 
 Scenario: View Orders - Go back to homepage
-	Given an incomplete order exists
-	When the User is presented with the Organisation's Orders dashboard
-	And the User choose to go back to the homepage
+	When the User choose to go back to the homepage
 	Then the Public Browse homepage is presented 
