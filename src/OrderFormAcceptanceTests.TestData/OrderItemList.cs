@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using OrderFormAcceptanceTests.Domain;
 
     public sealed class OrderItemList
     {
@@ -31,13 +32,13 @@
                 throw new ArgumentNullException(nameof(orderItem));
             }
 
-            cache.Add(orderItem.OrderItemId, orderItem);
+            cache.Add(cache.Count, orderItem);
         }
 
         public decimal GetTotalOneOffCost() => GetTotalAnnualCost();
 
-        public decimal GetTotalAnnualCost() => GetAll().Sum(orderItem => orderItem.CalculateItemCost());
+        public decimal GetTotalAnnualCost() => GetAll().Sum(orderItem => orderItem.Price.Value);
 
-        public decimal GetTotalMonthlyCost() => GetAll().Sum(orderItem => orderItem.CalculateItemCost()) / 12m;
+        public decimal GetTotalMonthlyCost() => GetAll().Sum(orderItem => orderItem.Price.Value) / 12m;
     }
 }
