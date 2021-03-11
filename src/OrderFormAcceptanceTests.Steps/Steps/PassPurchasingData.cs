@@ -1,13 +1,8 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using NHSD.BuyingCatalogue.EmailClient.IntegrationTesting.Data;
     using OrderFormAcceptanceTests.Steps.Utils;
-    using OrderFormAcceptanceTests.TestData;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -25,22 +20,7 @@
             var precount = (int)Context[ContextKeys.EmailCount];
             currentCount.Should().BeGreaterThan(precount);
             var emails = await Test.EmailServerDriver.FindAllEmailsAsync();
-            Context.Add(ContextKeys.SentEmail, emails[emails.Count - 1]);
-        }
-
-        [Then(@"the \.CSV to the desired specification is produced \(call off-id only\)")]
-        public void ThenThe_CSVToTheDesiredSpecificationIsProducedCallOff_IdOnly()
-        {
-            var email = (Email)Context[ContextKeys.SentEmail];
-            var attachmentFileName = email.Attachments[0].FileName;
-            var attachmentFileType = email.Attachments[0].ContentType.MediaType;
-            attachmentFileName.Should().EndWithEquivalent(".csv");
-            attachmentFileType.Should().ContainEquivalentOf("csv");
-            var data = email.Attachments[0].AttachmentData;
-            var decoded = Encoding.UTF8.GetString(data.ToArray());
-            var order = ((List<Order>)Context[ContextKeys.CreatedIncompleteOrders]).First();
-            decoded.Should().ContainEquivalentOf("Call off Ordering Party Id");
-            decoded.Should().ContainEquivalentOf(order.OrderId);
+            emails.Count.Should().BeGreaterThan(0);
         }
     }
 }

@@ -2,6 +2,8 @@
 {
     using System.Threading.Tasks;
     using FluentAssertions;
+    using Microsoft.EntityFrameworkCore;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
     using TechTalk.SpecFlow;
@@ -83,7 +85,6 @@
         public async Task GivenTheUserHasBeenPresentedWithMatchingSuppliers()
         {
             await new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
-            new OrderForm(Test, Context).GivenTheSupplierSectionIsNotComplete();
             WhenTheUserChoosesToEditTheSupplierSectionForTheFirstTime();
             WhenTheUserHasEnteredAValidSupplierSearchCriterion();
             WhenTheyChooseToSearch();
@@ -97,9 +98,9 @@
         }
 
         [When(@"they select a Supplier that has saved contact details")]
-        public void WhenTheySelectASupplierWithDetails()
+        public async Task WhenTheySelectASupplierWithDetails()
         {
-            Test.Pages.OrderForm.SelectSupplierWithContactDetails(Test.BapiConnectionString);
+           await Test.Pages.OrderForm.SelectSupplierWithContactDetails(Test.BapiConnectionString);
         }
 
         [Then(@"they are informed that a Supplier needs to be selected")]
@@ -158,38 +159,17 @@
             Test.Pages.OrderForm.ClickSearchAgainLink();
         }
 
-        [Given(@"makes a note of the autopopulated Supplier details")]
-        public void GivenMakesANoteOfTheAutopopulatedSupplierDetails()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.SupplierName = Test.Pages.OrderForm.GetSupplierName();
-            var address = Test.Pages.OrderForm.GetAddress();
-            Context.Add(ContextKeys.ExpectedAddress, address);
-        }
-
         [Then(@"the Supplier section is saved in the DB")]
-        public void ThenTheSupplierSectionIsSavedInTheDB()
+        public async Task ThenTheSupplierSectionIsSavedInTheDB()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var expectedSupplierName = order.SupplierName;
-            order = order.Retrieve(Test.OrdapiConnectionString);
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var orderInDb = await DbContext.Order
+                .Include(o => o.Supplier)
+                .ThenInclude(s => s.Address)
+                .Include(o => o.SupplierContact)
+                .SingleAsync(o => o.Id == order.Id);
 
-            var dbContact = new Contact { ContactId = order.SupplierContactId }.Retrieve(Test.OrdapiConnectionString);
-            Context.Remove(ContextKeys.CreatedSupplierContact);
-            Context.Add(ContextKeys.CreatedSupplierContact, dbContact);
-
-            var dbAddress = new Address { AddressId = order.SupplierAddressId }.Retrieve(Test.OrdapiConnectionString);
-            Context.Remove(ContextKeys.CreatedSupplierAddress);
-            Context.Add(ContextKeys.CreatedSupplierAddress, dbAddress);
-
-            order.SupplierName.Should().BeEquivalentTo(expectedSupplierName);
-            order.SupplierId.Should().NotBeNull();
-
-            var expectedContact = (Contact)Context[ContextKeys.ExpectedContact];
-            dbContact.Equals(expectedContact);
-
-            var expectedAddress = (Address)Context[ContextKeys.ExpectedAddress];
-            dbAddress.Equals(expectedAddress);
+            orderInDb.SupplierContact.Should().NotBeNull();
         }
 
         [When(@"the User chooses to the visit the search supplier page")]

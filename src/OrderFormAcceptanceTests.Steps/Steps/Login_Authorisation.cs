@@ -2,8 +2,9 @@
 {
     using System.Threading.Tasks;
     using FluentAssertions;
+    using OrderFormAcceptanceTests.Domain.Users;
     using OrderFormAcceptanceTests.Steps.Utils;
-    using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Helpers;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -48,7 +49,7 @@
         public void ThenTheBuyerWillBeLoggedIn()
         {
             var user = (User)Context[ContextKeys.User];
-            Test.Pages.Authentication.Login(user.UserName, User.GenericTestPassword());
+            Test.Pages.Authentication.Login(user.UserName, UsersHelper.GenericTestPassword());
         }
 
         [Then(@"the Buyer will be able to access the Order Form feature without having to authenticate again")]

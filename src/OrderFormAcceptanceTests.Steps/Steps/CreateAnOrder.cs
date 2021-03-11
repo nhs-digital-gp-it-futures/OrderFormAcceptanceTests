@@ -13,7 +13,7 @@
         }
 
         [When(@"they choose to create a new Order")]
-        public void GivenTheyChooseToCreateANewOrder()
+        public void WhenTheyChooseToCreateANewOrder()
         {
             Test.Pages.OrganisationsOrdersDashboard.CreateNewOrder();
         }

@@ -2,8 +2,9 @@
 {
     using System.Threading.Tasks;
     using FluentAssertions;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
-    using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Helpers;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -52,14 +53,13 @@
         [Then(@"the Call Off Agreement ID is displayed in the page title")]
         public void ThenTheCallOffAgreementIdIsDisplayedInThePageTitle()
         {
-            Test.Pages.OrderForm.TextDisplayedInPageTitle(((Order)Context[ContextKeys.CreatedOrder]).OrderId).Should().BeTrue();
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(((Order)Context[ContextKeys.CreatedOrder]).CallOffId.ToString()).Should().BeTrue();
         }
 
         [Given(@"the user is managing the Call Off Ordering Party section")]
         public async Task GivenTheUserIsManagingTheCallOffOrderingPartySection()
         {
             await new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
-            new OrderForm(Test, Context).GivenTheCallOffOrderingPartySectionIsNotComplete();
             WhenTheUserChoosesToEditTheCallOffOrderingPartyInformation();
         }
 
@@ -67,39 +67,20 @@
         [Given(@"the user has entered a valid supplier contact for the order")]
         public void GivenTheUserHasEnteredAValidCallOffOrderingPartyContactForTheOrder()
         {
-            var contact = Contact.Generate();
+            var contact = ContactHelper.Generate();
             Test.Pages.OrderForm.EnterContact(contact);
-            Context.Add(ContextKeys.ExpectedContact, contact);
-        }
-
-        [Given(@"makes a note of the autopopulated Ordering Party details")]
-        public void GivenMakesANoteOfTheAutopopulatedOrderingPartyDetails()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.OrganisationOdsCode = Test.Pages.OrderForm.GetOdsCode();
-            order.OrganisationName = Test.Pages.OrderForm.GetOrganisationName();
-            var address = Test.Pages.OrderForm.GetAddress();
-            Context.Add(ContextKeys.ExpectedAddress, address);
         }
 
         [Then(@"the Call Off Ordering Party section is saved in the DB")]
-        public void ThenTheCallOffOrderingPartySectionIsSavedInTheDb()
+        public async Task ThenTheCallOffOrderingPartySectionIsSavedInTheDb()
         {
-            var id = Test.Pages.OrderForm.GetCallOffId();
-            var order = new Order { OrderId = id }.Retrieve(Test.OrdapiConnectionString);
-            var dbContact = new Contact { ContactId = order.OrganisationContactId }.Retrieve(Test.OrdapiConnectionString);
-            Context.Remove(ContextKeys.CreatedContact);
-            Context.Add(ContextKeys.CreatedContact, dbContact);
+            var orderId = Context.Get<Order>(ContextKeys.CreatedOrder).Id;
 
-            var dbAddress = new Address { AddressId = order.OrganisationAddressId }.Retrieve(Test.OrdapiConnectionString);
-            Context.Remove(ContextKeys.CreatedAddress);
-            Context.Add(ContextKeys.CreatedAddress, dbAddress);
+            var orderingPartyInDb = (await DbContext.Order.FindAsync(orderId)).OrderingParty;
+            var orderingPartyContactInDb = (await DbContext.Order.FindAsync(orderId)).OrderingPartyContact;
 
-            var expectedContact = (Contact)Context[ContextKeys.ExpectedContact];
-            dbContact.Equals(expectedContact);
-
-            var expectedAddress = (Address)Context[ContextKeys.ExpectedAddress];
-            dbAddress.Equals(expectedAddress);
+            orderingPartyInDb.Should().NotBeNull();
+            orderingPartyContactInDb.Should().NotBeNull();
         }
     }
 }

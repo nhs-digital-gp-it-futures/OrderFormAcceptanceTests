@@ -1,12 +1,16 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
-    using System.Collections.Generic;
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using OpenQA.Selenium;
+    using Microsoft.EntityFrameworkCore;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Builders;
+    using OrderFormAcceptanceTests.TestData.Extensions;
+    using OrderFormAcceptanceTests.TestData.Helpers;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -115,17 +119,95 @@
         [Given(@"the order is complete enough so that the Complete order button is enabled with Funding Source option '(.*)' selected")]
         public async Task GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled(string fsValue)
         {
+            bool fs = fsValue.ToLower() == "yes";
+
             await new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
-            new CatalogueSolutions(Test, Context).GivenThereAreNoServiceRecipientsInTheOrder();
-            new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
-            if (fsValue.ToLower().Equals("yes"))
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var supplier = await DbContext.Supplier.SingleOrDefaultAsync(s => s.Id == "100000")
+                ?? (await SupplierInfo.GetSupplierWithId("100000", Test.BapiConnectionString)).ToDomain();
+
+            var orderBuilder = new OrderBuilder(order)
+                .WithExistingSupplier(supplier)
+                .WithSupplierContact(ContactHelper.Generate())
+                .WithCommencementDate(DateTime.Today)
+                .WithOrderingPartyContact(ContactHelper.Generate())
+                .WithFundingSource(fs);
+
+            var associatedServices = await SupplierInfo.GetPublishedCatalogueItems(Test.BapiConnectionString, supplier.Id, CatalogueItemType.AssociatedService);
+
+            var selectedItem = associatedServices.First();
+
+            var catalogueItem = await DbContext.FindAsync<CatalogueItem>(CatalogueItemId.ParseExact(selectedItem.CatalogueItemId))
+                ?? selectedItem.ToDomain();
+
+            var pricingUnitName = "per banana";
+
+            var pricingUnit = await DbContext.FindAsync<PricingUnit>(pricingUnitName) ?? new PricingUnit
             {
-                new OrderForm(Test, Context).GivenTheFundingSourceSectionIsCompleteWithYesSelected();
-            }
-            else
+                Name = pricingUnitName,
+            };
+
+            pricingUnit.Description = pricingUnitName;
+
+            var orderItem = new OrderItemBuilder(order.Id)
+                .WithCatalogueItem(catalogueItem)
+                .WithCataloguePriceType(CataloguePriceType.Flat)
+                .WithCurrencyCode()
+                .WithDefaultDeliveryDate(DateTime.Today)
+                .WithPrice(0.01M)
+                .WithPricingTimeUnit(TimeUnit.PerMonth)
+                .WithProvisioningType(ProvisioningType.Declarative)
+                .WithPricingUnit(pricingUnit)
+                .Build();
+
+            order.AddOrUpdateOrderItem(orderItem);
+
+            await OrderProgressHelper.SetProgress(
+                context: DbContext,
+                order: (Order)Context[ContextKeys.CreatedOrder],
+                serviceRecipientsViewed: true,
+                catalogueSolutionsViewed: true,
+                additionalServicesViewed: true,
+                associatedServicesViewed: true);
+
+            Test.Driver.Navigate().Refresh();
+        }
+
+        [Given(@"a catalogue solution has been added to the order")]
+        public async Task GivenACatalogueSolutionHasBeenAddedToTheOrder()
+        {
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var solutions = await SupplierInfo.GetPublishedCatalogueItems(Test.BapiConnectionString, order.Supplier.Id, CatalogueItemType.Solution);
+
+            var selectedItem = solutions.First();
+
+            var catalogueItem = await DbContext.FindAsync<CatalogueItem>(CatalogueItemId.ParseExact(selectedItem.CatalogueItemId))
+                ?? selectedItem.ToDomain();
+
+            var pricingUnitName = "per banana";
+
+            var pricingUnit = await DbContext.FindAsync<PricingUnit>(pricingUnitName) ?? new PricingUnit
             {
-                new OrderForm(Test, Context).GivenTheFundingSourceSectionIsCompleteWithNoSelected();
-            }
+                Name = pricingUnitName,
+            };
+
+            var orderItem = new OrderItemBuilder(order.Id)
+                .WithCatalogueItem(catalogueItem)
+                .WithCataloguePriceType(CataloguePriceType.Flat)
+                .WithCurrencyCode()
+                .WithDefaultDeliveryDate(DateTime.Today)
+                .WithPrice(0.01M)
+                .WithPricingTimeUnit(TimeUnit.PerMonth)
+                .WithProvisioningType(ProvisioningType.Declarative)
+                .WithPricingUnit(pricingUnit)
+                .Build();
+
+            order.AddOrUpdateOrderItem(orderItem);
+
+            await DbContext.SaveChangesAsync();
         }
 
         [Given(@"that the User is on the confirm complete order screen with Funding Source option '(.*)' selected")]
@@ -163,7 +245,8 @@
         public void WhenTheyChooseToViewTheCompletedOrderFromTheirOrganisationSOrdersDashboard()
         {
             new OrganisationsOrdersDashboard(Test, Context).WhenTheUserIsPresentedWithTheOrganisationSOrdersDashboard();
-            Test.Pages.OrganisationsOrdersDashboard.SelectCompletedOrder(Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders)[0].OrderId);
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+            Test.Pages.OrganisationsOrdersDashboard.SelectCompletedOrder(order.CallOffId.ToString());
         }
 
         [Then(@"the Completed version of the Order Summary is presented")]
@@ -179,30 +262,11 @@
             Test.Pages.PreviewOrderSummary.DescriptionContains("This order is complete");
         }
 
-        [Then(@"the completed order summary contains the date the Order was completed")]
-        public void ThenTheCompletedOrderSummaryContainsTheDateTheOrderWasCompleted()
-        {
-            var order = Context.Get<IList<Order>>(ContextKeys.CreatedCompletedOrders).First();
-            var date = Test.Pages.PreviewOrderSummary.GetDateOrderCompletedValue();
-            date.Should().NotBeNullOrEmpty();
-            var expectedDate = order.DateCompleted.Value.ToString("d MMMM yyyy");
-            date.Should().EndWithEquivalent(expectedDate);
-        }
-
         [StepDefinition(@"the Completed Order Summary is displayed")]
         public void WhenTheCompletedOrderSummaryIsDisplayed()
         {
             WhenTheyChooseToViewTheCompletedOrderFromTheirOrganisationSOrdersDashboard();
             ThenTheCompletedVersionOfTheOrderSummaryIsPresented();
-        }
-
-        [Then(@"the Order is not completed")]
-        public void ThenTheOrderIsNotCompleted()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order = order.Retrieve(Test.OrdapiConnectionString);
-            order.OrderStatusId.Should().Be(2);
-            order.DateCompleted.Should().BeNull();
         }
     }
 }

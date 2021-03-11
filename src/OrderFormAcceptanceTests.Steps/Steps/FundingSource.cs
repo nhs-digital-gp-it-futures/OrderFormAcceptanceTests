@@ -1,9 +1,15 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System;
     using System.Threading.Tasks;
     using FluentAssertions;
+    using Microsoft.EntityFrameworkCore;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Builders;
+    using OrderFormAcceptanceTests.TestData.Extensions;
+    using OrderFormAcceptanceTests.TestData.Helpers;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -38,8 +44,30 @@
         [Given(@"the minimum data needed to enable the Funding Source section exists")]
         public async Task GivenTheMinimumDataNeededToEnableTheFundingSourceSectionExists()
         {
-            await new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
-            new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
+            var commonSteps = new CommonSteps(Test, Context);
+            await commonSteps.GivenAnIncompleteOrderExists();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            order.OrderingPartyContact = ContactHelper.Generate();
+            order.CommencementDate = DateTime.Today;
+
+            var supplier = await DbContext.Supplier.SingleOrDefaultAsync(s => s.Id == "100000")
+                ?? (await SupplierInfo.GetSupplierWithId("100000", Test.BapiConnectionString)).ToDomain();
+
+            var orderBuilder = new OrderBuilder(order)
+                .WithExistingSupplier(supplier)
+                .WithSupplierContact(ContactHelper.Generate());
+
+            order = orderBuilder.Build();
+
+            DbContext.Update(order);
+
+            await new AssociatedServices(Test, Context).GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder();
+
+            await commonSteps.SetOrderCatalogueSectionToComplete();
+            await commonSteps.SetOrderAdditionalServicesSectionToComplete();
+            await commonSteps.SetOrderAssociatedServicesSectionToComplete();
         }
 
         [Given(@"the User is presented with the edit Funding Source page")]
@@ -59,11 +87,7 @@
         [Then(@"the Funding Source section is complete")]
         public void ThenTheFundingSourceSectionIsComplete()
         {
-            var chosenOption = (string)Context["ChosenOption"];
-            var expectedValue = chosenOption == "true" ? 1 : 0;
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order = order.Retrieve(Test.OrdapiConnectionString);
-            order.FundingSourceOnlyGMS.Should().Be(expectedValue);
+            Test.Pages.OrderForm.SectionComplete("funding-source").Should().BeTrue();
         }
     }
 }

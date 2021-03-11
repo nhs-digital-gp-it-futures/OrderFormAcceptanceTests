@@ -62,31 +62,5 @@
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("deleted").Should().BeTrue();
         }
-
-        [Then(@"the Order has a Deleted status")]
-        public void ThenTheOrderHasADeletedStatus()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order = order.Retrieve(Test.OrdapiConnectionString);
-            order.IsDeleted.Should().Be(1);
-        }
-
-        [Then(@"the status of the Order does not change to deleted")]
-        public void ThenTheStatusOfTheOrderDoesNotChangeToDeleted()
-        {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.Retrieve(Test.OrdapiConnectionString);
-            order.IsDeleted.Should().Be(0);
-        }
-
-        [Then(@"the Order is not on the Organisation's Orders Dashboard")]
-        public void ThenTheOrderIsNotOnTheOrganisationSOrdersDashboard()
-        {
-            var deletedOrder = (Order)Context[ContextKeys.CreatedOrder];
-            Test.Pages.OrderForm.ClickBackLink();
-            new OrganisationsOrdersDashboard(Test, Context).ThenThePageDisplaysWhoIsLoggedInAndThePrimaryOrganisationName();
-            var listOfOrders = Test.Pages.OrganisationsOrdersDashboard.GetListOfIncompleteOrders();
-            listOfOrders.Where(o => o.OrderId == deletedOrder.OrderId).Count().Should().Be(0);
-        }
     }
 }
