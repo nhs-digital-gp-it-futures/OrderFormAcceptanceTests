@@ -5,6 +5,7 @@
 
 Background:
 	Given an incomplete order exists
+    And the Supplier and Call Off Ordering Party sections are complete
 	And the Commencement Date section is not complete
 	When the Order Form for the existing order is presented
 

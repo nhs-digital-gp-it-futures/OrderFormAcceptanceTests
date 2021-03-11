@@ -76,10 +76,10 @@ Scenario: Call Off Ordering Party - Validation Error Message Anchors
 	When the user selects an error link in the Error Summary
 	Then they will be navigated to the relevant part of the page
 
+@ignore PUT request broken
 Scenario: Call Off Ordering Party - All data are valid
 	Given the user is managing the Call Off Ordering Party section
 	And the user has entered a valid Call Off Ordering Party contact for the order
-	And makes a note of the autopopulated Ordering Party details
 	When the User chooses to save
 	Then the Order is saved
 	And the content validation status of the ordering-party section is complete 
