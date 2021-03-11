@@ -109,7 +109,7 @@ Scenario: Additional Services - Go back from select price
 Scenario: Additional Services - Select service recipient - Select a Service Recipient
 	Given the Order Form for the existing order is presented
 	And the available prices for the selected Additional Service are presented
-    And the User chooses to continue
+	And the User chooses to continue
 	And the User has selected a Additional Service price
 	When they choose to continue 
 	Then they are presented with the Service Recipients saved in the Order
@@ -175,28 +175,28 @@ Scenario: Additional Services - Go back before save
 
 @ignore Error when accessing additional services after adding item
 Scenario: Additional Services - Go back post save
-    Given an additional service with a flat price variable Declarative order type is saved to the order
-    And the Order Form for the existing order is presented
+	Given an additional service with a flat price variable Declarative order type is saved to the order
+	And the Order Form for the existing order is presented
 	And the edit Additional Service form for flat list price with variable (patient numbers) order type is presented
 	When the User chooses to go back
 	Then the Additional Service dashboard is presented
 
 @ignore Error when accessing additional services after adding item
 Scenario: Additional Services - Values populated after editing and saving - Flat List Price Variable (Patient Numbers)
-    Given an additional service with a flat price variable Patient order type is saved to the order
+	Given an additional service with a flat price variable Patient order type is saved to the order
 	And the edit Additional Service form for flat list price with variable (patient numbers) order type is presented	
 	Then the pricing values will be populated with the values that was saved by the User
 
 @ignore Error when accessing additional services after adding item
 Scenario: Additional Services - Values populated after editing and saving - Flat List Price Declarative
-    Given an additional service with a flat price variable Declarative order type is saved to the order
-    And the Order Form for the existing order is presented
+	Given an additional service with a flat price variable Declarative order type is saved to the order
+	And the Order Form for the existing order is presented
 	And the edit Additional Service form for flat list price with declarative order type is presented
 	Then the pricing values will be populated with the values that was saved by the User
 
 @ignore Error when accessing additional services after adding item
 Scenario: Additional Services - Values populated after editing and saving - Flat List Price Variable (On Demand)
-    Given an additional service with a flat price variable On Demand order type with the quantity period per year is saved to the order
+	Given an additional service with a flat price variable On Demand order type with the quantity period per year is saved to the order
 	And the edit Additional Service form for flat list price with variable (on demand) order type is presented
 	Then the pricing values will be populated with the values that was saved by the User
 
@@ -219,7 +219,7 @@ Scenario: Additional Services added - section marked as complete
 	And the content validation status of the additional-services section is complete
 
 Scenario: Additional Services - Published additional services display
-    Given the Order Form for the existing order is presented
-    And the User is able to manage the Additional Services section
-    When the User chooses to add a single Additional Service
-    Then only the published additional services are available for selection
+	Given the Order Form for the existing order is presented
+	And the User is able to manage the Additional Services section
+	When the User chooses to add a single Additional Service
+	Then only the published additional services are available for selection

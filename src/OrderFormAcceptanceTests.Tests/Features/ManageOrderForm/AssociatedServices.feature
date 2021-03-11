@@ -5,8 +5,8 @@
 
 Background: 
 	Given an incomplete order exists
-    And the Supplier and Call Off Ordering Party sections are complete
-    And the Commencement Date is complete
+	And the Supplier and Call Off Ordering Party sections are complete
+	And the Commencement Date is complete
 
 Scenario: Associated Services - Sections presented
 	Given the Catalogue Solution section is complete

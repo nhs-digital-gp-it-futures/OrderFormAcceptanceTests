@@ -4,8 +4,8 @@
 	So that they are correct
 
 Background: 
-    Given an incomplete order exists
-    When the User is presented with the Organisation's Orders dashboard
+	Given an incomplete order exists
+	When the User is presented with the Organisation's Orders dashboard
 
 Scenario: View Orders
 	Then there is a list of my Organisation's Orders

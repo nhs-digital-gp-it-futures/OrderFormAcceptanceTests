@@ -12,7 +12,7 @@ Scenario: Supplier Information - Sections presented
 
 Scenario: Supplier Information - Call Off Ordering Party section is now complete but, Supplier not 
 	Given an incomplete order exists
-    And the Call Off Ordering Party section is complete
+	And the Call Off Ordering Party section is complete
 	And the Supplier section is not complete
 	When the Order Form for the existing order is presented
 	Then the Call Off Agreement ID is displayed
@@ -160,7 +160,7 @@ Scenario: Supplier Information - Go Back (first time)
 
 Scenario: Supplier Information - Edit (subsequent times)
 	Given an incomplete order exists
-    And a supplier has been selected
+	And a supplier has been selected
 	And the Order Form for the existing order is presented
 	When the User re-edits the Supplier section
 	Then the Edit Supplier Form Page is presented
@@ -171,7 +171,7 @@ Scenario: Supplier Information - Edit (subsequent times)
 
 Scenario: Supplier Information - Edit and save (subsequent times)
 	Given an incomplete order exists
-    And a supplier has been selected
+	And a supplier has been selected
 	And the Order Form for the existing order is presented
 	And the User re-edits the Supplier section
 	And the user has entered a valid supplier contact for the order

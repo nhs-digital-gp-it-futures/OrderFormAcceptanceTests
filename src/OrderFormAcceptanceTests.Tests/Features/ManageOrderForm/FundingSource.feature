@@ -67,8 +67,8 @@ Scenario: Funding Source - Associated Service now complete, >=1 Service Recipien
 
 Scenario: Funding Source - Associated Service now complete, >= 1 Service Recipient, >= 1 Catalogue Solution, 0 Additional Service, 0 Associated Service
 	Given an incomplete order with catalogue items exists
-    And the Supplier and Call Off Ordering Party sections are complete 
-    And the Commencement Date is complete
+	And the Supplier and Call Off Ordering Party sections are complete 
+	And the Commencement Date is complete
 	And there is no Additional Service in the order but the section is complete
 	And there is no Associated Service in the order but the section is complete
 	And the Funding Source section is not complete
@@ -88,8 +88,8 @@ Scenario: Funding Source - Associated Service now complete, >= 1 Service Recipie
 
 Scenario: Funding Source - Associated Service now complete, >=1 Service Recipient, 0 Catalogue Solution, >=1 Associated Service
 	Given an incomplete order exists
-    And the Supplier and Call Off Ordering Party sections are complete
-    And the Commencement Date is complete 
+	And the Supplier and Call Off Ordering Party sections are complete
+	And the Commencement Date is complete 
 	And there is no Catalogue Solution in the order but the section is complete
 	And an Associated Service with a flat price declarative order type is saved to the order
 	And the Funding Source section is not complete
@@ -109,8 +109,8 @@ Scenario: Funding Source - Associated Service now complete, >=1 Service Recipien
 
 Scenario: Funding Source - Associated Service now complete, >= 1 Service Recipient, 0 Catalogue Solution, 0 Associated Service
 	Given an incomplete order exists
-    And the Supplier and Call Off Ordering Party sections are complete 
-    And the Commencement Date is complete
+	And the Supplier and Call Off Ordering Party sections are complete 
+	And the Commencement Date is complete
 	And there is no Catalogue Solution in the order but the section is complete
 	And there is no Associated Service in the order but the section is complete
 	And the Funding Source section is not complete

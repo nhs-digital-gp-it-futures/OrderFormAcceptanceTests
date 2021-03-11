@@ -130,7 +130,7 @@ Scenario: Catalogue Solutions - edit price screen - Flat price with per patient 
 	Given the User is presented with the Service Recipients for the Order after selecting the per patient flat price
 	And a Service Recipient is selected
 	When they choose to continue
-    And they choose to continue
+	And they choose to continue
 	Then they are presented with the Catalogue Solution edit form
 	And the name of the selected Catalogue Solution is displayed on the Catalogue Solution edit form
 	And the Catalogue Solution edit form contains an input for the price
