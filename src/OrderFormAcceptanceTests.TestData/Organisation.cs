@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using Bogus;
     using OrderFormAcceptanceTests.TestData.Utils;
 
     public sealed class Organisation
@@ -29,11 +28,11 @@
             return result.Single();
         }
 
-        public Organisation RetrieveRandomOrganisation(string connectionString)
+        public static async Task<Organisation> GetOdsCode(string connectionString, Guid organisationId)
         {
-            var query = "SELECT * FROM dbo.Organisations;";
-            var listOfItems = SqlExecutor.Execute<Organisation>(connectionString, query, this);
-            return listOfItems.ElementAt(new Faker().Random.Number(listOfItems.Count() - 1));
+            var query = "SELECT * FROM Organisations WHERE OrganisationId = @organisationId;";
+            var result = await SqlExecutor.ExecuteAsync<Organisation>(connectionString, query, new { organisationId });
+            return result.Single();
         }
     }
 }

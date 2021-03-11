@@ -1,48 +1,18 @@
 ﻿namespace OrderFormAcceptanceTests.TestData
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+    using OrderFormAcceptanceTests.Domain;
+    using OrderFormAcceptanceTests.TestData.Models;
     using OrderFormAcceptanceTests.TestData.Utils;
 
     public static class SupplierInfo
     {
-        public static bool SupplierHasContactInfo(string connectionString, string supplierName)
-        {
-            var query = @"SELECT TOP (1000) [Id]
-                  ,[SupplierId]
-                  ,[FirstName]
-                  ,[LastName]
-                  ,[Email]
-                  ,[PhoneNumber]
-                  ,[LastUpdated]
-                  ,[LastUpdatedBy]
-              FROM [dbo].[SupplierContact]
-              Where SupplierId = (Select Id FROM Supplier s where s.Name=@supplierName)";
-
-            try
-            {
-                Contact contact = SqlExecutor.Execute<Contact>(connectionString, query, new { supplierName }).First();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public static IEnumerable<SupplierDetails> SuppliersWithCatalogueSolution(string connectionString, ProvisioningType provisioningType)
+        public static IEnumerable<SupplierDetails> SuppliersWithCatalogueSolution(string connectionString, Domain.ProvisioningType provisioningType)
         {
             return SupplierLookup(connectionString, CatalogueItemType.Solution, provisioningType);
-        }
-
-        public static IEnumerable<SupplierDetails> SuppliersWithAdditionalServices(string connectionString, ProvisioningType provisioningType)
-        {
-            return SupplierLookup(connectionString, CatalogueItemType.AdditionalService, provisioningType);
-        }
-
-        public static IEnumerable<SupplierDetails> SuppliersWithAssociatedServices(string connectionString, ProvisioningType provisioningType)
-        {
-            return SupplierLookup(connectionString, CatalogueItemType.AssociatedService, provisioningType);
         }
 
         public static IEnumerable<SupplierDetails> SuppliersWithout(string connectionString, CatalogueItemType catalogueItemType)
@@ -59,48 +29,43 @@
             return SqlExecutor.Execute<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType });
         }
 
-        public static int SupplierWithSolutionWithOnePrice(string connectionString)
+        public static async Task<IEnumerable<CatalogueItemModel>> GetPublishedCatalogueItems(string connectionString, string supplierId, CatalogueItemType itemType)
         {
-            var query =
-                $@"SELECT SupplierId, COUNT(*) FROM CatalogueItem LEFT JOIN CataloguePrice ON CataloguePrice.CatalogueItemId = CatalogueItem.CatalogueItemId WHERE CatalogueItemTypeId = {(int)CatalogueItemType.Solution} GROUP BY SupplierId ORDER BY 2 ASC";
+            var query = $@"SELECT *, CatalogueItemTypeId AS 'CatalogueItemType' FROM dbo.CatalogueItem WHERE SupplierId = @supplierId AND PublishedStatusId = 3 AND CatalogueItemTypeId = @itemType;";
 
-            return SqlExecutor.Execute<int>(connectionString, query, null).FirstOrDefault();
+            return await SqlExecutor.ExecuteAsync<CatalogueItemModel>(connectionString, query, new { supplierId, itemType });
         }
 
-        public static string SupplierName(string connectionString, int supplierId)
+        public static async Task<SupplierDetails> GetSupplierWithId(string supplierId, string connectionString)
         {
-            var query =
-                $@"SELECT Name FROM Supplier WHERE Id = @supplierId";
+            var query = "SELECT [Id] as 'SupplierId', [Name], [Address] FROM Supplier WHERE Id = @supplierId";
 
-            return SqlExecutor.Execute<string>(connectionString, query, new { supplierId }).FirstOrDefault();
+            var result = await SqlExecutor.ExecuteAsync<SupplierDetails>(connectionString, query, new { supplierId });
+
+            return result.Single();
         }
 
-        public static int SupplierWithMoreThanOneSolution(string connectionString)
+        public static async Task<bool> GetSupplierWithContactDetails(string connectionString, string supplierName)
         {
-            var query =
-                $@"SELECT SupplierId, COUNT(*) FROM CatalogueItem WHERE CatalogueItemTypeId = {(int)CatalogueItemType.Solution} GROUP BY SupplierId ORDER BY 2 DESC";
+            var query = @"SELECT Id
+                            FROM SupplierContact
+                            WHERE SupplierId = (SELECT Id FROM Supplier AS s WHERE s.[Name] = @supplierName);";
 
-            return SqlExecutor.Execute<int>(connectionString, query, null).FirstOrDefault();
+            var result = (await SqlExecutor.ExecuteAsync<Guid?>(connectionString, query, new { supplierName })).SingleOrDefault();
+
+            if (result is null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
-        public static string GetSupplierSolutionNameWithPrice(string connectionString, string supplierId)
+        private static IEnumerable<SupplierDetails> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, Domain.ProvisioningType provisioningType)
         {
-            var query =
-                $@"SELECT ci.[Name] FROM dbo.CatalogueItem AS ci INNER JOIN CataloguePrice AS cp ON cp.CatalogueItemId = ci.CatalogueItemId WHERE ci.CatalogueItemTypeId = 1 AND ci.PublishedStatusId = 3 AND ci.SupplierId = @supplierId;";
-
-            return SqlExecutor.Execute<string>(connectionString, query, new { supplierId }).FirstOrDefault();
-        }
-
-        public static IEnumerable<string> GetPublishedCatalogueItems(string connectionString, string supplierId, CatalogueItemType itemType)
-        {
-            var query = $@"SELECT Name FROM dbo.CatalogueItem WHERE SupplierId = @supplierId AND PublishedStatusId = 3 AND CatalogueItemTypeId = @itemType;";
-
-            return SqlExecutor.Execute<string>(connectionString, query, new { supplierId, itemType });
-        }
-
-        private static IEnumerable<SupplierDetails> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
-        {
-            var query = @"SELECT ci.[SupplierId], su.[Name]      
+            var query = @"SELECT ci.[SupplierId], su.[Name], su.Address    
                             FROM [dbo].[CatalogueItem] ci
                             INNER JOIN CataloguePrice pr ON ci.CatalogueItemId=pr.CatalogueItemId
                             INNER JOIN Supplier su On ci.SupplierId=su.Id
