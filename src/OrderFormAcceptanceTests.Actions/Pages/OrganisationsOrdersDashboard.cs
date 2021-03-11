@@ -6,7 +6,9 @@
     using Flurl;
     using OpenQA.Selenium;
     using OrderFormAcceptanceTests.Actions.Utils;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Models;
 
     public class OrganisationsOrdersDashboard : PageAction
     {
@@ -153,60 +155,49 @@
             return Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.IncompleteOrdersBeforeCompletedOrders).Displayed;
         }
 
-        public List<Order> GetListOfIncompleteOrders()
+        public List<OrderTableItem> GetListOfIncompleteOrders()
         {
-            var listOfIncompleteOrders = new List<Order>();
+            var listOfIncompleteOrders = new List<OrderTableItem>();
 
             var table = Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.IncompleteOrdersTable);
             var tableRows = table.FindElements(Objects.Pages.Common.TableRows);
 
             foreach (var row in tableRows)
             {
-                var id = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Text;
-                var description = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Text;
-                var lastUpdateDisplayName = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text;
-                var lastUpdatedDate = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate).Text;
-                var createdDate = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text;
-                var currentRowOrder = new Order
+                var item = new OrderTableItem
                 {
-                    OrderId = id,
-                    Description = description,
-                    LastUpdatedByName = lastUpdateDisplayName,
-                    LastUpdated = Convert.ToDateTime(lastUpdatedDate),
-                    Created = Convert.ToDateTime(createdDate),
+                    Id = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Text,
+                    Description = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Text,
+                    Created = DateTime.Parse(row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text),
+                    LastUpdatedBy = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text,
+                    LastUpdated = DateTime.Parse(row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedDate).Text),
                 };
-                listOfIncompleteOrders.Add(currentRowOrder);
+
+                listOfIncompleteOrders.Add(item);
             }
 
             return listOfIncompleteOrders;
         }
 
-        public List<Order> GetListOfCompletedOrders()
+        public List<OrderTableItem> GetListOfCompletedOrders()
         {
-            var listOfCompletedOrders = new List<Order>();
+            var listOfCompletedOrders = new List<OrderTableItem>();
 
             var table = Driver.FindElement(Objects.Pages.OrganisationsOrdersDashboard.CompletedOrdersTable);
             var tableRows = table.FindElements(Objects.Pages.Common.TableRows);
 
             foreach (var row in tableRows)
             {
-                var id = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Text;
-                var description = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Text;
-                var lastUpdateDisplayName = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text;
-                var dateCompleted = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCompletedDate).Text;
-                var createdDate = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text;
-                var automaticallyProcessed = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderAutomaticallyProcessed).Text;
-
-                var currentRowOrder = new Order
+                var item = new OrderTableItem
                 {
-                    OrderId = id,
-                    Description = description,
-                    LastUpdatedByName = lastUpdateDisplayName,
-                    Created = Convert.ToDateTime(createdDate),
-                    DateCompleted = Convert.ToDateTime(dateCompleted),
-                    FundingSourceOnlyGMS = automaticallyProcessed == "Yes" ? 1 : 0,
+                    Id = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrder).Text,
+                    Description = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderDescription).Text,
+                    Created = DateTime.Parse(row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text),
+                    LastUpdatedBy = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text,
+                    Completed = DateTime.Parse(row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCompletedDate).Text),
                 };
-                listOfCompletedOrders.Add(currentRowOrder);
+
+                listOfCompletedOrders.Add(item);
             }
 
             return listOfCompletedOrders;

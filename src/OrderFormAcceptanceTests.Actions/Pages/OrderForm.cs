@@ -4,10 +4,15 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading.Tasks;
     using FluentAssertions;
     using OpenQA.Selenium;
     using OrderFormAcceptanceTests.Actions.Utils;
+    using OrderFormAcceptanceTests.Domain;
+    using OrderFormAcceptanceTests.Persistence.Data;
     using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Builders;
+    using OrderFormAcceptanceTests.TestData.Extensions;
     using OrderFormAcceptanceTests.TestData.Information;
 
     public class OrderForm : PageAction
@@ -149,38 +154,6 @@
             {
                 return false;
             }
-        }
-
-        public void SelectSupplierWithContactDetails(string bapiConnString)
-        {
-            var suppliers = ListOfSupplierNames();
-            var supplierNames = suppliers.Select(s => s.Text);
-
-            // Randomise ordering of list so a random supplier is chosen each time
-            Random rng = new Random();
-            var supplierListShuffle = supplierNames
-                .Select(x => new { value = x, order = rng.Next() })
-                .OrderBy(x => x.order)
-                .Select(x => x.value)
-                .ToList();
-
-            string selectedSupplier = string.Empty;
-
-            foreach (var supplier in supplierListShuffle)
-            {
-                if (SupplierInfo.SupplierHasContactInfo(bapiConnString, supplier))
-                {
-                    selectedSupplier = supplier;
-                    break;
-                }
-            }
-
-            if (string.IsNullOrEmpty(selectedSupplier))
-            {
-                throw new NullReferenceException(nameof(selectedSupplier));
-            }
-
-            suppliers.Single(s => s.Text == selectedSupplier).Click();
         }
 
         public bool CompleteOrderButtonIsDisabled()
@@ -526,10 +499,10 @@
             Driver.FindElement(Objects.Pages.OrderForm.ContactTelephone).SendKeys(contact.Phone);
         }
 
-        public Contact GetContact()
+        public Domain.Contact GetContact()
         {
             Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.ContactFirstName).Count == 1);
-            return new Contact()
+            return new Domain.Contact()
             {
                 FirstName = Driver.FindElement(Objects.Pages.OrderForm.ContactFirstName).GetAttribute("value"),
                 LastName = Driver.FindElement(Objects.Pages.OrderForm.ContactLastName).GetAttribute("value"),
@@ -622,6 +595,7 @@
             Wait.Until(d => NumberOfCheckboxesDisplayed() > index);
             var element = Driver.FindElements(Objects.Pages.Common.Checkbox)[index];
             element.Click();
+            Wait.Until(d => bool.Parse(d.FindElements(Objects.Pages.Common.Checkbox)[index].GetProperty("checked")));
             return element.GetAttribute("name");
         }
 
@@ -702,6 +676,7 @@
             Wait.Until(d => NumberOfRadioButtonsDisplayed() > index);
             var element = Driver.FindElements(Objects.Pages.Common.RadioButton)[index];
             element.Click();
+            Wait.Until(s => bool.Parse(s.FindElements(Objects.Pages.Common.RadioButton)[index].GetProperty("checked")));
             return element.GetAttribute("value");
         }
 
@@ -718,7 +693,7 @@
         public string GetSelectedRadioButton()
         {
             Wait.Until(d => NumberOfRadioButtonsDisplayed() > 0);
-            var value = Driver.FindElements(Objects.Pages.Common.RadioButton).Where(e => e.GetProperty("checked") == "True").Select(s => s.GetAttribute("value")).Single();
+            var value = Driver.FindElements(Objects.Pages.Common.RadioButton).Where(e => bool.Parse(e.GetProperty("checked"))).Select(s => s.GetAttribute("value")).Single();
             return value;
         }
 
@@ -926,6 +901,38 @@
                     }
                 }
             }
+        }
+
+        public async Task SelectSupplierWithContactDetails(string connectionString)
+        {
+            var suppliers = ListOfSupplierNames();
+            var supplierNames = suppliers.Select(s => s.Text);
+
+            Random rng = new();
+            var supplierListShuffle = supplierNames
+                .Select(x => new { value = x, order = rng.Next() })
+                .OrderBy(x => x.order)
+                .Select(x => x.value)
+                .ToList();
+
+            string selectedSupplier = string.Empty;
+
+            foreach (var supplier in supplierListShuffle)
+            {
+                var supplierResult = await SupplierInfo.GetSupplierWithContactDetails(connectionString, supplier);
+                if (supplierResult)
+                {
+                    selectedSupplier = supplier;
+                    break;
+                }
+            }
+
+            if (string.IsNullOrEmpty(selectedSupplier))
+            {
+                throw new NullReferenceException(nameof(selectedSupplier));
+            }
+
+            suppliers.Single(s => s.Text == selectedSupplier).Click();
         }
 
         private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
