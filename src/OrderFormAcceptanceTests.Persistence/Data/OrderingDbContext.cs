@@ -9,7 +9,6 @@ namespace OrderFormAcceptanceTests.Persistence.Data
 {
     public sealed class OrderingDbContext : DbContext
     {
-
         public OrderingDbContext(
             DbContextOptions<OrderingDbContext> options)
             : base(options)
