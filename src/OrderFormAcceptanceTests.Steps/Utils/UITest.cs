@@ -12,6 +12,7 @@
             OrdapiConnectionString = settings.GetDbString("ordapidb");
             BapiConnectionString = settings.GetDbString("bapidb");
             IsapiConnectionString = settings.GetDbString("isapidb");
+            OdsUrl = settings.OdsUrl;
 
             Driver = new BrowserFactory(settings.Browser, settings.HubUrl).Driver;
             Pages = new PageActions(Driver).PageActionCollection;
@@ -25,6 +26,8 @@
         internal string BapiConnectionString { get; }
 
         internal string IsapiConnectionString { get; }
+
+        internal string OdsUrl { get; }
 
         internal IWebDriver Driver { get; }
 

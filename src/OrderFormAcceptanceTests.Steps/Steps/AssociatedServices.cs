@@ -1,11 +1,12 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
-    using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using Bogus;
     using FluentAssertions;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
-    using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Helpers;
     using OrderFormAcceptanceTests.TestData.Utils;
     using TechTalk.SpecFlow;
 
@@ -152,25 +153,55 @@
         }
 
         [Given(@"an Associated Service with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
-        public void GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
+        public async Task GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
             SetOrderAssociatedServicesSectionToComplete();
-            var orderItem = OrderItem.GenerateAssociatedServiceWithFlatPricedVariableOnDemand((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.EstimationPeriodId = TimeUnit.Year;
-            orderItem.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedOrderItem, orderItem);
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+            var orderItem = await OrderItemHelper.CreateOrderItem(
+                order,
+                CatalogueItemType.AssociatedService,
+                CataloguePriceType.Flat,
+                ProvisioningType.OnDemand,
+                DbContext,
+                Test.BapiConnectionString);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            order.AddOrUpdateOrderItem(orderItem);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
         }
 
         [Given(@"an Associated Service with a flat price declarative order type is saved to the order")]
-        public void GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder()
+        public async Task GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder()
         {
             SetOrderAssociatedServicesSectionToComplete();
-            var orderItem = OrderItem.GenerateAssociatedServiceWithFlatPricedDeclarative((Order)Context[ContextKeys.CreatedOrder]);
-            orderItem.Create(Test.OrdapiConnectionString);
-            if (!Context.ContainsKey(ContextKeys.CreatedOrderItem))
-            {
-                Context.Add(ContextKeys.CreatedOrderItem, orderItem);
-            }
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+            var orderItem = await OrderItemHelper.CreateOrderItem(
+                order,
+                CatalogueItemType.AssociatedService,
+                CataloguePriceType.Flat,
+                ProvisioningType.Declarative,
+                DbContext,
+                Test.BapiConnectionString);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            order.AddOrUpdateOrderItem(orderItem);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
         }
 
         [Given(@"the User amends the existing Associated Service details")]
@@ -215,49 +246,43 @@
         [StepDefinition(@"the Associated Service is saved in the DB")]
         public void GivenTheAssociatedServiceIsSavedInTheDB()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var orderItem = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.OrderId, 3).First();
-            Context.Add(ContextKeys.CreatedOrderItem, orderItem);
-            orderItem.Should().NotBeNull();
+            // var order = (Order)Context[ContextKeys.CreatedOrder];
+            // var orderItem = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.Id, 3).First();
+            // Context.Add(ContextKeys.CreatedOrderItem, orderItem);
+            // orderItem.Should().NotBeNull();
         }
 
         [Given(@"there is no Associated Service in the order but the section is complete")]
-        public void GivenThereIsNoAssociatedServiceInTheOrderButTheSectionIsComplete()
+        public async Task GivenThereIsNoAssociatedServiceInTheOrderButTheSectionIsComplete()
         {
-            new OrderForm(Test, Context).GivenTheAssociatedServicesSectionIsNotCompleteAndNoServicesAreAdded();
-            SetOrderAssociatedServicesSectionToComplete();
+            await new CommonSteps(Test, Context).SetOrderAssociatedServicesSectionToComplete();
         }
 
         [Given(@"the supplier added to the order has an associated service with a declarative flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative()
         {
-            var supplier = GetSupplierDetails(ProvisioningType.Declarative);
+            /*var supplier = GetSupplierDetails(ProvisioningType.Declarative);
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.SupplierId = int.Parse(supplier.SupplierId);
             order.SupplierName = supplier.Name;
-            order.Update(Test.OrdapiConnectionString);
+            order.Update(Test.OrdapiConnectionString);*/
         }
 
         [Given(@"the supplier added to the order has an associated service with an on-demand flat price")]
         public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceOnDemand()
         {
-            var supplier = GetSupplierDetails(ProvisioningType.OnDemand);
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.SupplierId = int.Parse(supplier.SupplierId);
-            order.SupplierName = supplier.Name;
-            order.Update(Test.OrdapiConnectionString);
+            // var supplier = GetSupplierDetails(Domain.ProvisioningType.OnDemand);
+            // var order = (Order)Context[ContextKeys.CreatedOrder];
+            // order.SupplierId = int.Parse(supplier.SupplierId);
+            // order.SupplierName = supplier.Name;
+            // order.Update(Test.OrdapiConnectionString);
         }
 
         public void SetOrderAssociatedServicesSectionToComplete()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.AssociatedServicesViewed = 1;
-            order.Update(Test.OrdapiConnectionString);
-        }
-
-        private SupplierDetails GetSupplierDetails(ProvisioningType provisioningType)
-        {
-            return SupplierInfo.SuppliersWithAssociatedServices(Test.BapiConnectionString, provisioningType).First() ?? throw new NullReferenceException("Supplier not found");
+            // var order = (Order)Context[ContextKeys.CreatedOrder];
+            // order.AssociatedServicesViewed = 1;
+            // order.Update(Test.OrdapiConnectionString);
         }
     }
 }

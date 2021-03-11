@@ -13,6 +13,7 @@
             OrderFormUrl = config.GetValue<string>("ofUrl");
             PbUrl = config.GetValue<string>("pbUrl");
             Browser = config.GetValue<string>("browser");
+            OdsUrl = config.GetValue<string>("odsUrl");
         }
 
         public string HubUrl { get; }
@@ -20,6 +21,8 @@
         public string OrderFormUrl { get; }
 
         public string Browser { get; }
+
+        public string OdsUrl { get; }
 
         public string PbUrl { get; set; }
 

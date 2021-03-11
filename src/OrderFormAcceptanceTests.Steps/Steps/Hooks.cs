@@ -2,9 +2,13 @@
 {
     using System.Threading.Tasks;
     using BoDi;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
+    using OrderFormAcceptanceTests.Domain;
+    using OrderFormAcceptanceTests.Domain.Users;
+    using OrderFormAcceptanceTests.Persistence.Data;
     using OrderFormAcceptanceTests.Steps.Utils;
-    using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Helpers;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -29,35 +33,41 @@
 
             objectContainer.RegisterInstanceAs<IConfiguration>(configurationBuilder);
             var test = objectContainer.Resolve<UITest>();
+
+            DbContextOptions<OrderingDbContext> options = new DbContextOptionsBuilder<OrderingDbContext>()
+                .UseSqlServer(test.OrdapiConnectionString)
+                .Options;
+
+            OrderingDbContext dbContext = new OrderingDbContext(options);
+
+            context.Add(ContextKeys.DbContext, dbContext);
+
             test.GoToUrl();
             await new CommonSteps(test, context).GivenThatABuyerUserHasLoggedIn();
         }
 
         [AfterScenario]
-        public void AfterScenario()
+        public async Task AfterScenario()
         {
             var test = objectContainer.Resolve<UITest>();
             test.Driver?.Quit();
 
             if (context.ContainsKey(ContextKeys.CreatedOrder))
             {
-                var order = ((Order)context[ContextKeys.CreatedOrder]).Retrieve(test.OrdapiConnectionString);
+                var order = (Order)context[ContextKeys.CreatedOrder];
 
-                OrderItem.DeleteAllOrderItemsForOrderId(test.OrdapiConnectionString, order.OrderId);
+                var dbContext = (OrderingDbContext)context[ContextKeys.DbContext];
 
-                ServiceRecipient.DeleteAllServiceRecipientsForOrderId(test.OrdapiConnectionString, order.OrderId);
+                var orderFromDb = dbContext.Find<Order>(order.Id);
 
-                order.Delete(test.OrdapiConnectionString);
-
-                new Address() { AddressId = order.SupplierAddressId }.Delete(test.OrdapiConnectionString);
-                new Address() { AddressId = order.OrganisationAddressId }.Delete(test.OrdapiConnectionString);
-                new Contact() { ContactId = order.OrganisationContactId }.Delete(test.OrdapiConnectionString);
-                new Contact() { ContactId = order.SupplierContactId }.Delete(test.OrdapiConnectionString);
+                dbContext.Order.Remove(orderFromDb);
+                await dbContext.SaveChangesAsync();
             }
 
             if (context.ContainsKey(ContextKeys.User))
             {
-                ((User)context[ContextKeys.User]).Delete(test.IsapiConnectionString);
+                var user = (User)context[ContextKeys.User];
+                await UsersHelper.Delete(test.IsapiConnectionString, user);
             }
         }
     }

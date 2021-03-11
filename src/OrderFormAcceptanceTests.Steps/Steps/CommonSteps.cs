@@ -5,11 +5,18 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using Bogus;
     using FluentAssertions;
+    using Microsoft.EntityFrameworkCore;
     using OpenQA.Selenium;
+    using OrderFormAcceptanceTests.Domain;
+    using OrderFormAcceptanceTests.Domain.Users;
+    using OrderFormAcceptanceTests.Persistence.Data;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Builders;
+    using OrderFormAcceptanceTests.TestData.Extensions;
+    using OrderFormAcceptanceTests.TestData.Helpers;
+    using OrderFormAcceptanceTests.TestData.Models;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -44,6 +51,13 @@
         [Given(@"the User chooses not to add an Associated Service")]
         [Given(@"no Associated Service is selected")]
         [Then("the Additional Service is not saved")]
+        [Given(@"the Funding Source section is not complete")]
+        [Given(@"there are no Service Recipients in the order")]
+        [Given(@"the Call Off Ordering Party section is not complete")]
+        [Given(@"the Supplier section is not complete")]
+        [Given(@"the Commencement Date section is not complete")]
+        [Given(@"the Service Recipients section is not complete")]
+        [Given(@"the Catalogue Solutions section is not complete")]
         public static void DoNothing()
         {
             // do nothing
@@ -69,7 +83,7 @@
 
             User user = (User)Context[ContextKeys.User];
 
-            Test.Pages.Authentication.Login(user.UserName, User.GenericTestPassword());
+            Test.Pages.Authentication.Login(user.UserName, UsersHelper.GenericTestPassword());
         }
 
         [Given(@"the User has chosen to manage a new Order Form")]
@@ -90,8 +104,6 @@
         [When(@"the User has not entered a Supplier search criterion")]
         public void GivenMandatoryDataAreMissing()
         {
-            // clear fields
-            // var listOfTextAreas = Test.Driver.FindElements(By.TagName("textarea"));
             var listOfInputs = Test.Driver.FindElements(By.ClassName("nhsuk-input"));
             foreach (var element in listOfInputs)
             {
@@ -102,98 +114,52 @@
         [Given(@"an incomplete order exists")]
         public async Task GivenAnIncompleteOrderExists()
         {
-            var orgAddress = Address.Generate();
-            var orgContact = Contact.Generate();
-            var supplierAddress = Address.Generate();
-            var supplierContact = Contact.Generate();
+            var context = (OrderingDbContext)Context[ContextKeys.DbContext];
+            var user = (User)Context[ContextKeys.User];
+            var createModel = new CreateOrderModel { Description = "Banana", OrganisationId = user.PrimaryOrganisationId };
+            var order = await OrderHelpers.CreateOrderAsync(createModel, context, user, Test.BapiConnectionString, Test.IsapiConnectionString);
 
-            if (!Context.ContainsKey(ContextKeys.Organisation))
-            {
-                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisation(Test.IsapiConnectionString));
-            }
-
-            var organisation = (Organisation)Context[ContextKeys.Organisation];
-
-            var order = Order.Generate(organisation);
-
-            order.SupplierId = 100000;
-            order.SupplierName = "Really Kool Corporation";
-
-            order.CommencementDate = new Faker().Date.Future().Date;
-
-            orgAddress.Create(Test.OrdapiConnectionString);
-            orgAddress = orgAddress.Retrieve(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedAddress, orgAddress);
-
-            orgContact.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedContact, orgContact);
-
-            supplierAddress.Create(Test.OrdapiConnectionString);
-            supplierAddress = supplierAddress.Retrieve(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedSupplierAddress, supplierAddress);
-
-            supplierContact.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedSupplierContact, supplierContact);
-
-            order.OrganisationAddressId = orgAddress.AddressId;
-            order.OrganisationContactId = orgContact.ContactId;
-            order.SupplierAddressId = supplierAddress.AddressId;
-            order.SupplierContactId = supplierContact.ContactId;
-
-            order = await order.Create(Test.OrdapiConnectionString);
-            if (!Context.ContainsKey(ContextKeys.CreatedOrder))
-            {
-                Context.Add(ContextKeys.CreatedOrder, order);
-            }
-
-            Context.TryGetValue(ContextKeys.CreatedIncompleteOrders, out IList<Order> createdOrders);
-            createdOrders ??= new List<Order>();
-            createdOrders.Add(order);
-            Context.Set(createdOrders, ContextKeys.CreatedIncompleteOrders);
+            Context.Add(ContextKeys.CreatedOrder, order);
         }
 
-        [Given(@"an incomplete order exists without a commencement date")]
-        public async Task GivenAnIncompleteOrderExistsNoCommencement()
+        [Given(@"the Call Off Ordering Party section is complete")]
+        public async Task GivenTheCallOffOrderingPartySectionIsComplete()
         {
-            var orgAddress = Address.Generate();
-            orgAddress.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedAddress, orgAddress);
-            var orgContact = Contact.Generate();
-            orgContact.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedContact, orgContact);
+            var order = (Order)Context[ContextKeys.CreatedOrder];
 
-            var supplierAddress = Address.Generate();
-            supplierAddress.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedSupplierAddress, supplierAddress);
-            var supplierContact = Contact.Generate();
-            supplierContact.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedSupplierContact, supplierContact);
+            var orderBuilder = new OrderBuilder(order)
+                .WithOrderingPartyContact(ContactHelper.Generate());
 
-            if (!Context.ContainsKey(ContextKeys.Organisation))
-            {
-                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisation(Test.IsapiConnectionString));
-            }
+            order = orderBuilder.Build();
 
-            var organisation = (Organisation)Context[ContextKeys.Organisation];
+            DbContext.Update(order);
 
-            var order = Order.Generate(organisation);
-            order.OrganisationAddressId = orgAddress.AddressId;
-            order.OrganisationContactId = orgContact.ContactId;
-            order.SupplierAddressId = supplierAddress.AddressId;
-            order.SupplierContactId = supplierContact.ContactId;
-            order.SupplierId = 100000;
-            order.SupplierName = "Really Kool Corporation";
+            await DbContext.SaveChangesAsync();
 
-            order = await order.Create(Test.OrdapiConnectionString);
-            if (!Context.ContainsKey(ContextKeys.CreatedOrder))
-            {
-                Context.Add(ContextKeys.CreatedOrder, order);
-            }
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
 
-            Context.TryGetValue(ContextKeys.CreatedIncompleteOrders, out IList<Order> createdOrders);
-            createdOrders ??= new List<Order>();
-            createdOrders.Add(order);
-            Context.Set(createdOrders, ContextKeys.CreatedIncompleteOrders);
+        [Given(@"a supplier has been selected")]
+        public async Task GivenASupplierHasBeenSelected()
+        {
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var supplier = await DbContext.Supplier.SingleOrDefaultAsync(s => s.Id == "100000")
+                ?? (await SupplierInfo.GetSupplierWithId("100000", Test.BapiConnectionString)).ToDomain();
+
+            var orderBuilder = new OrderBuilder(order)
+                .WithExistingSupplier(supplier)
+                .WithSupplierContact(ContactHelper.Generate());
+
+            order = orderBuilder.Build();
+
+            DbContext.Update(order);
+
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
         }
 
         [Given(@"an incomplete order with catalogue items exists")]
@@ -201,25 +167,33 @@
         {
             await GivenAnIncompleteOrderExists();
             var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.CatalogueSolutionsViewed = 1;
 
-            var serviceRecipient = ServiceRecipient.Generate(order.OrderId, order.OrganisationOdsCode);
-            order.ServiceRecipientsViewed = 1;
-            serviceRecipient.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedServiceRecipient, serviceRecipient);
+            order.OrderingPartyContact = ContactHelper.Generate();
+            order.CommencementDate = DateTime.Today;
 
-            order.Update(Test.OrdapiConnectionString);
-            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand(order);
-            orderItem.Create(Test.OrdapiConnectionString);
-            Context.Add(ContextKeys.CreatedOrderItem, orderItem);
+            var supplier = await DbContext.Supplier.SingleOrDefaultAsync(s => s.Id == "100000")
+                ?? (await SupplierInfo.GetSupplierWithId("100000", Test.BapiConnectionString)).ToDomain();
+
+            var orderBuilder = new OrderBuilder(order)
+                .WithExistingSupplier(supplier)
+                .WithSupplierContact(ContactHelper.Generate());
+
+            order = orderBuilder.Build();
+
+            DbContext.Update(order);
+
+            await DbContext.SaveChangesAsync();
+
+            await GivenACatalogueSolutionWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder(100);
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
         }
 
         [Given(@"my organisation has one or more orders")]
         public async Task GivenOneOrMoreOrdersExist()
         {
             await GivenACompleteOrderExists();
-            await GivenACompleteOrderExists();
-            await GivenAnIncompleteOrderExists();
         }
 
         [Given(@"a complete order exists")]
@@ -227,64 +201,16 @@
         [Given(@"a User has completed an Order")]
         public async Task GivenACompleteOrderExists()
         {
-            var orgAddress = Address.Generate();
-            orgAddress.Create(Test.OrdapiConnectionString);
-            var orgContact = Contact.Generate();
-            orgContact.Create(Test.OrdapiConnectionString);
+            var completeOrder = new CompleteOrder(Test, Context);
 
-            var supplierAddress = Address.Generate();
-            supplierAddress.Create(Test.OrdapiConnectionString);
-            var supplierContact = Contact.Generate();
-            supplierContact.Create(Test.OrdapiConnectionString);
+            await completeOrder.GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled("yes");
+            var order = (Order)Context[ContextKeys.CreatedOrder];
 
-            if (!Context.ContainsKey(ContextKeys.Organisation))
-            {
-                Context.Add(ContextKeys.Organisation, new Organisation().RetrieveRandomOrganisation(Test.IsapiConnectionString));
-            }
+            order.Complete();
 
-            var organisation = (Organisation)Context[ContextKeys.Organisation];
+            await DbContext.SaveChangesAsync();
 
-            var order = Order.Generate(organisation);
-            order.OrganisationAddressId = orgAddress.AddressId;
-            order.OrganisationContactId = orgContact.ContactId;
-            order.SupplierAddressId = supplierAddress.AddressId;
-            order.SupplierContactId = supplierContact.ContactId;
-            order.SupplierId = 100000;
-            order.SupplierName = "Really Kool Corporation";
-
-            var faker = new Faker();
-            order.CommencementDate = faker.Date.Future().Date;
-            var dateCompleted = faker.Date.Past().Date;
-            order.DateCompleted = dateCompleted;
-            order.LastUpdated = dateCompleted;
-
-            var serviceRecipient = ServiceRecipient.Generate(order.OrderId, order.OrganisationOdsCode);
-
-            order.CatalogueSolutionsViewed = 1;
-            order.ServiceRecipientsViewed = 1;
-            order.AdditionalServicesViewed = 1;
-            order.AssociatedServicesViewed = 1;
-            order.FundingSourceOnlyGMS = 1;
-
-            const int completed = 1;
-            order.OrderStatusId = completed;
-
-            order = await order.Create(Test.OrdapiConnectionString);
-            if (!Context.ContainsKey(ContextKeys.CreatedOrder))
-            {
-                Context.Add(ContextKeys.CreatedOrder, order);
-            }
-
-            var orderItem = OrderItem.GenerateOrderItemWithFlatPricedVariableOnDemand(order);
-            orderItem.LastUpdated = dateCompleted;
-            orderItem.Create(Test.OrdapiConnectionString);
-            serviceRecipient.OrderId = order.OrderId;
-            serviceRecipient.Create(Test.OrdapiConnectionString);
-
-            Context.TryGetValue(ContextKeys.CreatedCompletedOrders, out IList<Order> createdOrders);
-            createdOrders ??= new List<Order>();
-            createdOrders.Add(order);
-            Context.Set(createdOrders, ContextKeys.CreatedCompletedOrders);
+            Test.Driver.Navigate().Refresh();
         }
 
         [StepDefinition(@"the Order Form for the existing order is presented")]
@@ -292,7 +218,7 @@
         {
             Test.Driver.Navigate().Refresh();
             Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
-            Test.Pages.OrganisationsOrdersDashboard.SelectExistingOrder(((Order)Context[ContextKeys.CreatedOrder]).OrderId, Test.Url);
+            Test.Pages.OrganisationsOrdersDashboard.SelectExistingOrder(((Order)Context[ContextKeys.CreatedOrder]).CallOffId.ToString(), Test.Url);
             Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
         }
 
@@ -381,15 +307,436 @@
         }
 
         [Then(@"only the published (.*) are available for selection")]
-        public void ThenOnlyThePublishedAdditionalServicesAreAvailableForSelection(string itemType)
+        public async Task ThenOnlyThePublishedAdditionalServicesAreAvailableForSelection(string itemType)
         {
             var itemTypeId = ConvertType(itemType);
 
-            var publishedItems = SupplierInfo.GetPublishedCatalogueItems(Test.BapiConnectionString, ((Order)Context[ContextKeys.CreatedOrder]).SupplierId.Value.ToString(), itemTypeId);
+            var publishedItems = await SupplierInfo.GetPublishedCatalogueItems(Test.BapiConnectionString, Context.Get<Order>(ContextKeys.CreatedOrder).Supplier.Id, itemTypeId);
 
             var displayedItems = Test.Pages.OrderForm.GetRadioButtonText();
 
-            displayedItems.Should().BeEquivalentTo(publishedItems);
+            displayedItems.Should().BeEquivalentTo(publishedItems.Select(s => s.Name));
+        }
+
+        [Given(@"a Catalogue Solution is added to the order")]
+        [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
+        public async Task GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
+        {
+            await SetOrderCatalogueSectionToComplete();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.Solution, CataloguePriceType.Flat, ProvisioningType.OnDemand, DbContext, Test.BapiConnectionString);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            var selectedRecipients = new List<SelectedServiceRecipient>();
+            selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
+
+            order.AddOrUpdateOrderItem(orderItem);
+            order.SetSelectedServiceRecipients(selectedRecipients);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per month is saved to the order")]
+        public async Task GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
+        {
+            await SetOrderCatalogueSectionToComplete();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.Solution, CataloguePriceType.Flat, ProvisioningType.OnDemand, DbContext, Test.BapiConnectionString, TimeUnit.PerMonth);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            var selectedRecipients = new List<SelectedServiceRecipient>();
+            selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
+
+            order.AddOrUpdateOrderItem(orderItem);
+            order.SetSelectedServiceRecipients(selectedRecipients);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"a catalogue solution with a flat price variable \(Per-Patient\) order type is saved to the order")]
+        public async Task GivenACatalogueSolutionWithAFlatPriceVariablePer_PatientOrderTypeIsSavedToTheOrder()
+        {
+            await SetOrderCatalogueSectionToComplete();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.Solution, CataloguePriceType.Flat, ProvisioningType.Patient, DbContext, Test.BapiConnectionString);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            var selectedRecipients = new List<SelectedServiceRecipient>();
+            selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
+
+            order.AddOrUpdateOrderItem(orderItem);
+            order.SetSelectedServiceRecipients(selectedRecipients);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"a catalogue solution with a flat price variable \(Declarative\) order type is saved to the order (.*)")]
+        public async Task GivenACatalogueSolutionWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder(int numRecipients = 1)
+        {
+            await SetOrderCatalogueSectionToComplete();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.Solution, CataloguePriceType.Flat, ProvisioningType.Declarative, DbContext, Test.BapiConnectionString);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl, numRecipients);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            var selectedRecipients = new List<SelectedServiceRecipient>();
+            selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
+
+            order.AddOrUpdateOrderItem(orderItem);
+            order.SetSelectedServiceRecipients(selectedRecipients);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"an Additional Service is added to the order")]
+        [Given(@"an additional service with a flat price variable Declarative order type is saved to the order")]
+        public async Task GivenAnAdditionalServiceWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder()
+        {
+            await SetOrderCatalogueSectionToComplete();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var orderItem = await OrderItemHelper.CreateOrderItem(
+                order,
+                CatalogueItemType.AdditionalService,
+                CataloguePriceType.Flat,
+                ProvisioningType.Declarative,
+                DbContext,
+                Test.BapiConnectionString);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            var selectedRecipients = new List<SelectedServiceRecipient>();
+            selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
+
+            order.AddOrUpdateOrderItem(orderItem);
+            order.SetSelectedServiceRecipients(selectedRecipients);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"an additional service with a flat price variable On Demand order type with the quantity period per year is saved to the order")]
+        public async Task GivenAnAdditionalServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
+        {
+            await SetOrderCatalogueSectionToComplete();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var orderItem = await OrderItemHelper.CreateOrderItem(
+                order,
+                CatalogueItemType.AdditionalService,
+                CataloguePriceType.Flat,
+                ProvisioningType.OnDemand,
+                DbContext,
+                Test.BapiConnectionString);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            var selectedRecipients = new List<SelectedServiceRecipient>();
+            selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
+
+            order.AddOrUpdateOrderItem(orderItem);
+            order.SetSelectedServiceRecipients(selectedRecipients);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"an additional service with a flat price variable On-Demand order type with the quantity period per month is saved to the order")]
+        public async Task GivenAnAdditionalServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
+        {
+            await SetOrderCatalogueSectionToComplete();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.AdditionalService, CataloguePriceType.Flat, ProvisioningType.Declarative, DbContext, Test.BapiConnectionString, TimeUnit.PerMonth);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            var selectedRecipients = new List<SelectedServiceRecipient>();
+            selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
+
+            order.AddOrUpdateOrderItem(orderItem);
+            order.SetSelectedServiceRecipients(selectedRecipients);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"an additional service with a flat price variable Patient order type is saved to the order")]
+        public async Task GivenAnAdditionalServiceWithAFlatPriceVariablePatientOrderTypeIsSavedToTheOrder()
+        {
+            await SetOrderCatalogueSectionToComplete();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.AdditionalService, CataloguePriceType.Flat, ProvisioningType.Patient, DbContext, Test.BapiConnectionString);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            var selectedRecipients = new List<SelectedServiceRecipient>();
+            selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
+
+            order.AddOrUpdateOrderItem(orderItem);
+            order.SetSelectedServiceRecipients(selectedRecipients);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"an associated service with a flat price variable \(Declarative\) order type is saved to the order")]
+        public async Task GivenAnAssociatedServiceWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder()
+        {
+            await SetOrderCatalogueSectionToComplete();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.AssociatedService, CataloguePriceType.Flat, ProvisioningType.Declarative, DbContext, Test.BapiConnectionString);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            var selectedRecipients = new List<SelectedServiceRecipient>();
+            selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
+
+            order.AddOrUpdateOrderItem(orderItem);
+            order.SetSelectedServiceRecipients(selectedRecipients);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"an associated service with a flat price variable \(On-Demand\) order type with the quantity period per year is saved to the order")]
+        public async Task GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
+        {
+            await SetOrderCatalogueSectionToComplete();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.AssociatedService, CataloguePriceType.Flat, ProvisioningType.OnDemand, DbContext, Test.BapiConnectionString);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            var selectedRecipients = new List<SelectedServiceRecipient>();
+            selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
+
+            order.AddOrUpdateOrderItem(orderItem);
+            order.SetSelectedServiceRecipients(selectedRecipients);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"an associated service with a flat price variable \(On-Demand\) order type with the quantity period per month is saved to the order")]
+        public async Task GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerMonthIsSavedToTheOrder()
+        {
+            await SetOrderCatalogueSectionToComplete();
+
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.AssociatedService, CataloguePriceType.Flat, ProvisioningType.OnDemand, DbContext, Test.BapiConnectionString, TimeUnit.PerMonth);
+
+            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+
+            await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
+
+            var selectedRecipients = new List<SelectedServiceRecipient>();
+            selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
+
+            order.AddOrUpdateOrderItem(orderItem);
+            order.SetSelectedServiceRecipients(selectedRecipients);
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"the Supplier and Call Off Ordering Party sections are complete")]
+        public async Task GivenTheSupplierAndCallOffOrderingPartySectionsAreComplete()
+        {
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            order.OrderingPartyContact = ContactHelper.Generate();
+
+            var supplier = await DbContext.Supplier.SingleOrDefaultAsync(s => s.Id == "100000")
+                ?? (await SupplierInfo.GetSupplierWithId("100000", Test.BapiConnectionString)).ToDomain();
+
+            var orderBuilder = new OrderBuilder(order)
+                .WithExistingSupplier(supplier)
+                .WithSupplierContact(ContactHelper.Generate());
+
+            order = orderBuilder.Build();
+
+            DbContext.Update(order);
+
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"the Commencement Date is complete")]
+        public async Task GivenTheCommencementDateIsComplete()
+        {
+            await SetCommencementDate();
+        }
+
+        [When(@"the Order is in the '(.*)' table")]
+        public void WhenTheOrderIsInTheTable(string table)
+        {
+            List<OrderTableItem> orders;
+
+            if (table.Contains("incomplete", StringComparison.InvariantCultureIgnoreCase))
+            {
+                orders = Test.Pages.OrganisationsOrdersDashboard.GetListOfIncompleteOrders();
+            }
+            else
+            {
+                orders = Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders();
+            }
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            bool result = false;
+            foreach (var tableOrder in orders)
+            {
+                result = tableOrder.Id == order.CallOffId.ToString();
+            }
+
+            result.Should().BeTrue();
+        }
+
+        [Then(@"there is an indication that the Order has not been processed automatically")]
+        public void ThenThereIsAnIndicationThatTheOrderHasNotBeenProcessedAutomatically()
+        {
+            var completedOrders = Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders();
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            completedOrders.Single(o => o.Id == order.CallOffId.ToString()).AutomaticallyProcessed.Should().BeFalse();
+        }
+
+        [Then(@"there is an indication that the Order has been processed automatically")]
+        public void ThenThereIsAnIndicationThatTheOrderHasBeenProcessedAutomatically()
+        {
+            var completedOrders = Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders();
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            completedOrders.Single(o => o.Id == order.CallOffId.ToString()).AutomaticallyProcessed.Should().BeTrue();
+        }
+
+        [Then(@"the completed order summary contains the date the Order was completed")]
+        public void ThenTheCompletedOrderSummaryContainsTheDateTheOrderWasCompleted()
+        {
+            var completedOrders = Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders();
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            completedOrders.All(o => o.Completed.HasValue).Should().BeTrue();
+        }
+
+        [Then(@"the Order is not completed")]
+        public async Task ThenTheOrderIsNotCompleted()
+        {
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            (await DbContext.Order.FindAsync(order.Id)).Completed.Should().BeNull();
+        }
+
+        [Then(@"the Order has a Deleted status")]
+        public async Task ThenTheOrderHasADeletedStatus()
+        {
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            (await DbContext.Order.FindAsync(order.Id)).IsDeleted.Should().BeTrue();
+        }
+
+        [Then(@"the status of the Order does not change to deleted")]
+        public async Task ThenTheStatusOfTheOrderDoesNotChangeToDeleted()
+        {
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            (await DbContext.Order.FindAsync(order.Id)).IsDeleted.Should().BeFalse();
+        }
+
+        [Then(@"the Order is not on the Organisation's Orders Dashboard")]
+        public void ThenTheOrderIsNotOnTheOrganisationSOrdersDashboard()
+        {
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            var allOrders = new List<OrderTableItem>();
+            allOrders.AddRange(Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders());
+            allOrders.AddRange(Test.Pages.OrganisationsOrdersDashboard.GetListOfIncompleteOrders());
+
+            allOrders.Select(s => s.Id).Should().NotContain(order.CallOffId.ToString());
         }
 
         public void ContinueAndWaitForCheckboxes()
@@ -406,21 +753,53 @@
 
         public async Task CreateUser(UserType userType)
         {
-            Organisation organisation;
-            if (!Context.ContainsKey(ContextKeys.Organisation))
-            {
-                organisation = await Organisation.GetByODSCode("27D", Test.IsapiConnectionString);
-                Context.Add(ContextKeys.Organisation, organisation);
-            }
-            else
-            {
-                organisation = (Organisation)Context[ContextKeys.Organisation];
-            }
-
-            var user = new User() { UserType = userType }.GenerateRandomUser(organisation.OrganisationId);
-            user.Create(Test.IsapiConnectionString);
+            Organisation organisation = await Organisation.GetByODSCode("27D", Test.IsapiConnectionString);
+            var user = UsersHelper.GenerateRandomUser(organisation.OrganisationId, new User() { UserType = userType });
+            await UsersHelper.Create(Test.IsapiConnectionString, user);
 
             Context.Add(ContextKeys.User, user);
+        }
+
+        public async Task SetOrderCatalogueSectionToComplete()
+        {
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+            order.Progress.CatalogueSolutionsViewed = true;
+
+            DbContext.Update(order);
+
+            await DbContext.SaveChangesAsync();
+        }
+
+        public async Task SetOrderAdditionalServicesSectionToComplete()
+        {
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+            order.Progress.AdditionalServicesViewed = true;
+
+            DbContext.Update(order);
+
+            await DbContext.SaveChangesAsync();
+        }
+
+        public async Task SetOrderAssociatedServicesSectionToComplete()
+        {
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            var dbOrder = await DbContext.Order.FindAsync(order.Id);
+            dbOrder.Progress.AssociatedServicesViewed = true;
+
+            DbContext.Update(dbOrder);
+
+            await DbContext.SaveChangesAsync();
+        }
+
+        public async Task SetCommencementDate(DateTime? date = null)
+        {
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+            order.CommencementDate = date ?? DateTime.Today;
+
+            DbContext.Update(order);
+
+            await DbContext.SaveChangesAsync();
         }
 
         private static CatalogueItemType ConvertType(string itemType)
