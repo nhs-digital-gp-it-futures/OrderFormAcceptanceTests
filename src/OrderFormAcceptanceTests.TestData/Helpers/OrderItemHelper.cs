@@ -54,12 +54,12 @@
             return orderItem.Build();
         }
 
-        public static OrderItem AddRecipientToOrderItem(OrderItem orderItem, IEnumerable<OrderItemRecipient> recipients, OrderingDbContext context)
+        public static async Task<OrderItem> AddRecipientToOrderItem(OrderItem orderItem, IEnumerable<OrderItemRecipient> recipients, OrderingDbContext context)
         {
             List<OrderItemRecipient> validatedRecipients = new();
             foreach (var recipient in recipients)
             {
-                var existing = context.ServiceRecipient.Find(recipient.Recipient.OdsCode) ?? recipient.Recipient;
+                var existing = await context.ServiceRecipient.FindAsync(recipient.Recipient.OdsCode) ?? recipient.Recipient;
                 recipient.Recipient = existing;
 
                 validatedRecipients.Add(recipient);
