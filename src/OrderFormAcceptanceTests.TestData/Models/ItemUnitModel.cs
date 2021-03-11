@@ -1,6 +1,6 @@
 ﻿namespace OrderFormAcceptanceTests.TestData.Models
 {
-    public class ItemUnitModel
+    public sealed class ItemUnitModel
     {
         public string Name { get; set; }
 

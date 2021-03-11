@@ -2,7 +2,7 @@
 {
     using OrderFormAcceptanceTests.Domain;
 
-    public class TimeUnitModel
+    public sealed class TimeUnitModel
     {
         public string Name { get; set; }
 

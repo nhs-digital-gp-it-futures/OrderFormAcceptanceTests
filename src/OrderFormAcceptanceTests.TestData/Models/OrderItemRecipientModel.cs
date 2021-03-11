@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class OrderItemRecipientModel
+    public sealed class OrderItemRecipientModel
     {
         public DateTime? DeliveryDate { get; set; }
 

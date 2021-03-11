@@ -10,16 +10,16 @@
 
     public static class SupplierInfo
     {
-        public static IEnumerable<SupplierDetails> SuppliersWithCatalogueSolution(string connectionString, Domain.ProvisioningType provisioningType)
+        public static IEnumerable<SupplierDetails> SuppliersWithCatalogueSolution(string connectionString, ProvisioningType provisioningType)
         {
             return SupplierLookup(connectionString, CatalogueItemType.Solution, provisioningType);
         }
 
         public static IEnumerable<SupplierDetails> SuppliersWithout(string connectionString, CatalogueItemType catalogueItemType)
         {
-            var query = @"SELECT DISTINCT ci.[SupplierId], su.[Name]
-                            FROM CatalogueItem ci
-                            INNER JOIN Supplier su On ci.SupplierId=su.Id
+            var query = @"SELECT DISTINCT ci.SupplierId, su.[Name]
+                            FROM CatalogueItem AS ci
+                            INNER JOIN Supplier AS su On ci.SupplierId=su.Id
                             WHERE SupplierId NOT IN(
 	                            SELECT DISTINCT SupplierId
 	                            FROM CatalogueItem    
@@ -53,22 +53,15 @@
 
             var result = (await SqlExecutor.ExecuteAsync<Guid?>(connectionString, query, new { supplierName })).SingleOrDefault();
 
-            if (result is null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return result is not null;
         }
 
-        private static IEnumerable<SupplierDetails> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, Domain.ProvisioningType provisioningType)
+        private static IEnumerable<SupplierDetails> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
         {
-            var query = @"SELECT ci.[SupplierId], su.[Name], su.Address    
-                            FROM [dbo].[CatalogueItem] ci
-                            INNER JOIN CataloguePrice pr ON ci.CatalogueItemId=pr.CatalogueItemId
-                            INNER JOIN Supplier su On ci.SupplierId=su.Id
+            var query = @"SELECT ci.SupplierId, su.[Name], su.Address    
+                            FROM dbo.CatalogueItem AS ci
+                            INNER JOIN CataloguePrice AS pr ON ci.CatalogueItemId=pr.CatalogueItemId
+                            INNER JOIN Supplier AS su On ci.SupplierId=su.Id
                             WHERE ci.CatalogueItemTypeId=@catalogueItemType
                             AND pr.ProvisioningTypeId=@provisioningType";
 

@@ -15,33 +15,5 @@
 
             return results.SingleOrDefault();
         }
-
-        public static async Task<OrderingParty> Create(this OrderingParty orderingParty, string connectionString)
-        {
-            var existing = await orderingParty.GetByOdsCode(connectionString);
-
-            if (existing is not null)
-            {
-                return orderingParty;
-            }
-
-            var query = @"INSERT INTO OrderingParty
-                            (
-                              Id,
-                              OdsCode,
-                              [Name]
-                              AddressId
-                            )
-                          VALUES (
-                              @Id,
-                              @OdsCode,
-                              @Name
-                              @AddressId
-                            );";
-
-            await SqlExecutor.ExecuteAsync<OrderingParty>(connectionString, query, orderingParty);
-
-            return await orderingParty.GetByOdsCode(connectionString);
-        }
     }
 }

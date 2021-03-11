@@ -5,11 +5,11 @@
     using System.Linq;
     using OrderFormAcceptanceTests.Domain;
 
-    public sealed class List
+    public sealed class OrderItemList
     {
         private readonly Dictionary<int, OrderItem> cache = new();
 
-        public List(params OrderItem[] orderItems)
+        public OrderItemList(params OrderItem[] orderItems)
         {
             if (orderItems is null)
             {
