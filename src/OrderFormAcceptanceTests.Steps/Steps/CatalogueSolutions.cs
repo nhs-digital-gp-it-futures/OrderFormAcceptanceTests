@@ -207,11 +207,11 @@
         }
 
         [Then(@"the selected Service Recipient with their ODS code is displayed on the Catalogue Solution edit form")]
-        public void ThenTheSelectedServiceRecipientWithTheirODSCodeIsDisplayedOnTheCatalogueSolutionEditForm()
+        public async Task ThenTheSelectedServiceRecipientWithTheirODSCodeIsDisplayedOnTheCatalogueSolutionEditForm()
         {
             var chosenOdsCode = (string)Context[ContextKeys.ChosenOdsCode];
             var query = "Select Name FROM [dbo].[Organisations] where OdsCode=@ChosenOdsCode";
-            var expectedOrganisationName = SqlExecutor.Execute<string>(Test.IsapiConnectionString, query, new { chosenOdsCode }).Single();
+            var expectedOrganisationName = (await SqlExecutor.ExecuteAsync<string>(Test.IsapiConnectionString, query, new { chosenOdsCode })).Single();
             var expectedFormattedValue = string.Format("{0} ({1})", expectedOrganisationName, chosenOdsCode);
             Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedFormattedValue).Should().BeTrue();
         }
@@ -545,7 +545,7 @@
         [Given(@"that the Supplier in the order has no associated services")]
         public async Task GivenTheSupplierInTheOrderHasNoAssociatedServices()
         {
-            var supplier = SupplierInfo.SuppliersWithout(Test.BapiConnectionString, CatalogueItemType.AssociatedService).First().ToDomain() ?? throw new NullReferenceException("Supplier not found");
+            var supplier = (await SupplierInfo.SuppliersWithout(Test.BapiConnectionString, CatalogueItemType.AssociatedService)).First().ToDomain() ?? throw new NullReferenceException("Supplier not found");
 
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.Supplier = supplier;
@@ -557,7 +557,7 @@
         [Given(@"the supplier added to the order has a solution with a declarative flat price")]
         public async Task GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice()
         {
-            var supplierInfo = SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, ProvisioningType.Declarative).First().ToDomain();
+            var supplierInfo = (await SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, ProvisioningType.Declarative)).First().ToDomain();
 
             var supplier = await DbContext.Supplier.FindAsync(supplierInfo.Id) ?? supplierInfo;
 

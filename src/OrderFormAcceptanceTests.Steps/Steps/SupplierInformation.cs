@@ -6,6 +6,7 @@
     using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Helpers;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -163,11 +164,7 @@
         public async Task ThenTheSupplierSectionIsSavedInTheDB()
         {
             var order = Context.Get<Order>(ContextKeys.CreatedOrder);
-            var orderInDb = await DbContext.Order
-                .Include(o => o.Supplier)
-                .ThenInclude(s => s.Address)
-                .Include(o => o.SupplierContact)
-                .SingleAsync(o => o.Id == order.Id);
+            var orderInDb = await OrderHelpers.GetOrderAsync(order.CallOffId, DbContext);
 
             orderInDb.SupplierContact.Should().NotBeNull();
         }

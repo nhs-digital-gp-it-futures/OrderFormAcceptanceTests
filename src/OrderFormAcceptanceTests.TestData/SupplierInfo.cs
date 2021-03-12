@@ -10,12 +10,12 @@
 
     public static class SupplierInfo
     {
-        public static IEnumerable<SupplierDetails> SuppliersWithCatalogueSolution(string connectionString, ProvisioningType provisioningType)
+        public static async Task<IEnumerable<SupplierDetails>> SuppliersWithCatalogueSolution(string connectionString, ProvisioningType provisioningType)
         {
-            return SupplierLookup(connectionString, CatalogueItemType.Solution, provisioningType);
+            return await SupplierLookup(connectionString, CatalogueItemType.Solution, provisioningType);
         }
 
-        public static IEnumerable<SupplierDetails> SuppliersWithout(string connectionString, CatalogueItemType catalogueItemType)
+        public static async Task<IEnumerable<SupplierDetails>> SuppliersWithout(string connectionString, CatalogueItemType catalogueItemType)
         {
             var query = @"SELECT DISTINCT ci.SupplierId, su.[Name]
                             FROM CatalogueItem AS ci
@@ -26,12 +26,12 @@
 	                            WHERE CatalogueItemTypeId = @catalogueItemType
                             )";
 
-            return SqlExecutor.Execute<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType });
+            return await SqlExecutor.ExecuteAsync<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType });
         }
 
         public static async Task<IEnumerable<CatalogueItemModel>> GetPublishedCatalogueItems(string connectionString, string supplierId, CatalogueItemType itemType)
         {
-            var query = $@"SELECT *, CatalogueItemTypeId AS 'CatalogueItemType' FROM dbo.CatalogueItem WHERE SupplierId = @supplierId AND PublishedStatusId = 3 AND CatalogueItemTypeId = @itemType;";
+            var query = $@"SELECT *, CatalogueItemTypeId AS 'CatalogueItemType' FROM dbo.CatalogueItem WHERE SupplierId = @supplierId AND PublishedStatusId = 3 AND CatalogueItemTypeId = @itemType AND CatalogueItemId NOT LIKE 'Auto%';";
 
             return await SqlExecutor.ExecuteAsync<CatalogueItemModel>(connectionString, query, new { supplierId, itemType });
         }
@@ -56,7 +56,7 @@
             return result is not null;
         }
 
-        private static IEnumerable<SupplierDetails> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
+        private static async Task<IEnumerable<SupplierDetails>> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
         {
             var query = @"SELECT ci.SupplierId, su.[Name], su.Address    
                             FROM dbo.CatalogueItem AS ci
@@ -65,7 +65,11 @@
                             WHERE ci.CatalogueItemTypeId=@catalogueItemType
                             AND pr.ProvisioningTypeId=@provisioningType";
 
-            return SqlExecutor.Execute<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType, provisioningType = (int)provisioningType });
+            return await SqlExecutor.ExecuteAsync<SupplierDetails>(connectionString, query, new
+            {
+                catalogueItemType = (int)catalogueItemType,
+                provisioningType = (int)provisioningType,
+            });
         }
     }
 }
