@@ -38,7 +38,7 @@
                     Id = model.OrganisationId,
                     Address = AddressHelper.Generate(),
                     OdsCode = organisationDetails.OdsCode,
-                    Name = "Test Ordering Party",
+                    Name = organisationDetails.Name,
                 };
 
             var order = new OrderBuilder(model.Description, user, orderingParty)

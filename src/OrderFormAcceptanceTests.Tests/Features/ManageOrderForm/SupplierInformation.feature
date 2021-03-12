@@ -138,7 +138,6 @@ Scenario: Supplier Information - Validation Error Message Anchors
 	When the user selects an error link in the Error Summary
 	Then they will be navigated to the relevant part of the page
 
-@ignore Retrieve From Db step broken (in test only)
 Scenario: Supplier Information - All data are valid
 	Given the User has selected a supplier for the first time
 	And the user has entered a valid supplier contact for the order

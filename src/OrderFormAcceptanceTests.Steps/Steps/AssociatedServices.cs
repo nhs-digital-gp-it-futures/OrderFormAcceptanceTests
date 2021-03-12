@@ -103,21 +103,21 @@
         }
 
         [Then(@"all the available prices for that Associated Service are presented")]
-        public void ThenAllTheAvailablePricesForThatAssociatedServiceArePresented()
+        public async Task ThenAllTheAvailablePricesForThatAssociatedServiceArePresented()
         {
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("List price").Should().BeTrue();
             var itemId = (string)Context[ContextKeys.ChosenItemId];
             var query = "Select count(*) FROM [dbo].[CataloguePrice] where CatalogueItemId=@itemId";
-            var expectedNumberOfPrices = SqlExecutor.Execute<int>(Test.BapiConnectionString, query, new { itemId }).Single();
+            var expectedNumberOfPrices = (await SqlExecutor.ExecuteAsync<int>(Test.BapiConnectionString, query, new { itemId })).Single();
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().Be(expectedNumberOfPrices);
         }
 
         [Then(@"the name of the selected Associated Service is displayed on the Associated Service edit form")]
-        public void ThenTheNameOfTheSelectedAssociatedServiceIsDisplayedOnTheAssociatedServiceEditForm()
+        public async Task ThenTheNameOfTheSelectedAssociatedServiceIsDisplayedOnTheAssociatedServiceEditForm()
         {
             var itemId = (string)Context[ContextKeys.ChosenItemId];
             var query = "Select Name FROM [dbo].[CatalogueItem] where CatalogueItemId=@itemId";
-            var expectedSolutionName = SqlExecutor.Execute<string>(Test.BapiConnectionString, query, new { itemId }).Single();
+            var expectedSolutionName = (await SqlExecutor.ExecuteAsync<string>(Test.BapiConnectionString, query, new { itemId })).Single();
             Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedSolutionName).Should().BeTrue();
         }
 
