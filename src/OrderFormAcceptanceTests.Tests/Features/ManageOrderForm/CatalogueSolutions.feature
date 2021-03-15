@@ -89,22 +89,6 @@ Scenario: Catalogue Solutions - Go back from select price
 	When the User chooses to go back
 	Then they are presented with the Catalogue Solutions available from their chosen Supplier
 
-@ignore need rewriting
-Scenario: Catalogue Solutions - Skip list price page and display select service recipient page
-	Given a supplier which has a catalogue soltution with only one list price was chosen
-	And the User is presented with Catalogue Solutions available from their chosen Supplier
-	And the User selects a catalogue solution to add
-	When they choose to continue
-	Then they are presented with select Service Recipient form
-
-@ignore need rewriting
-Scenario: Catalogue Solutions - Skip list price page and click go back
-	Given a supplier which has a catalogue soltution with only one list price was chosen
-	And the User is presented with select Service Recipient form
-	When the User chooses to go back
-	Then they are presented with the Catalogue Solutions available from their chosen Supplier
-	And the User's selected catalogue solution is selected
-
 Scenario: Catalogue Solutions - Select a Service Recipient
 	Given the User is presented with the prices for the selected Catalogue Solution
 	And the User selects a price
@@ -180,7 +164,7 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 		| variable         | quantity      |
 		| per patient      | quantity      |
 
-@ignore PUT request broken
+@ignore negative prices do not throw error
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price is negative
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
@@ -238,7 +222,6 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 		| variable         | quantity      |
 		| per patient      | quantity      |
 
-@ignore PUT request broken
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - quantity can not be negative
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
@@ -294,7 +277,6 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Validatio
 		| variable         |
 		| per patient      |
 
-@ignore PUT request broken
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery date validation - date is equal to 183 weeks after commencement date
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
@@ -308,7 +290,6 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
 		| variable         | quantity      |
 		| per patient      | quantity      |
 
-@ignore PUT request broken
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery date validation - date is less than 183 weeks after commencement date
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
@@ -322,7 +303,6 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
 		| variable         | quantity      |
 		| per patient      | quantity      |
 
-@ignore PUT request broken
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery date validation - date is more than 183 weeks after commencement date
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
@@ -337,7 +317,6 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
 		| variable         | quantity      |
 		| per patient      | quantity      |
 
-@ignore PUT request broken
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery date validation - date cannot be before commencement date
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
@@ -353,7 +332,6 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Delivery 
 		| per patient      | quantity      |
 
 
-@ignore PUT request broken
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price All data are valid
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
@@ -386,7 +364,6 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Go back b
 	| variable         | Quantity     |
 	| per patient      | Delivery Date |
 
-@ignore PUT request broken
 Scenario: Catalogue Solutions - View Added Catalogue Solutions
 	Given a Catalogue Solution is added to the order
 	And the User has chosen to manage the Catalogue Solution section
