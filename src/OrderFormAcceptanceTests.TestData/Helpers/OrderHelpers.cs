@@ -11,7 +11,7 @@
 
     public static class OrderHelpers
     {
-        public static async Task<Order> GetOrderAsync(CallOffId callOffId, OrderingDbContext context)
+        public static async Task<Order> GetFullOrderAsync(CallOffId callOffId, OrderingDbContext context)
         {
             var fullOrder = await context.Order
                 .Where(o => o.Id == callOffId.Id)

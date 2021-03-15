@@ -74,7 +74,6 @@ Scenario: Associated Service dashboard - No Associated Services added
 	When there is no Associated Service added to the order
 	Then there is content indicating there is no Associated Service added
 
-@ignore PUT request broken
 Scenario: Associated Service dashboard - User chooses not to add Associated Service
 	Given the User has chosen to manage the Associated Service section
 	And the User chooses not to add an Associated Service

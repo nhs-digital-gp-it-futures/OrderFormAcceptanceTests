@@ -50,7 +50,6 @@ Scenario: Additional Services - No Additional Service added
 	When there is no Additional Service added to the order
 	Then there is content indicating there is no Additional Service added
 
-@ignore PUT request not working (no effect in FE)
 Scenario: Additional Services - User chooses not to add Additional Service
 	Given the Order Form for the existing order is presented
 	And the User is able to manage the Additional Services section

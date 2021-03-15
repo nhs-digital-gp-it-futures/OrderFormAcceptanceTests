@@ -711,14 +711,6 @@
             (await DbContext.Order.FindAsync(order.Id)).Completed.Should().BeNull();
         }
 
-        [Then(@"the Order has a Deleted status")]
-        public async Task ThenTheOrderHasADeletedStatus()
-        {
-            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
-
-            (await DbContext.Order.FindAsync(order.Id)).IsDeleted.Should().BeTrue();
-        }
-
         [Then(@"the status of the Order does not change to deleted")]
         public async Task ThenTheStatusOfTheOrderDoesNotChangeToDeleted()
         {
@@ -730,6 +722,8 @@
         [Then(@"the Order is not on the Organisation's Orders Dashboard")]
         public void ThenTheOrderIsNotOnTheOrganisationSOrdersDashboard()
         {
+            WhenTheUserChoosesToGoBack();
+
             var order = Context.Get<Order>(ContextKeys.CreatedOrder);
 
             var allOrders = new List<OrderTableItem>();

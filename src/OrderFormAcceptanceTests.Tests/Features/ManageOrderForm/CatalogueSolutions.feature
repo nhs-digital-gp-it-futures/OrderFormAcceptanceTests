@@ -40,7 +40,6 @@ Scenario: Catalogue Solutions - No Catalogue Solution added
 	When the User has chosen to manage the Catalogue Solution section
 	Then there is content indicating there is no Catalogue Solution added
 
-@ignore PUT request broken
 Scenario: Catalogue Solutions - User chooses not to add Catalogue Solution
 	Given the User has chosen to manage the Catalogue Solution section
 	And the User chooses not to add a Catalogue Solution
@@ -374,7 +373,6 @@ Scenario: Catalogue Solutions - View Added Catalogue Solutions
 	And there is a control to continue
 	And there is a control to edit each Catalogue Solution
 
-@ignore PUT request broken
 Scenario: Catalogue Solutions - Catalogue Solution added section complete
 	Given the User has chosen to manage the Catalogue Solution section
 	When the User chooses to continue
@@ -412,7 +410,6 @@ Scenario: Catalogue Solutions - Published solutions display
 	When the User chooses to add a single Catalogue Solution
 	Then only the published catalogue solution are available for selection
 
-@ignore Solution dashboard error
 Scenario: Catalogue Solutions - Multiple added solutions displayed alphabetically
 	Given a User has added multiple solutions to the order
 	And the User has chosen to manage the Catalogue Solution section
