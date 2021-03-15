@@ -74,13 +74,12 @@
         [Then(@"the Call Off Ordering Party section is saved in the DB")]
         public async Task ThenTheCallOffOrderingPartySectionIsSavedInTheDb()
         {
-            var orderId = Context.Get<Order>(ContextKeys.CreatedOrder).Id;
+            var contextOrder = Context.Get<Order>(ContextKeys.CreatedOrder);
 
-            var orderingPartyInDb = (await DbContext.Order.FindAsync(orderId)).OrderingParty;
-            var orderingPartyContactInDb = (await DbContext.Order.FindAsync(orderId)).OrderingPartyContact;
+            var order = await OrderHelpers.GetFullOrderAsync(contextOrder.CallOffId, DbContext);
 
-            orderingPartyInDb.Should().NotBeNull();
-            orderingPartyContactInDb.Should().NotBeNull();
+            order.OrderingParty.Should().NotBeNull();
+            order.OrderingPartyContact.Should().NotBeNull();
         }
     }
 }

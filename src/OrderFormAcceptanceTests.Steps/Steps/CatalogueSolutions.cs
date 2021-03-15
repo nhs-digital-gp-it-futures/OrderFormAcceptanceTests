@@ -491,6 +491,14 @@
             await new CommonSteps(Test, Context).GivenACatalogueSolutionWithAFlatPriceVariablePer_PatientOrderTypeIsSavedToTheOrder();
         }
 
+        [Given(@"a User has added multiple solutions to the order")]
+        public async Task GivenAUserHasAddedMultipleSolutionsToTheOrder()
+        {
+            var commonSteps = new CommonSteps(Test, Context);
+            await commonSteps.GivenACatalogueSolutionWithAFlatPriceVariablePer_PatientOrderTypeIsSavedToTheOrder();
+            await commonSteps.GivenACatalogueSolutionWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder();
+        }
+
         [Then(@"the name of each Associated Service is displayed")]
         [Then(@"the name of each Additional Service is displayed")]
         [Then(@"the name of the Catalogue Solution is displayed")]

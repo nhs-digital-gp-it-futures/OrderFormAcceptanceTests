@@ -164,7 +164,7 @@
         public async Task ThenTheSupplierSectionIsSavedInTheDB()
         {
             var order = Context.Get<Order>(ContextKeys.CreatedOrder);
-            var orderInDb = await OrderHelpers.GetOrderAsync(order.CallOffId, DbContext);
+            var orderInDb = await OrderHelpers.GetFullOrderAsync(order.CallOffId, DbContext);
 
             orderInDb.SupplierContact.Should().NotBeNull();
         }
