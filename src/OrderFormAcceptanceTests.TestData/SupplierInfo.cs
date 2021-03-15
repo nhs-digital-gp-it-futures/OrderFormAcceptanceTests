@@ -31,7 +31,13 @@
 
         public static async Task<IEnumerable<CatalogueItemModel>> GetPublishedCatalogueItems(string connectionString, string supplierId, CatalogueItemType itemType)
         {
-            var query = $@"SELECT *, CatalogueItemTypeId AS 'CatalogueItemType' FROM dbo.CatalogueItem WHERE SupplierId = @supplierId AND PublishedStatusId = 3 AND CatalogueItemTypeId = @itemType AND CatalogueItemId NOT LIKE 'Auto%';";
+            var query = $@"SELECT *,
+                            CatalogueItemTypeId AS 'CatalogueItemType'
+                        FROM dbo.CatalogueItem
+                        WHERE SupplierId = @supplierId
+                        AND PublishedStatusId = 3
+                        AND CatalogueItemTypeId = @itemType
+                        AND CatalogueItemId NOT LIKE 'Auto%';";
 
             return await SqlExecutor.ExecuteAsync<CatalogueItemModel>(connectionString, query, new { supplierId, itemType });
         }
