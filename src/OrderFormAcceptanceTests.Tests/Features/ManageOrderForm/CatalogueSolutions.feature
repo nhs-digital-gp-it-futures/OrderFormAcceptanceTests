@@ -416,7 +416,6 @@ Scenario: Catalogue Solutions - Multiple added solutions displayed alphabeticall
 	Then the Catalogue Solutions are presented
 	And the Catalogue Solutions are in alphabetical order
 
-@ignore Solution dashboard error
 Scenario: Catalogue Solutions - Edit Service Recipients
 	Given a Catalogue Solution is added to the order
 	And the User has chosen to manage the Catalogue Solution section
@@ -426,7 +425,6 @@ Scenario: Catalogue Solutions - Edit Service Recipients
 	And the User chooses to continue
 	Then the Edit Price form displays the expected number of recipients
 
-@ignore Solution dashboard error
 Scenario: Catalogue Solutions - Edit Service Recipients - No Additional Recipients
 	Given a Catalogue Solution is added to the order
 	And the User has chosen to manage the Catalogue Solution section
@@ -435,7 +433,6 @@ Scenario: Catalogue Solutions - Edit Service Recipients - No Additional Recipien
 	And the User chooses to continue
 	Then the Edit Price form displays the same number of recipients as earlier
 
-@ignore Solution dashboard error
 Scenario: Catalogue Solutions - Edit Service Recipients - Go Back
 	Given a Catalogue Solution is added to the order
 	And the User has chosen to manage the Catalogue Solution section
