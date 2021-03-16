@@ -50,7 +50,6 @@ Scenario: Complete Order - Go back before complete order
 	When the User chooses to go back
 	Then the Order dashboard is presented
 
-@ignore Complete screen not working
 Scenario: Complete Order - Order completed if Funding Source was 'yes' confirmation screen
 	Given that the User is on the confirm complete order screen with Funding Source option 'yes' selected
 	When the User confirms to complete the Order
@@ -58,7 +57,6 @@ Scenario: Complete Order - Order completed if Funding Source was 'yes' confirmat
 	And the Call Off Agreement ID is displayed in the page title
 	And there is specific content related to the User answering 'yes' on the Funding Source question on the completed screen
 
-@ignore Complete screen not working
 Scenario: Complete Order - Go Back after Order completed
 	Given that the User has completed their Order
 	When the User chooses to go back
@@ -75,7 +73,6 @@ Scenario: Complete Order - Complete order screen if Funding Source was 'no'
 	And there is a control to complete order
 	And there is a control to continue editing order
 
-@ignore Complete screen not working
 Scenario: Complete Order - Order completed if Funding Source was 'no' confirmation screen
 	Given that the User is on the confirm complete order screen with Funding Source option 'no' selected
 	When the User confirms to complete the Order
@@ -84,7 +81,6 @@ Scenario: Complete Order - Order completed if Funding Source was 'no' confirmati
 	And there is specific content related to the User answering 'no' on the Funding Source question on the completed screen
 	And there is a control that allows the User to download a .PDF version of the Order Summary
 
-@ignore Order complete functionality not working
 Scenario: Complete Order - Indicate if automatically processed or not if Funding Source was Yes
 	Given that the User is on the confirm complete order screen with Funding Source option 'yes' selected
 	And the User confirms to complete the Order
@@ -93,7 +89,6 @@ Scenario: Complete Order - Indicate if automatically processed or not if Funding
 	And the Order is in the 'Completed Orders' table
 	Then there is an indication that the Order has been processed automatically
 	            
-@ignore Order complete functionality not working
 Scenario: Complete Order - Indicate if automatically processed or not if Funding Source was No
 	Given that the User is on the confirm complete order screen with Funding Source option 'no' selected
 	And the User confirms to complete the Order
@@ -108,7 +103,7 @@ Scenario: Complete Order - Continue editing order
 	Then the Order dashboard is presented
 	And the Order is not completed
 
-@ignore Order complete functionality not working
+@ignore Order summary not working correctly
 Scenario: View Completed Order Summary
 	Given a User has completed an Order 
 	When they choose to view the Completed Order from their Organisation's Orders Dashboard
