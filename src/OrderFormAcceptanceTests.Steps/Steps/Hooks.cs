@@ -35,10 +35,13 @@
             var test = objectContainer.Resolve<UITest>();
 
             DbContextOptions<OrderingDbContext> options = new DbContextOptionsBuilder<OrderingDbContext>()
-                .UseSqlServer(test.OrdapiConnectionString)
+                .UseSqlServer(test.OrdapiConnectionString, s =>
+                {
+                    s.EnableRetryOnFailure(5);
+                })
                 .Options;
 
-            OrderingDbContext dbContext = new OrderingDbContext(options);
+            OrderingDbContext dbContext = new(options);
 
             context.Add(ContextKeys.DbContext, dbContext);
 
