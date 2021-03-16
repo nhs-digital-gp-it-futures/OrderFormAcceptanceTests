@@ -163,7 +163,6 @@ Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type
 		| variable         | quantity      |
 		| per patient      | quantity      |
 
-@ignore negative prices do not throw error
 Scenario Outline: Catalogue Solutions - edit price screen - Flat price Data type is not valid - price is negative
 	Given the User is presented with the Catalogue Solution edit form for a <ProvisioningType> flat price
 	And fills in the Catalogue Solution edit form with valid data for <quantityLabel>
