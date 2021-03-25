@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
     using OrderFormAcceptanceTests.Domain;
+    using OrderFormAcceptanceTests.Persistence.Data;
 
     public static class ServiceRecipientHelper
     {
@@ -30,6 +32,28 @@
             }
 
             return recipients;
+        }
+
+        public static async Task<IReadOnlyDictionary<string, ServiceRecipient>> AddOrUpdateRecipients(IEnumerable<ServiceRecipient> recipients, OrderingDbContext context)
+        {
+            var requestRecipients = recipients
+                .Select(r => new ServiceRecipient(r.OdsCode, r.Name))
+                .ToDictionary(r => r.OdsCode);
+
+            var existingServiceRecipients = await context.ServiceRecipient
+                .Where(s => requestRecipients.Keys.Contains(s.OdsCode))
+                .ToListAsync();
+
+            foreach (var recipient in existingServiceRecipients)
+            {
+                recipient.Name = requestRecipients[recipient.OdsCode].Name;
+            }
+
+            var newServiceRecipients = requestRecipients.Values.Except(existingServiceRecipients).ToList();
+
+            context.ServiceRecipient.AddRange(newServiceRecipients);
+
+            return existingServiceRecipients.Union(newServiceRecipients).ToDictionary(r => r.OdsCode);
         }
     }
 }

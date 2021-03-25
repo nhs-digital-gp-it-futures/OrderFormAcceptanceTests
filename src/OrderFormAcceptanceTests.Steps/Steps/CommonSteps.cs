@@ -204,11 +204,18 @@
             var completeOrder = new CompleteOrder(Test, Context);
 
             await completeOrder.GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled("yes");
-            var order = (Order)Context[ContextKeys.CreatedOrder];
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
 
-            order.Complete();
+            var result = order.Complete();
+
+            if (!result)
+            {
+                throw new DbUpdateException($"Order {order.CallOffId} not completed");
+            }
 
             await DbContext.SaveChangesAsync();
+
+            (await DbContext.Order.SingleAsync(o => o.CallOffId == order.CallOffId)).Completed.Should().NotBeNull();
 
             Test.Driver.Navigate().Refresh();
         }
@@ -549,7 +556,18 @@
 
             var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.AssociatedService, CataloguePriceType.Flat, ProvisioningType.Declarative, DbContext, Test.BapiConnectionString);
 
-            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+            var recipients = new List<OrderItemRecipient>();
+
+            var recipient = new ServiceRecipient(order.OrderingParty.OdsCode, order.OrderingParty.Name);
+
+            var orderItemRecipient = new OrderItemRecipient
+            {
+                Recipient = recipient,
+                DeliveryDate = DateTime.UtcNow,
+                Quantity = new Random().Next(1, 101),
+            };
+
+            recipients.Add(orderItemRecipient);
 
             await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
 
@@ -575,7 +593,18 @@
 
             var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.AssociatedService, CataloguePriceType.Flat, ProvisioningType.OnDemand, DbContext, Test.BapiConnectionString);
 
-            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+            var recipients = new List<OrderItemRecipient>();
+
+            var recipient = new ServiceRecipient(order.OrderingParty.OdsCode, order.OrderingParty.Name);
+
+            var orderItemRecipient = new OrderItemRecipient
+            {
+                Recipient = recipient,
+                DeliveryDate = DateTime.UtcNow,
+                Quantity = new Random().Next(1, 101),
+            };
+
+            recipients.Add(orderItemRecipient);
 
             await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
 
@@ -601,7 +630,18 @@
 
             var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.AssociatedService, CataloguePriceType.Flat, ProvisioningType.OnDemand, DbContext, Test.BapiConnectionString, TimeUnit.PerMonth);
 
-            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+            var recipients = new List<OrderItemRecipient>();
+
+            var recipient = new ServiceRecipient(order.OrderingParty.OdsCode, order.OrderingParty.Name);
+
+            var orderItemRecipient = new OrderItemRecipient
+            {
+                Recipient = recipient,
+                DeliveryDate = DateTime.UtcNow,
+                Quantity = new Random().Next(1, 101),
+            };
+
+            recipients.Add(orderItemRecipient);
 
             await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
 

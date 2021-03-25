@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using OrderFormAcceptanceTests.Domain;
+    using OrderFormAcceptanceTests.TestData.Extensions;
     using OrderFormAcceptanceTests.TestData.Models;
     using OrderFormAcceptanceTests.TestData.Utils;
 
@@ -60,6 +61,22 @@
             var result = (await SqlExecutor.ExecuteAsync<Guid?>(connectionString, query, new { supplierName })).SingleOrDefault();
 
             return result is not null;
+        }
+
+        public static async Task<Supplier> GetSupplierWithCatalogueItemWithMoreThan1Price(CatalogueItemType catalogueItemType, string bapiConnectionString)
+        {
+            var query = @"SELECT 
+                            ci.SupplierId
+                            FROM CatalogueItem AS ci
+                            INNER JOIN CataloguePrice AS cp ON ci.CatalogueItemId = cp.CatalogueItemId
+                            WHERE ci.CatalogueItemTypeId = @catalogueItemType
+                            GROUP BY ci.CatalogueItemId, ci.SupplierId
+                            HAVING
+                            COUNT(cp.PricingUnitId) > 1;";
+
+            var supplierId = (await SqlExecutor.ExecuteAsync<string>(bapiConnectionString, query, new { catalogueItemType })).Single();
+
+            return (await GetSupplierWithId(supplierId, bapiConnectionString)).ToDomain();
         }
 
         private static async Task<IEnumerable<SupplierDetails>> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)

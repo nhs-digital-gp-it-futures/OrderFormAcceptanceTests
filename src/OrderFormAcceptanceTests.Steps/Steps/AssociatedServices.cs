@@ -1,5 +1,7 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Bogus;
@@ -165,7 +167,18 @@
                 DbContext,
                 Test.BapiConnectionString);
 
-            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+            var recipients = new List<OrderItemRecipient>();
+
+            var recipient = new ServiceRecipient(order.OrderingParty.OdsCode, order.OrderingParty.Name);
+
+            var orderItemRecipient = new OrderItemRecipient
+            {
+                Recipient = recipient,
+                DeliveryDate = DateTime.UtcNow,
+                Quantity = new Random().Next(1, 101),
+            };
+
+            recipients.Add(orderItemRecipient);
 
             await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
 
@@ -191,7 +204,18 @@
                 DbContext,
                 Test.BapiConnectionString);
 
-            var recipients = await ServiceRecipientHelper.Generate(order.OrderingParty.OdsCode, Test.OdsUrl);
+            var recipients = new List<OrderItemRecipient>();
+
+            var recipient = new ServiceRecipient(order.OrderingParty.OdsCode, order.OrderingParty.Name);
+
+            var orderItemRecipient = new OrderItemRecipient
+            {
+                Recipient = recipient,
+                DeliveryDate = DateTime.UtcNow,
+                Quantity = new Random().Next(1, 101),
+            };
+
+            recipients.Add(orderItemRecipient);
 
             await OrderItemHelper.AddRecipientToOrderItem(orderItem, recipients, DbContext);
 

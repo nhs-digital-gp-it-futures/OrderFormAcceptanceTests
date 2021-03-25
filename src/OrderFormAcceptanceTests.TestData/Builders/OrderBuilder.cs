@@ -23,6 +23,7 @@
         public OrderBuilder(Order existingOrder)
         {
             order = existingOrder;
+            order.SetLastUpdatedBy(order.LastUpdatedBy, order.LastUpdatedByName);
         }
 
         public OrderBuilder WithCommencementDate(DateTime date)

@@ -49,5 +49,10 @@ namespace OrderFormAcceptanceTests.Persistence.Data
             modelBuilder.ApplyConfiguration(new ServiceRecipientEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SupplierEntityTypeConfiguration());
         }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
     }
 }

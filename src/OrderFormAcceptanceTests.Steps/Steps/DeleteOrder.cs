@@ -3,6 +3,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using FluentAssertions;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
     using TechTalk.SpecFlow;
@@ -33,6 +34,10 @@
             var commonSteps = new CommonSteps(Test, Context);
             await commonSteps.GivenAnIncompleteOrderExists();
             commonSteps.WhenTheOrderFormForTheExistingOrderIsPresented();
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            order.SetLastUpdatedBy(order.LastUpdatedBy, order.LastUpdatedByName);
+
             WhenTheUserChoosesToDeleteTheOrder();
             ThenTheUserIsAskedToConfirmTheChoiceToDelete();
         }

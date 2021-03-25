@@ -174,10 +174,14 @@ namespace OrderFormAcceptanceTests.Domain
                 && Progress.ServiceRecipientsViewed
                 && associatedServicesCount > 0;
 
+            var associatedServicesNoSolutions = catalogueSolutionsCount == 0
+                && associatedServicesCount > 0;
+
             return solutionAndNoAssociatedServices
                 || solutionAndAssociatedServices
                 || recipientsAndAssociatedServices
-                || noSolutionsAndAssociatedServices;
+                || noSolutionsAndAssociatedServices
+                || associatedServicesNoSolutions;
         }
 
         public bool Complete()
