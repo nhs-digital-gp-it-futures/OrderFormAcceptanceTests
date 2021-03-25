@@ -9,10 +9,7 @@
     using OpenQA.Selenium;
     using OrderFormAcceptanceTests.Actions.Utils;
     using OrderFormAcceptanceTests.Domain;
-    using OrderFormAcceptanceTests.Persistence.Data;
     using OrderFormAcceptanceTests.TestData;
-    using OrderFormAcceptanceTests.TestData.Builders;
-    using OrderFormAcceptanceTests.TestData.Extensions;
     using OrderFormAcceptanceTests.TestData.Information;
 
     public class OrderForm : PageAction
@@ -20,6 +17,11 @@
         public OrderForm(IWebDriver driver)
             : base(driver)
         {
+        }
+
+        public static async Task<Supplier> SupplierHasAdditionalServiceMoreThan1Price(string bapiConnectionString)
+        {
+            return await SupplierInfo.GetSupplierWithCatalogueItemWithMoreThan1Price(CatalogueItemType.AdditionalService, bapiConnectionString);
         }
 
         public bool LoggedInDisplayNameIsDisplayed()
@@ -169,11 +171,6 @@
             }
         }
 
-        public void DeleteOrderButtonHasAltTest()
-        {
-            Driver.FindElement(Objects.Pages.OrderForm.DeleteOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
-        }
-
         public bool IsRadioButtonSelected(int index = 0)
         {
             Wait.Until(d => NumberOfRadioButtonsDisplayed() > index);
@@ -195,16 +192,6 @@
         {
             Driver.SwitchTo().Window(Driver.WindowHandles.Last());
             return Driver.FindElements(Objects.Pages.PrintOrderSummary.PrintPreview).Count > 0;
-        }
-
-        public void PreviewOrderButtonHasAltTest()
-        {
-            Driver.FindElement(Objects.Pages.OrderForm.PreviewOrderButton).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
-        }
-
-        public void CompleteOrderButtonHasAltTest()
-        {
-            Driver.FindElement(Objects.Pages.OrderForm.CompleteOrderLabel).GetAttribute("aria-label").Length.Should().BeGreaterThan(0);
         }
 
         public bool EditCommencementDateSectionDisplayed()

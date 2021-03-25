@@ -385,7 +385,6 @@ Scenario: Catalogue Solutions - Catalogue Solution displayed in alphabetical ord
 	Then they are presented with the Catalogue Solutions available from their chosen Supplier
 	And they are displayed in alphabetical order
 
-@ignore PUT request broken
 Scenario: Catalogue Solutions - Edit Added Solutions - Data saved after editing
 	Given a User has added a per patient solution to the order
 	And the User has chosen to manage the Catalogue Solution section
@@ -394,7 +393,6 @@ Scenario: Catalogue Solutions - Edit Added Solutions - Data saved after editing
 	When the User chooses to save
 	Then the Catalogue Solution is saved
 
-@ignore PUT request broken
 Scenario: Catalogue Solutions - Edit Added Solutions - User informed invalid data
 	Given a User has added a per patient solution to the order
 	And the User has chosen to manage the Catalogue Solution section

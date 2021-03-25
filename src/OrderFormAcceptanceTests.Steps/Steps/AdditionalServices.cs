@@ -4,6 +4,7 @@
     using FluentAssertions;
     using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData.Builders;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -83,6 +84,17 @@
             Test.Pages.OrderForm.ClickRadioButton();
         }
 
+        [Given(@"the supplier has an additional service with more than one price")]
+        public async Task GivenTheSupplierHasAnAdditionalServiceWithMoreThanOnePriceAsync()
+        {
+            var supplier = await Actions.Pages.OrderForm.SupplierHasAdditionalServiceMoreThan1Price(Test.BapiConnectionString);
+            var order = new OrderBuilder(Context.Get<Order>(ContextKeys.CreatedOrder))
+                .WithExistingSupplier(supplier)
+                .Build();
+
+            await DbContext.SaveChangesAsync();
+        }
+
         [Then(@"all the available prices for that Additional Service are presented")]
         public void ThenAllTheAvailablePricesForThatAdditionalServiceArePresented()
         {
@@ -129,8 +141,15 @@
         {
             var common = new CommonSteps(Test, Context);
             common.WhenTheOrderFormForTheExistingOrderIsPresented();
-            GivenTheAvailablePricesForTheSelectedAdditionalServiceArePresented();
-            GivenTheUserHasSelectedAAdditionalServicePrice();
+            try
+            {
+                GivenTheAvailablePricesForTheSelectedAdditionalServiceArePresented();
+                GivenTheUserHasSelectedAAdditionalServicePrice();
+            }
+            catch
+            {
+            }
+
             GivenTheUserHasSelectedAServiceRecipient();
             common.WhenTheyChooseToContinue();
         }

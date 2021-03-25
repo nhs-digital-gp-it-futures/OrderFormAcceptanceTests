@@ -171,7 +171,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| declarative      |
 	| variable         |
 
-@ignore PUT request broken
+@ignore
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price is negative
 	Given the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data
@@ -220,7 +220,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| declarative      |
 	| variable         |
 
-@ignore PUT request broken
+@ignore
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity can not be negative
 	Given the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data
@@ -268,7 +268,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Validation
 	| declarative      |
 	| variable         |
 
-@ignore PUT request broken
+@ignore
 Scenario Outline: Associated Service - edit price screen - Flat price All data are valid
 	Given the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data
@@ -289,14 +289,14 @@ Scenario Outline: Associated Service - edit price screen - Flat price Price is d
 	| declarative      |
 	| variable         |
 
-@ignore PUT request broken
+@ignore
 Scenario: Associated Service - edit price screen - Flat variable price values populated after editing and saving
 	Given an Associated Service with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
 	And the User amends the existing Associated Service details
 	When the User re-visits the Associated Service
 	Then the values will be populated with the values that was saved by the User
 
-@ignore PUT request broken
+@ignore
 Scenario: Associated Service - edit price screen - Flat declarative price values populated after editing and saving
 	Given an Associated Service with a flat price declarative order type is saved to the order
 	And the User amends the existing Associated Service details
@@ -313,7 +313,7 @@ Scenario Outline: Associated Service - edit price screen - Flat price Go back be
 	| declarative      |
 	| variable         |
 
-@ignore PUT request broken
+@ignore
 Scenario Outline: Associated Service - edit price screen - Flat price Go back after save
 	Given the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data

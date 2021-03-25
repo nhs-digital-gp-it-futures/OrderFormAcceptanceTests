@@ -61,23 +61,5 @@
         {
             Test.Pages.OrderForm.CompleteOrderButtonIsDisabled().Should().BeFalse();
         }
-
-        [Then(@"there is alt text content on the disabled Delete order button")]
-        public void ThenThereIsAltTextContentOnTheDisabledDeleteOrderButton()
-        {
-            Test.Pages.OrderForm.DeleteOrderButtonHasAltTest();
-        }
-
-        [Then(@"there is alt text content on the disabled Preview Order Summary button")]
-        public void ThenThereIsAltTextContentOnTheDisabledPreviewOrderSummaryButton()
-        {
-            Test.Pages.OrderForm.PreviewOrderButtonHasAltTest();
-        }
-
-        [Then(@"there is alt text content on the disabled Complete button")]
-        public void ThenThereIsAltTextContentOnTheDisabledCompleteButton()
-        {
-            Test.Pages.OrderForm.CompleteOrderButtonHasAltTest();
-        }
     }
 }

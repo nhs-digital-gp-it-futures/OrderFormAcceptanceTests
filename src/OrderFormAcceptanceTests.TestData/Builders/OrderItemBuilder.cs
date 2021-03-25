@@ -1,6 +1,7 @@
 ﻿namespace OrderFormAcceptanceTests.TestData.Builders
 {
     using System;
+    using System.Collections.Generic;
     using OrderFormAcceptanceTests.Domain;
 
     public sealed class OrderItemBuilder
@@ -66,6 +67,12 @@
         public OrderItemBuilder WithEstimationPeriod(TimeUnit unit)
         {
             orderItem.EstimationPeriod = unit;
+            return this;
+        }
+
+        public OrderItemBuilder WithRecipients(IEnumerable<OrderItemRecipient> recipients)
+        {
+            orderItem.SetRecipients(recipients);
             return this;
         }
 

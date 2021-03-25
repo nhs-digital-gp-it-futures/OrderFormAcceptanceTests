@@ -17,8 +17,10 @@ Scenario: Delete Order - Go back before deleting
 	Then the Order dashboard is presented
 
 Scenario: Delete Order - Order Deleted
-	Given the confirm delete page is displayed
-	When the User chooses to delete
+    Given an incomplete order exists
+	And the Order Form for the existing order is presented
+	When the User chooses to delete the order
+	And the User chooses to delete
 	Then the Order is deleted
 	And the User is informed that the Order has been deleted
 	And the Order is not on the Organisation's Orders Dashboard

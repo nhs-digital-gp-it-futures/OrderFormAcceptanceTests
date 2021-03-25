@@ -1,11 +1,13 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.EntityFrameworkCore;
     using OrderFormAcceptanceTests.Domain;
+    using OrderFormAcceptanceTests.Domain.Users;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
     using OrderFormAcceptanceTests.TestData.Builders;
@@ -30,6 +32,12 @@
         [StepDefinition(@"the User confirms to complete the Order")]
         public async Task WhenTheUserConfirmsToCompleteTheOrderAsync()
         {
+            var user = Context.Get<User>(ContextKeys.User);
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            order.SetLastUpdatedBy(user.Id, user.UserName);
+
+            await DbContext.SaveChangesAsync();
+
             var precount = await Test.EmailServerDriver.GetEmailCountAsync();
             Context.Add(ContextKeys.EmailCount, precount);
             Test.Pages.CompleteOrder.ClickCompleteOrderButton();
@@ -151,6 +159,20 @@
 
             pricingUnit.Description = pricingUnitName;
 
+            var recipients = new List<OrderItemRecipient>();
+
+            var recipient = await DbContext.ServiceRecipient.SingleOrDefaultAsync(s => s.OdsCode == order.OrderingParty.OdsCode)
+                ?? new ServiceRecipient(order.OrderingParty.OdsCode, order.OrderingParty.Name);
+
+            var orderItemRecipient = new OrderItemRecipient()
+            {
+                Recipient = recipient,
+                DeliveryDate = DateTime.UtcNow,
+                Quantity = 1,
+            };
+
+            recipients.Add(orderItemRecipient);
+
             var orderItem = new OrderItemBuilder(order.Id)
                 .WithCatalogueItem(catalogueItem)
                 .WithCataloguePriceType(CataloguePriceType.Flat)
@@ -160,17 +182,20 @@
                 .WithPricingTimeUnit(TimeUnit.PerMonth)
                 .WithProvisioningType(ProvisioningType.Declarative)
                 .WithPricingUnit(pricingUnit)
+                .WithRecipients(recipients)
                 .Build();
 
             order.AddOrUpdateOrderItem(orderItem);
 
             await OrderProgressHelper.SetProgress(
-                context: DbContext,
-                order: (Order)Context[ContextKeys.CreatedOrder],
-                serviceRecipientsViewed: true,
-                catalogueSolutionsViewed: true,
-                additionalServicesViewed: true,
-                associatedServicesViewed: true);
+               context: DbContext,
+               order: (Order)Context[ContextKeys.CreatedOrder],
+               serviceRecipientsViewed: true,
+               catalogueSolutionsViewed: true,
+               additionalServicesViewed: true,
+               associatedServicesViewed: true);
+
+            await DbContext.SaveChangesAsync();
 
             Test.Driver.Navigate().Refresh();
         }
