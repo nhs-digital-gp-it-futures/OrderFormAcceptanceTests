@@ -1,6 +1,4 @@
-﻿@ignore Preview endpoint (summary) not working
-
-Feature: Preview Order Summary
+﻿Feature: Preview Order Summary
 	As a Buyer
 	I want to view a large version of the Order Summary
 	So that I can preview the Order
@@ -9,6 +7,7 @@ Background:
 	Given an incomplete order exists
 	And a supplier has been selected
 	And the Call Off Ordering Party section is complete
+    And the Commencement Date is complete
 
 Scenario: Preview Order Summary
 	Given the Order Form for the existing order is presented
@@ -71,7 +70,7 @@ Scenario: Preview Order Summary - Flat with Variable (Per-Patient) order type
 	And the item ID of each item is displayed
 	And the item name of each item is the Catalogue Solution name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
-	And the Quantity of each item is the concatenation [Quantity] per month
+	And the Quantity of each item is the concatenation [Quantity] per year
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
 
@@ -104,7 +103,7 @@ Scenario: Preview Order Summary - Additional Service Flat with Variable (Patient
 	And the item ID of each item is displayed
 	And the item name of each item is the Additional Service name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
-	And the Quantity of each item is the concatenation [Quantity] per month
+	And the Quantity of each item is the concatenation [Quantity] per year
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
 
@@ -137,7 +136,7 @@ Scenario: Preview Order Summary - Associated Service Flat with Declarative order
 	And the item ID of each item is displayed
 	And the item name of each item is the Associated Service name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
-	And the Quantity of each item is [Quantity]
+	And the Quantity of each item is the concatenation [Quantity] per year
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
 	
 Scenario: Preview Order Summary - Associated Service Flat with Variable (OnDemand) order type per year
@@ -163,7 +162,7 @@ Scenario: Preview Order Summary - Associated Service Flat with Variable (On-Dema
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 	
 Scenario: Preview Order Summary - Total cost for one year
-	Given there are one or more Order items summarised in the Order items (recurring cost) table
+	Given an associated service with a flat price variable (On-Demand) order type with the quantity period per month is saved to the order
 	When the Order Summary is displayed
 	Then the Order items (recurring cost) table is populated
 	And the total annual cost is displayed
@@ -171,21 +170,21 @@ Scenario: Preview Order Summary - Total cost for one year
 	And the Total cost for one year is expressed as two decimal places
 
 Scenario: Preview Order Summary - Total monthly cost
-	Given there are one or more Order items summarised in the Order items (recurring cost) table
+	Given an associated service with a flat price variable (On-Demand) order type with the quantity period per month is saved to the order
 	When the Order Summary is displayed
 	Then the total monthly cost is displayed
 	And the Total monthly cost is the result of the Total monthly cost calculation
 	And the Total monthly cost is expressed as two decimal places
 
 Scenario: Preview Order Summary - Total one-off cost
-	Given there are one or more Associated Service items summarised in the Order items (one-off cost) table
+	Given an Associated Service with a flat price declarative order type is saved to the order
 	When the Order Summary is displayed
 	Then the total one-off cost is displayed
 	And the Total one-off cost is the result of the Total one-off cost calculation
 
 Scenario: Preview Order Summary - Total cost of contract
-	Given there are one or more Associated Service items summarised in the Order items (one-off cost) table
-	And there are one or more Order items summarised in the Order items (recurring cost) table
+	Given an associated service with a flat price variable (On-Demand) order type with the quantity period per month is saved to the order
+	And an Associated Service with a flat price declarative order type is saved to the order
 	When the Order Summary is displayed
 	Then the Total cost of contract is displayed
 	And the Total cost of contract is the result of the Total cost of contract calculation Total one-off cost + (3 * Total cost for one year calculation)
@@ -210,8 +209,8 @@ Scenario: Preview Order Summary - One-Off table sorted by item name
 	Then the Order items (one off) table is populated
 	And the order items one-off cost table is sorted by item name
 
-Scenario: Service Instance ID displayed
-	Given there are one or more Order items summarised in the Order items (recurring cost) table
+Scenario: Preview Order Summary - Service Instance ID displayed
+	Given an associated service with a flat price variable (On-Demand) order type with the quantity period per month is saved to the order
 	When the Order Summary is displayed
 	Then the Order items (recurring cost) table is populated
 	And the Service Instance ID of each saved Catalogue Solution item is displayed
