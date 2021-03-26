@@ -171,7 +171,6 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| declarative      |
 	| variable         |
 
-@ignore
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - price is negative
 	Given the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data
@@ -220,7 +219,6 @@ Scenario Outline: Associated Service - edit price screen - Flat price Data type 
 	| declarative      |
 	| variable         |
 
-@ignore
 Scenario Outline: Associated Service - edit price screen - Flat price Data type is not valid - quantity can not be negative
 	Given the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data
@@ -268,7 +266,6 @@ Scenario Outline: Associated Service - edit price screen - Flat price Validation
 	| declarative      |
 	| variable         |
 
-@ignore
 Scenario Outline: Associated Service - edit price screen - Flat price All data are valid
 	Given the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data
@@ -313,7 +310,6 @@ Scenario Outline: Associated Service - edit price screen - Flat price Go back be
 	| declarative      |
 	| variable         |
 
-@ignore
 Scenario Outline: Associated Service - edit price screen - Flat price Go back after save
 	Given the User is presented with the Associated Service edit form for a <ProvisioningType> flat price
 	And fills in the Associated Service edit form with valid data

@@ -2,12 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Persistence.Data;
     using OrderFormAcceptanceTests.TestData.Builders;
     using OrderFormAcceptanceTests.TestData.Extensions;
     using OrderFormAcceptanceTests.TestData.Information;
+    using OrderFormAcceptanceTests.TestData.Utils;
 
     public static class OrderItemHelper
     {
@@ -27,14 +29,9 @@
             var catalogueItem = await context.FindAsync<CatalogueItem>(CatalogueItemId.ParseExact(selectedItem.CatalogueItemId))
                 ?? selectedItem.ToDomain();
 
-            var pricingUnitName = "per banana";
+            var catalogueItemPricingUnit = await GetPricingUnitAsync(provisioningType, connectionString);
 
-            var pricingUnit = await context.FindAsync<PricingUnit>(pricingUnitName) ?? new PricingUnit
-            {
-                Name = pricingUnitName,
-            };
-
-            pricingUnit.Description = pricingUnitName;
+            var pricingUnit = await context.FindAsync<PricingUnit>(catalogueItemPricingUnit.Name) ?? catalogueItemPricingUnit;
 
             var orderItem = new OrderItemBuilder(order.Id)
                 .WithCatalogueItem(catalogueItem)
@@ -44,7 +41,8 @@
                 .WithPrice(0.01M)
                 .WithPricingTimeUnit(timeUnit)
                 .WithProvisioningType(provisioningType)
-                .WithPricingUnit(pricingUnit);
+                .WithPricingUnit(pricingUnit)
+                .WithEstimationPeriod(timeUnit);
 
             if (provisioningType == ProvisioningType.OnDemand)
             {
@@ -67,6 +65,20 @@
 
             orderItem.SetRecipients(validatedRecipients);
             return orderItem;
+        }
+
+        private static async Task<PricingUnit> GetPricingUnitAsync(ProvisioningType provisioningType, string bapiConnectionString)
+        {
+            var query = @"SELECT pu.[Name],
+                          pu.Description
+                          FROM PricingUnit AS pu
+                          INNER JOIN CataloguePrice AS cp ON cp.PricingUnitId = pu.PricingUnitId
+                          WHERE cp.ProvisioningTypeId = @provisioningType
+                          AND CataloguePriceTypeId = '1';";
+
+            var result = (await SqlExecutor.ExecuteAsync<PricingUnit>(bapiConnectionString, query, new { provisioningType })).FirstOrDefault();
+
+            return result;
         }
     }
 }

@@ -16,6 +16,7 @@
     using OrderFormAcceptanceTests.TestData.Builders;
     using OrderFormAcceptanceTests.TestData.Extensions;
     using OrderFormAcceptanceTests.TestData.Helpers;
+    using OrderFormAcceptanceTests.TestData.Information;
     using OrderFormAcceptanceTests.TestData.Models;
     using TechTalk.SpecFlow;
 
@@ -116,7 +117,7 @@
         {
             var context = (OrderingDbContext)Context[ContextKeys.DbContext];
             var user = (User)Context[ContextKeys.User];
-            var createModel = new CreateOrderModel { Description = "Banana", OrganisationId = user.PrimaryOrganisationId };
+            var createModel = new CreateOrderModel { Description = RandomInformation.RandomInformationText(), OrganisationId = user.PrimaryOrganisationId };
             var order = await OrderHelpers.CreateOrderAsync(createModel, context, user, Test.BapiConnectionString, Test.IsapiConnectionString);
 
             Context.Add(ContextKeys.CreatedOrder, order);
@@ -591,7 +592,14 @@
 
             var order = (Order)Context[ContextKeys.CreatedOrder];
 
-            var orderItem = await OrderItemHelper.CreateOrderItem(order, CatalogueItemType.AssociatedService, CataloguePriceType.Flat, ProvisioningType.OnDemand, DbContext, Test.BapiConnectionString);
+            var orderItem = await OrderItemHelper.CreateOrderItem(
+                order,
+                CatalogueItemType.AssociatedService,
+                CataloguePriceType.Flat,
+                ProvisioningType.OnDemand,
+                DbContext,
+                Test.BapiConnectionString,
+                TimeUnit.PerYear);
 
             var recipients = new List<OrderItemRecipient>();
 

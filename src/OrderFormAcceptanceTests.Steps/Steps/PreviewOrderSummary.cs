@@ -4,6 +4,7 @@
     using System.Globalization;
     using System.Threading.Tasks;
     using FluentAssertions;
+    using Microsoft.EntityFrameworkCore;
     using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
@@ -50,11 +51,11 @@
         [Then(@"the Call Off Ordering Party information is displayed")]
         [Then(@"the Call-off Ordering Party data saved in the order")]
         [Then(@"the Call-off Ordering Party names are concatenated")]
-        public void ThenTheCallOffOrderingPartyInformationIsDisplayed()
+        public async Task ThenTheCallOffOrderingPartyInformationIsDisplayedAsync()
         {
             var value = Test.Pages.PreviewOrderSummary.GetCallOffOrderingPartyPreviewValue();
             value.Should().NotBeNullOrEmpty();
-            var order = (Order)Context[ContextKeys.CreatedOrder];
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
             var createdAddress = order.OrderingParty.Address;
             var createdContact = order.OrderingPartyContact;
             value.Should().ContainEquivalentOf(createdAddress.Line1);
@@ -67,9 +68,9 @@
         [Then(@"the Supplier information is displayed")]
         [Then(@"the Supplier data saved in the order")]
         [Then(@"the Supplier first name and last name are concatenated")]
-        public void ThenTheSupplierInformationIsDisplayed()
+        public async Task ThenTheSupplierInformationIsDisplayedAsync()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
             var value = Test.Pages.PreviewOrderSummary.GetSupplierPreviewValue();
             value.Should().NotBeNullOrEmpty();
             var createdAddress = order.Supplier.Address;
@@ -83,12 +84,12 @@
 
         [Then(@"the Commencement date is displayed")]
         [Then(@"the Commencement date data saved in the order")]
-        public void ThenTheCommencementDateIsDisplayed()
+        public async Task ThenTheCommencementDateIsDisplayedAsync()
         {
             var date = Test.Pages.PreviewOrderSummary.GetCommencementDateValue();
             date.Should().NotBeNullOrEmpty();
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            var expectedDate = order.CommencementDate.Value.ToString("d MMMM yyyy");
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var expectedDate = order.CommencementDate?.ToString("d MMMM yyyy");
             date.Should().EndWithEquivalent(expectedDate);
         }
 
@@ -186,9 +187,10 @@
         [Then(@"the item name of each item is the Additional Service name")]
         [Then(@"the item name of each item is the Associated Service name")]
         [Then(@"the item name of each item is the Catalogue Solution name")]
-        public void ThenTheItemNameOfEachItemIsTheCatalogueSolutionName()
+        public async Task ThenTheItemNameOfEachItemIsTheCatalogueSolutionNameAsync()
         {
-            var expectedOrderItem = (OrderItem)Context[ContextKeys.CreatedOrderItem];
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var expectedOrderItem = order.OrderItems[0];
             var name = Test.Pages.PreviewOrderSummary.GetItemName();
             name.Should().Be(expectedOrderItem.CatalogueItem.Name);
         }
@@ -207,10 +209,11 @@
         }
 
         [Then(@"the Price unit of order of each item is the concatenation ""\[Price\] \[unit\]""")]
-        public void ThenThePriceUnitOfOrderOfEachItemIsTheConcatenation()
+        public async Task ThenThePriceUnitOfOrderOfEachItemIsTheConcatenationAsync()
         {
-            var expectedOrderItem = (OrderItem)Context[ContextKeys.CreatedOrderItem];
-            var expectedValue = $"{FormatDecimal(expectedOrderItem.Price.Value)} {expectedOrderItem.PricingUnit.Description} {expectedOrderItem.PriceTimeUnit.Value}".Trim();
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var expectedOrderItem = order.OrderItems[0];
+            var expectedValue = $"{FormatDecimal(expectedOrderItem.Price.Value)} {expectedOrderItem.PricingUnit.Description} {expectedOrderItem.PriceTimeUnit.Value.Description()}".Trim();
 
             var price = Test.Pages.PreviewOrderSummary.GetItemPrice();
             price.Should().Be(expectedValue);
@@ -218,20 +221,22 @@
 
         [Then(@"the Quantity of each item is the concatenation ""\[Quantity\] \[Estimation period\]"" i\.e\. \[Quantity] per month")]
         [Then(@"the Quantity of each item is the concatenation ""\[Quantity\] \[Estimation period\]"" i\.e\. \[Quantity] per year")]
-        public void ThenTheQuantityOfEachItemIsTheConcatenationI_E_QuantityPerPeriod()
+        public async Task ThenTheQuantityOfEachItemIsTheConcatenationI_E_QuantityPerPeriodAsync()
         {
-            var expectedOrderItem = (OrderItem)Context[ContextKeys.CreatedOrderItem];
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var expectedOrderItem = order.OrderItems[0];
             var expectedPeriod = expectedOrderItem.EstimationPeriod;
-            var expectedValue = $"{FormatInt(expectedOrderItem.OrderItemRecipients[0].Quantity)} {expectedPeriod}";
+            var expectedValue = $"{FormatInt(expectedOrderItem.OrderItemRecipients[0].Quantity)} {expectedPeriod.Value.Description()}";
 
             var quantity = Test.Pages.PreviewOrderSummary.GetItemQuantity();
             quantity.Should().Be(expectedValue);
         }
 
         [Then(@"the Quantity of each item is \[Quantity\]")]
-        public void ThenTheQuantityOfEachItemIsQuantity()
+        public async Task ThenTheQuantityOfEachItemIsQuantityAsync()
         {
-            var expectedOrderItem = (OrderItem)Context[ContextKeys.CreatedOrderItem];
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var expectedOrderItem = order.OrderItems[0];
             var expectedValue = $"{expectedOrderItem.OrderItemRecipients[0].Quantity}";
 
             var quantity = Test.Pages.PreviewOrderSummary.GetItemQuantity();
@@ -239,70 +244,71 @@
         }
 
         [Then(@"the Quantity of each item is the concatenation \[Quantity\] (.*)")]
-        public void ThenTheQuantityOfEachItemIsTheConcatenationOfQuantityAndPerPeriod(string period)
+        public async Task ThenTheQuantityOfEachItemIsTheConcatenationOfQuantityAndPerPeriodAsync(string period)
         {
-            var expectedOrderItem = (OrderItem)Context[ContextKeys.CreatedOrderItem];
-            var expectedQuantityValue = $"{FormatInt(expectedOrderItem.OrderItemRecipients[0].Quantity)} {period}";
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var expectedOrderItem = order.OrderItems[0];
+            var expectedQuantityValue = $"{expectedOrderItem.OrderItemRecipients[0].Quantity} {period}";
 
             var actualQuantity = Test.Pages.PreviewOrderSummary.GetItemQuantity();
-            actualQuantity.Should().Be(expectedQuantityValue);
+            actualQuantity.Should().BeEquivalentTo(expectedQuantityValue);
         }
 
         [Then(@"the Planned delivery date of each item is displayed")]
-        public void ThenThePlannedDeliveryDateOfEachItemIsDisplayed()
+        public async Task ThenThePlannedDeliveryDateOfEachItemIsDisplayedAsync()
         {
-            var expectedOrderItem = (OrderItem)Context[ContextKeys.CreatedOrderItem];
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var expectedOrderItem = order.OrderItems[0];
             var date = Test.Pages.PreviewOrderSummary.GetItemPlannedDate();
             date.Should().Be(expectedOrderItem.DefaultDeliveryDate.Value.ToString("d MMMM yyyy"));
         }
 
         [Then(@"the item year cost of each item is the result of the Flat calculation \[Price] \* \[Quantity] rounded up to two decimal places")]
-        public void ThenTheItemYearCostOfEachItemIsTheResultOfTheFlatCalculationPriceQuantityRoundedUpToTwoDecimalPlaces()
+        public async Task ThenTheItemYearCostOfEachItemIsTheResultOfTheFlatCalculationPriceQuantityRoundedUpToTwoDecimalPlacesAsync()
         {
-            var expectedOrderItem = (OrderItem)Context[ContextKeys.CreatedOrderItem];
-            var expectedCost = expectedOrderItem.Price.Value * expectedOrderItem.OrderItemRecipients[0].Quantity;
-            var expectedValue = FormatDecimal(Math.Round(expectedCost, 2));
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var expectedOrderItem = order.OrderItems[0];
+            var expectedValue = FormatDecimal(Math.Round(expectedOrderItem.CalculateTotalCostPerYear(), 2));
             var cost = Test.Pages.PreviewOrderSummary.GetItemCost();
             cost.Should().Be(expectedValue.ToString());
         }
 
         [Then(@"the item year cost of each item is the result of the Flat calculation \[Price] \* \[Quantity] \* 12 rounded up to two decimal places")]
-        public void ThenTheItemYearCostOfEachItemIsTheResultOfTheFlatCalculationPriceQuantityTimes12RoundedUpToTwoDecimalPlaces()
+        public async Task ThenTheItemYearCostOfEachItemIsTheResultOfTheFlatCalculationPriceQuantityTimes12RoundedUpToTwoDecimalPlacesAsync()
         {
-            var expectedOrderItem = (OrderItem)Context[ContextKeys.CreatedOrderItem];
-            var expectedCost = expectedOrderItem.Price.Value * expectedOrderItem.OrderItemRecipients[0].Quantity * 12;
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var expectedOrderItem = order.OrderItems[0];
+            var expectedCost = expectedOrderItem.CalculateTotalCostPerYear();
             var expectedValue = FormatDecimal(Math.Round(expectedCost, 2));
             var cost = Test.Pages.PreviewOrderSummary.GetItemCost();
             cost.Should().Be(expectedValue.ToString());
         }
 
         [Then(@"the Total cost of contract is the result of the Total cost of contract calculation Total one-off cost \+ \(3 \* Total cost for one year calculation\)")]
-        public void ThenTheTotalCostOfContractIsTheResultOfTheTotalCostOfContractCalculationTotalOne_OffCostTotalCostForOneYearCalculation()
+        public async Task ThenTheTotalCostOfContractIsTheResultOfTheTotalCostOfContractCalculationTotalOne_OffCostTotalCostForOneYearCalculationAsync()
         {
-            var expectedTotalCost = Context.Get<OrderItemList>(ContextKeys.CreatedOneOffOrderItems).GetTotalOneOffCost();
-            var expectedTotalAnnualCost = Context.Get<OrderItemList>(ContextKeys.CreatedRecurringOrderItems).GetTotalAnnualCost();
-            var expectedTotalCostOfContract = expectedTotalCost + (3 * expectedTotalAnnualCost);
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
             var actualTotalCostOfContract = Test.Pages.PreviewOrderSummary.GetTotalOwnershipCost();
 
-            actualTotalCostOfContract.Should().Be(FormatDecimal(expectedTotalCostOfContract));
+            actualTotalCostOfContract.Should().Be(FormatDecimal(order.CalculateTotalOwnershipCost()));
         }
 
         [Then(@"the Total one-off cost is the result of the Total one-off cost calculation")]
-        public void ThenTheTotalOne_OffCostIsTheResultOfTheTotalOne_OffCostCalculation()
+        public async Task ThenTheTotalOne_OffCostIsTheResultOfTheTotalOne_OffCostCalculationAsync()
         {
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
             var actual = Test.Pages.PreviewOrderSummary.GetTotalOneOffCost();
-            var expectedTotalCost = Context.Get<OrderItemList>(ContextKeys.CreatedOrderItems).GetTotalOneOffCost();
 
-            actual.Should().Be(FormatDecimal(expectedTotalCost));
+            actual.Should().Be(FormatDecimal(order.CalculateCostPerYear(CostType.OneOff)));
         }
 
         [Then(@"the Total cost for one year is the result of the Total cost for one year calculation")]
-        public void ThenTheTotalCostForOneYearIsTheResultOfTheTotalCostForOneYearCalculation()
+        public async Task ThenTheTotalCostForOneYearIsTheResultOfTheTotalCostForOneYearCalculationAsync()
         {
             var actual = Test.Pages.PreviewOrderSummary.GetTotalAnnualCost();
-            var expectedTotalAnnualCost = Context.Get<OrderItemList>(ContextKeys.CreatedOrderItems).GetTotalAnnualCost();
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
 
-            actual.Should().Be(FormatDecimal(expectedTotalAnnualCost));
+            actual.Should().Be(FormatDecimal(order.CalculateCostPerYear(CostType.Recurring) + order.CalculateCostPerYear(CostType.OneOff)));
         }
 
         [Then(@"the Total cost for one year is expressed as two decimal places")]
@@ -318,12 +324,12 @@
         }
 
         [Then(@"the Total monthly cost is the result of the Total monthly cost calculation")]
-        public void ThenTheTotalMonthlyCostIsTheResultOfTheTotalMonthlyCostCalculation()
+        public async Task ThenTheTotalMonthlyCostIsTheResultOfTheTotalMonthlyCostCalculationAsync()
         {
             var actual = Test.Pages.PreviewOrderSummary.GetTotalMonthlyCost();
-            var expectedTotalMonthlyCost = Context.Get<OrderItemList>(ContextKeys.CreatedOrderItems).GetTotalMonthlyCost();
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
 
-            actual.Should().Be(FormatDecimal(expectedTotalMonthlyCost));
+            actual.Should().Be(FormatDecimal(order.CalculateCostPerYear(CostType.Recurring) / 12));
         }
 
         [Then(@"the Total monthly cost is expressed as two decimal places")]
@@ -362,6 +368,22 @@
                 DbContext,
                 Test.BapiConnectionString);
             }
+        }
+
+        [Given(@"multiple order items with different service recipient have been added to the order")]
+        public async Task GivenMultipleOrderItemsWithDifferentServiceRecipientHaveBeenAddedToTheOrderAsync()
+        {
+            var commonSteps = new CommonSteps(Test, Context);
+
+            await commonSteps.GivenACatalogueSolutionWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder(5);
+        }
+
+        [Given(@"multiple one-off order items have been added to the order")]
+        public async Task GivenMultipleOne_OffOrderItemsHaveBeenAddedToTheOrderAsync()
+        {
+            var commonSteps = new CommonSteps(Test, Context);
+
+            await commonSteps.GivenAnAssociatedServiceWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder();
         }
 
         private static string FormatDecimal(decimal price)
