@@ -43,5 +43,7 @@
         public static By TableRows => By.CssSelector("[data-test-id^=table-row-]");
 
         public static Func<int, By> TableRowX => (index) => By.CssSelector(string.Format("[data-test-id=table-row-{0}]", index.ToString()));
+
+        public static By DeleteConfirmationOrderDescription => CustomBy.DataTestId("catalogue-description");
     }
 }

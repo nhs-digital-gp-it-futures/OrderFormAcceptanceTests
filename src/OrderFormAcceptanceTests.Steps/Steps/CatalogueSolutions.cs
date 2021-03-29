@@ -630,5 +630,44 @@
             var newRecipients = Test.Pages.OrderForm.GetNumberOfAddedRecipients();
             newRecipients.Should().Be((int)Context["AddedRecipientCount"]);
         }
+
+        [Given(@"the delete button is enabled")]
+        public void GivenTheDeleteButtonIsEnabled()
+        {
+            Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeFalse();
+        }
+        
+        [When(@"the User chooses to delete the Catalogue Solution")]
+        public void WhenTheUserChoosesToDeleteTheCatalogueSolution()
+        {
+            Test.Pages.OrderForm.ClickDeleteCatalogueSolutionButton();
+        }
+
+        [Then(@"the User is asked to confirm the choice to delete the catalogue solution")]
+        public async Task ThenTheUserIsAskedToConfirmTheChoiceToDeleteTheCatalogueSolutionAsync()
+        {
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var orderitem = order.OrderItems[0].CatalogueItem.Name;
+
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed($"Delete {orderitem}").Should().BeTrue();
+        }
+       
+        [Then(@"the Call-off Agreement ID is displayed")]
+        public async Task ThenTheCall_OffAgreementIDIsDisplayedAsync()
+        {
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var callOffID = order.CallOffId.ToString();
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed(callOffID).Should().BeTrue();
+        }
+        
+        [Then(@"the order description is displayed")]
+        public async Task ThenTheOrderDescriptionIsDisplayedAsync()
+        {
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var orderDescription = order.Description;
+            Test.Pages.OrderForm.DeleteConfirmationOrderDescription().Should().BeEquivalentTo(orderDescription);
+
+        }
+
     }
 }
