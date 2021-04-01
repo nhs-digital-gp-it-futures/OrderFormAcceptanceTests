@@ -17,6 +17,7 @@
     {
         private readonly ScenarioContext context;
         private readonly IObjectContainer objectContainer;
+        private OrderingDbContext dbContext;
 
         public Hooks(ScenarioContext context, IObjectContainer objectContainer)
         {
@@ -35,7 +36,7 @@
             objectContainer.RegisterInstanceAs<IConfiguration>(configurationBuilder);
             var test = objectContainer.Resolve<UITest>();
 
-            var dbContext = new Lazy<OrderingDbContext>(GetDbContext(test.OrdapiConnectionString)).Value;
+            dbContext = GetDbContext(test.OrdapiConnectionString);
 
             context.Add(ContextKeys.DbContext, dbContext);
 
@@ -48,8 +49,6 @@
         {
             var test = objectContainer.Resolve<UITest>();
             test.Driver?.Quit();
-
-            await using var dbContext = new Lazy<OrderingDbContext>(GetDbContext(test.OrdapiConnectionString)).Value;
 
             if (context.ContainsKey(ContextKeys.CreatedOrder))
             {
