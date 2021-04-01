@@ -34,14 +34,7 @@
             objectContainer.RegisterInstanceAs<IConfiguration>(configurationBuilder);
             var test = objectContainer.Resolve<UITest>();
 
-            DbContextOptions<OrderingDbContext> options = new DbContextOptionsBuilder<OrderingDbContext>()
-                .UseSqlServer(test.OrdapiConnectionString, s =>
-                {
-                    s.EnableRetryOnFailure(5);
-                })
-                .Options;
-
-            OrderingDbContext dbContext = new(options);
+            var dbContext = GetDbContext(test.OrdapiConnectionString);
 
             context.Add(ContextKeys.DbContext, dbContext);
 
@@ -55,15 +48,13 @@
             var test = objectContainer.Resolve<UITest>();
             test.Driver?.Quit();
 
+            var dbContext = GetDbContext(test.OrdapiConnectionString);
+
             if (context.ContainsKey(ContextKeys.CreatedOrder))
             {
-                var order = (Order)context[ContextKeys.CreatedOrder];
+                var orderCallOffId = context.Get<Order>(ContextKeys.CreatedOrder).CallOffId;
 
-                var dbContext = (OrderingDbContext)context[ContextKeys.DbContext];
-
-                var orderFromDb = dbContext.Find<Order>(order.Id);
-
-                dbContext.Order.Remove(orderFromDb);
+                dbContext.Remove(await dbContext.Order.SingleAsync(s => s.CallOffId == orderCallOffId));
                 await dbContext.SaveChangesAsync();
             }
 
@@ -72,6 +63,20 @@
                 var user = (User)context[ContextKeys.User];
                 await UsersHelper.Delete(test.IsapiConnectionString, user);
             }
+        }
+
+        private static OrderingDbContext GetDbContext(string connectionString)
+        {
+            DbContextOptions<OrderingDbContext> options = new DbContextOptionsBuilder<OrderingDbContext>()
+                .UseSqlServer(connectionString, s =>
+                {
+                    s.EnableRetryOnFailure(5);
+                })
+                .Options;
+
+            OrderingDbContext dbContext = new(options);
+
+            return dbContext;
         }
     }
 }

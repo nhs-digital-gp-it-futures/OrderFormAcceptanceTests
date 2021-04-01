@@ -95,5 +95,9 @@
         public static Func<string, By> GenericSection => (sectionHrefRoute) => By.CssSelector(string.Format("[href$='{0}']", sectionHrefRoute));
 
         public static By EditServiceRecipientsButton => CustomBy.DataTestId("edit-button", "a");
+
+        public static By CancelDeleteLink => By.PartialLinkText("Cancel delete");
+
+        public static By DeleteSolutionConfirmation => CustomBy.DataTestId("delete-catalogue-confirmation-page-title");
     }
 }

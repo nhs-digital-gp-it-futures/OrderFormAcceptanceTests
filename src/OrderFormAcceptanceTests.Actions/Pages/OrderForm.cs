@@ -903,6 +903,11 @@
             }
         }
 
+        public void ClickCancelDelete()
+        {
+            Driver.FindElement(Objects.Pages.OrderForm.CancelDeleteLink).Click();
+        }
+
         public string DeleteConfirmationOrderDescription()
         {
             return Driver.FindElement(Objects.Pages.Common.DeleteConfirmationOrderDescription).Text;
@@ -938,6 +943,11 @@
             }
 
             suppliers.Single(s => s.Text == selectedSupplier).Click();
+        }
+
+        public string DeleteSolutionConfirmationTitle()
+        {
+            return Driver.FindElement(Objects.Pages.OrderForm.DeleteSolutionConfirmation).Text;
         }
 
         private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
