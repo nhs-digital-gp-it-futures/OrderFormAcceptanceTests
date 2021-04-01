@@ -707,8 +707,6 @@
             var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
             var orderDescription = order.Description;
             Test.Pages.OrderForm.DeleteConfirmationOrderDescription().Should().BeEquivalentTo(orderDescription);
-
         }
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System;
     using System.Threading.Tasks;
     using BoDi;
     using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,7 @@
             objectContainer.RegisterInstanceAs<IConfiguration>(configurationBuilder);
             var test = objectContainer.Resolve<UITest>();
 
-            var dbContext = GetDbContext(test.OrdapiConnectionString);
+            var dbContext = new Lazy<OrderingDbContext>(GetDbContext(test.OrdapiConnectionString)).Value;
 
             context.Add(ContextKeys.DbContext, dbContext);
 
@@ -48,14 +49,17 @@
             var test = objectContainer.Resolve<UITest>();
             test.Driver?.Quit();
 
-            var dbContext = GetDbContext(test.OrdapiConnectionString);
+            await using var dbContext = new Lazy<OrderingDbContext>(GetDbContext(test.OrdapiConnectionString)).Value;
 
             if (context.ContainsKey(ContextKeys.CreatedOrder))
             {
                 var orderCallOffId = context.Get<Order>(ContextKeys.CreatedOrder).CallOffId;
 
-                dbContext.Remove(await dbContext.Order.SingleAsync(s => s.CallOffId == orderCallOffId));
-                await dbContext.SaveChangesAsync();
+                if (await dbContext.Order.SingleOrDefaultAsync(o => o.CallOffId == orderCallOffId) is not null)
+                {
+                    dbContext.Remove(await dbContext.Order.SingleAsync(s => s.CallOffId == orderCallOffId));
+                    await dbContext.SaveChangesAsync();
+                }
             }
 
             if (context.ContainsKey(ContextKeys.User))

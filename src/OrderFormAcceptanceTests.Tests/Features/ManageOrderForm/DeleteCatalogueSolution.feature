@@ -4,7 +4,7 @@ I want to delete a Catalogue Solution from my order
 So that the information is correct
 
 Background:
-	Given an incomplete order with catalogue items exists
+    Given an incomplete order with catalogue items exists
     And the User has chosen to manage the Catalogue Solution section
     And the User chooses to edit a saved Catalogue Solution
 
