@@ -1,5 +1,6 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System;
     using System.Threading.Tasks;
     using BoDi;
     using Microsoft.EntityFrameworkCore;
@@ -34,14 +35,7 @@
             objectContainer.RegisterInstanceAs<IConfiguration>(configurationBuilder);
             var test = objectContainer.Resolve<UITest>();
 
-            DbContextOptions<OrderingDbContext> options = new DbContextOptionsBuilder<OrderingDbContext>()
-                .UseSqlServer(test.OrdapiConnectionString, s =>
-                {
-                    s.EnableRetryOnFailure(5);
-                })
-                .Options;
-
-            OrderingDbContext dbContext = new(options);
+            var dbContext = GetDbContext(test.OrdapiConnectionString);
 
             context.Add(ContextKeys.DbContext, dbContext);
 
@@ -57,14 +51,15 @@
 
             if (context.ContainsKey(ContextKeys.CreatedOrder))
             {
-                var order = (Order)context[ContextKeys.CreatedOrder];
+                var orderCallOffId = context.Get<Order>(ContextKeys.CreatedOrder).CallOffId;
 
-                var dbContext = (OrderingDbContext)context[ContextKeys.DbContext];
+                var dbContext = GetDbContext(test.OrdapiConnectionString);
 
-                var orderFromDb = dbContext.Find<Order>(order.Id);
-
-                dbContext.Order.Remove(orderFromDb);
-                await dbContext.SaveChangesAsync();
+                if (await dbContext.Order.SingleOrDefaultAsync(o => o.CallOffId == orderCallOffId) is not null)
+                {
+                    dbContext.Remove(await dbContext.Order.SingleAsync(s => s.CallOffId == orderCallOffId));
+                    await dbContext.SaveChangesAsync();
+                }
             }
 
             if (context.ContainsKey(ContextKeys.User))
@@ -72,6 +67,20 @@
                 var user = (User)context[ContextKeys.User];
                 await UsersHelper.Delete(test.IsapiConnectionString, user);
             }
+        }
+
+        private static OrderingDbContext GetDbContext(string connectionString)
+        {
+            DbContextOptions<OrderingDbContext> options = new DbContextOptionsBuilder<OrderingDbContext>()
+                .UseSqlServer(connectionString, s =>
+                {
+                    s.EnableRetryOnFailure(5);
+                })
+                .Options;
+
+            OrderingDbContext dbContext = new(options);
+
+            return dbContext;
         }
     }
 }

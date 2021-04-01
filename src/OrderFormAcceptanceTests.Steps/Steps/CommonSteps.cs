@@ -28,7 +28,6 @@
         {
         }
 
-        [Then(@"the Order is deleted")]
         [Given(@"the User has not completed the Order")]
         [Given(@"no Funding Source option is selected")]
         [StepDefinition(@"the Associated Service is saved")]
@@ -72,6 +71,16 @@
                 .Select(r => r.Replace("-", string.Empty)) // remove any '-' characters
                 .ToList();
             hexList.Should().BeInAscendingOrder();
+        }
+
+        [Then(@"the Order is deleted")]
+        public async Task ThenTheOrderIsDeleted()
+        {
+            var orderId = Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId;
+
+            var orderInDb = await DbContext.Order.SingleOrDefaultAsync(o => o.CallOffId == orderId);
+
+            orderInDb.Should().BeNull();
         }
 
         [Given(@"that a buyer user has logged in")]

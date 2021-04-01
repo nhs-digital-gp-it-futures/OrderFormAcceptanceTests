@@ -142,7 +142,15 @@
 
         public bool DeleteSolutionButtonIsDisabled()
         {
-            return Driver.FindElement(Objects.Pages.Common.DeleteSolutionButton).GetProperty("disabled").Contains("disabled");
+            try
+            {
+                Driver.FindElement(Objects.Pages.Common.DeleteSolutionButton).FindElement(By.TagName("span"));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool PreviewOrderButtonIsDisabled()
@@ -860,6 +868,11 @@
             return selectedSection.Any();
         }
 
+        public void ClickDeleteCatalogueSolutionButton()
+        {
+            Driver.FindElement(Objects.Pages.Common.DeleteSolutionButton).Click();
+        }
+
         public IEnumerable<string> GetAddedCatalogueItems()
         {
             return Driver.FindElements(Objects.Pages.OrderForm.AddedOrderItemName).Select(s => s.Text);
@@ -888,6 +901,16 @@
                     }
                 }
             }
+        }
+
+        public void ClickCancelDelete()
+        {
+            Driver.FindElement(Objects.Pages.OrderForm.CancelDeleteLink).Click();
+        }
+
+        public string DeleteConfirmationOrderDescription()
+        {
+            return Driver.FindElement(Objects.Pages.Common.DeleteConfirmationOrderDescription).Text;
         }
 
         public async Task SelectSupplierWithContactDetails(string connectionString)
@@ -920,6 +943,11 @@
             }
 
             suppliers.Single(s => s.Text == selectedSupplier).Click();
+        }
+
+        public string DeleteSolutionConfirmationTitle()
+        {
+            return Driver.FindElement(Objects.Pages.OrderForm.DeleteSolutionConfirmation).Text;
         }
 
         private ReadOnlyCollection<IWebElement> ListOfSupplierNames()

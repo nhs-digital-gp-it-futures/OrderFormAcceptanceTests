@@ -9,7 +9,7 @@
         {
             Test = test;
             Context = context;
-            DbContext ??= (OrderingDbContext)Context[ContextKeys.DbContext];
+            DbContext ??= Context.Get<OrderingDbContext>(ContextKeys.DbContext);
         }
 
         internal ScenarioContext Context { get; }

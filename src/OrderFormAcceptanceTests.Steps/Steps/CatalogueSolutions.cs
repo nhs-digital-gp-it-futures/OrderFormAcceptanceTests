@@ -630,5 +630,83 @@
             var newRecipients = Test.Pages.OrderForm.GetNumberOfAddedRecipients();
             newRecipients.Should().Be((int)Context["AddedRecipientCount"]);
         }
+
+        [Given(@"the delete button is enabled")]
+        public void GivenTheDeleteButtonIsEnabled()
+        {
+            Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeFalse();
+        }
+
+        [StepDefinition(@"the User chooses to delete the Catalogue Solution")]
+        public void WhenTheUserChoosesToDeleteTheCatalogueSolution()
+        {
+            Test.Pages.OrderForm.ClickDeleteCatalogueSolutionButton();
+        }
+
+        [Then(@"the User is asked to confirm the choice to delete the catalogue solution")]
+        public async Task ThenTheUserIsAskedToConfirmTheChoiceToDeleteTheCatalogueSolutionAsync()
+        {
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var orderitem = order.OrderItems[0].CatalogueItem.Name;
+
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed($"Delete {orderitem}").Should().BeTrue();
+        }
+
+        [StepDefinition(@"the User chooses to confirm the delete")]
+        public async Task WhenTheUserChoosesToConfirmTheDeleteAsync()
+        {
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            Context.Add(ContextKeys.DeletedOrderItem, order.OrderItems[0]);
+            Test.Pages.DeleteOrder.ClickDeleteButtonYes();
+        }
+
+        [Then(@"the deleted Catalogue Solution with the unit is not on the Catalogue Solution dashboard")]
+        public void ThenTheDeletedCatalogueSolutionWithTheUnitIsNotOnTheCatalogueSolutionDashboard()
+        {
+            var orderItem = Context.Get<OrderItem>(ContextKeys.DeletedOrderItem);
+
+            Test.Pages.OrderForm.GetAddedCatalogueItems().Should().NotContain(orderItem.CatalogueItem.Name);
+        }
+
+        [When(@"the User chooses not to delete the Catalogue Solution")]
+        public void WhenTheUserChoosesNotToDeleteTheCatalogueSolution()
+        {
+            Test.Pages.OrderForm.ClickCancelDelete();
+        }
+
+        [Then(@"only the Catalogue Solution with the unit is deleted from the order")]
+        public async Task ThenOnlyTheCatalogueSolutionWithTheUnitIsDeletedFromTheOrderAsync()
+        {
+            var orderItem = Context.Get<OrderItem>(ContextKeys.DeletedOrderItem);
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+
+            if (order.OrderItems.Count > 0)
+            {
+                order.OrderItems.Should().NotContain(orderItem);
+            }
+        }
+
+        [StepDefinition(@"the User is informed the Catalogue Solution is deleted")]
+        public async Task ThenTheUserIsInformedTheCatalogueSolutionIsDeletedAsync()
+        {
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            Test.Pages.OrderForm.DeleteSolutionConfirmationTitle().Should().Match($"* deleted from {order.CallOffId}");
+        }
+
+        [Then(@"the Call-off Agreement ID is displayed")]
+        public async Task ThenTheCall_OffAgreementIDIsDisplayedAsync()
+        {
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var callOffID = order.CallOffId.ToString();
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed(callOffID).Should().BeTrue();
+        }
+
+        [Then(@"the order description is displayed")]
+        public async Task ThenTheOrderDescriptionIsDisplayedAsync()
+        {
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var orderDescription = order.Description;
+            Test.Pages.OrderForm.DeleteConfirmationOrderDescription().Should().BeEquivalentTo(orderDescription);
+        }
     }
 }
