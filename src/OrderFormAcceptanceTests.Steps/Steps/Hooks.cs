@@ -17,7 +17,6 @@
     {
         private readonly ScenarioContext context;
         private readonly IObjectContainer objectContainer;
-        private OrderingDbContext dbContext;
 
         public Hooks(ScenarioContext context, IObjectContainer objectContainer)
         {
@@ -36,7 +35,7 @@
             objectContainer.RegisterInstanceAs<IConfiguration>(configurationBuilder);
             var test = objectContainer.Resolve<UITest>();
 
-            dbContext = GetDbContext(test.OrdapiConnectionString);
+            var dbContext = GetDbContext(test.OrdapiConnectionString);
 
             context.Add(ContextKeys.DbContext, dbContext);
 
@@ -53,6 +52,8 @@
             if (context.ContainsKey(ContextKeys.CreatedOrder))
             {
                 var orderCallOffId = context.Get<Order>(ContextKeys.CreatedOrder).CallOffId;
+
+                var dbContext = GetDbContext(test.OrdapiConnectionString);
 
                 if (await dbContext.Order.SingleOrDefaultAsync(o => o.CallOffId == orderCallOffId) is not null)
                 {
