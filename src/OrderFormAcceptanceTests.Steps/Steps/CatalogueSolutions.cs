@@ -678,7 +678,7 @@
         [Then(@"only the Catalogue Solution with the unit is deleted from the order")]
         public async Task ThenOnlyTheCatalogueSolutionWithTheUnitIsDeletedFromTheOrderAsync()
         {
-            var orderItem = Context.Get<Domain.OrderItem>(ContextKeys.DeletedOrderItem);
+            var orderItem = Context.Get<OrderItem>(ContextKeys.DeletedOrderItem);
             var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
 
             if (order.OrderItems.Count > 0)
@@ -710,13 +710,6 @@
             var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
             var orderDescription = order.Description;
             Test.Pages.OrderForm.DeleteConfirmationOrderDescription().Should().BeEquivalentTo(orderDescription);
-        }
-
-        [Given(@"the User selects a Catalogue Solution")]
-        public void GivenTheUserSelectsACatalogueSolution()
-        {
-            Test.Pages.OrderForm.ClickAddSolutionButton();
-            GivenTheUserSelectsACatalogueSolutionToAdd();
         }
 
         [Given(@"the User selects a Catalogue Solution previously saved in the Order")]
