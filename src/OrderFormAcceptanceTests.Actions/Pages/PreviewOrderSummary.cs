@@ -63,9 +63,9 @@
             return Driver.FindElement(Objects.Pages.PreviewOrderSummary.CallOffOrderingPartyPreview).Text;
         }
 
-        public string GetSupplierPreviewValue()
+        public IEnumerable<string> GetSupplierPreviewValue()
         {
-            return Driver.FindElement(Objects.Pages.PreviewOrderSummary.SupplierPreview).Text;
+            return Driver.FindElement(Objects.Pages.PreviewOrderSummary.SupplierPreview).FindElements(By.TagName("div")).Select(e => e.Text).ToList();
         }
 
         public string GetCommencementDateValue()
