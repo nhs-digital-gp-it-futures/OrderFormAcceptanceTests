@@ -7,9 +7,9 @@
 
     public sealed class OrderItemList
     {
-        private readonly Dictionary<int, OrderItem> cache = new();
+        private readonly Dictionary<int, Domain.OrderItem> cache = new();
 
-        public OrderItemList(params OrderItem[] orderItems)
+        public OrderItemList(params Domain.OrderItem[] orderItems)
         {
             if (orderItems is null)
             {
@@ -22,10 +22,10 @@
             }
         }
 
-        public IEnumerable<OrderItem> GetAll() =>
+        public IEnumerable<Domain.OrderItem> GetAll() =>
             cache.Values;
 
-        public void Add(OrderItem orderItem)
+        public void Add(Domain.OrderItem orderItem)
         {
             if (orderItem is null)
             {
