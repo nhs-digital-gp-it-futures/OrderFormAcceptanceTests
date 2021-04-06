@@ -70,7 +70,7 @@
         public static async Task<int> GetNumberOfPricingUnitsForItemAsync(string itemId, string connectionString)
         {
             var query = @"SELECT COUNT(*)
-                          FROM [buyingcatalogue].[dbo].[CataloguePrice]
+                          FROM CataloguePrice
                           WHERE CatalogueItemId = @itemId;";
 
             var result = await SqlExecutor.ExecuteScalarAsync(connectionString, query, new { itemId });
