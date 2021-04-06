@@ -83,6 +83,12 @@
             return Driver.FindElement(Objects.Pages.OrderForm.PageTitle).Text.Split("Order")[1].Trim();
         }
 
+        public string GetCallOffIdSelectSolution()
+        {
+            var splitTitle = Driver.FindElement(Objects.Pages.OrderForm.PageTitle).Text.Split(" ");
+            return splitTitle[^1];
+        }
+
         public void ClickEditAdditionalServices()
         {
             SelectSectionByNameContains("Additional Services").Click();

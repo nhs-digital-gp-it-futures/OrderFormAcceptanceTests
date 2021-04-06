@@ -70,6 +70,7 @@
             Test.Pages.OrderForm.AddSolutionButtonDisplayed().Should().BeTrue();
         }
 
+        [Then(@"the select Catalogue Solution form is presented")]
         [Then(@"they are presented with the Catalogue Solutions available from their chosen Supplier")]
         public void ThenTheyArePresentedWithTheCatalogueSolutionsAvailableFromTheirChosenSupplier()
         {
@@ -663,7 +664,7 @@
         [Then(@"the deleted Catalogue Solution with the unit is not on the Catalogue Solution dashboard")]
         public void ThenTheDeletedCatalogueSolutionWithTheUnitIsNotOnTheCatalogueSolutionDashboard()
         {
-            var orderItem = Context.Get<OrderItem>(ContextKeys.DeletedOrderItem);
+            var orderItem = Context.Get<Domain.OrderItem>(ContextKeys.DeletedOrderItem);
 
             Test.Pages.OrderForm.GetAddedCatalogueItems().Should().NotContain(orderItem.CatalogueItem.Name);
         }
@@ -677,7 +678,7 @@
         [Then(@"only the Catalogue Solution with the unit is deleted from the order")]
         public async Task ThenOnlyTheCatalogueSolutionWithTheUnitIsDeletedFromTheOrderAsync()
         {
-            var orderItem = Context.Get<OrderItem>(ContextKeys.DeletedOrderItem);
+            var orderItem = Context.Get<Domain.OrderItem>(ContextKeys.DeletedOrderItem);
             var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
 
             if (order.OrderItems.Count > 0)
@@ -693,6 +694,8 @@
             Test.Pages.OrderForm.DeleteSolutionConfirmationTitle().Should().Match($"* deleted from {order.CallOffId}");
         }
 
+        [StepDefinition(@"the edit Catalogue Solution form is presented")]
+        [Then(@"they are presented with the Edit Catalogue Solution form for the order type")]
         [Then(@"the Call-off Agreement ID is displayed")]
         public async Task ThenTheCall_OffAgreementIDIsDisplayedAsync()
         {
@@ -707,6 +710,64 @@
             var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
             var orderDescription = order.Description;
             Test.Pages.OrderForm.DeleteConfirmationOrderDescription().Should().BeEquivalentTo(orderDescription);
+        }
+
+        [Given(@"the User selects a Catalogue Solution")]
+        public void GivenTheUserSelectsACatalogueSolution()
+        {
+            Test.Pages.OrderForm.ClickAddSolutionButton();
+            GivenTheUserSelectsACatalogueSolutionToAdd();
+        }
+
+        [Given(@"the User selects a Catalogue Solution previously saved in the Order")]
+        public async Task GivenTheUserSelectsACatalogueSolutionPreviouslySavedInTheOrder()
+        {
+            Test.Pages.OrderForm.ClickAddSolutionButton();
+
+            // Get order item from DB
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var orderItemInDB = (await DbContext.Order.FindAsync(order.Id))
+                .OrderItems.First(
+                s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.Solution);
+
+            // Get index of radio button matching DB entry
+            var solutionRadioButton = Test.Pages.OrderForm.GetRadioButtonText().IndexOf(orderItemInDB.CatalogueItem.Name);
+
+            // Click radio button that matches text in DB entry
+            Test.Pages.OrderForm.ClickRadioButton(solutionRadioButton);
+        }
+
+        [Then(@"the previously saved data is displayed")]
+        public async Task ThenThePreviouslySavedDataIsDisplayed()
+        {
+            var enteredPrice = decimal.Parse(Test.Pages.OrderForm.GetPriceInputValue());
+            var numberOfRecipients = Test.Pages.OrderForm.GetNumberOfAddedRecipients();
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var orderItemsInDb = (await DbContext.Order.FindAsync(order.Id))
+                .OrderItems.Single(
+                s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.Solution);
+
+            orderItemsInDb.OrderItemRecipients.Count.Should().Be(numberOfRecipients);
+            orderItemsInDb.Price.Value.Should().Be(enteredPrice);
+        }
+
+        [When(@"they choose to go back")]
+        public void WhenTheyChooseToGoBack()
+        {
+            Test.Pages.OrderForm.ClickBackLink();
+        }
+
+        [Then(@"the previously selected Catalogue Solution persist")]
+        public async Task ThenThePreviouslySelectedCatalogueSolutionPersistAsync()
+        {
+            var selectedRadioId = Test.Pages.OrderForm.GetSelectedRadioButton();
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var orderItemInDb = (await DbContext.Order.FindAsync(order.Id)).OrderItems.Single(
+                s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.Solution);
+
+            orderItemInDb.CatalogueItem.Id.ToString().Should().BeEquivalentTo(selectedRadioId);
         }
     }
 }
