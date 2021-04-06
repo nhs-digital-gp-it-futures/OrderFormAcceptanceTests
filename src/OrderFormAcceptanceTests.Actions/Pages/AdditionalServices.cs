@@ -35,7 +35,7 @@
 
         public string ServiceRecipientsTitle()
         {
-            return Driver.FindElement(Objects.Pages.AdditionalServices.ServiceRecipientsTitle).Text;
+            return Driver.FindElement(Objects.Pages.OrderForm.PageTitle).Text;
         }
 
         public List<string> ServiceRecipientNames()

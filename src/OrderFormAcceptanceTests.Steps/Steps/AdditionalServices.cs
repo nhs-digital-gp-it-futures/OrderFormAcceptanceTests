@@ -1,10 +1,12 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System;
     using System.Threading.Tasks;
     using FluentAssertions;
     using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData.Builders;
+    using OrderFormAcceptanceTests.TestData.Helpers;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -81,6 +83,7 @@
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
             WhenTheUserChoosesToAddASingleAdditionalService();
             ThenTheyArePresentedWithTheAdditionalServiceAvailableFromTheirChosenSupplier();
+            Context.Add(ContextKeys.ChosenItemId, Test.Pages.OrderForm.GetRadioButtonText()[0]);
             Test.Pages.OrderForm.ClickRadioButton();
         }
 
@@ -102,6 +105,17 @@
             ThenTheyCanSelectOneAdditionalServiceToAdd();
         }
 
+        [Then(@"the User is presented with the correct page")]
+        public async Task ThenTheUserIsPresentedWithTheCorrectPageAsync()
+        {
+            var itemId = Test.Pages.OrderForm.GetSelectedRadioButton();
+            var numberOfPrices = await OrderItemHelper.GetNumberOfPricingUnitsForItemAsync(itemId, Test.BapiConnectionString);
+
+            var pageTitle = numberOfPrices == 1 ? "Add Additional Service" : "List Price";
+
+            Test.Pages.OrderForm.GetPageTitle().Should().ContainEquivalentOf(pageTitle);
+        }
+
         [Given(@"the available prices for the selected Additional Service are presented")]
         public void GivenTheAvailablePricesForTheSelectedAdditionalServiceArePresented()
         {
@@ -112,15 +126,17 @@
         [Given(@"the User has selected a Additional Service price")]
         public void GivenTheUserHasSelectedAAdditionalServicePrice()
         {
-            Test.Pages.AdditionalServices.PricePageTitle().Should().ContainEquivalentOf("List price");
-            Test.Pages.OrderForm.ClickRadioButton();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            if (Test.Pages.OrderForm.TextDisplayedInPageTitle("List Price"))
+            {
+                Test.Pages.OrderForm.ClickRadioButton();
+                new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            }
         }
 
         [Then(@"the Additional Service name is displayed")]
         public void ThenTheAdditionalServiceNameIsDisplayed()
         {
-            Test.Pages.AdditionalServices.ServiceRecipientsTitle().Should().MatchRegex("Service Recipient for .*");
+            Test.Pages.AdditionalServices.ServiceRecipientsTitle().Should().MatchRegex("Service Recipients for .*");
         }
 
         [Then(@"the Service Recipients are presented in ascending alphabetical order by Presentation Name")]

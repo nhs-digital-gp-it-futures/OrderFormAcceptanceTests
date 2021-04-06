@@ -289,11 +289,16 @@
         [Then(@"they can select a price for the Associated Service")]
         [Then(@"they can select one Catalogue Solution to add")]
         [Then(@"they can select a price for the Catalogue Solution")]
-        [Then(@"they are presented with the Service Recipients saved in the Order")]
         [Then(@"they can select one Associated Service to add")]
         public void ThenTheyCanSelectOneRadioButton()
         {
             Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
+        }
+
+        [Then(@"they are presented with the Service Recipients saved in the Order")]
+        public void ThenTheServiceRecipientsAreDisplayed()
+        {
+            Test.Pages.OrderForm.NumberOfCheckboxesDisplayed().Should().BeGreaterThan(0);
         }
 
         [Then(@"the User's selected catalogue solution is selected")]

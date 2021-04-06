@@ -67,6 +67,17 @@
             return orderItem;
         }
 
+        public static async Task<int> GetNumberOfPricingUnitsForItemAsync(string itemId, string connectionString)
+        {
+            var query = @"SELECT COUNT(*)
+                          FROM [buyingcatalogue].[dbo].[CataloguePrice]
+                          WHERE CatalogueItemId = @itemId;";
+
+            var result = await SqlExecutor.ExecuteScalarAsync(connectionString, query, new { itemId });
+
+            return result;
+        }
+
         private static async Task<PricingUnit> GetPricingUnitAsync(ProvisioningType provisioningType, string bapiConnectionString)
         {
             var query = @"SELECT pu.[Name],
