@@ -15,5 +15,14 @@
             await Policies.RetryPolicyAsync().ExecuteAsync(async () => { returnValue = await connection.QueryAsync<T>(query, param); });
             return returnValue;
         }
+
+        internal static async Task<int> ExecuteScalarAsync(string connectionString, string query, object param)
+        {
+            int returnValue = 0;
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            await Policies.RetryPolicyAsync().ExecuteAsync(async () => { returnValue = await connection.ExecuteScalarAsync<int>(query, param); });
+            return returnValue;
+        }
     }
 }

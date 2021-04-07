@@ -172,6 +172,11 @@
             }
         }
 
+        public string GetPageTitle()
+        {
+            return Driver.FindElement(Objects.Pages.OrderForm.PageTitle).Text;
+        }
+
         public bool CompleteOrderButtonIsDisabled()
         {
             try

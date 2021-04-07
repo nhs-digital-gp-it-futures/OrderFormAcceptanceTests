@@ -124,14 +124,14 @@ Scenario: Additional Services - Select service recipient - No Service Recipient 
 	And they choose to continue
 	Then the User is informed they have to select a Service Recipient
 
-@ignore Need to rewrite
 Scenario: Additional Services - Select service recipient - Go back 
 	Given the Order Form for the existing order is presented
 	And the available prices for the selected Additional Service are presented
 	And the User has selected a Additional Service price
 	When the User chooses to go back
-	Then all the available prices for that Additional Service are presented
+	Then the User is presented with the correct page
 
+@ignore
 Scenario: Additional Services - Flat price with variable order type selected
 	Given the User is on the Edit Price form
 	Then they are presented with the Additional Service edit form for flat list price
@@ -142,12 +142,14 @@ Scenario: Additional Services - Flat price with variable order type selected
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the save button is enabled
 
+@ignore
 Scenario: Additional Services - Mandatory data missing
 	Given the User is on the Edit Price form
 	When the User chooses to save
 	Then the Additional Service is not saved
 	And the reason is displayed
 
+@ignore
 Scenario: Additional Services - Data exceeds the maximum length
 	Given the User is on the Edit Price form
 	When the quantity is above the max value
@@ -155,6 +157,7 @@ Scenario: Additional Services - Data exceeds the maximum length
 	Then the Additional Service is not saved 
 	And the reason is displayed
 
+@ignore
 Scenario: Additional Services - Validation Error Message Anchors
 	Given the User is on the Edit Price form
 	When the User chooses to save
@@ -169,6 +172,7 @@ Scenario: Additional Services - All data are valid
 	Then the Additional Service is saved
 	And the content validation status of the additional-services section is complete
 
+@ignore
 Scenario: Additional Services - Go back before save
 	Given the User is on the Edit Price form
 	When the User chooses to go back
