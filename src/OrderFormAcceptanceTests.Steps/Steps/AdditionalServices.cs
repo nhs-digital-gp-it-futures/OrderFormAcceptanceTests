@@ -273,5 +273,42 @@
             await of.GivenTheAdditionalServicesSectionIsNotCompleteAndNoServicesAreAdded();
             await new CommonSteps(Test, Context).SetOrderAdditionalServicesSectionToComplete();
         }
+
+        [Given(@"the Select Additional Service form is presented")]
+        public void GivenTheSelectAdditionalServiceFormIsPresented()
+        {
+            Test.Pages.OrderForm.ClickAddSolutionButton();
+            Test.Pages.OrderForm.EditAdditionalServicesSectionDisplayed().Should().BeTrue();
+        }
+
+        [Given(@"the User selects an Additional Service with only one list price")]
+        public async Task GivenTheUserSelectsAnAdditionalServiceWithOnlyOneListPriceAsync()
+        {
+            var additionalServices = Test.Pages.OrderForm.GetRadioButtonValues();
+
+            foreach (var service in additionalServices)
+            {
+                var itemId = service.GetAttribute("value");
+                var numberOfPrices = await OrderItemHelper.GetNumberOfPricingUnitsForItemAsync(itemId, Test.BapiConnectionString);
+                if (numberOfPrices == 1)
+                {
+                    service.Click();
+                    break;
+                }
+            }
+        }
+
+        [Given(@"the Select Service Recipient form is presented")]
+        public void GivenTheSelectServiceRecipientFormIsPresented()
+        {
+            Test.Pages.OrderForm.ClickContinueButton();
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("service recipients").Should().BeTrue();
+        }
+
+        [Then(@"they are presented with the Select Additional Service form")]
+        public void ThenTheyArePresentedWithTheSelectAdditionalServiceForm()
+        {
+            Test.Pages.OrderForm.EditAdditionalServicesSectionDisplayed().Should().BeTrue();
+        }
     }
 }
