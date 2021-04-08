@@ -1,5 +1,5 @@
 ﻿Feature: Additional Services Ordering
-	As a Buyer
+    As a Buyer
     I want the Additional Services for the Catalogue Solutions in my order to be displayed in alphabetical order
     So that I can easily identify them
 
