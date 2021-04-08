@@ -148,10 +148,11 @@
             new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
         }
 
+        [Given(@"the User selects an Additional Service")]
         [Given(@"the User selects a price")]
         public void GivenTheUserSelectsAPrice()
         {
-            Test.Pages.OrderForm.ClickRadioButton(2);
+            Test.Pages.OrderForm.ClickRadioButton();
         }
 
         [Given(@"a Service Recipient is selected")]
