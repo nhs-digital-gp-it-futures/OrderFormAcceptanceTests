@@ -142,6 +142,8 @@
                 .WithExistingSupplier(supplier)
                 .Build();
 
+            DbContext.Update(order);
+
             await DbContext.SaveChangesAsync();
         }
 

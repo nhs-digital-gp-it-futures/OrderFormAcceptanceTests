@@ -30,24 +30,19 @@
 
         public static async Task<Order> CreateOrderAsync(CreateOrderModel model, OrderingDbContext dbContext, User user, string bapiConnectionString, string isapiConnectionString)
         {
-            //var organisationDetails = await Organisation.GetOdsCode(isapiConnectionString, model.OrganisationId);
-
-            var orderingParty = await dbContext.OrderingParty.FindAsync(model.OrganisationId)
+           var orderingParty = await dbContext.OrderingParty.FindAsync(model.OrganisationId)
                 ?? new OrderingParty
                 {
                     Id = model.OrganisationId,
-                    //Address = AddressHelper.Generate(),
-                    //OdsCode = organisationDetails.OdsCode,
-                    //Name = organisationDetails.Name,
                 };
 
-            var order = new OrderBuilder(model.Description, user, orderingParty)
+           var order = new OrderBuilder(model.Description, user, orderingParty)
                 .Build();
 
-            dbContext.Add(order);
-            await dbContext.SaveChangesAsync();
+           dbContext.Add(order);
+           await dbContext.SaveChangesAsync();
 
-            return order;
+           return order;
         }
     }
 }
