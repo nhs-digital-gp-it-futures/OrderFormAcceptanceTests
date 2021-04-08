@@ -301,6 +301,7 @@
             Test.Pages.OrderForm.NumberOfCheckboxesDisplayed().Should().BeGreaterThan(0);
         }
 
+        [StepDefinition(@"their Additional Service selection persists")]
         [Then(@"the User's selected catalogue solution is selected")]
         [Then(@"the User's selected price is selected")]
         [Then(@"the User's selected Associated Service is selected")]
