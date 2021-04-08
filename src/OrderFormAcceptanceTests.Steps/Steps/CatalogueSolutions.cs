@@ -118,6 +118,7 @@
         {
             var solutionName = Test.Pages.OrderForm.GetRadioButtonText()[0];
             Test.Pages.OrderForm.ClickRadioButtonWithText(solutionName);
+            Context.Remove(ContextKeys.ChosenSolutionName);
             Context.Add(ContextKeys.ChosenSolutionName, solutionName);
         }
 
@@ -127,6 +128,18 @@
             GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier();
             GivenTheUserSelectsACatalogueSolutionToAdd();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+        }
+
+        [Then("the correct page is displayed")]
+        public async Task ThenTheCorrectPageIsDisplayedAsync()
+        {
+            var solutionId = await OrderItemHelper.GetCatalogueItemIdForNameAsync(Context.Get<string>(ContextKeys.ChosenSolutionName), Test.BapiConnectionString);
+            var numberOfPricingUnits = await OrderItemHelper.GetNumberOfPricingUnitsForItemAsync(solutionId, Test.BapiConnectionString);
+
+            var expectedPageTitle = numberOfPricingUnits == 1 ? "add catalogue solution" : "list price";
+
+            var actualPageTitle = Test.Pages.OrderForm.GetPageTitle();
+            actualPageTitle.Should().ContainEquivalentOf(expectedPageTitle);
         }
 
         [Then(@"all the available prices for that Catalogue Solution are presented")]
@@ -141,11 +154,19 @@
         }
 
         [Given(@"the User is presented with the prices for the selected Catalogue Solution")]
-        public void GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution()
+        public async Task GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolutionAsync()
         {
             GivenTheUserIsPresentedWithCatalogueSolutionsAvailableFromTheirChosenSupplier();
             GivenTheUserSelectsACatalogueSolutionToAdd();
-            new CommonSteps(Test, Context).ContinueAndWaitForRadioButtons();
+
+            var solutionId = await OrderItemHelper.GetCatalogueItemIdForNameAsync(Context.Get<string>(ContextKeys.ChosenSolutionName), Test.BapiConnectionString);
+            var numberOfPricingUnits = await OrderItemHelper.GetNumberOfPricingUnitsForItemAsync(solutionId, Test.BapiConnectionString);
+
+            Test.Pages.OrderForm.ClickContinueButton();
+
+            var expectedPageTitle = numberOfPricingUnits == 1 ? "service recipients" : "list price";
+
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(expectedPageTitle).Should().BeTrue();
         }
 
         [Given(@"the User selects an Additional Service")]
@@ -165,17 +186,20 @@
         [Given(@"the User is presented with the Service Recipients for the Order after selecting the variable flat price")]
         public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder()
         {
-            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
-            var numOfPrices = Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed();
-            Context.Add(ContextKeys.NumberOfPrices, numOfPrices);
-            GivenTheUserSelectsAPrice();
-            new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            var pageTitle = Test.Pages.OrderForm.GetPageTitle();
+            if (pageTitle.Contains("List price", StringComparison.OrdinalIgnoreCase))
+            {
+                var numOfPrices = Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed();
+                Context.Add(ContextKeys.NumberOfPrices, numOfPrices);
+                GivenTheUserSelectsAPrice();
+                new CommonSteps(Test, Context).WhenTheyChooseToContinue();
+            }
         }
 
         [Given(@"the User is presented with the Service Recipients for the Order after selecting the per patient flat price")]
-        public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingThePerPatientFlatPrice()
+        public async Task GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingThePerPatientFlatPriceAsync()
         {
-            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            await GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolutionAsync();
             Test.Pages.OrderForm.ClickRadioButton();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
         }
@@ -273,11 +297,27 @@
             Test.Pages.OrderForm.SaveButtonDisplayed().Should().BeTrue();
         }
 
-        [Given(@"the User is presented with the Catalogue Solution edit form for a variable flat price")]
-        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormVariableFlatPrice()
+        [Given("the service recipients are displayed")]
+        public async Task GivenTheServiceRecipientsAreDisplayed()
         {
             CommonSteps common = new(Test, Context);
 
+            await GivenTheSupplierAddedToTheOrderHasASolutionWithAVariableFlatPrice();
+            await GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolutionAsync();
+            await Test.Pages.OrderForm.SelectPriceByTypeAsync(ProvisioningType.OnDemand, Test.BapiConnectionString);
+            common.WhenTheyChooseToContinue();
+            GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder();
+        }
+
+        [Given(@"the User is presented with the Catalogue Solution edit form for a variable flat price")]
+        public async Task GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormVariableFlatPriceAsync()
+        {
+            CommonSteps common = new(Test, Context);
+
+            await GivenTheSupplierAddedToTheOrderHasASolutionWithAVariableFlatPrice();
+            await GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolutionAsync();
+            await Test.Pages.OrderForm.SelectPriceByTypeAsync(ProvisioningType.OnDemand, Test.BapiConnectionString);
+            common.WhenTheyChooseToContinue();
             GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrder();
             GivenAServiceRecipientIsSelected();
             common.WhenTheyChooseToContinue();
@@ -294,8 +334,8 @@
             CommonSteps common = new(Test, Context);
 
             await GivenTheSupplierAddedToTheOrderHasASolutionWithADeclarativeFlatPrice();
-            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
-            Test.Pages.OrderForm.ClickRadioButton(0);
+            await GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolutionAsync();
+            await Test.Pages.OrderForm.SelectPriceByTypeAsync(ProvisioningType.Declarative, Test.BapiConnectionString);
             common.ContinueAndWaitForCheckboxes();
             GivenAServiceRecipientIsSelected();
             common.WhenTheyChooseToContinue();
@@ -306,10 +346,10 @@
         }
 
         [Given(@"the User is presented with the Catalogue Solution edit form for a per patient flat price")]
-        public void GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormPerPatientFlatPrice()
+        public async Task GivenTheUserIsPresentedWithTheCatalogueSolutionEditFormPerPatientFlatPriceAsync()
         {
-            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
-            Test.Pages.OrderForm.ClickRadioButton(0);
+            await GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolutionAsync();
+            await Test.Pages.OrderForm.SelectPriceByTypeAsync(ProvisioningType.Patient, Test.BapiConnectionString);
             new CommonSteps(Test, Context).ContinueAndWaitForCheckboxes();
             GivenAServiceRecipientIsSelected();
             new CommonSteps(Test, Context).WhenTheyChooseToContinue();
@@ -579,10 +619,24 @@
             await DbContext.SaveChangesAsync();
         }
 
-        [Given(@"the User is presented with the Service Recipients for the Order after selecting the declarative flat price")]
-        public void GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingTheDeclarativeFlatPrice()
+        public async Task GivenTheSupplierAddedToTheOrderHasASolutionWithAVariableFlatPrice()
         {
-            GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolution();
+            var supplierInfo = (await SupplierInfo.SuppliersWithCatalogueSolution(Test.BapiConnectionString, ProvisioningType.OnDemand)).First().ToDomain();
+
+            var supplier = await DbContext.Supplier.FindAsync(supplierInfo.Id) ?? supplierInfo;
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            order.Supplier = supplier;
+            order.SupplierContact = ContactHelper.Generate();
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
+        }
+
+        [Given(@"the User is presented with the Service Recipients for the Order after selecting the declarative flat price")]
+        public async Task GivenTheUserIsPresentedWithTheServiceRecipientsSavedInTheOrderAfterSelectingTheDeclarativeFlatPriceAsync()
+        {
+            await GivenTheUserIsPresentedWithThePricesForTheSelectedCatalogueSolutionAsync();
             Test.Pages.OrderForm.ClickRadioButton(0);
             new CommonSteps(Test, Context).ContinueAndWaitForCheckboxes();
         }

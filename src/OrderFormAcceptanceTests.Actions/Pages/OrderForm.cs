@@ -10,6 +10,7 @@
     using OrderFormAcceptanceTests.Actions.Utils;
     using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Helpers;
     using OrderFormAcceptanceTests.TestData.Information;
 
     public class OrderForm : PageAction
@@ -470,6 +471,21 @@
         public string GetOrganisationName()
         {
             return Driver.FindElement(Objects.Pages.OrderForm.OrganisationName).Text;
+        }
+
+        public async Task SelectPriceByTypeAsync(ProvisioningType provisioningType, string connectionString)
+        {
+            var priceIds = GetRadioButtonValues();
+
+            foreach (var priceId in priceIds)
+            {
+                var priceIdProvisioningType = await OrderItemHelper.GetProvisioningTypeForItemAsync(priceId.GetAttribute("value"), connectionString);
+                if (priceIdProvisioningType == provisioningType)
+                {
+                    priceId.Click();
+                    break;
+                }
+            }
         }
 
         public bool PracticeListSizeInputIsDisplayed()
