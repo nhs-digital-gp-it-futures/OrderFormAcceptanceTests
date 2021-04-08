@@ -52,6 +52,32 @@
             return orderItem.Build();
         }
 
+        public static async Task<OrderItem> GetOrderItemWithId(Order order, string solutionId, string connectionString, OrderingDbContext context)
+        {
+            var newPricingUnit = await GetPricingUnitAsync(ProvisioningType.Declarative, connectionString);
+
+            var pricingUnit = await context.FindAsync<PricingUnit>(newPricingUnit.Name) ?? newPricingUnit;
+
+            var selectedItem = (await SupplierInfo.GetPublishedCatalogueItems(connectionString, order.Supplier.Id, CatalogueItemType.Solution))
+                .Single(s => s.CatalogueItemId.ToString().Equals(solutionId));
+
+            var catalogueItem = await context.FindAsync<CatalogueItem>(CatalogueItemId.ParseExact(solutionId))
+                ?? selectedItem.ToDomain();
+
+            var orderItem = new OrderItemBuilder(order.Id)
+                .WithCatalogueItem(catalogueItem)
+                .WithCataloguePriceType(CataloguePriceType.Flat)
+                .WithCurrencyCode()
+                .WithDefaultDeliveryDate(DateTime.Today)
+                .WithPrice(0.01M)
+                .WithPricingTimeUnit(TimeUnit.PerYear)
+                .WithProvisioningType(ProvisioningType.Declarative)
+                .WithPricingUnit(pricingUnit)
+                .WithEstimationPeriod(TimeUnit.PerMonth);
+
+            return orderItem.Build();
+        }
+
         public static async Task<OrderItem> AddRecipientToOrderItem(OrderItem orderItem, IEnumerable<OrderItemRecipient> recipients, OrderingDbContext context)
         {
             List<OrderItemRecipient> validatedRecipients = new();

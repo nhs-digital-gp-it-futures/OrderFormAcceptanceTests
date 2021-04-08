@@ -76,7 +76,12 @@
             var createdAddress = order.Supplier.Address;
             var createdContact = order.SupplierContact;
             value.Should().ContainEquivalentOf(createdAddress.Line1);
-            value.Should().ContainEquivalentOf(createdAddress.Town);
+
+            if (createdAddress.Town is not null)
+            {
+                value.Should().ContainEquivalentOf(createdAddress.Town);
+            }
+
             value.Should().ContainEquivalentOf(createdAddress.Postcode);
             var concattedName = string.Format("{0} {1}", createdContact.FirstName, createdContact.LastName);
             value.Should().ContainEquivalentOf(concattedName);
