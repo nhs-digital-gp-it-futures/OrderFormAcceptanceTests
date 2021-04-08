@@ -4,10 +4,10 @@
     So that I save time and effort when completing my order
 
 Background:
-	Given an incomplete order with catalogue items exists
+    Given an incomplete order with catalogue items exists
     When the Order Form for the existing order is presented
     Then there is the Additional Service section
-	And the User is able to manage the Additional Services section
+    And the User is able to manage the Additional Services section
     
 Scenario: One List Price For Additional Service Added - Select Service Recipient form presented
     Given the Select Additional Service form is presented
