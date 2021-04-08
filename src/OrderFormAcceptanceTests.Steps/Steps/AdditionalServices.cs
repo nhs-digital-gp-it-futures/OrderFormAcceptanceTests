@@ -3,9 +3,12 @@
     using System;
     using System.Threading.Tasks;
     using FluentAssertions;
+    using Microsoft.EntityFrameworkCore;
     using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
     using OrderFormAcceptanceTests.TestData.Builders;
+    using OrderFormAcceptanceTests.TestData.Extensions;
     using OrderFormAcceptanceTests.TestData.Helpers;
     using TechTalk.SpecFlow;
 
@@ -15,6 +18,50 @@
         public AdditionalServices(UITest test, ScenarioContext context)
             : base(test, context)
         {
+        }
+
+        [Given(@"the supplier has multiple Additional Services")]
+        public async Task GivenTheSupplierHasMultipleAdditionalServicesAsync()
+        {
+            var solutionId = await SupplierInfo.GetSolutionWithMultipleAdditionalServices(Test.BapiConnectionString);
+
+            Context.Add(ContextKeys.ChosenItemId, solutionId);
+
+            var supplierId = solutionId.Split('-')[0];
+            var supplier = await DbContext.Supplier.SingleOrDefaultAsync(s => s.Id == supplierId)
+                ?? (await SupplierInfo.GetSupplierWithId(supplierId, Test.BapiConnectionString)).ToDomain();
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            order = new OrderBuilder(order)
+                .WithExistingSupplier(supplier)
+                .WithSupplierContact(ContactHelper.Generate())
+                .WithCommencementDate(DateTime.Today)
+                .WithOrderingPartyContact(ContactHelper.Generate())
+                .Build();
+
+            DbContext.Update(order);
+
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+        }
+
+        [Given(@"the Catalogue Solution for the Additional Services has been added")]
+        public async Task GivenTheCatalogueSolutionForTheAdditionalServicesHasBeenAddedAsync()
+        {
+            var solutionId = Context.Get<string>(ContextKeys.ChosenItemId);
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            var orderItem = await OrderItemHelper.GetOrderItemWithId(order, solutionId, Test.BapiConnectionString, DbContext);
+
+            order.AddOrUpdateOrderItem(orderItem);
+
+            DbContext.Update(order);
+
+            await DbContext.SaveChangesAsync();
         }
 
         [StepDefinition(@"the User is able to manage the Additional Services section")]

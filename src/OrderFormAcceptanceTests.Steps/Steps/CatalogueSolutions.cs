@@ -77,6 +77,7 @@
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Catalogue Solution").Should().BeTrue();
         }
 
+        [Then(@"the Additional Services are displayed in alphabetical order")]
         [Then(@"they are displayed in alphabetical order")]
         public void ThenTheyAreDisplayedInAlphabeticalOrder()
         {

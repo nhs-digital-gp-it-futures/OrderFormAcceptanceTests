@@ -30,6 +30,16 @@
             return await SqlExecutor.ExecuteAsync<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType });
         }
 
+        public static async Task<string> GetSolutionWithMultipleAdditionalServices(string connectionString)
+        {
+            var query = @"SELECT SolutionId
+                        FROM dbo.AdditionalService
+                        GROUP BY SolutionId
+                        ORDER BY COUNT(*) DESC";
+
+            return (await SqlExecutor.ExecuteAsync<string>(connectionString, query, null)).First();
+        }
+
         public static async Task<IEnumerable<CatalogueItemModel>> GetPublishedCatalogueItems(string connectionString, string supplierId, CatalogueItemType itemType)
         {
             var query = $@"SELECT *,

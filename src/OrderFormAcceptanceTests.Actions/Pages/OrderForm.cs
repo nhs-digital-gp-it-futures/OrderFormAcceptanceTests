@@ -703,6 +703,13 @@
             return value;
         }
 
+        public IEnumerable<string> GetRadioButtonValues()
+        {
+            Wait.Until(d => NumberOfRadioButtonsDisplayed() > 0);
+            var values = Driver.FindElements(Objects.Pages.Common.RadioButton).Select(s => s.GetAttribute("value"));
+            return values;
+        }
+
         public List<string> GetRadioButtonText()
         {
             return Driver.FindElements(Objects.Pages.Common.RadioButtonLabel).Select(s => s.Text).ToList();
