@@ -83,7 +83,7 @@
             var query = @"SELECT ProvisioningTypeId
                             FROM dbo.CataloguePrice
                             WHERE CataloguePriceId = @itemId;";
-            var result = (await SqlExecutor.ExecuteAsync<ProvisioningType>(connectionString, query, new { itemId })).First();
+            var result = (await SqlExecutor.ExecuteAsync<ProvisioningType>(connectionString, query, new { itemId })).Single();
             return result;
         }
 
@@ -93,7 +93,7 @@
                         FROM dbo.CatalogueItem
                         WHERE [Name] = @itemName;";
 
-            var result = (await SqlExecutor.ExecuteAsync<string>(bapiConnectionString, query, new { itemName })).First();
+            var result = (await SqlExecutor.ExecuteAsync<string>(bapiConnectionString, query, new { itemName })).Single();
 
             return result;
         }
