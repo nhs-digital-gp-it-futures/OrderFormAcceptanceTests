@@ -98,16 +98,15 @@ Scenario: Catalogue Solutions - Select a Service Recipient
 	And the Call Off Ordering Party's Name (organisation name) and ODS code are presented as a Service Recipient
 
 Scenario: Catalogue Solutions - No Service Recipient for the Catalogue Solution selected
-	Given the User is presented with the Service Recipients for the Order after selecting the variable flat price
+	Given the service recipients are displayed
 	And no Service Recipient is selected
 	When they choose to continue
 	Then the User is informed they have to select a Service Recipient
 
 Scenario: Catalogue Solutions - Go back from select a service recipient
-	Given the User is presented with the Service Recipients for the Order after selecting the variable flat price
+	Given the service recipients are displayed
 	When the User chooses to go back
-	Then all the available prices for that Catalogue Solution are presented
-	And the User's selected price is selected
+	Then the correct page is displayed
 
 Scenario: Catalogue Solutions - edit price screen - Flat price with per patient order type selected
 	Given the User is presented with the Service Recipients for the Order after selecting the per patient flat price

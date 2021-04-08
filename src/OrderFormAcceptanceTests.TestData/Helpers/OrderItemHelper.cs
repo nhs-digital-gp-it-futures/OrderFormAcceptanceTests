@@ -78,6 +78,26 @@
             return result;
         }
 
+        public static async Task<ProvisioningType> GetProvisioningTypeForItemAsync(string itemId, string connectionString)
+        {
+            var query = @"SELECT ProvisioningTypeId
+                            FROM dbo.CataloguePrice
+                            WHERE CataloguePriceId = @itemId;";
+            var result = (await SqlExecutor.ExecuteAsync<ProvisioningType>(connectionString, query, new { itemId })).First();
+            return result;
+        }
+
+        public static async Task<string> GetCatalogueItemIdForNameAsync(string itemName, string bapiConnectionString)
+        {
+            var query = @"SELECT CatalogueItemId
+                        FROM dbo.CatalogueItem
+                        WHERE [Name] = @itemName;";
+
+            var result = (await SqlExecutor.ExecuteAsync<string>(bapiConnectionString, query, new { itemName })).First();
+
+            return result;
+        }
+
         private static async Task<PricingUnit> GetPricingUnitAsync(ProvisioningType provisioningType, string bapiConnectionString)
         {
             var query = @"SELECT pu.[Name],
