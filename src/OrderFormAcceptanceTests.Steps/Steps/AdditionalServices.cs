@@ -1,6 +1,7 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.EntityFrameworkCore;
@@ -217,6 +218,8 @@
 
             GivenTheUserHasSelectedAServiceRecipient();
             common.WhenTheyChooseToContinue();
+            Test.Pages.OrderForm.GetPageTitle().Should().ContainEquivalentOf("Planned delivery date");
+            common.WhenTheyChooseToContinue();
         }
 
         [Then(@"they are presented with the Additional Service edit form for flat list price")]
@@ -252,7 +255,7 @@
         [Given(@"the User has selected a Service Recipient")]
         public void GivenTheUserHasSelectedAServiceRecipient()
         {
-            Test.Pages.OrderForm.ClickRadioButton();
+            Test.Pages.OrderForm.ClickCheckbox();
         }
 
         [When(@"the quantity is above the max value")]
@@ -287,6 +290,8 @@
         [Given(@"the edit Additional Service form for flat list price with variable \(on demand\) order type is presented")]
         public void GivenTheEditAdditionalServiceFormForFlatListPriceWithVariablePatientNumbersOrderTypeIsPresented()
         {
+            var common = new CommonSteps(Test, Context);
+            common.WhenTheOrderFormForTheExistingOrderIsPresented();
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
             GivenTheUserChoosesToEditTheSavedAdditionalService();
         }
@@ -304,12 +309,13 @@
         }
 
         [Then(@"the pricing values will be populated with the values that was saved by the User")]
-        public void ThenThePricingValuesWillBePopulatedWithTheValuesThatWasSavedByTheUser()
+        public async Task ThenThePricingValuesWillBePopulatedWithTheValuesThatWasSavedByTheUserAsync()
         {
             var quantityFromPage = Test.Pages.OrderForm.GetQuantity();
             var priceFromPage = Test.Pages.OrderForm.GetPriceInputValue();
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
 
-            var orderItem = (OrderItem)Context[ContextKeys.CreatedAdditionalServiceOrderItem];
+            var orderItem = order.OrderItems.Single(i => i.CatalogueItem.CatalogueItemType == CatalogueItemType.AdditionalService);
 
             quantityFromPage.Should().Be(orderItem.OrderItemRecipients[0].Quantity.ToString());
             priceFromPage.Should().MatchRegex(@"^[0-9]*(\.[0-9]{2,3})?$");
@@ -358,6 +364,12 @@
         public void ThenTheyArePresentedWithTheSelectAdditionalServiceForm()
         {
             Test.Pages.OrderForm.EditAdditionalServicesSectionDisplayed().Should().BeTrue();
+        }
+
+        [Then(@"they are presented with the Planned delivery date")]
+        public void ThenTheyArePresentedWithThePlannedDeliveryDate()
+        {
+            Test.Pages.OrderForm.GetPageTitle().Should().ContainEquivalentOf("Planned delivery date");
         }
     }
 }

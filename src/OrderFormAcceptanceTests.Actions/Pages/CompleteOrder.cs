@@ -13,9 +13,10 @@
 
         public bool FundingSourceYesContentIsDisplayed()
         {
+            const string content = "it'll be automatically processed and paid for";
             try
             {
-                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.FundingSourceContent).Text.Contains("As GMS is your only source", StringComparison.OrdinalIgnoreCase));
+                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.FundingSourceContent).Text.Contains(content, StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch
@@ -26,9 +27,10 @@
 
         public bool FundingSourceYesContentOnCompletedScreenIsDisplayed()
         {
+            const string content = "It'll be automatically processed and paid for";
             try
             {
-                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.CompletedPageDescription).Text.Contains("It'll be automatically processed", StringComparison.OrdinalIgnoreCase));
+                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.CompletedPageDescription).Text.Contains(content, StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch
@@ -39,9 +41,10 @@
 
         public bool FundingSourceNoContentIsDisplayed()
         {
+            const string content = "As you're not paying for this order in full using your GP IT Futures centrally held funding allocation";
             try
             {
-                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.FundingSourceContent).Text.Contains("As GMS is not your only source", StringComparison.OrdinalIgnoreCase));
+                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.FundingSourceContent).Text.Contains(content, StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch
@@ -52,9 +55,10 @@
 
         public bool FundingSourceNoContentOnCompletedScreenIsDisplayed()
         {
+            const string content = "As your centrally held funding allocation is not the only source of funding";
             try
             {
-                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.CompletedPageDescription).Text.Contains("not be automatically processed", StringComparison.OrdinalIgnoreCase));
+                Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.CompletedPageDescription).Text.Contains(content, StringComparison.OrdinalIgnoreCase));
                 return true;
             }
             catch

@@ -140,14 +140,12 @@ Scenario: Additional Services - Flat price with variable order type selected
 	And the price input is autopopulated with the list price for the flat list price selected
 	And the save button is enabled
 
-@ignore
 Scenario: Additional Services - Mandatory data missing
 	Given the User is on the Edit Price form
 	When the User chooses to save
 	Then the Additional Service is not saved
 	And the reason is displayed
 
-@ignore
 Scenario: Additional Services - Data exceeds the maximum length
 	Given the User is on the Edit Price form
 	When the quantity is above the max value
@@ -155,14 +153,12 @@ Scenario: Additional Services - Data exceeds the maximum length
 	Then the Additional Service is not saved 
 	And the reason is displayed
 
-@ignore
 Scenario: Additional Services - Validation Error Message Anchors
 	Given the User is on the Edit Price form
 	When the User chooses to save
 	And the user selects an error link in the Error Summary
 	Then they will be navigated to the relevant part of the page
 
-@ignore PUT request broken (Error displayed)
 Scenario: Additional Services - All data are valid
 	Given the User is on the Edit Price form
 	When all data is complete and valid
@@ -170,21 +166,18 @@ Scenario: Additional Services - All data are valid
 	Then the Additional Service is saved
 	And the content validation status of the additional-services section is complete
 
-@ignore
 Scenario: Additional Services - Go back before save
 	Given the User is on the Edit Price form
 	When the User chooses to go back
-	Then they are presented with the Service Recipients saved in the Order
+	Then they are presented with the Planned delivery date
 
-@ignore Error when accessing additional services after adding item
 Scenario: Additional Services - Go back post save
-	Given an additional service with a flat price variable Declarative order type is saved to the order
+	Given an additional service with a flat price variable Patient order type is saved to the order
 	And the Order Form for the existing order is presented
 	And the edit Additional Service form for flat list price with variable (patient numbers) order type is presented
 	When the User chooses to go back
 	Then the Additional Service dashboard is presented
 
-@ignore Error when accessing additional services after adding item
 Scenario: Additional Services - Values populated after editing and saving - Flat List Price Variable (Patient Numbers)
 	Given an additional service with a flat price variable Patient order type is saved to the order
 	And the edit Additional Service form for flat list price with variable (patient numbers) order type is presented	
@@ -203,7 +196,6 @@ Scenario: Additional Services - Values populated after editing and saving - Flat
 	And the edit Additional Service form for flat list price with variable (on demand) order type is presented
 	Then the pricing values will be populated with the values that was saved by the User
 
-@ignore Error when accessing additional services after adding item
 Scenario: Additional Services added - View Additional Services
 	Given there is one or more Additional Services added to the order
 	And the User has chosen to manage the Additional Services section
