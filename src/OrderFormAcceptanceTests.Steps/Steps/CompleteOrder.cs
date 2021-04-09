@@ -195,6 +195,8 @@
                additionalServicesViewed: true,
                associatedServicesViewed: true);
 
+            DbContext.Update(order);
+
             await DbContext.SaveChangesAsync();
 
             Test.Driver.Navigate().Refresh();

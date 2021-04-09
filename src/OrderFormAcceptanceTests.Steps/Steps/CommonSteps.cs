@@ -127,7 +127,7 @@
             var context = (OrderingDbContext)Context[ContextKeys.DbContext];
             var user = (User)Context[ContextKeys.User];
             var createModel = new CreateOrderModel { Description = RandomInformation.RandomInformationText(), OrganisationId = user.PrimaryOrganisationId };
-            var order = await OrderHelpers.CreateOrderAsync(createModel, context, user, Test.BapiConnectionString, Test.IsapiConnectionString);
+            var order = await OrderHelpers.CreateOrderAsync(createModel, context, user, Test.IsapiConnectionString);
 
             Context.Add(ContextKeys.CreatedOrder, order);
         }
@@ -214,7 +214,7 @@
             var completeOrder = new CompleteOrder(Test, Context);
 
             await completeOrder.GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled("yes");
-            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
 
             var result = order.Complete();
 
@@ -222,6 +222,8 @@
             {
                 throw new DbUpdateException($"Order {order.CallOffId} not completed");
             }
+
+            DbContext.Update(order);
 
             await DbContext.SaveChangesAsync();
 
@@ -759,11 +761,7 @@
         [Then(@"the completed order summary contains the date the Order was completed")]
         public void ThenTheCompletedOrderSummaryContainsTheDateTheOrderWasCompleted()
         {
-            var completedOrders = Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders();
-
-            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
-
-            completedOrders.All(o => o.Completed.HasValue).Should().BeTrue();
+            Test.Pages.PreviewOrderSummary.GetDateOrderCompletedValue().Should().NotBeNullOrEmpty();
         }
 
         [Then(@"the Order is not completed")]
