@@ -37,6 +37,8 @@
 
         public static By ItemCost => CustomBy.DataTestId("item-cost");
 
+        public static By CostPerYear => CustomBy.DataTestId("costPerYear");
+
         public static By TotalOneOffCost => CustomBy.DataTestId("total-cost-value");
 
         public static By TotalAnnualCost => CustomBy.DataTestId("total-year-cost-value");
