@@ -50,7 +50,7 @@ Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per 
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
 	And the Quantity of each item is the concatenation "[Quantity] [Estimation period]" i.e. [Quantity] per year
 	And the Planned delivery date of each item is displayed
-	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
+	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 
 Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per month estimation period
 	Given a catalogue solution with a flat price variable (On-demand) order type with the quantity period per month is saved to the order
@@ -72,7 +72,7 @@ Scenario: Preview Order Summary - Flat with Variable (Per-Patient) order type
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
 	And the Quantity of each item is the concatenation [Quantity] per year
 	And the Planned delivery date of each item is displayed
-	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
+	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 
 Scenario: Preview Order Summary - Catalogue Solution Flat with Variable (Declarative) order type
 	Given a catalogue solution with a flat price variable (Declarative) order type is saved to the order 1 
@@ -105,7 +105,7 @@ Scenario: Preview Order Summary - Additional Service Flat with Variable (Patient
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
 	And the Quantity of each item is the concatenation [Quantity] per year
 	And the Planned delivery date of each item is displayed
-	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
+	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 
 Scenario: Preview Order Summary - Additional Service Flat with Variable (OnDemand) order type per year
 	Given an associated service with a flat price variable (On-Demand) order type with the quantity period per year is saved to the order
@@ -116,7 +116,7 @@ Scenario: Preview Order Summary - Additional Service Flat with Variable (OnDeman
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
 	And the Quantity of each item is the concatenation [Quantity] per year
 	And the Planned delivery date of each item is displayed
-	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
+	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 
 Scenario: Preview Order Summary - Additional Service Flat with Variable (On-Demand) order type per month
 	Given an additional service with a flat price variable On-Demand order type with the quantity period per month is saved to the order
@@ -148,7 +148,7 @@ Scenario: Preview Order Summary - Associated Service Flat with Variable (OnDeman
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
 	And the Quantity of each item is the concatenation [Quantity] per year
 	And the Planned delivery date of each item is displayed
-	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] rounded up to two decimal places
+	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 
 Scenario: Preview Order Summary - Associated Service Flat with Variable (On-Demand) order type per month
 	Given an associated service with a flat price variable (On-Demand) order type with the quantity period per month is saved to the order

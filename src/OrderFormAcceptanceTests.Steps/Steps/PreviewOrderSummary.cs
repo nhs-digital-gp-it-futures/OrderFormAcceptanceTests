@@ -274,7 +274,7 @@
             var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
             var expectedOrderItem = order.OrderItems[0];
             var expectedValue = FormatDecimal(Math.Round(expectedOrderItem.CalculateTotalCostPerYear(), 2));
-            var cost = Test.Pages.PreviewOrderSummary.GetItemCostPerYear();
+            var cost = Test.Pages.PreviewOrderSummary.GetItemCost();
             cost.Should().Be(expectedValue.ToString());
         }
 
