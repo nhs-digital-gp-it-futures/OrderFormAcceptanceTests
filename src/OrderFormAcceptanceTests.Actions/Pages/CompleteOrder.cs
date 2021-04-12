@@ -13,7 +13,7 @@
 
         public bool FundingSourceYesContentIsDisplayed()
         {
-            const string content = "it'll be automatically processed and paid for";
+            const string content = "payment will be centrally processed";
             try
             {
                 Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.FundingSourceContent).Text.Contains(content, StringComparison.OrdinalIgnoreCase));
@@ -27,7 +27,7 @@
 
         public bool FundingSourceYesContentOnCompletedScreenIsDisplayed()
         {
-            const string content = "It'll be automatically processed and paid for";
+            const string content = "payment will be centrally processed";
             try
             {
                 Wait.Until(d => d.FindElement(Objects.Pages.CompleteOrder.CompletedPageDescription).Text.Contains(content, StringComparison.OrdinalIgnoreCase));
