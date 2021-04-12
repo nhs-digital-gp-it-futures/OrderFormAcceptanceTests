@@ -649,6 +649,8 @@
         }
 
         [Given(@"the User chooses to edit a saved Catalogue Solution")]
+        [Given(@"the User chooses to edit a saved Additional Service")]
+
         public void GivenTheUserChoosesToEditASavedCatalogueSolution()
         {
             Test.Pages.OrderForm.ClickAddedCatalogueItem();

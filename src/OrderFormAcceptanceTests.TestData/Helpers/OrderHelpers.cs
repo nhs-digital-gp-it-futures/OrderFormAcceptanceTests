@@ -1,6 +1,7 @@
 ﻿namespace OrderFormAcceptanceTests.TestData.Helpers
 {
     using System.Linq;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using OrderFormAcceptanceTests.Domain;
@@ -36,6 +37,7 @@
                 {
                     Id = model.OrganisationId,
                     OdsCode = organisationDetails.OdsCode,
+                    Address = JsonSerializer.Deserialize<Address>(organisationDetails.Address),
                 };
 
             var order = new OrderBuilder(model.Description, user, orderingParty)
