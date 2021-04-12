@@ -172,5 +172,10 @@
         {
             Driver.FindElement(Objects.Pages.PreviewOrderSummary.SummaryDescription).Text.Should().ContainEquivalentOf(expectedText);
         }
+
+        public string GetItemCostPerYear()
+        {
+            return Driver.FindElement(Objects.Pages.PreviewOrderSummary.CostPerYear).Text;
+        }
     }
 }
