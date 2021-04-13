@@ -131,7 +131,7 @@
 
             await new CommonSteps(Test, Context).GivenAnIncompleteOrderExists();
 
-            var order = (Order)Context[ContextKeys.CreatedOrder];
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
 
             var supplier = await DbContext.Supplier.SingleOrDefaultAsync(s => s.Id == "100000")
                 ?? (await SupplierInfo.GetSupplierWithId("100000", Test.BapiConnectionString)).ToDomain();
@@ -189,7 +189,7 @@
 
             await OrderProgressHelper.SetProgress(
                context: DbContext,
-               order: (Order)Context[ContextKeys.CreatedOrder],
+               order: order,
                serviceRecipientsViewed: true,
                catalogueSolutionsViewed: true,
                additionalServicesViewed: true,
@@ -198,6 +198,9 @@
             DbContext.Update(order);
 
             await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
 
             Test.Driver.Navigate().Refresh();
         }

@@ -1,5 +1,6 @@
 ﻿namespace OrderFormAcceptanceTests.TestData.Helpers
 {
+    using System;
     using System.Linq;
     using System.Text.Json;
     using System.Threading.Tasks;
@@ -23,6 +24,7 @@
                     .Include(o => o.OrderItems).ThenInclude(i => i.CatalogueItem)
                     .Include(o => o.OrderItems).ThenInclude(i => i.OrderItemRecipients).ThenInclude(r => r.Recipient)
                     .Include(o => o.OrderItems).ThenInclude(i => i.PricingUnit)
+                    .Include(o => o.Progress)
                     .AsNoTracking()
                     .SingleOrDefaultAsync();
 
@@ -37,7 +39,7 @@
                 {
                     Id = model.OrganisationId,
                     OdsCode = organisationDetails.OdsCode,
-                    Address = JsonSerializer.Deserialize<Address>(organisationDetails.Address),
+                    Address = AddressHelper.Generate(),
                 };
 
             var order = new OrderBuilder(model.Description, user, orderingParty)
@@ -47,6 +49,23 @@
             await dbContext.SaveChangesAsync();
 
             return order;
+        }
+
+        public static async Task<Order> GetFullOrderTrackedAsync(CallOffId callOffId, OrderingDbContext context)
+        {
+            var fullOrder = await context.Order
+                .Where(o => o.Id == callOffId.Id)
+                    .Include(o => o.OrderingParty).ThenInclude(p => p.Address)
+                    .Include(o => o.OrderingPartyContact)
+                    .Include(o => o.Supplier).ThenInclude(s => s.Address)
+                    .Include(o => o.SupplierContact)
+                    .Include(o => o.OrderItems).ThenInclude(i => i.CatalogueItem)
+                    .Include(o => o.OrderItems).ThenInclude(i => i.OrderItemRecipients).ThenInclude(r => r.Recipient)
+                    .Include(o => o.OrderItems).ThenInclude(i => i.PricingUnit)
+                    .Include(o => o.Progress)
+                    .SingleOrDefaultAsync();
+
+            return fullOrder;
         }
     }
 }

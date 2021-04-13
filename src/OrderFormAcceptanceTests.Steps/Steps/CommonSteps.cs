@@ -135,7 +135,7 @@
         [Given(@"the Call Off Ordering Party section is complete")]
         public async Task GivenTheCallOffOrderingPartySectionIsComplete()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
 
             var orderBuilder = new OrderBuilder(order)
                 .WithOrderingPartyContact(ContactHelper.Generate());
@@ -153,7 +153,7 @@
         [Given(@"a supplier has been selected")]
         public async Task GivenASupplierHasBeenSelected()
         {
-            var order = (Order)Context[ContextKeys.CreatedOrder];
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
 
             var supplier = await DbContext.Supplier.SingleOrDefaultAsync(s => s.Id == "100000")
                 ?? (await SupplierInfo.GetSupplierWithId("100000", Test.BapiConnectionString)).ToDomain();
@@ -176,7 +176,7 @@
         public async Task GivenAnIncompleteOrderWithCatalogueItemsExists()
         {
             await GivenAnIncompleteOrderExists();
-            var order = (Order)Context[ContextKeys.CreatedOrder];
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
 
             order.OrderingPartyContact = ContactHelper.Generate();
             order.CommencementDate = DateTime.Today;
@@ -200,21 +200,16 @@
             Context.Add(ContextKeys.CreatedOrder, order);
         }
 
-        [Given(@"my organisation has one or more orders")]
-        public async Task GivenOneOrMoreOrdersExist()
-        {
-            await GivenACompleteOrderExists();
-        }
-
         [Given(@"a complete order exists")]
         [Given(@"an order is completed")]
         [Given(@"a User has completed an Order")]
+        [Given(@"my organisation has one or more orders")]
         public async Task GivenACompleteOrderExists()
         {
             var completeOrder = new CompleteOrder(Test, Context);
 
             await completeOrder.GivenTheOrderIsCompleteEnoughSoThatTheCompleteOrderButtonIsEnabled("yes");
-            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var order = await OrderHelpers.GetFullOrderTrackedAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
 
             var result = order.Complete();
 
@@ -223,11 +218,10 @@
                 throw new DbUpdateException($"Order {order.CallOffId} not completed");
             }
 
-            DbContext.Update(order);
-
             await DbContext.SaveChangesAsync();
 
-            (await DbContext.Order.SingleAsync(o => o.CallOffId == order.CallOffId)).Completed.Should().NotBeNull();
+            var completedOrder = await OrderHelpers.GetFullOrderAsync(order.CallOffId, DbContext);
+            completedOrder.Completed.Should().NotBeNull();
 
             Test.Driver.Navigate().Refresh();
         }

@@ -17,6 +17,7 @@ namespace NHSD.BuyingCatalogue.Ordering.Persistence.Data
                 .HasConversion(id => id.ToString(), id => CallOffId.Parse(id).Id);
 
             builder.Property(o => o.CommencementDate).HasColumnType("date");
+            builder.Property(o => o.Completed);
             builder.Property(o => o.Created).HasDefaultValueSql("(getutcdate())");
 
             builder.Property(o => o.Description)
