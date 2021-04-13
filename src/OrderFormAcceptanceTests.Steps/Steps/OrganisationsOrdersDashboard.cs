@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using FluentAssertions;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData.Models;
     using TechTalk.SpecFlow;
@@ -158,10 +159,31 @@
             Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
         }
 
+        [Then(@"there is a control I can use to view the completed Version of the order summary")]
+        public void ThenThereIsAControlICanUseToViewTheCompletedVersionOfTheOrderSummary()
+        {
+            var callOffId = Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId.ToString();
+            var (tagName, text, url) = Test.Pages.OrganisationsOrdersDashboard.GetOrderSummaryLink(callOffId);
+            tagName.Should().BeEquivalentTo("a");
+            text.Should().ContainEquivalentOf(callOffId);
+            url.Should().ContainEquivalentOf("summary");
+        }
+
         [Then(@"there isn't a last updated column in the completed orders table")]
         public void ThenThereIsNoLastUpdatedColumnInTheCompletedOrdersTable()
         {
             Test.Pages.OrganisationsOrdersDashboard.CompletedOrdersTableHasNoLastUpdateDate();
+        }
+
+        [Then(@"the date that the order was completed is displayed in the date completed column")]
+        public void ThenTheDateThatTheOrderWasCompletedIsDisplayedInTheDateCompletedColumn()
+        {
+            var completedOrders = Test.Pages.OrganisationsOrdersDashboard.GetListOfCompletedOrders();
+
+            foreach (var order in completedOrders)
+            {
+                order.Completed.Should().NotBeNull();
+            }
         }
 
         [Then(@"the completed orders are presented in descending order by the date completed")]
