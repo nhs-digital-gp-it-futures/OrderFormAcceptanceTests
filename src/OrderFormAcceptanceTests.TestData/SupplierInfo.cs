@@ -30,6 +30,19 @@
             return await SqlExecutor.ExecuteAsync<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType });
         }
 
+        public static async Task<string> GetSolutionWithMultipleAssociatedServices(string connectionString)
+        {
+            var query = @"SELECT TOP (1000) s.Id
+                          FROM dbo.AssociatedService AS a
+                          INNER JOIN CatalogueItem ci ON ci.CatalogueItemId = a.AssociatedServiceId
+                          INNER JOIN Supplier s on s.Id = ci.SupplierId
+                          WHERE ci.PublishedStatusId = 3
+                          GROUP BY s.Id
+                          ORDER BY COUNT(*) DESC";
+
+            return (await SqlExecutor.ExecuteAsync<string>(connectionString, query, null)).First();
+        }
+
         public static async Task<string> GetSolutionWithMultipleAdditionalServices(string connectionString)
         {
             var query = @"SELECT SolutionId

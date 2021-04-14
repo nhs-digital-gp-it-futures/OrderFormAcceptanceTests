@@ -78,6 +78,7 @@
         }
 
         [Then(@"the Additional Services are displayed in alphabetical order")]
+        [Then(@"the Associated Services are displayed in alphabetical order")]
         [Then(@"they are displayed in alphabetical order")]
         public void ThenTheyAreDisplayedInAlphabeticalOrder()
         {

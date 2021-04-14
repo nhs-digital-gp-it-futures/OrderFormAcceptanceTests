@@ -344,3 +344,9 @@ Scenario: Associated Services - Published associated services display
 	Given the User has chosen to manage the Associated Service section
 	When the User has chosen to Add a single Associated Service
 	Then only the published associated services are available for selection
+
+Scenario: Associated Services - Associated Services displayed in alphabetical order
+    Given the supplier has multiple Associated Services
+    And the User has chosen to manage the Associated Service section
+    When the User has chosen to Add a single Associated Service
+    Then the Associated Services are displayed in alphabetical order
