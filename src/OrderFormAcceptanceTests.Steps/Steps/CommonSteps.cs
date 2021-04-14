@@ -127,7 +127,14 @@
         {
             var context = (OrderingDbContext)Context[ContextKeys.DbContext];
             var user = (User)Context[ContextKeys.User];
-            var createModel = new CreateOrderModel { Description = RandomInformation.RandomInformationText(), OrganisationId = user.PrimaryOrganisationId };
+
+            var description = RandomInformation.RandomInformationText();
+            if (description.Length > 100)
+            {
+                description = description.Substring(0, 100);
+            }
+
+            var createModel = new CreateOrderModel { Description = description, OrganisationId = user.PrimaryOrganisationId };
             var order = await OrderHelpers.CreateOrderAsync(createModel, context, user, Test.IsapiConnectionString);
 
             Context.Add(ContextKeys.CreatedOrder, order);
@@ -331,7 +338,7 @@
         {
             var itemTypeId = ConvertType(itemType);
 
-            var publishedItems = await SupplierInfo.GetPublishedCatalogueItems(Test.BapiConnectionString, Context.Get<Order>(ContextKeys.CreatedOrder).Supplier.Id, itemTypeId);
+            var publishedItems = await SupplierInfo.GetAllPublishedItemsOfTypeAsync(Test.BapiConnectionString, Context.Get<Order>(ContextKeys.CreatedOrder).Supplier.Id, itemTypeId);
 
             var displayedItems = Test.Pages.OrderForm.GetRadioButtonText();
 
@@ -711,6 +718,8 @@
         [When(@"the Order is in the '(.*)' table")]
         public void WhenTheOrderIsInTheTable(string table)
         {
+            Test.Pages.OrderForm.GetPageTitle().Should().ContainEquivalentOf("orders");
+
             List<OrderTableItem> orders;
 
             if (table.Contains("incomplete", StringComparison.InvariantCultureIgnoreCase))
@@ -724,13 +733,7 @@
 
             var order = Context.Get<Order>(ContextKeys.CreatedOrder);
 
-            bool result = false;
-            foreach (var tableOrder in orders)
-            {
-                result = tableOrder.Id == order.CallOffId.ToString();
-            }
-
-            result.Should().BeTrue();
+            orders.Select(s => s.Id).Should().Contain(order.CallOffId.ToString());
         }
 
         [Then(@"there is an indication that the Order has not been processed automatically")]

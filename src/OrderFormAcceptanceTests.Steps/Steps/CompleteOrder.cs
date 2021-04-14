@@ -143,7 +143,7 @@
                 .WithOrderingPartyContact(ContactHelper.Generate())
                 .WithFundingSource(fs);
 
-            var associatedServices = await SupplierInfo.GetPublishedCatalogueItems(Test.BapiConnectionString, supplier.Id, CatalogueItemType.AssociatedService);
+            var associatedServices = await SupplierInfo.GetPublishedCatalogueItemsNoTieredAsync(Test.BapiConnectionString, supplier.Id, CatalogueItemType.AssociatedService);
 
             var selectedItem = associatedServices.First();
 
@@ -210,7 +210,7 @@
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
 
-            var solutions = await SupplierInfo.GetPublishedCatalogueItems(Test.BapiConnectionString, order.Supplier.Id, CatalogueItemType.Solution);
+            var solutions = await SupplierInfo.GetPublishedCatalogueItemsNoTieredAsync(Test.BapiConnectionString, order.Supplier.Id, CatalogueItemType.Solution);
 
             var selectedItem = solutions.First();
 

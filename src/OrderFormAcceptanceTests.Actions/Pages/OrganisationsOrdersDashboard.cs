@@ -195,7 +195,7 @@
                     Created = DateTime.Parse(row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCreatedDate).Text),
                     LastUpdatedBy = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderLastUpdatedBy).Text,
                     Completed = DateTime.Parse(row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderCompletedDate).Text),
-                    AutomaticallyProcessed = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderAutomaticallyProcessed).Text.Equals("yes", StringComparison.OrdinalIgnoreCase),
+                    AutomaticallyProcessed = row.FindElement(Objects.Pages.OrganisationsOrdersDashboard.GenericExistingOrderAutomaticallyProcessed).Text.Contains("yes", StringComparison.OrdinalIgnoreCase),
                 };
 
                 listOfCompletedOrders.Add(item);

@@ -22,7 +22,7 @@
             string connectionString,
             TimeUnit timeUnit = TimeUnit.PerYear)
         {
-            var solution = await SupplierInfo.GetPublishedCatalogueItems(connectionString, order.Supplier.Id, catalogueItemType);
+            var solution = await SupplierInfo.GetPublishedCatalogueItemsNoTieredAsync(connectionString, order.Supplier.Id, catalogueItemType);
 
             var selectedItem = RandomInformation.GetRandomItem(solution);
 
@@ -58,7 +58,7 @@
 
             var pricingUnit = await context.FindAsync<PricingUnit>(newPricingUnit.Name) ?? newPricingUnit;
 
-            var selectedItem = (await SupplierInfo.GetPublishedCatalogueItems(connectionString, order.Supplier.Id, CatalogueItemType.Solution))
+            var selectedItem = (await SupplierInfo.GetPublishedCatalogueItemsNoTieredAsync(connectionString, order.Supplier.Id, CatalogueItemType.Solution))
                 .Single(s => s.CatalogueItemId.ToString().Equals(solutionId));
 
             var catalogueItem = await context.FindAsync<CatalogueItem>(CatalogueItemId.ParseExact(solutionId))

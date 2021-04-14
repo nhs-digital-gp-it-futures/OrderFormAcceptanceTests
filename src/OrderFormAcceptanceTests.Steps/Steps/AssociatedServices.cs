@@ -223,6 +223,7 @@
         public async Task GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder()
         {
             SetOrderAssociatedServicesSectionToComplete();
+
             var order = (Order)Context[ContextKeys.CreatedOrder];
             var orderItem = await OrderItemHelper.CreateOrderItem(
                 order,
