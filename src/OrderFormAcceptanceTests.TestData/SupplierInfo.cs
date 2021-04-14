@@ -35,7 +35,7 @@
             var query = @"SELECT TOP (1000) s.Id
                           FROM dbo.AssociatedService AS a
                           INNER JOIN CatalogueItem ci ON ci.CatalogueItemId = a.AssociatedServiceId
-                          INNER JOIN Supplier AS s on s.Id = ci.SupplierId
+                          INNER JOIN Supplier AS s ON s.Id = ci.SupplierId
                           WHERE ci.PublishedStatusId = 3
                           GROUP BY s.Id
                           ORDER BY COUNT(*) DESC;";
