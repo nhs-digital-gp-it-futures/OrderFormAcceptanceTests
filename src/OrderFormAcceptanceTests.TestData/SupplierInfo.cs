@@ -38,7 +38,7 @@
                           INNER JOIN Supplier s on s.Id = ci.SupplierId
                           WHERE ci.PublishedStatusId = 3
                           GROUP BY s.Id
-                          ORDER BY COUNT(*) DESC";
+                          ORDER BY COUNT(*) DESC;";
 
             return (await SqlExecutor.ExecuteAsync<string>(connectionString, query, null)).First();
         }
