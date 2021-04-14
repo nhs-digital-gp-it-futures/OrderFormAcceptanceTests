@@ -27,11 +27,7 @@
         [Given(@"the supplier has multiple Associated Services")]
         public async Task GivenTheSupplierHasMultipleAssociatedServicesAsync()
         {
-            var solutionId = await SupplierInfo.GetSolutionWithMultipleAssociatedServices(Test.BapiConnectionString);
-
-            Context.Add(ContextKeys.ChosenItemId, solutionId);
-
-            var supplierId = solutionId.Split('-')[0];
+            var supplierId = await SupplierInfo.GetSupplierWithMultipleAssociatedServices(Test.BapiConnectionString);
             var supplier = await DbContext.Supplier.SingleOrDefaultAsync(s => s.Id == supplierId)
                 ?? (await SupplierInfo.GetSupplierWithId(supplierId, Test.BapiConnectionString)).ToDomain();
 

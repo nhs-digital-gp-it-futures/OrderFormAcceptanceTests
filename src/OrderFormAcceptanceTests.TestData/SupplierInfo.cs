@@ -30,7 +30,7 @@
             return await SqlExecutor.ExecuteAsync<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType });
         }
 
-        public static async Task<string> GetSolutionWithMultipleAssociatedServices(string connectionString)
+        public static async Task<string> GetSupplierWithMultipleAssociatedServices(string connectionString)
         {
             var query = @"SELECT TOP (1000) s.Id
                           FROM dbo.AssociatedService AS a
