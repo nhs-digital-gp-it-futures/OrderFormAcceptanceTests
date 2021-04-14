@@ -30,6 +30,19 @@
             return await SqlExecutor.ExecuteAsync<SupplierDetails>(connectionString, query, new { catalogueItemType = (int)catalogueItemType });
         }
 
+        public static async Task<string> GetSupplierWithMultipleAssociatedServices(string connectionString)
+        {
+            var query = @"SELECT TOP (1000) s.Id
+                          FROM dbo.AssociatedService AS a
+                          INNER JOIN CatalogueItem ci ON ci.CatalogueItemId = a.AssociatedServiceId
+                          INNER JOIN Supplier AS s ON s.Id = ci.SupplierId
+                          WHERE ci.PublishedStatusId = 3
+                          GROUP BY s.Id
+                          ORDER BY COUNT(*) DESC;";
+
+            return (await SqlExecutor.ExecuteAsync<string>(connectionString, query, null)).First();
+        }
+
         public static async Task<string> GetSolutionWithMultipleAdditionalServices(string connectionString)
         {
             var query = @"SELECT SolutionId
@@ -44,11 +57,13 @@
         {
             var query = $@"SELECT *,
                             CatalogueItemTypeId AS 'CatalogueItemType'
-                        FROM dbo.CatalogueItem
-                        WHERE SupplierId = @supplierId
-                        AND PublishedStatusId = 3
-                        AND CatalogueItemTypeId = @itemType
-                        AND CatalogueItemId NOT LIKE 'Auto%';";
+                            FROM dbo.CatalogueItem AS ci
+                            INNER JOIN CataloguePrice AS cp ON cp.CatalogueItemId = ci.CatalogueItemId
+                            WHERE ci.SupplierId = @supplierId
+                            AND ci.PublishedStatusId = 3
+                            AND ci.CatalogueItemTypeId = @itemType
+                            AND ci.CatalogueItemId NOT LIKE 'Auto%'
+                            AND cp.CataloguePriceTypeId = 1;";
 
             return await SqlExecutor.ExecuteAsync<CatalogueItemModel>(connectionString, query, new { supplierId, itemType });
         }

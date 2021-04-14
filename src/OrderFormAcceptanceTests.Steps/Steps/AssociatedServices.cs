@@ -6,8 +6,12 @@
     using System.Threading.Tasks;
     using Bogus;
     using FluentAssertions;
+    using Microsoft.EntityFrameworkCore;
     using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Builders;
+    using OrderFormAcceptanceTests.TestData.Extensions;
     using OrderFormAcceptanceTests.TestData.Helpers;
     using OrderFormAcceptanceTests.TestData.Utils;
     using TechTalk.SpecFlow;
@@ -18,6 +22,30 @@
         public AssociatedServices(UITest test, ScenarioContext context)
             : base(test, context)
         {
+        }
+
+        [Given(@"the supplier has multiple Associated Services")]
+        public async Task GivenTheSupplierHasMultipleAssociatedServicesAsync()
+        {
+            var supplierId = await SupplierInfo.GetSupplierWithMultipleAssociatedServices(Test.BapiConnectionString);
+            var supplier = await DbContext.Supplier.SingleOrDefaultAsync(s => s.Id == supplierId)
+                ?? (await SupplierInfo.GetSupplierWithId(supplierId, Test.BapiConnectionString)).ToDomain();
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            order = new OrderBuilder(order)
+                    .WithExistingSupplier(supplier)
+                    .WithSupplierContact(ContactHelper.Generate())
+                    .WithCommencementDate(DateTime.Today)
+                    .WithOrderingPartyContact(ContactHelper.Generate())
+                    .Build();
+
+            DbContext.Update(order);
+
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
         }
 
         [Then(@"the User is able to manage the Associated Services section")]

@@ -66,6 +66,7 @@
         public static void AssertListOfStringsIsInAscendingOrder(IEnumerable<string> stringList)
         {
             var hexList = stringList
+                .Select(s => s.ToLower()) // Set to lower case as the ordering can be misidentified as out of order with different cases
                 .Select(s => Encoding.UTF8.GetBytes(s)) // Convert to byte[]
                 .Select(h => BitConverter.ToString(h)) // convert byte[] to hex string
                 .Select(r => r.Replace("-", string.Empty)) // remove any '-' characters
