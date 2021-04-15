@@ -204,9 +204,8 @@ Scenario: Additional Services added - View Additional Services
 	And the name of each Additional Service is displayed
 	And they are able to manage each Additional Service 
 
-@ignore Error when accessing additional services after adding item
 Scenario: Additional Services added - section marked as complete
-	Given there is one or more Additional Services added to the order
+	Given an additional service with a flat price variable Patient order type is saved to the order
 	And the User has chosen to manage the Additional Services section
 	And the Additional Services dashboard is presented
 	When the User chooses to continue
