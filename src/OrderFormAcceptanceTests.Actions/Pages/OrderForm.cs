@@ -760,15 +760,7 @@
 
             var unitOfPriceLabels = Driver.FindElements(Objects.Pages.OrderForm.OrderUnit).Select(e => e.Text);
 
-            foreach (var label in unitOfPriceLabels)
-            {
-                if (Regex.Match(label, pattern).Success)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return unitOfPriceLabels.Any(l => Regex.Match(l, pattern).Success);
         }
 
         public bool QuantityInputIsDisplayed(int expected = 1)
