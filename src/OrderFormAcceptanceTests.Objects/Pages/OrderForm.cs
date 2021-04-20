@@ -76,7 +76,7 @@
 
         public static By PriceInput => By.Id("price");
 
-        public static By OrderUnit => CustomBy.DataTestId("unit-of-order");
+        public static By OrderUnit => By.CssSelector("label[for=price]");
 
         public static By Quantity => By.Id("quantity");
 
@@ -99,5 +99,7 @@
         public static By CancelDeleteLink => By.PartialLinkText("Cancel delete");
 
         public static By DeleteSolutionConfirmation => CustomBy.DataTestId("delete-catalogue-confirmation-page-title");
+
+        public static By OrderUnitAssociatedService => CustomBy.DataTestId("unit-of-order");
     }
 }

@@ -129,7 +129,6 @@ Scenario: Additional Services - Select service recipient - Go back
 	When the User chooses to go back
 	Then the User is presented with the correct page
 
-@ignore
 Scenario: Additional Services - Flat price with variable order type selected
 	Given the User is on the Edit Price form
 	Then they are presented with the Additional Service edit form for flat list price
@@ -183,14 +182,13 @@ Scenario: Additional Services - Values populated after editing and saving - Flat
 	And the edit Additional Service form for flat list price with variable (patient numbers) order type is presented	
 	Then the pricing values will be populated with the values that was saved by the User
 
-@ignore Error when accessing additional services after adding item
+@ignore
 Scenario: Additional Services - Values populated after editing and saving - Flat List Price Declarative
 	Given an additional service with a flat price variable Declarative order type is saved to the order
 	And the Order Form for the existing order is presented
 	And the edit Additional Service form for flat list price with declarative order type is presented
 	Then the pricing values will be populated with the values that was saved by the User
 
-@ignore Error when accessing additional services after adding item
 Scenario: Additional Services - Values populated after editing and saving - Flat List Price Variable (On Demand)
 	Given an additional service with a flat price variable On Demand order type with the quantity period per year is saved to the order
 	And the edit Additional Service form for flat list price with variable (on demand) order type is presented
