@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using FluentAssertions;
     using OpenQA.Selenium;
@@ -443,6 +444,11 @@
             }
         }
 
+        public bool AssociatedServiceOrderUnitDisplayed()
+        {
+            return Driver.FindElements(Objects.Pages.OrderForm.OrderUnitAssociatedService).Count == 1;
+        }
+
         public bool AddressDisplayedAndNotEditable()
         {
             try
@@ -750,7 +756,19 @@
 
         public bool OrderUnitIsDisplayed()
         {
-            return Driver.FindElements(Objects.Pages.OrderForm.OrderUnit).Count == 1;
+            const string pattern = "per (.*)( per (month|year)){0,1}";
+
+            var unitOfPriceLabels = Driver.FindElements(Objects.Pages.OrderForm.OrderUnit).Select(e => e.Text);
+
+            foreach (var label in unitOfPriceLabels)
+            {
+                if (Regex.Match(label, pattern).Success)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool QuantityInputIsDisplayed(int expected = 1)

@@ -259,6 +259,11 @@
         }
 
         [Then(@"the item on the Associated Service edit form contains a unit of order")]
+        public void UnitOfOrderAssociatedService()
+        {
+            Test.Pages.OrderForm.AssociatedServiceOrderUnitDisplayed().Should().BeTrue();
+        }
+
         [Then(@"the item on the Catalogue Solution edit form contains a unit of order")]
         [Then(@"the Additional Service edit form contains a unit of order")]
         public void ThenTheItemOnTheCatalogueSolutionEditFormContainsAUnitOfOrder()
