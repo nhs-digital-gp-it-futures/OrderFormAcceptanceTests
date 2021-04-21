@@ -160,6 +160,19 @@
             }
         }
 
+        public bool EditServiceRecipientsButtonIsDisabled()
+        {
+            try
+            {
+                Driver.FindElement(Objects.Pages.OrderForm.EditServiceRecipientsButton).FindElement(By.TagName("span"));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public bool PreviewOrderButtonIsDisabled()
         {
             try
@@ -189,6 +202,11 @@
             {
                 return false;
             }
+        }
+
+        public string GetEditServiceRecipientsButtonText()
+        {
+            return Driver.FindElement(Objects.Pages.Common.DeleteSolutionButton).Text;
         }
 
         public bool IsRadioButtonSelected(int index = 0)
@@ -735,6 +753,13 @@
         {
             return Driver.FindElements(Objects.Pages.OrderForm.PriceInput).Count == 1;
         }
+
+        public void ClearPriceInput()
+        {
+            Wait.Until(d => d.FindElements(Objects.Pages.OrderForm.PriceInput).Count == 1);
+            Driver.FindElement(Objects.Pages.OrderForm.PriceInput).Clear();
+        }
+
 
         public string GetPriceInputValue()
         {
