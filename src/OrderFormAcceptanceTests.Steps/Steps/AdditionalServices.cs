@@ -335,6 +335,7 @@
             Test.Pages.OrderForm.ClickAddSolutionButton();
             Test.Pages.OrderForm.EditAdditionalServicesSectionDisplayed().Should().BeTrue();
         }
+
         [StepDefinition(@"the User selects an Associated Service with only one list price")]
         [Given(@"the User selects an Additional Service with only one list price")]
         public async Task GivenTheUserSelectsAnAdditionalServiceWithOnlyOneListPriceAsync()
@@ -401,7 +402,5 @@
         {
             Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeFalse();
         }
-
-
     }
 }

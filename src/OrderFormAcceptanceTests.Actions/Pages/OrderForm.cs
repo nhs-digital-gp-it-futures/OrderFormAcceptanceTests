@@ -760,7 +760,6 @@
             Driver.FindElement(Objects.Pages.OrderForm.PriceInput).Clear();
         }
 
-
         public string GetPriceInputValue()
         {
             return Driver.FindElement(Objects.Pages.OrderForm.PriceInput).GetAttribute("value");
