@@ -337,5 +337,32 @@
             // order.AssociatedServicesViewed = 1;
             // order.Update(Test.OrdapiConnectionString);
         }
+
+        [Given(@"the Select Associated Service form is presented")]
+        public async Task GivenTheSelectAssociatedServiceFormIsPresentedAsync()
+        {
+            var order = (Order)Context[ContextKeys.CreatedOrder];
+
+            order.OrderingPartyContact = ContactHelper.Generate();
+
+            var supplier = await DbContext.Supplier.SingleOrDefaultAsync(s => s.Id == "10000")
+                ?? (await SupplierInfo.GetSupplierWithId("10000", Test.BapiConnectionString)).ToDomain();
+
+            var orderBuilder = new OrderBuilder(order)
+                .WithExistingSupplier(supplier)
+                .WithSupplierContact(ContactHelper.Generate());
+
+            order = orderBuilder.Build();
+
+            DbContext.Update(order);
+
+            await DbContext.SaveChangesAsync();
+
+            Context.Remove(ContextKeys.CreatedOrder);
+            Context.Add(ContextKeys.CreatedOrder, order);
+
+            WhenTheUserHasChosenToManageTheAssociatedServiceSection();
+            new CommonSteps(Test, Context).WhenTheUserChoosesToAddAOrderItem();
+        }
     }
 }

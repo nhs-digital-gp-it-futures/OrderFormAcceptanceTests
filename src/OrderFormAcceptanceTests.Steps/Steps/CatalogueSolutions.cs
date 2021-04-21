@@ -252,6 +252,7 @@
             Test.Pages.OrderForm.PriceInputIsDisplayed().Should().BeTrue();
         }
 
+        [StepDefinition(@"the price input is autopopulated with the list price value")]
         [Then(@"the price input is autopopulated with the list price for the flat list price selected")]
         public void ThenThePriceInputIsAutopopulatedWithTheListPriceForTheFlatListPriceSelected()
         {

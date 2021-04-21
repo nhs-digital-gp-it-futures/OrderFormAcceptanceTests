@@ -336,6 +336,7 @@
             Test.Pages.OrderForm.EditAdditionalServicesSectionDisplayed().Should().BeTrue();
         }
 
+        [StepDefinition(@"the User selects an Associated Service with only one list price")]
         [Given(@"the User selects an Additional Service with only one list price")]
         public async Task GivenTheUserSelectsAnAdditionalServiceWithOnlyOneListPriceAsync()
         {
@@ -370,6 +371,36 @@
         public void ThenTheyArePresentedWithThePlannedDeliveryDate()
         {
             Test.Pages.OrderForm.GetPageTitle().Should().ContainEquivalentOf("Planned delivery date");
+        }
+
+        [Then(@"the Delete Additional Button is disabled")]
+        public void ThenTheDeleteAdditionalButtonIsDisabled()
+        {
+            Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeTrue();
+        }
+
+        [Then(@"the Edit Service Recipients Button is Disabled")]
+        public void ThenTheEditServiceRecipientsButtonIsDisabled()
+        {
+            Test.Pages.OrderForm.EditServiceRecipientsButtonIsDisabled().Should().BeFalse();
+        }
+
+        [Then(@"the Delete Additional Services Button is showing the correct text")]
+        public void ThenTheDeleteAdditionalServicesButtonIsShowingTheCorrectText()
+        {
+            Test.Pages.OrderForm.GetEditServiceRecipientsButtonText().Should().ContainEquivalentOf("Delete Additional Service");
+        }
+
+        [When(@"the user triggers a validation message")]
+        public void WhenTheUserTriggersAValidationMessage()
+        {
+            Test.Pages.OrderForm.ClearPriceInput();
+        }
+
+        [Then(@"the Delete Additional Button is enabled")]
+        public void ThenTheDeleteAdditionalButtonIsEnabled()
+        {
+            Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeFalse();
         }
     }
 }

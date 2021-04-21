@@ -61,6 +61,7 @@
             Test.Pages.OrderForm.EditAdditionalServicesSectionDisplayed().Should().BeTrue();
         }
 
+        [Then(@"they are presented with the Select Associated Service form")]
         [Then(@"there is the Associated Services section")]
         public void ThenThereIsTheAssociatedServicesSection()
         {

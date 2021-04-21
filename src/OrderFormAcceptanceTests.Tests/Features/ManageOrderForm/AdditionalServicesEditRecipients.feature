@@ -26,3 +26,18 @@ Scenario: Additional Services Edit Recipients - Edit Service Recipients - Go Bac
     When the User chooses to edit the service recipients
     And the User chooses to go back
     Then the Edit Price form displays the same number of recipients as earlier
+
+Scenario: Additional Services - Delete and Edit Buttons are disabled on validation
+    Given the User is on the Edit Price form
+    When the User chooses to save
+    Then the Additional Service is not saved
+    And the Delete Additional Button is disabled
+    And the Edit Service Recipients Button is Disabled 
+    And the Delete Additional Services Button is showing the correct text
+
+Scenario: Additional Services - Enabled Delete Button shows correct Text
+    Given the User chooses to edit a saved Additional Service
+    When the user triggers a validation message 
+    Then the Additional Service is not saved
+    And the Delete Additional Button is enabled
+    And the Delete Additional Services Button is showing the correct text
