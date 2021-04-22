@@ -1018,6 +1018,16 @@
             return Driver.FindElement(Objects.Pages.OrderForm.DeleteSolutionConfirmation).Text;
         }
 
+        public bool GetAssociatedServicesPricingUnit(Order order)
+        {
+            var expected = order.OrderItems
+                .First(s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.AssociatedService)
+                .PricingUnit.Description;
+
+            return Driver.FindElements(Objects.Pages.Common.TableRows).Select(r => r.Text)
+                .Any(t => t.Contains(expected, StringComparison.CurrentCultureIgnoreCase));
+        }
+
         private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
         {
             return Driver.FindElements(Objects.Pages.OrderForm.SupplierOptionsLabels);

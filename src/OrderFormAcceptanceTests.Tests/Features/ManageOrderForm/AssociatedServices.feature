@@ -365,3 +365,18 @@ Scenario: Associated Services - Edit Associated Service
     Then they are presented with the Associated Service edit form
     When the User chooses to go back
     Then they are presented with the Select Associated Service form
+
+    Scenario: Associated Services - View Associated Service
+    Given an Associated Service has been saved to the order
+    When the User has chosen to manage the Associated Service section
+    Then the name of each Associated Service is displayed
+    Then the Order description is displayed
+    And the Unit of order column contains the Unit of order of the Associated Service
+    And there is a control to edit the Associated Service in the order
+
+    Scenario: Associated Services - User chooses to continue
+    Given an Associated Service has been saved to the order
+    When the User has chosen to manage the Associated Service section
+    When the User chooses to continue
+    Then they are presented with the Order dashboard
+    And the content validation status of the associated-services section is complete

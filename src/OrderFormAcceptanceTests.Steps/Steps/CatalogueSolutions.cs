@@ -655,6 +655,7 @@
             Test.Pages.OrderForm.TextDisplayedInPageTitle(pageName).Should().BeTrue();
         }
 
+        [StepDefinition(@"there is a control to edit the Associated Service in the order")]
         [Given(@"the User chooses to edit a saved Catalogue Solution")]
         [Given(@"the User chooses to edit a saved Additional Service")]
 
@@ -826,6 +827,13 @@
                 s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.Solution);
 
             orderItemInDb.CatalogueItem.Id.ToString().Should().BeEquivalentTo(selectedRadioId);
+        }
+
+        [Then(@"the Unit of order column contains the Unit of order of the Associated Service")]
+        public async Task ThenTheUnitOfOrderColumnContainsTheUnitOfOrderOfTheAssociatedServiceAsync()
+        {
+            var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+            Test.Pages.OrderForm.GetAssociatedServicesPricingUnit(order).Should().BeTrue();
         }
     }
 }

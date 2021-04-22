@@ -139,6 +139,7 @@
             Test.Pages.OrderForm.EnterTextIntoTextArea(randomText);
         }
 
+        [Then(@"they are presented with the Order dashboard")]
         [Then(@"the Order is saved")]
         [Then(@"the Order dashboard is presented")]
         [Then(@"the Order tasklist is presented")]
