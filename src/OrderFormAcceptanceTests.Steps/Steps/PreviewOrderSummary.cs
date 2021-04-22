@@ -218,7 +218,12 @@
         {
             var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
             var expectedOrderItem = order.OrderItems[0];
-            var expectedValue = $"{FormatDecimal(expectedOrderItem.Price.Value)} {expectedOrderItem.PricingUnit.Description} {expectedOrderItem.PriceTimeUnit.Value.Description()}".Trim();
+            var expectedValue = $"{FormatDecimal(expectedOrderItem.Price.Value)} {expectedOrderItem.PricingUnit.Description}".Trim();
+
+            if (expectedOrderItem.ProvisioningType != ProvisioningType.OnDemand)
+            {
+                expectedValue += $" {expectedOrderItem.PriceTimeUnit.Value.Description()}";
+            }
 
             var price = Test.Pages.PreviewOrderSummary.GetItemPrice();
             price.Should().Be(expectedValue);
@@ -234,7 +239,7 @@
             var expectedValue = $"{FormatInt(expectedOrderItem.OrderItemRecipients[0].Quantity)} {expectedPeriod.Value.Description()}";
 
             var quantity = Test.Pages.PreviewOrderSummary.GetItemQuantity();
-            quantity.Should().Be(expectedValue);
+            quantity.Should().ContainEquivalentOf(expectedValue);
         }
 
         [Then(@"the Quantity of each item is \[Quantity\]")]
@@ -245,7 +250,7 @@
             var expectedValue = $"{expectedOrderItem.OrderItemRecipients[0].Quantity}";
 
             var quantity = Test.Pages.PreviewOrderSummary.GetItemQuantity();
-            quantity.Should().Be(expectedValue);
+            quantity.Should().ContainEquivalentOf(expectedValue);
         }
 
         [Then(@"the Quantity of each item is the concatenation \[Quantity\] (.*)")]
@@ -256,7 +261,7 @@
             var expectedQuantityValue = $"{expectedOrderItem.OrderItemRecipients[0].Quantity} {period}";
 
             var actualQuantity = Test.Pages.PreviewOrderSummary.GetItemQuantity();
-            actualQuantity.Should().BeEquivalentTo(expectedQuantityValue);
+            actualQuantity.Should().ContainEquivalentOf(expectedQuantityValue);
         }
 
         [Then(@"the Planned delivery date of each item is displayed")]
