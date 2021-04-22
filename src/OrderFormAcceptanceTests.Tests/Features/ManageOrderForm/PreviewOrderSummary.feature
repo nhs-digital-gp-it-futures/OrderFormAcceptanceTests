@@ -48,7 +48,7 @@ Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per 
 	And the item ID of each item is displayed
 	And the item name of each item is the Catalogue Solution name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
-	And the Quantity of each item is the concatenation "[Quantity] [Estimation period]" i.e. [Quantity] per year
+	And the Quantity of each item is [Quantity]
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 
@@ -59,7 +59,7 @@ Scenario: Preview Order Summary - Flat with Variable (On-demand) order type per 
 	And the item ID of each item is displayed
 	And the item name of each item is the Catalogue Solution name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
-	And the Quantity of each item is the concatenation "[Quantity] [Estimation period]" i.e. [Quantity] per month
+	And the Quantity of each item is [Quantity]
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 
@@ -103,7 +103,7 @@ Scenario: Preview Order Summary - Additional Service Flat with Variable (Patient
 	And the item ID of each item is displayed
 	And the item name of each item is the Additional Service name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
-	And the Quantity of each item is the concatenation [Quantity] per year
+	And the Quantity of each item is [Quantity]
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 
@@ -114,7 +114,7 @@ Scenario: Preview Order Summary - Additional Service Flat with Variable (OnDeman
 	And the item ID of each item is displayed
 	And the item name of each item is the Additional Service name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
-	And the Quantity of each item is the concatenation [Quantity] per year
+	And the Quantity of each item is [Quantity]
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 
@@ -125,7 +125,7 @@ Scenario: Preview Order Summary - Additional Service Flat with Variable (On-Dema
 	And the item ID of each item is displayed
 	And the item name of each item is the Additional Service name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
-	And the Quantity of each item is the concatenation [Quantity] per month
+	And the Quantity of each item is [Quantity]
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 	
@@ -146,7 +146,7 @@ Scenario: Preview Order Summary - Associated Service Flat with Variable (OnDeman
 	And the item ID of each item is displayed
 	And the item name of each item is the Additional Service name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
-	And the Quantity of each item is the concatenation [Quantity] per year
+	And the Quantity of each item is [Quantity]
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 
@@ -157,7 +157,7 @@ Scenario: Preview Order Summary - Associated Service Flat with Variable (On-Dema
 	And the item ID of each item is displayed
 	And the item name of each item is the Additional Service name
 	And the Price unit of order of each item is the concatenation "[Price] [unit]"
-	And the Quantity of each item is the concatenation [Quantity] per month
+	And the Quantity of each item is [Quantity]
 	And the Planned delivery date of each item is displayed
 	And the item year cost of each item is the result of the Flat calculation [Price] * [Quantity] * 12 rounded up to two decimal places
 	
