@@ -185,7 +185,6 @@
         [Given(@"an Associated Service with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
         public async Task GivenAnAssociatedServiceWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()
         {
-            SetOrderAssociatedServicesSectionToComplete();
             var order = (Order)Context[ContextKeys.CreatedOrder];
             var orderItem = await OrderItemHelper.CreateOrderItem(
                 order,
@@ -223,8 +222,6 @@
         [Given(@"an Associated Service with a flat price declarative order type is saved to the order")]
         public async Task GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder()
         {
-            SetOrderAssociatedServicesSectionToComplete();
-
             var order = (Order)Context[ContextKeys.CreatedOrder];
             var orderItem = await OrderItemHelper.CreateOrderItem(
                 order,
@@ -297,15 +294,6 @@
             Test.Pages.AdditionalServices.NoAddedOrderItemsDisplayed().Should().BeTrue();
         }
 
-        [StepDefinition(@"the Associated Service is saved in the DB")]
-        public void GivenTheAssociatedServiceIsSavedInTheDB()
-        {
-            // var order = (Order)Context[ContextKeys.CreatedOrder];
-            // var orderItem = OrderItem.RetrieveByOrderId(Test.OrdapiConnectionString, order.Id, 3).First();
-            // Context.Add(ContextKeys.CreatedOrderItem, orderItem);
-            // orderItem.Should().NotBeNull();
-        }
-
         [Given(@"there is no Associated Service in the order but the section is complete")]
         public async Task GivenThereIsNoAssociatedServiceInTheOrderButTheSectionIsComplete()
         {
@@ -313,30 +301,29 @@
         }
 
         [Given(@"the supplier added to the order has an associated service with a declarative flat price")]
-        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarative()
+        public async Task GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceDeclarativeAsync()
         {
-            /*var supplier = GetSupplierDetails(ProvisioningType.Declarative);
-            var order = (Order)Context[ContextKeys.CreatedOrder];
-            order.SupplierId = int.Parse(supplier.SupplierId);
-            order.SupplierName = supplier.Name;
-            order.Update(Test.OrdapiConnectionString);*/
+            var supplier = (await SupplierInfo.SupplierLookup(Test.BapiConnectionString, CatalogueItemType.AssociatedService, ProvisioningType.Declarative)).First()
+                .ToDomain();
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            order.Supplier = supplier;
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
         }
 
         [Given(@"the supplier added to the order has an associated service with an on-demand flat price")]
-        public void GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceOnDemand()
+        public async Task GivenTheSupplierAddedToTheOrderHasAnAssociatedServiceOnDemandAsync()
         {
-            // var supplier = GetSupplierDetails(Domain.ProvisioningType.OnDemand);
-            // var order = (Order)Context[ContextKeys.CreatedOrder];
-            // order.SupplierId = int.Parse(supplier.SupplierId);
-            // order.SupplierName = supplier.Name;
-            // order.Update(Test.OrdapiConnectionString);
-        }
+            var supplier = (await SupplierInfo.SupplierLookup(Test.BapiConnectionString, CatalogueItemType.AssociatedService, ProvisioningType.OnDemand)).First()
+                .ToDomain();
 
-        public void SetOrderAssociatedServicesSectionToComplete()
-        {
-            // var order = (Order)Context[ContextKeys.CreatedOrder];
-            // order.AssociatedServicesViewed = 1;
-            // order.Update(Test.OrdapiConnectionString);
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            order.Supplier = supplier;
+
+            DbContext.Update(order);
+            await DbContext.SaveChangesAsync();
         }
 
         [Given(@"the Select Associated Service form is presented")]

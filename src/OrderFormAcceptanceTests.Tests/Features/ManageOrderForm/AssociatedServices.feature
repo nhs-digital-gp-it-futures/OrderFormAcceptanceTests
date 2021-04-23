@@ -272,7 +272,6 @@ Scenario Outline: Associated Service - edit price screen - Flat price All data a
     When the User chooses to save
     Then the Associated Service is saved
     And the Associated Services dashboard is presented
-    And the Associated Service is saved in the DB
     Examples:
     | ProvisioningType |
     | declarative      |
@@ -286,14 +285,12 @@ Scenario Outline: Associated Service - edit price screen - Flat price Price is d
     | declarative      |
     | variable         |
 
-@ignore
 Scenario: Associated Service - edit price screen - Flat variable price values populated after editing and saving
     Given an Associated Service with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
     And the User amends the existing Associated Service details
     When the User re-visits the Associated Service
     Then the values will be populated with the values that was saved by the User
 
-@ignore
 Scenario: Associated Service - edit price screen - Flat declarative price values populated after editing and saving
     Given an Associated Service with a flat price declarative order type is saved to the order
     And the User amends the existing Associated Service details
@@ -318,7 +315,6 @@ Scenario Outline: Associated Service - edit price screen - Flat price Go back af
     And the Associated Services dashboard is presented
     When the User chooses to go back
     Then the Order dashboard is presented
-    And the Associated Service is saved in the DB
     Examples:
     | ProvisioningType |
     | declarative      |

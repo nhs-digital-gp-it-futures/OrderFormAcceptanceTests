@@ -117,7 +117,7 @@
             return (await GetSupplierWithId(supplierId, bapiConnectionString)).ToDomain();
         }
 
-        private static async Task<IEnumerable<SupplierDetails>> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
+        public static async Task<IEnumerable<SupplierDetails>> SupplierLookup(string connectionString, CatalogueItemType catalogueItemType, ProvisioningType provisioningType)
         {
             var query = @"SELECT ci.SupplierId, su.[Name], su.Address    
                             FROM dbo.CatalogueItem AS ci

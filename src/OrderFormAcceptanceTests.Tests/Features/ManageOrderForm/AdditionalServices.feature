@@ -182,7 +182,6 @@ Scenario: Additional Services - Values populated after editing and saving - Flat
 	And the edit Additional Service form for flat list price with variable (patient numbers) order type is presented	
 	Then the pricing values will be populated with the values that was saved by the User
 
-@ignore
 Scenario: Additional Services - Values populated after editing and saving - Flat List Price Declarative
 	Given an additional service with a flat price variable Declarative order type is saved to the order
 	And the Order Form for the existing order is presented

@@ -31,22 +31,6 @@ Scenario: Commencement Date - Mandatory data missing
 	Then Commencement Date section is not saved
 	And the reason is displayed
 
-@ignore Commencement date error is being weird
-Scenario: Commencement Date - Data type is not valid
-	Given the user chooses to manage the Commencement Date Section
-	And the Day is set to <Day>
-	And the Month is set to <Month>
-	And the Year is set to <Year>
-	When the User chooses to save
-	Then the Commencement Date section is not saved 
-	And the reason is displayed
-
-	Examples: 
-	| Day    | Month  | Year   |
-	| 12     | 12     | banana |
-	| 12     | banana | 2020   |
-	| banana | 12     | 2020   |
-
 Scenario Outline: Commencement Date - Data exceeds the maximum length
 	Given the user chooses to manage the Commencement Date Section
 	And the Day is set to <Day>
