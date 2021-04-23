@@ -219,6 +219,7 @@
             Context.Add(ContextKeys.CreatedOrder, order);
         }
 
+        [Given(@"an Associated Service has been saved to the order")]
         [Given(@"an Associated Service with a flat price declarative order type is saved to the order")]
         public async Task GivenAnAssociatedServiceWithAFlatPriceDeclarativeOrderTypeIsSavedToTheOrder()
         {
