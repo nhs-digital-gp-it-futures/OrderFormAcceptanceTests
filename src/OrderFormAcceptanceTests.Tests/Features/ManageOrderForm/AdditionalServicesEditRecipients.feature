@@ -41,3 +41,47 @@ Scenario: Additional Services - Enabled Delete Button shows correct Text
     Then the Additional Service is not saved
     And the Delete Additional Button is enabled
     And the Delete Additional Services Button is showing the correct text
+
+Scenario: Additional Services - Flat variable (on demand) list price selected - saved
+    Given A User has saved the Additional Service to the order
+    And the User has chosen to manage the Additional Services section
+    And the User chooses to edit service recipients
+    Then they are presented with the select Service Recipient form
+    And the Service Recipient previously saved by the User for the Additional Service persists
+
+Scenario: Additional Services - No selection or deselection of Service Recipient
+    Given A User has saved the Additional Service to the order
+    And the User has chosen to manage the Additional Services section
+    And the User chooses to edit service recipients
+    Then they are presented with the select Service Recipient form
+    When they choose to continue
+    Then the Edit Price form displays the same number of recipients as earlier 
+    
+Scenario: Additional Services - Newly selected Service Recipient
+    Given A User has saved the Additional Service to the order
+    And the User has chosen to manage the Additional Services section
+    And the User chooses to edit service recipients
+    Then they are presented with the select Service Recipient form
+    And the User selects one or more new Service Recipients for the Additional Service
+    When they choose to continue
+    Then the Edit Price form displays the expected number of recipients
+    And the Service Recipients are presented in ascending alphabetical order by Presentation Name
+
+Scenario: Additional Services - Deselected Service Recipient
+    Given A User has saved the Additional Service to the order
+    And the User has chosen to manage the Additional Services section
+    And the User chooses to edit service recipients
+    Then they are presented with the select Service Recipient form
+    When the User deselects one or more Service Recipients for the Additional Service
+    And they choose to continue
+    Then the deselected Service Recipients' record is removed from the table
+
+Scenario: Additional Services - Go Back
+   Given A User has saved the Additional Service to the order
+    And the User has chosen to manage the Additional Services section
+    And the User chooses to edit service recipients
+    Then they are presented with the select Service Recipient form
+    When they choose to go back
+    Then the Edit Price form displays the same number of recipients as earlier 
+
+

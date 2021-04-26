@@ -971,6 +971,25 @@
             }
         }
 
+        public void ClickSelectedCheckbox()
+        {
+            var checkedCheckboxes = Driver.FindElements(Objects.Pages.Common.Checkbox).Where(s => bool.Parse(s.GetProperty("checked"))).Count();
+            var checkboxes = Driver.FindElements(Objects.Pages.Common.Checkbox);
+            foreach (var checkbox in checkboxes)
+            {
+                if (bool.Parse(checkbox.GetProperty("checked")))
+                {
+                    checkbox.Click();
+
+                    if (!bool.Parse(checkbox.GetProperty("checked")))
+                    {
+                        Wait.Until(d => d.FindElements(Objects.Pages.Common.Checkbox).Where(s => bool.Parse(s.GetProperty("checked"))).Count() != checkedCheckboxes + 1);
+                        break;
+                    }
+                }
+            }
+        }
+
         public void ClickCancelDelete()
         {
             Driver.FindElement(Objects.Pages.OrderForm.CancelDeleteLink).Click();

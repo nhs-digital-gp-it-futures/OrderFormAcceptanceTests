@@ -437,3 +437,5 @@ Scenario: Catalogue Solutions - Edit Service Recipients - Go Back
 	When the User chooses to edit the service recipients
 	And the User chooses to go back
 	Then the Edit Price form displays the same number of recipients as earlier
+
+
