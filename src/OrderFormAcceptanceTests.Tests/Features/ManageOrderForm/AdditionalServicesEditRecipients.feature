@@ -83,5 +83,3 @@ Scenario: Additional Services - Go Back
     Then they are presented with the select Service Recipient form
     When they choose to go back
     Then the Edit Price form displays the same number of recipients as earlier 
-
-

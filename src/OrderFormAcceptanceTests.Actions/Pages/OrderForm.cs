@@ -980,12 +980,6 @@
                 if (bool.Parse(checkbox.GetProperty("checked")))
                 {
                     checkbox.Click();
-
-                    if (!bool.Parse(checkbox.GetProperty("checked")))
-                    {
-                        Wait.Until(d => d.FindElements(Objects.Pages.Common.Checkbox).Where(s => bool.Parse(s.GetProperty("checked"))).Count() != checkedCheckboxes + 1);
-                        break;
-                    }
                 }
             }
         }
