@@ -44,6 +44,7 @@
             Test.Pages.OrderForm.GetSelectDeselectAllText().Should().BeEquivalentTo("Select all");
         }
 
+        [StepDefinition(@"the Service Recipient previously saved by the User for the Additional Service persists")]
         [Then(@"the Call Off Ordering Party is selected")]
         public void ThenTheCallOffOrderingPartyIsSelected()
         {
@@ -61,6 +62,32 @@
         {
             // this is an action to select the service recipient, one about is an assertion that the recipient is selected
             Test.Pages.OrderForm.ClickCheckbox();
+        }
+
+        [Given(@"the User chooses to edit service recipients")]
+        public void GivenTheUserChoosesToEditServiceRecipients()
+        {
+            Test.Pages.OrderForm.ClickAddedCatalogueItem();
+            Context.Add("AddedRecipientCount", Test.Pages.OrderForm.GetNumberOfAddedRecipients());
+            Test.Pages.OrderForm.ClickEditServiceRecipientsButton();
+        }
+
+        [Then(@"they are presented with the select Service Recipient form")]
+        public void ThenTheyArePresentedWithTheSelectServiceRecipientForm()
+        {
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("service recipients").Should().BeTrue();
+        }
+
+        [When(@"the User deselects one or more Service Recipients for the Additional Service")]
+        public void WhenTheUserDeselectsOneOrMoreServiceRecipientsForTheAdditionalService()
+        {
+            Test.Pages.OrderForm.ClickSelectedCheckbox();
+        }
+
+        [Then(@"the deselected Service Recipients' record is removed from the table")]
+        public void ThenTheDeselectedServiceRecipientsRecordIsRemovedFromTheTable()
+        {
+            Test.Pages.OrderForm.GetNumberOfAddedRecipients().Should().BeLessThan((int)Context["AddedRecipientCount"]);
         }
     }
 }

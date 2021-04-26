@@ -345,6 +345,7 @@
             displayedItems.Should().BeEquivalentTo(publishedItems.Select(s => s.Name));
         }
 
+        [Given(@"A User has saved the Additional Service to the order")]
         [Given(@"a Catalogue Solution is added to the order")]
         [Given(@"a catalogue solution with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
         public async Task GivenACatalogueSolutionWithAFlatPriceVariableOn_DemandOrderTypeWithTheQuantityPeriodPerYearIsSavedToTheOrder()

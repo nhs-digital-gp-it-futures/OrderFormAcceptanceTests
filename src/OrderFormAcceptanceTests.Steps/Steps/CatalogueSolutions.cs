@@ -214,6 +214,7 @@
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("Recipient");
         }
 
+        [Then(@"they are presented with the edit Additional Service for Flat variable (on demand) form")]
         [Then(@"they are presented with the Associated Service edit form")]
         [Then(@"they are presented with the Catalogue Solution edit form")]
         public void ThenTheyArePresentedWithTheOrderItemPriceEditForm()
@@ -678,6 +679,7 @@
             Test.Pages.OrderForm.ClickEditServiceRecipientsButton();
         }
 
+        [StepDefinition(@"the User selects one or more new Service Recipients for the Additional Service")]
         [When(@"the User adds another service recipient to the order")]
         public void WhenTheUserAddsAnotherServiceRecipientToTheOrder()
         {
