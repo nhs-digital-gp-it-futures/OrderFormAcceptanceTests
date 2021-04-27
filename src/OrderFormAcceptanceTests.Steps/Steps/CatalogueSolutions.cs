@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Bogus;
     using FluentAssertions;
+    using OpenQA.Selenium.Support.UI;
     using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
@@ -707,9 +708,15 @@
         }
 
         [StepDefinition(@"the User chooses to delete the Catalogue Solution")]
-        public void WhenTheUserChoosesToDeleteTheCatalogueSolution()
+        [StepDefinition(@"the User chooses to delete the Additional Service")]
+        public void WhenTheUserChoosesToDeleteTheCatalogueItem()
         {
-            Test.Pages.OrderForm.ClickDeleteCatalogueSolutionButton();
+            Test.Pages.OrderForm.ClickDeleteCatalogueItemButton();
+
+            if (!Test.Pages.OrderForm.GetPageTitle().Contains("delete", StringComparison.CurrentCultureIgnoreCase))
+            {
+                Test.Pages.OrderForm.ClickDeleteCatalogueItemButton();
+            }
         }
 
         [Then(@"the User is asked to confirm the choice to delete the catalogue solution")]
@@ -724,20 +731,24 @@
         [StepDefinition(@"the User chooses to confirm the delete")]
         public async Task WhenTheUserChoosesToConfirmTheDeleteAsync()
         {
+            var wait = new WebDriverWait(Test.Driver, TimeSpan.FromSeconds(10));
             var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
             Context.Add(ContextKeys.DeletedOrderItem, order.OrderItems[0]);
             Test.Pages.DeleteOrder.ClickDeleteButtonYes();
+
+            wait.Until(s => Test.Pages.OrderForm.ContinueButtonDisplayed());
         }
 
         [Then(@"the deleted Catalogue Solution with the unit is not on the Catalogue Solution dashboard")]
         public void ThenTheDeletedCatalogueSolutionWithTheUnitIsNotOnTheCatalogueSolutionDashboard()
         {
-            var orderItem = Context.Get<Domain.OrderItem>(ContextKeys.DeletedOrderItem);
+            var orderItem = Context.Get<OrderItem>(ContextKeys.DeletedOrderItem);
 
             Test.Pages.OrderForm.GetAddedCatalogueItems().Should().NotContain(orderItem.CatalogueItem.Name);
         }
 
         [When(@"the User chooses not to delete the Catalogue Solution")]
+        [When(@"the User chooses not to delete the Additional Service")]
         public void WhenTheUserChoosesNotToDeleteTheCatalogueSolution()
         {
             Test.Pages.OrderForm.ClickCancelDelete();
@@ -756,6 +767,7 @@
         }
 
         [StepDefinition(@"the User is informed the Catalogue Solution is deleted")]
+        [StepDefinition(@"the User is informed the Additional Service is deleted")]
         public async Task ThenTheUserIsInformedTheCatalogueSolutionIsDeletedAsync()
         {
             var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);

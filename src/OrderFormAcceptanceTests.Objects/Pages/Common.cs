@@ -22,7 +22,7 @@
 
         public static By DeleteButton => CustomBy.DataTestId("delete-order-button", "a");
 
-        public static By DeleteSolutionButton => CustomBy.DataTestId("delete-button");
+        public static By DeleteCatalogueItemButton => CustomBy.DataTestId("delete-button");
 
         public static By TextArea => By.TagName("textarea");
 
