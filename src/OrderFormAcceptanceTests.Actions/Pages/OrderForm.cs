@@ -152,7 +152,7 @@
         {
             try
             {
-                Driver.FindElement(Objects.Pages.Common.DeleteSolutionButton).FindElement(By.TagName("span"));
+                Driver.FindElement(Objects.Pages.Common.DeleteCatalogueItemButton).FindElement(By.TagName("span"));
                 return true;
             }
             catch
@@ -207,7 +207,7 @@
 
         public string GetEditServiceRecipientsButtonText()
         {
-            return Driver.FindElement(Objects.Pages.Common.DeleteSolutionButton).Text;
+            return Driver.FindElement(Objects.Pages.Common.DeleteCatalogueItemButton).Text;
         }
 
         public bool IsRadioButtonSelected(int index = 0)
@@ -936,9 +936,9 @@
             return selectedSection.Any();
         }
 
-        public void ClickDeleteCatalogueSolutionButton()
+        public void ClickDeleteCatalogueItemButton()
         {
-            Driver.FindElement(Objects.Pages.Common.DeleteSolutionButton).Click();
+            Driver.FindElement(Objects.Pages.Common.DeleteCatalogueItemButton).FindElement(By.TagName("a")).Click();
         }
 
         public IEnumerable<string> GetAddedCatalogueItems()

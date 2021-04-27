@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using OpenQA.Selenium;
     using OrderFormAcceptanceTests.Actions.Utils;
 
@@ -21,6 +22,11 @@
         public void PageDisplayed()
         {
             Wait.Until(s => s.FindElement(Objects.Pages.OrderForm.PageTitle).Text.Contains("Additional service", StringComparison.OrdinalIgnoreCase));
+        }
+
+        public void EditPageDisplayed()
+        {
+            Wait.Until(s => Regex.Match(s.FindElement(Objects.Pages.OrderForm.PageTitle).Text, ".* for C[0-9]{6}-[0-9]{2}"));
         }
 
         public bool NoAddedOrderItemsDisplayed()

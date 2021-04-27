@@ -288,12 +288,15 @@
         [Given(@"the edit Additional Service form for flat list price with variable \(patient numbers\) order type is presented")]
         [Given(@"the edit Additional Service form for flat list price with declarative order type is presented")]
         [Given(@"the edit Additional Service form for flat list price with variable \(on demand\) order type is presented")]
+        [Given(@"the edit Additional Service form is displayed")]
         public void GivenTheEditAdditionalServiceFormForFlatListPriceWithVariablePatientNumbersOrderTypeIsPresented()
         {
             var common = new CommonSteps(Test, Context);
             common.WhenTheOrderFormForTheExistingOrderIsPresented();
             ThenTheUserIsAbleToManageTheAdditionalServicesSection();
             GivenTheUserChoosesToEditTheSavedAdditionalService();
+            Test.Pages.AdditionalServices.EditPageDisplayed();
+            Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeFalse();
         }
 
         [Given(@"there is one or more Additional Services added to the order")]
@@ -401,6 +404,18 @@
         public void ThenTheDeleteAdditionalButtonIsEnabled()
         {
             Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeFalse();
+        }
+
+        [Then(@"the User is asked to confirm the choice to delete the Additional Service")]
+        public void ThenTheUserIsAskedToConfirmTheChoiceToDeleteTheAdditionalService()
+        {
+            Test.Pages.OrderForm.GetPageTitle().Should().MatchRegex($"Delete .* from {Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId}");
+        }
+
+        [Then(@"the edit Additional Service form is presented")]
+        public void ThenTheEditAdditionalServiceFormIsPresented()
+        {
+            Test.Pages.OrderForm.GetPageTitle().Should().MatchRegex($".* for {Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId}");
         }
     }
 }
