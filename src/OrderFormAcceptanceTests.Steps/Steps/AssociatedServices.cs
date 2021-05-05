@@ -352,5 +352,49 @@
             WhenTheUserHasChosenToManageTheAssociatedServiceSection();
             new CommonSteps(Test, Context).WhenTheUserChoosesToAddAOrderItem();
         }
+
+        [When(@"the User selects an Associated Service previously saved in the Order")]
+        public async Task WhenTheUserSelectsAnAssociatedServicePreviouslySavedInTheOrderAsync()
+        {
+            Test.Pages.OrderForm.ClickAddSolutionButton();
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var orderItemInDB = (await DbContext.Order.FindAsync(order.Id))
+                .OrderItems.First(
+                s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.AssociatedService);
+
+            var associatedRadioButton = Test.Pages.OrderForm.GetRadioButtonText().IndexOf(orderItemInDB.CatalogueItem.Name);
+
+            Test.Pages.OrderForm.ClickRadioButton(associatedRadioButton);
+        }
+
+        [When(@"the edit Associated Service form is presented")]
+        public void WhenTheEditAssociatedServiceFormIsPresented()
+        {
+            Test.Pages.OrderForm.ClickContinueButton();
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("information for").Should().BeTrue();
+        }
+
+        [Then(@"the previously saved data is Displayed")]
+        public async Task ThenThePreviouslySavedDataIsDisplayedAsync()
+        {
+            var priceFromPage = decimal.Parse(Test.Pages.OrderForm.GetPriceInputValue());
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var orderItemsInDb = (await DbContext.Order.FindAsync(order.Id))
+                .OrderItems.Single(
+                s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.AssociatedService);
+            var unitOrder = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
+
+            orderItemsInDb.Price.Value.Should().Be(priceFromPage);
+            Test.Pages.OrderForm.GetAssociatedServicesPricingUnit(unitOrder).Should().BeTrue();
+        }
+
+        [Given(@"the Edit Associated Service form is displayed")]
+        public void GivenTheEditAssociatedServiceFormIsDisplayed()
+        {
+            Test.Pages.OrderForm.ClickAddedCatalogueItem();
+            Test.Pages.OrderForm.EditNamedSectionPageDisplayed("information for").Should().BeTrue();
+        }
     }
 }

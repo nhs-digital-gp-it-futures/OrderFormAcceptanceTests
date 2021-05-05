@@ -376,3 +376,70 @@ Scenario: Associated Services - Edit Associated Service
     When the User chooses to continue
     Then they are presented with the Order dashboard
     And the content validation status of the associated-services section is complete
+
+Scenario: Associated Service - Associated Service already in order 
+    Given an Associated Service has been saved to the order
+    And the User has chosen to manage the Associated Service section
+    When the User selects an Associated Service previously saved in the Order
+    And they choose to continue 
+    Then they are presented with the Edit Associated Service form for the order type
+    And the previously saved data is Displayed
+
+Scenario: Associated Service - Associated Service already in order  - Go Back
+    Given an Associated Service has been saved to the order
+    And the User has chosen to manage the Associated Service section
+    When the User selects an Associated Service previously saved in the Order
+    And the edit Associated Service form is presented
+    And they choose to go back
+    Then they are presented with the Select Associated Service form
+    And the previously selected Associated Service persist
+
+Scenario: Associated Service - Ask User to confirm delete
+    Given an Associated Service with a flat price variable (On-demand) order type with the quantity period per year is saved to the order
+    And the User has chosen to manage the Associated Service section
+    And the Edit Associated Service form is displayed
+    And the delete button is enabled
+    When the User chooses to delete the Associated Service 
+    Then the user is asked to confirm the choice to delete
+    And the Call-off Agreement ID is displayed
+    And the order description is displayed
+
+Scenario: Associated Service - Go back 
+    Given an Associated Service with a flat price declarative order type is saved to the order
+    And the User has chosen to manage the Associated Service section
+    And the Edit Associated Service form is displayed
+    And the User chooses to delete the Associated Service 
+    And the user is asked to confirm the choice to delete
+    When the User chooses to go back
+    Then the edit form is presented
+    And the previously saved data is Displayed
+
+Scenario: Associated Service - Not chosen to delete
+    Given an Associated Service has been saved to the order
+    And the User has chosen to manage the Associated Service section
+    And the Edit Associated Service form is displayed
+    And the User chooses to delete the Associated Service 
+    And the confirm delete page is presented
+    When the User chooses not to delete the Associated Service
+    Then the edit form is presented
+
+Scenario:  Associated Service - User confirmed delete
+    Given an Associated Service has been saved to the order
+    And the User has chosen to manage the Associated Service section
+    And the Edit Associated Service form is displayed
+    And the User chooses to delete the Associated Service
+    And the confirm delete page is presented
+    When the User chooses to confirm to delete the Associated Service
+    Then the Associated Service with the unit is deleted from the order
+    And the User is informed the Associated Service is deleted
+
+Scenario:  Associated Service - Associated Service dashboard
+    Given an Associated Service has been saved to the order
+    And the User has chosen to manage the Associated Service section
+    And the Edit Associated Service form is displayed
+    And the User chooses to delete the Associated Service
+    And the confirm delete page is presented
+    And the User chooses to confirm to delete the Associated Service
+    When the User chooses to continue
+    Then the Associated Services dashboard is presented
+    And the deleted Associated Service is not on the Associated Service dashboard

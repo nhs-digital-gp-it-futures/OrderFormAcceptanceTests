@@ -27,29 +27,21 @@ Scenario: Additional Services Edit Recipients - Edit Service Recipients - Go Bac
     And the User chooses to go back
     Then the Edit Price form displays the same number of recipients as earlier
 
-Scenario: Additional Services - Delete and Edit Buttons are disabled on validation
-    Given the User is on the Edit Price form
-    When the User chooses to save
-    Then the Additional Service is not saved
-    And the Delete Additional Button is disabled
-    And the Edit Service Recipients Button is Disabled 
-    And the Delete Additional Services Button is showing the correct text
-
-Scenario: Additional Services - Enabled Delete Button shows correct Text
+Scenario: Additional Services Edit Recipients - Enabled Delete Button shows correct Text
     Given the User chooses to edit a saved Additional Service
     When the user triggers a validation message 
     Then the Additional Service is not saved
     And the Delete Additional Button is enabled
     And the Delete Additional Services Button is showing the correct text
 
-Scenario: Additional Services - Flat variable (on demand) list price selected - saved
+Scenario: Additional Services Edit Recipients - Flat variable (on demand) list price selected - saved
     Given A User has saved the Additional Service to the order
     And the User has chosen to manage the Additional Services section
     And the User chooses to edit service recipients
     Then they are presented with the select Service Recipient form
     And the Service Recipient previously saved by the User for the Additional Service persists
 
-Scenario: Additional Services - No selection or deselection of Service Recipient
+Scenario: Additional Services Edit Recipients - No selection or deselection of Service Recipient
     Given A User has saved the Additional Service to the order
     And the User has chosen to manage the Additional Services section
     And the User chooses to edit service recipients
@@ -57,7 +49,7 @@ Scenario: Additional Services - No selection or deselection of Service Recipient
     When they choose to continue
     Then the Edit Price form displays the same number of recipients as earlier 
     
-Scenario: Additional Services - Newly selected Service Recipient
+Scenario: Additional Services Edit Recipients - Newly selected Service Recipient
     Given A User has saved the Additional Service to the order
     And the User has chosen to manage the Additional Services section
     And the User chooses to edit service recipients
@@ -67,7 +59,7 @@ Scenario: Additional Services - Newly selected Service Recipient
     Then the Edit Price form displays the expected number of recipients
     And the Service Recipients are presented in ascending alphabetical order by Presentation Name
 
-Scenario: Additional Services - Deselected Service Recipient
+Scenario: Additional Services Edit Recipients - Deselected Service Recipient
     Given A User has saved the Additional Service to the order
     And the User has chosen to manage the Additional Services section
     And the User chooses to edit service recipients
@@ -76,7 +68,7 @@ Scenario: Additional Services - Deselected Service Recipient
     And they choose to continue
     Then the deselected Service Recipients' record is removed from the table
 
-Scenario: Additional Services - Go Back
+Scenario: Additional Services Edit Recipients - Go Back
    Given A User has saved the Additional Service to the order
     And the User has chosen to manage the Additional Services section
     And the User chooses to edit service recipients
