@@ -215,6 +215,8 @@
             Test.Pages.OrderForm.ClickOnErrorLink().Should().ContainEquivalentOf("Recipient");
         }
 
+        [Then(@"the edit form is presented")]
+        [Then(@"they are presented with the Edit Associated Service form for the order type")]
         [Then(@"they are presented with the edit Additional Service for Flat variable (on demand) form")]
         [Then(@"they are presented with the Associated Service edit form")]
         [Then(@"they are presented with the Catalogue Solution edit form")]
@@ -707,6 +709,7 @@
             Test.Pages.OrderForm.DeleteSolutionButtonIsDisabled().Should().BeFalse();
         }
 
+        [StepDefinition(@"the User chooses to delete the Associated Service")]
         [StepDefinition(@"the User chooses to delete the Catalogue Solution")]
         [StepDefinition(@"the User chooses to delete the Additional Service")]
         public void WhenTheUserChoosesToDeleteTheCatalogueItem()
@@ -719,6 +722,8 @@
             }
         }
 
+        [StepDefinition(@"the confirm delete page is presented")]
+        [StepDefinition(@"the user is asked to confirm the choice to delete")]
         [Then(@"the User is asked to confirm the choice to delete the catalogue solution")]
         public async Task ThenTheUserIsAskedToConfirmTheChoiceToDeleteTheCatalogueSolutionAsync()
         {
@@ -728,6 +733,7 @@
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed($"Delete {orderitem}").Should().BeTrue();
         }
 
+        [StepDefinition(@"the User chooses to confirm to delete the Associated Service")]
         [StepDefinition(@"the User chooses to confirm the delete")]
         public async Task WhenTheUserChoosesToConfirmTheDeleteAsync()
         {
@@ -739,6 +745,7 @@
             wait.Until(s => Test.Pages.OrderForm.ContinueButtonDisplayed());
         }
 
+        [StepDefinition(@"the deleted Associated Service is not on the Associated Service dashboard")]
         [Then(@"the deleted Catalogue Solution with the unit is not on the Catalogue Solution dashboard")]
         public void ThenTheDeletedCatalogueSolutionWithTheUnitIsNotOnTheCatalogueSolutionDashboard()
         {
@@ -747,6 +754,7 @@
             Test.Pages.OrderForm.GetAddedCatalogueItems().Should().NotContain(orderItem.CatalogueItem.Name);
         }
 
+        [When(@"the User chooses not to delete the Associated Service")]
         [When(@"the User chooses not to delete the Catalogue Solution")]
         [When(@"the User chooses not to delete the Additional Service")]
         public void WhenTheUserChoosesNotToDeleteTheCatalogueSolution()
@@ -754,6 +762,7 @@
             Test.Pages.OrderForm.ClickCancelDelete();
         }
 
+        [Then(@"the Associated Service with the unit is deleted from the order")]
         [Then(@"only the Catalogue Solution with the unit is deleted from the order")]
         public async Task ThenOnlyTheCatalogueSolutionWithTheUnitIsDeletedFromTheOrderAsync()
         {
@@ -766,6 +775,7 @@
             }
         }
 
+        [StepDefinition(@"the User is informed the Associated Service is deleted")]
         [StepDefinition(@"the User is informed the Catalogue Solution is deleted")]
         [StepDefinition(@"the User is informed the Additional Service is deleted")]
         public async Task ThenTheUserIsInformedTheCatalogueSolutionIsDeletedAsync()
@@ -774,6 +784,7 @@
             Test.Pages.OrderForm.DeleteSolutionConfirmationTitle().Should().Match($"* deleted from {order.CallOffId}");
         }
 
+        [Then(@"they are presented with the Edit Additional Service form for the order type")]
         [StepDefinition(@"the edit Catalogue Solution form is presented")]
         [Then(@"they are presented with the Edit Catalogue Solution form for the order type")]
         [Then(@"the Call-off Agreement ID is displayed")]

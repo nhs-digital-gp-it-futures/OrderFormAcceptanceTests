@@ -305,6 +305,9 @@
             Test.Pages.OrderForm.NumberOfCheckboxesDisplayed().Should().BeGreaterThan(0);
         }
 
+        [StepDefinition(@"the previously selected Additional Service persist")]
+        [StepDefinition(@"the previously selected Catalogue solution persist")]
+        [StepDefinition(@"the previously selected Associated Service persist")]
         [StepDefinition(@"their Additional Service selection persists")]
         [Then(@"the User's selected catalogue solution is selected")]
         [Then(@"the User's selected price is selected")]
@@ -451,6 +454,7 @@
             Context.Add(ContextKeys.CreatedOrder, order);
         }
 
+        [StepDefinition(@"an Additional Service is added to the order that exists")]
         [Given(@"an Additional Service is added to the order")]
         [Given(@"an additional service with a flat price variable Declarative order type is saved to the order")]
         public async Task GivenAnAdditionalServiceWithAFlatPriceVariableDeclarativeOrderTypeIsSavedToTheOrder()

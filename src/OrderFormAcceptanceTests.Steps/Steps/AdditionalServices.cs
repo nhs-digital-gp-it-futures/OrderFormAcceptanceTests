@@ -104,6 +104,7 @@
             Test.Pages.OrderForm.ClickAddSolutionButton();
         }
 
+        [Then(@"the select Additional Service form is presented")]
         [Then(@"they are presented with the Additional Service available from their chosen Supplier")]
         [Then(@"the Additional Services of the Catalogue Solutions in the order is displayed")]
         public void ThenTheyArePresentedWithTheAdditionalServiceAvailableFromTheirChosenSupplier()
@@ -311,6 +312,7 @@
             Test.Pages.OrderForm.ClickTableRowLink();
         }
 
+        [StepDefinition(@"previously saved data is displayed")]
         [Then(@"the pricing values will be populated with the values that was saved by the User")]
         public async Task ThenThePricingValuesWillBePopulatedWithTheValuesThatWasSavedByTheUserAsync()
         {
@@ -416,6 +418,28 @@
         public void ThenTheEditAdditionalServiceFormIsPresented()
         {
             Test.Pages.OrderForm.GetPageTitle().Should().MatchRegex($".* for {Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId}");
+        }
+
+        [StepDefinition(@"the User selects an Additional Service previously saved in the Order")]
+        [Given(@"the User selects an Additional Service previously saved in the Order")]
+        public async Task GivenTheUserSelectsAnAdditionalServicePreviouslySavedInTheOrderAsync()
+        {
+            Test.Pages.OrderForm.ClickAddSolutionButton();
+
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+
+            var additionalServices = Test.Pages.OrderForm.GetRadioButtonValues();
+
+            foreach (var service in additionalServices)
+            {
+                var itemId = service.GetAttribute("value");
+                var numberOfPrices = await OrderItemHelper.GetNumberOfPricingUnitsForItemAsync(itemId, Test.BapiConnectionString);
+                if (numberOfPrices == 1)
+                {
+                    service.Click();
+                    break;
+                }
+            }
         }
     }
 }
