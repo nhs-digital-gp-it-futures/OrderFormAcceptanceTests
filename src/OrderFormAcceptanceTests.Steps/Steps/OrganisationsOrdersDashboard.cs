@@ -151,6 +151,7 @@
             Test.Pages.OrganisationsOrdersDashboard.ClickBackLink();
         }
 
+        [StepDefinition(@"the organisation's order dashboard is presented")]
         [When(@"my organisation's orders dashboard is presented")]
         [StepDefinition(@"the order dashboard is presented")]
         public void WhenTheOrderDashboardIsPresented()

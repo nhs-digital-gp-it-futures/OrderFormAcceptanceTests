@@ -78,6 +78,7 @@
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("Add Catalogue Solution").Should().BeTrue();
         }
 
+        [Then(@"all organisations below the user's own organisation are in alphabetical order")]
         [Then(@"the Additional Services are displayed in alphabetical order")]
         [Then(@"the Associated Services are displayed in alphabetical order")]
         [Then(@"they are displayed in alphabetical order")]

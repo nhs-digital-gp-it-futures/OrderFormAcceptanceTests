@@ -36,6 +36,7 @@
             Test.Pages.OrderForm.OdsCodeDisplayedAndNotEditable().Should().BeTrue();
         }
 
+        [Then(@"the name of the user's organisation is presented")]
         [Then(@"the Call Off Ordering Party Organisation Name is autopopulated from the User's organisation")]
         [Then(@"the User is unable to edit the Organisation Name")]
         public void ThenTheCallOffOrderingPartyOrganisationNameIsAutopopulatedFromTheUserSOrganisation()

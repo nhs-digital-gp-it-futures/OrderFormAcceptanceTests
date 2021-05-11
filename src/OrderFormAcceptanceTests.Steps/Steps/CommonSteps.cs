@@ -290,6 +290,7 @@
             Test.Pages.OrderForm.NumberOfCheckboxesDisplayed().Should().BeGreaterThan(0);
         }
 
+        [Then(@"the user can only select 1 organisation")]
         [Then(@"they can select a price for the Associated Service")]
         [Then(@"they can select one Catalogue Solution to add")]
         [Then(@"they can select a price for the Catalogue Solution")]
