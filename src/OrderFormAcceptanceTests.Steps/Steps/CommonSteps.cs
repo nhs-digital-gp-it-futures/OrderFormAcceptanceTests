@@ -816,7 +816,15 @@
             var user = UsersHelper.GenerateRandomUser(organisation.OrganisationId, new User() { UserType = userType });
             await UsersHelper.Create(Test.IsapiConnectionString, user);
 
+
+            var allOrgs = await RelatedOrganisationsHelper.GetAllOrganisations(Test.IsapiConnectionString);
+            var allRelated = await RelatedOrganisationsHelper.GetAllRelatedOrganisationsForOrganisation(Test.IsapiConnectionString, organisation.OrganisationId);
+            var relatedOrgansation = RelatedOrganisationsHelper.GenerateRelatedOrganisation(allOrgs, allRelated);
+
+            await RelatedOrganisationsHelper.AddRelatedOrganisation(Test.IsapiConnectionString, relatedOrgansation);
+
             Context.Add(ContextKeys.User, user);
+            Context.Add(ContextKeys.RelatedOrganisation, relatedOrgansation);
         }
 
         public async Task SetOrderCatalogueSectionToComplete()
@@ -851,7 +859,7 @@
             await DbContext.SaveChangesAsync();
         }
 
-        public async Task SetCommencementDate(DateTime? date = null)
+        public async Task SetCommencementDate(DateTime? date = null);
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.CommencementDate = date ?? DateTime.Today;

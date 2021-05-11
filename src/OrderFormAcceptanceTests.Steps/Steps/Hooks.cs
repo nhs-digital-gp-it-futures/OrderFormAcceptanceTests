@@ -10,6 +10,7 @@
     using OrderFormAcceptanceTests.Persistence.Data;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData.Helpers;
+    using OrderFormAcceptanceTests.TestData.Models;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -64,6 +65,12 @@
 
             if (context.ContainsKey(ContextKeys.User))
             {
+                if (context.ContainsKey(ContextKeys.RelatedOrganisation))
+                {
+                    var relatedOrganisation = context.Get<RelatedOrganisation>(ContextKeys.RelatedOrganisation);
+                    await RelatedOrganisationsHelper.DeleteRelatedOrganisation(test.IsapiConnectionString, relatedOrganisation);
+                }
+
                 var user = (User)context[ContextKeys.User];
                 await UsersHelper.Delete(test.IsapiConnectionString, user);
             }
