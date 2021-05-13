@@ -1041,6 +1041,21 @@
                 .Any(t => t.Contains(expected, StringComparison.CurrentCultureIgnoreCase));
         }
 
+        public void ChangeOrgLinkDisplayed()
+        {
+            Driver.FindElements(Objects.Pages.Common.ChangeOrgLink).Count.Should().Be(1);
+        }
+
+        public void ClickChangeOrgLink()
+        {
+            Driver.FindElement(Objects.Pages.Common.ChangeOrgLink).Click();
+        }
+
+        public string SelectRelatedOrgPageDisplayed()
+        {
+            return Driver.FindElement(Objects.Pages.Common.SelectPage).Text;
+        }
+
         private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
         {
             return Driver.FindElements(Objects.Pages.OrderForm.SupplierOptionsLabels);

@@ -12,7 +12,6 @@
         {
         }
 
-        [When(@"the user chooses to create and manager orders")]
         [When(@"they choose to create a new Order")]
         public void WhenTheyChooseToCreateANewOrder()
         {
@@ -61,12 +60,6 @@
         public void ThenTheCompleteOrderButtonIsDisabled()
         {
             Test.Pages.OrderForm.CompleteOrderButtonIsDisabled().Should().BeFalse();
-        }
-
-        [Then(@"no organisation is pre-selected")]
-        public void ThenNoOrganisationIsPre_Selected()
-        {
-            Test.Pages.OrderForm.IsRadioButtonSelected().Should().BeFalse();
         }
     }
 }

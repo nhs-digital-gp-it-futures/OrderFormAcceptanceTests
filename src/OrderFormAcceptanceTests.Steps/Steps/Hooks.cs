@@ -41,6 +41,7 @@
             context.Add(ContextKeys.DbContext, dbContext);
 
             test.GoToUrl();
+
             await new CommonSteps(test, context).GivenThatABuyerUserHasLoggedIn();
         }
 

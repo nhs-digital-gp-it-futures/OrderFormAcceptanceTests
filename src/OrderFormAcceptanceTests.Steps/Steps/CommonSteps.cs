@@ -290,7 +290,6 @@
             Test.Pages.OrderForm.NumberOfCheckboxesDisplayed().Should().BeGreaterThan(0);
         }
 
-        [Then(@"the user can only select 1 organisation")]
         [Then(@"they can select a price for the Associated Service")]
         [Then(@"they can select one Catalogue Solution to add")]
         [Then(@"they can select a price for the Catalogue Solution")]
@@ -816,10 +815,9 @@
             var user = UsersHelper.GenerateRandomUser(organisation.OrganisationId, new User() { UserType = userType });
             await UsersHelper.Create(Test.IsapiConnectionString, user);
 
-
             var allOrgs = await RelatedOrganisationsHelper.GetAllOrganisations(Test.IsapiConnectionString);
-            var allRelated = await RelatedOrganisationsHelper.GetAllRelatedOrganisationsForOrganisation(Test.IsapiConnectionString, organisation.OrganisationId);
-            var relatedOrgansation = RelatedOrganisationsHelper.GenerateRelatedOrganisation(allOrgs, allRelated);
+            var allRelated = await RelatedOrganisationsHelper.GetAllRelatedOrganisationsForOrganisation(Test.IsapiConnectionString, user.PrimaryOrganisationId);
+            var relatedOrgansation = RelatedOrganisationsHelper.GenerateRelatedOrganisation(allOrgs, allRelated, user.PrimaryOrganisationId);
 
             await RelatedOrganisationsHelper.AddRelatedOrganisation(Test.IsapiConnectionString, relatedOrgansation);
 
@@ -859,7 +857,7 @@
             await DbContext.SaveChangesAsync();
         }
 
-        public async Task SetCommencementDate(DateTime? date = null);
+        public async Task SetCommencementDate(DateTime? date = null)
         {
             var order = (Order)Context[ContextKeys.CreatedOrder];
             order.CommencementDate = date ?? DateTime.Today;

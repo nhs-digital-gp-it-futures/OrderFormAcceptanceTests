@@ -10,20 +10,22 @@
 
     public static class RelatedOrganisationsHelper
     {
-        public static RelatedOrganisation GenerateRelatedOrganisation(IEnumerable<Guid> allOrganisations, IEnumerable<RelatedOrganisation> relatedOrganisations)
+        public static RelatedOrganisation GenerateRelatedOrganisation(IEnumerable<Guid> allOrganisations, IEnumerable<RelatedOrganisation> relatedOrganisations, Guid primaryOrganisation)
         {
-            var primaryOrganisation = relatedOrganisations.First().OrganisationId;
+            var filteredOrgs = allOrganisations.Where(s => !s.Equals(primaryOrganisation));
 
-            var relatedOrganisationIds = relatedOrganisations.Select(s => s.RelatedOrganisationId);
+            if (relatedOrganisations.Any())
+            {
+                var relatedOrganisationIds = relatedOrganisations.Select(s => s.RelatedOrganisationId);
 
-            var orgsWithoutRelationship = allOrganisations
-                .Where(s => !s.Equals(primaryOrganisation))
-                .Except(relatedOrganisationIds);
+                filteredOrgs = filteredOrgs
+                    .Except(relatedOrganisationIds);
+            }
 
             RelatedOrganisation relatedOrganisation = new()
             {
                 OrganisationId = primaryOrganisation,
-                RelatedOrganisationId = RandomInformation.GetRandomItem(orgsWithoutRelationship),
+                RelatedOrganisationId = RandomInformation.GetRandomItem(filteredOrgs),
             };
 
             return relatedOrganisation;
@@ -31,21 +33,19 @@
 
         public static async Task<IEnumerable<RelatedOrganisation>> GetAllRelatedOrganisationsForOrganisation(string connectionString, Guid organisationId)
         {
-            var query = "SELECT * FROM dbo.RelatedOrganisation WHERE OrganisationId = @organisationId;";
-
+            var query = "SELECT * FROM dbo.RelatedOrganisations WHERE OrganisationId = @organisationId;";
             return await SqlExecutor.ExecuteAsync<RelatedOrganisation>(connectionString, query, new { organisationId });
         }
 
         public static async Task AddRelatedOrganisation(string connectionString, RelatedOrganisation relatedOrganisation)
         {
-            var query = "INSERT INTO dbo.RelatedOrganisation (OrganisationId, RelatedOrganisationId) VALUES (@organisationId, @relatedOrganisationId);";
-
+            var query = "INSERT INTO dbo.RelatedOrganisations (OrganisationId, RelatedOrganisationId) VALUES (@organisationId, @relatedOrganisationId);";
             await SqlExecutor.ExecuteAsync<RelatedOrganisation>(connectionString, query, new { organisationId = relatedOrganisation.OrganisationId, relatedOrganisationId = relatedOrganisation.RelatedOrganisationId });
         }
 
         public static async Task DeleteRelatedOrganisation(string connectionString, RelatedOrganisation relatedOrganisation)
         {
-            var query = "DELETE FROM dbo.RelatedOrganisation WHERE OrganisationId = @organisationId AND RelatedOrganisationId = @relatedOrganisationId;";
+            var query = "DELETE FROM dbo.RelatedOrganisations WHERE OrganisationId = @organisationId AND RelatedOrganisationId = @relatedOrganisationId;";
 
             await SqlExecutor.ExecuteAsync<RelatedOrganisation>(connectionString, query, new { organisationId = relatedOrganisation.OrganisationId, relatedOrganisationId = relatedOrganisation.RelatedOrganisationId });
         }

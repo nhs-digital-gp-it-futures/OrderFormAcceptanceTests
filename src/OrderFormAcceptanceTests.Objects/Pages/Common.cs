@@ -45,5 +45,9 @@
         public static Func<int, By> TableRowX => (index) => By.CssSelector(string.Format("[data-test-id=table-row-{0}]", index.ToString()));
 
         public static By DeleteConfirmationOrderDescription => CustomBy.DataTestId("catalogue-description");
+
+        public static By ChangeOrgLink => CustomBy.DataTestId("dashboard-page-proxy-on-behalf");
+
+        public static By SelectPage => By.ClassName("nhsuk-hint");
     }
 }
