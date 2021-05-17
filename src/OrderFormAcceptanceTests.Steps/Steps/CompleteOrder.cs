@@ -190,7 +190,6 @@
             await OrderProgressHelper.SetProgress(
                context: DbContext,
                order: order,
-               serviceRecipientsViewed: true,
                catalogueSolutionsViewed: true,
                additionalServicesViewed: true,
                associatedServicesViewed: true);

@@ -9,12 +9,10 @@
         public static async Task SetProgress(
             OrderingDbContext context,
             Order order,
-            bool serviceRecipientsViewed,
             bool catalogueSolutionsViewed,
             bool additionalServicesViewed,
             bool associatedServicesViewed)
         {
-            order.Progress.ServiceRecipientsViewed = serviceRecipientsViewed;
             order.Progress.CatalogueSolutionsViewed = catalogueSolutionsViewed;
             order.Progress.AdditionalServicesViewed = additionalServicesViewed;
             order.Progress.AssociatedServicesViewed = associatedServicesViewed;

@@ -367,7 +367,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -393,7 +392,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -419,7 +417,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -445,7 +442,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -479,7 +475,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -511,7 +506,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -537,7 +531,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -563,7 +556,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -600,7 +592,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -644,7 +635,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -681,7 +671,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();

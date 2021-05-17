@@ -45,7 +45,6 @@ namespace OrderFormAcceptanceTests.Persistence.Data
             modelBuilder.ApplyConfiguration(new OrderProgressEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PricingUnitEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ServiceInstanceItemEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new SelectedServiceRecipientEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ServiceRecipientEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SupplierEntityTypeConfiguration());
         }
