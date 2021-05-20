@@ -33,7 +33,7 @@
 
         public static async Task<Order> CreateOrderAsync(CreateOrderModel model, OrderingDbContext dbContext, User user, string isapiConnectionString)
         {
-            var organisationDetails = await Organisation.GetOdsCode(isapiConnectionString, model.OrganisationId);
+            var organisationDetails = await Organisation.GetOrganisationById(isapiConnectionString, model.OrganisationId);
             var orderingParty = await dbContext.OrderingParty.FindAsync(model.OrganisationId)
                 ?? new OrderingParty
                 {

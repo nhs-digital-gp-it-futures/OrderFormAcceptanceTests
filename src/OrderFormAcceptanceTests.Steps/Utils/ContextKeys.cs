@@ -26,5 +26,8 @@
         internal const string DbContext = nameof(DbContext);
         internal const string NumberOfPrices = nameof(NumberOfPrices);
         internal const string DeletedOrderItem = nameof(DeletedOrderItem);
+
+        internal const string RelatedOrganisation = nameof(RelatedOrganisation);
+        internal const string RelatedOrganisationName = nameof(RelatedOrganisationName);
     }
 }

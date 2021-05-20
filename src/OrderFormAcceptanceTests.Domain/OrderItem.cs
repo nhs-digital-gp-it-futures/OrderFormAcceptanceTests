@@ -30,6 +30,8 @@ namespace OrderFormAcceptanceTests.Domain
 
         public IReadOnlyList<OrderItemRecipient> OrderItemRecipients => recipients;
 
+        public int? PriceId { get; set; } = 1;
+
         public decimal? Price { get; set; }
 
         public PricingUnit PricingUnit { get; set; }

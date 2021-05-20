@@ -178,8 +178,9 @@
             }
 
             var f = new Faker();
-            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1).ToString());
-            Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
+            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1, max: 99999).ToString());
+            var defaultPrice = decimal.Parse(Test.Pages.OrderForm.GetPriceInputValue());
+            Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount(max: defaultPrice).ToString());
         }
 
         [Given(@"an Associated Service with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]
@@ -395,6 +396,61 @@
         {
             Test.Pages.OrderForm.ClickAddedCatalogueItem();
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("information for").Should().BeTrue();
+        }
+
+        [Given(@"User enters a price greater than the list price selected")]
+        public async Task GivenUserEntersAPriceGreaterThanTheListPriceSelectedAsync()
+        {
+            // (1) get price of solution in the DB
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var orderItemsInDb = (await DbContext.Order.FindAsync(order.Id))
+                .OrderItems.Single(
+                s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.AssociatedService);
+
+            // (2) increase the value of the db price
+            var dbPrice = orderItemsInDb.Price.Value;
+            var exceededValue = dbPrice + 0.1m;
+
+            // var exceededValue = decimal.Add(dbPrice, 0.1m);
+
+            // (3) clear the default value in the price field and enter a value higher than the item price
+            Test.Pages.OrderForm.EnterPriceInputValue(exceededValue.ToString());
+
+            Test.Pages.OrderForm.ClickSaveButton();
+        }
+
+        [When(@"they choose to save")]
+        public void WhenTheyChooseToSave()
+        {
+            Test.Pages.OrderForm.ClickSaveButton();
+        }
+
+        [Then(@"they are informed")]
+        public void ThenTheyAreInformed()
+        {
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
+        }
+
+        [Given(@"the User enters a price less than or equal to the list price selected")]
+        public async Task GivenTheUserEntersAPriceLessThanOrEqualToTheListPriceSelectedAsync()
+        {
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var orderItemsInDb = (await DbContext.Order.FindAsync(order.Id))
+                .OrderItems.Single(
+                s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.AssociatedService);
+
+            var dbPrice = orderItemsInDb.Price.Value;
+
+            Test.Pages.OrderForm.EnterPriceInputValue(dbPrice.ToString());
+
+            Test.Pages.OrderForm.ClickSaveButton();
+        }
+
+        [Then(@"the price is valid")]
+        public void ThenThePriceIsValid()
+        {
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeFalse();
+            Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
         }
     }
 }

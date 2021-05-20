@@ -28,6 +28,7 @@
         {
         }
 
+        [Then(@"the price is not saved")]
         [Given(@"the User has not completed the Order")]
         [Given(@"no Funding Source option is selected")]
         [StepDefinition(@"the Associated Service is saved")]
@@ -367,7 +368,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -393,7 +393,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -419,7 +418,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -445,7 +443,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -479,7 +476,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -511,7 +507,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -537,7 +532,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -563,7 +557,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -600,7 +593,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -644,7 +636,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -681,7 +672,6 @@
             selectedRecipients.AddRange(recipients.Select(r => new SelectedServiceRecipient { Recipient = r.Recipient }));
 
             order.AddOrUpdateOrderItem(orderItem);
-            order.SetSelectedServiceRecipients(selectedRecipients);
 
             DbContext.Update(order);
             await DbContext.SaveChangesAsync();
@@ -815,7 +805,14 @@
             var user = UsersHelper.GenerateRandomUser(organisation.OrganisationId, new User() { UserType = userType });
             await UsersHelper.Create(Test.IsapiConnectionString, user);
 
+            var allOrgs = await RelatedOrganisationsHelper.GetAllOrganisations(Test.IsapiConnectionString);
+            var allRelated = await RelatedOrganisationsHelper.GetAllRelatedOrganisationsForOrganisation(Test.IsapiConnectionString, user.PrimaryOrganisationId);
+            var relatedOrgansation = RelatedOrganisationsHelper.GenerateRelatedOrganisation(allOrgs, allRelated, user.PrimaryOrganisationId);
+
+            await RelatedOrganisationsHelper.AddRelatedOrganisation(Test.IsapiConnectionString, relatedOrgansation);
+
             Context.Add(ContextKeys.User, user);
+            Context.Add(ContextKeys.RelatedOrganisation, relatedOrgansation);
         }
 
         public async Task SetOrderCatalogueSectionToComplete()

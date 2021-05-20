@@ -9,7 +9,6 @@ namespace OrderFormAcceptanceTests.Domain
     {
         private readonly List<DefaultDeliveryDate> defaultDeliveryDates = new();
         private readonly List<OrderItem> orderItems = new();
-        private readonly List<SelectedServiceRecipient> selectedServiceRecipients = new();
         private readonly List<ServiceInstanceItem> serviceInstanceItems = new();
 
         private DateTime? completed;
@@ -71,8 +70,6 @@ namespace OrderFormAcceptanceTests.Domain
 
         public IReadOnlyList<DefaultDeliveryDate> DefaultDeliveryDates => defaultDeliveryDates.AsReadOnly();
 
-        public IReadOnlyList<SelectedServiceRecipient> SelectedServiceRecipients => selectedServiceRecipients.AsReadOnly();
-
         public IReadOnlyList<ServiceInstanceItem> ServiceInstanceItems => serviceInstanceItems.AsReadOnly();
 
         public decimal CalculateCostPerYear(CostType costType)
@@ -108,20 +105,6 @@ namespace OrderFormAcceptanceTests.Domain
             return result;
         }
 
-        public void SetSelectedServiceRecipients(IReadOnlyList<SelectedServiceRecipient> selectedRecipients)
-        {
-            if (selectedRecipients is null)
-                throw new ArgumentNullException(nameof(selectedRecipients));
-
-            selectedServiceRecipients.Clear();
-            selectedServiceRecipients.AddRange(selectedRecipients);
-
-            if (selectedRecipients.Count == 0)
-                Progress.CatalogueSolutionsViewed = false;
-
-            Progress.ServiceRecipientsViewed = true;
-        }
-
         public void SetLastUpdatedBy(Guid userId, string userName)
         {
             lastUpdatedBy = userId;
@@ -154,7 +137,6 @@ namespace OrderFormAcceptanceTests.Domain
             if (!FundingSourceOnlyGms.HasValue)
                 return false;
 
-            var serviceRecipientsCount = OrderItems.SelectMany(i => i.OrderItemRecipients).Count();
             int catalogueSolutionsCount = OrderItems.Count(o => o.CatalogueItem.CatalogueItemType.Equals(CatalogueItemType.Solution));
             int associatedServicesCount = OrderItems.Count(o => o.CatalogueItem.CatalogueItemType.Equals(CatalogueItemType.AssociatedService));
 
@@ -165,18 +147,12 @@ namespace OrderFormAcceptanceTests.Domain
                 && associatedServicesCount == 0
                 && Progress.AssociatedServicesViewed;
 
-            var noSolutionsAndAssociatedServices = serviceRecipientsCount > 0
-                && catalogueSolutionsCount == 0
+            var noSolutionsAndAssociatedServices = catalogueSolutionsCount == 0
                 && Progress.CatalogueSolutionsViewed
-                && associatedServicesCount > 0;
-
-            var recipientsAndAssociatedServices = serviceRecipientsCount == 0
-                && Progress.ServiceRecipientsViewed
                 && associatedServicesCount > 0;
 
             return solutionAndNoAssociatedServices
                 || solutionAndAssociatedServices
-                || recipientsAndAssociatedServices
                 || noSolutionsAndAssociatedServices;
         }
 

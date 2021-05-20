@@ -1,6 +1,5 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
-    using System;
     using System.Threading.Tasks;
     using BoDi;
     using Microsoft.EntityFrameworkCore;
@@ -10,6 +9,7 @@
     using OrderFormAcceptanceTests.Persistence.Data;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData.Helpers;
+    using OrderFormAcceptanceTests.TestData.Models;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -40,6 +40,7 @@
             context.Add(ContextKeys.DbContext, dbContext);
 
             test.GoToUrl();
+
             await new CommonSteps(test, context).GivenThatABuyerUserHasLoggedIn();
         }
 
@@ -64,6 +65,12 @@
 
             if (context.ContainsKey(ContextKeys.User))
             {
+                if (context.ContainsKey(ContextKeys.RelatedOrganisation))
+                {
+                    var relatedOrganisation = context.Get<RelatedOrganisation>(ContextKeys.RelatedOrganisation);
+                    await RelatedOrganisationsHelper.DeleteRelatedOrganisation(test.IsapiConnectionString, relatedOrganisation);
+                }
+
                 var user = (User)context[ContextKeys.User];
                 await UsersHelper.Delete(test.IsapiConnectionString, user);
             }

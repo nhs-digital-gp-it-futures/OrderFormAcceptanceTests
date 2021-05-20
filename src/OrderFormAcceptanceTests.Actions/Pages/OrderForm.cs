@@ -327,15 +327,9 @@
 
         public bool EditNamedSectionPageDisplayed(string namedSectionPageTitle)
         {
-            try
-            {
-                Wait.Until(d => d.FindElement(Objects.Pages.OrderForm.PageTitle).Text.Contains(namedSectionPageTitle, StringComparison.OrdinalIgnoreCase));
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            var title = Driver.FindElement(Objects.Pages.OrderForm.PageTitle).Text;
+
+            return title.Contains(namedSectionPageTitle, StringComparison.CurrentCultureIgnoreCase);
         }
 
         public bool EditCatalogueSolutionsSectionDisplayed()
@@ -1039,6 +1033,21 @@
 
             return Driver.FindElements(Objects.Pages.Common.TableRows).Select(r => r.Text)
                 .Any(t => t.Contains(expected, StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        public void ChangeOrgLinkDisplayed()
+        {
+            Driver.FindElements(Objects.Pages.Common.ChangeOrgLink).Count.Should().Be(1);
+        }
+
+        public void ClickChangeOrgLink()
+        {
+            Driver.FindElement(Objects.Pages.Common.ChangeOrgLink).Click();
+        }
+
+        public string SelectRelatedOrgPageDisplayed()
+        {
+            return Driver.FindElement(Objects.Pages.Common.SelectPage).Text;
         }
 
         private ReadOnlyCollection<IWebElement> ListOfSupplierNames()
