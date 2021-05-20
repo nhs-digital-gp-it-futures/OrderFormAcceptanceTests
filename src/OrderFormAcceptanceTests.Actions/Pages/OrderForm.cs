@@ -327,15 +327,9 @@
 
         public bool EditNamedSectionPageDisplayed(string namedSectionPageTitle)
         {
-            try
-            {
-                Wait.Until(d => d.FindElement(Objects.Pages.OrderForm.PageTitle).Text.Contains(namedSectionPageTitle, StringComparison.OrdinalIgnoreCase));
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            var title = Driver.FindElement(Objects.Pages.OrderForm.PageTitle).Text;
+
+            return title.Contains(namedSectionPageTitle, StringComparison.CurrentCultureIgnoreCase);
         }
 
         public bool EditCatalogueSolutionsSectionDisplayed()

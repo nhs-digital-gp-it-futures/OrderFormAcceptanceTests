@@ -178,8 +178,9 @@
             }
 
             var f = new Faker();
-            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1).ToString());
-            Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount().ToString());
+            Test.Pages.OrderForm.EnterQuantity(f.Random.Number(min: 1, max: 99999).ToString());
+            var defaultPrice = decimal.Parse(Test.Pages.OrderForm.GetPriceInputValue());
+            Test.Pages.OrderForm.EnterPriceInputValue(f.Finance.Amount(max: defaultPrice).ToString());
         }
 
         [Given(@"an Associated Service with a flat price variable \(On-demand\) order type with the quantity period per year is saved to the order")]

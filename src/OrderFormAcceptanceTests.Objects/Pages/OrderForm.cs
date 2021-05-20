@@ -16,7 +16,7 @@
 
         public static By CompleteOrderLabel => CustomBy.DataTestId("complete-order-button");
 
-        public static By PageTitle => By.CssSelector("[data-test-id$='-title']");
+        public static By PageTitle => By.TagName("h1");
 
         public static By TaskList => CustomBy.DataTestId("task-list");
 

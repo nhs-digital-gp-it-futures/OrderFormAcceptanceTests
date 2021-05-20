@@ -48,6 +48,6 @@
 
         public static By ChangeOrgLink => CustomBy.DataTestId("dashboard-page-proxy-on-behalf");
 
-        public static By SelectPage => By.ClassName("nhsuk-hint");
+        public static By SelectPage => By.CssSelector("p.nhsuk-heading-l");
     }
 }
