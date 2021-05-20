@@ -28,5 +28,6 @@
         internal const string DeletedOrderItem = nameof(DeletedOrderItem);
 
         internal const string RelatedOrganisation = nameof(RelatedOrganisation);
+        internal const string RelatedOrganisationName = nameof(RelatedOrganisationName);
     }
 }

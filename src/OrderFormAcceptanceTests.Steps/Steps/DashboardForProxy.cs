@@ -1,7 +1,14 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
+    using System;
+    using System.Threading.Tasks;
     using FluentAssertions;
+    using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
+    using OrderFormAcceptanceTests.TestData;
+    using OrderFormAcceptanceTests.TestData.Helpers;
+    using OrderFormAcceptanceTests.TestData.Models;
+    using OrderFormAcceptanceTests.TestData.Utils;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -34,7 +41,8 @@
         [Then(@"the selected organisation's name is displayed in the current organisation section")]
         public void ThenTheSelectedOrganisationSNameIsDisplayedInTheCurrentOrganisationSection()
         {
-            Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
+            var organisation = Context.Get<string>(ContextKeys.RelatedOrganisationName);
+            Test.Pages.OrderForm.TextDisplayedInPageTitle(organisation).Should().BeTrue();
         }
 
         [Then(@"there is no change to the organisation")]
@@ -77,9 +85,13 @@
         }
 
         [Given(@"the user selects an organisation")]
-        public void GivenTheUserSelectsAnOrganisation()
+        public async Task GivenTheUserSelectsAnOrganisationAsync()
         {
-            Test.Pages.OrderForm.ClickRadioButton(0);
+            var orgId = Test.Pages.OrderForm.ClickRadioButton(1);
+            var organisation = await Organisation.GetOrganisationById(Test.IsapiConnectionString, new Guid(orgId));
+
+            Context.Remove(ContextKeys.RelatedOrganisationName);
+            Context.Add(ContextKeys.RelatedOrganisationName, organisation.Name);
         }
 
         [When(@"the user chooses to continue without selecting an organisation")]
@@ -119,5 +131,12 @@
             WhenTheUserChoosesToChangeOrganisation();
             ThenTheUserIsPresentedWithAListOfAllOrganisationsTheyCanCreateOrdersFor();
         }
+
+        [When(@"the user chooses to change organization")]
+        public void WhenTheUserChoosesToChangeOrganization()
+        {
+            WhenTheUserChoosesToChangeOrganisation();
+        }
+
     }
 }

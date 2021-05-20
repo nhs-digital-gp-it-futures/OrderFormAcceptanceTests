@@ -397,5 +397,60 @@
             Test.Pages.OrderForm.ClickAddedCatalogueItem();
             Test.Pages.OrderForm.EditNamedSectionPageDisplayed("information for").Should().BeTrue();
         }
+
+        [Given(@"User enters a price greater than the list price selected")]
+        public async Task GivenUserEntersAPriceGreaterThanTheListPriceSelectedAsync()
+        {
+            // (1) get price of solution in the DB
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var orderItemsInDb = (await DbContext.Order.FindAsync(order.Id))
+                .OrderItems.Single(
+                s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.AssociatedService);
+
+            // (2) increase the value of the db price
+            var dbPrice = orderItemsInDb.Price.Value;
+            var exceededValue = dbPrice + 0.1m;
+
+            // var exceededValue = decimal.Add(dbPrice, 0.1m);
+
+            // (3) clear the default value in the price field and enter a value higher than the item price
+            Test.Pages.OrderForm.EnterPriceInputValue(exceededValue.ToString());
+
+            Test.Pages.OrderForm.ClickSaveButton();
+        }
+
+        [When(@"they choose to save")]
+        public void WhenTheyChooseToSave()
+        {
+            Test.Pages.OrderForm.ClickSaveButton();
+        }
+
+        [Then(@"they are informed")]
+        public void ThenTheyAreInformed()
+        {
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
+        }
+
+        [Given(@"the User enters a price less than or equal to the list price selected")]
+        public async Task GivenTheUserEntersAPriceLessThanOrEqualToTheListPriceSelectedAsync()
+        {
+            var order = Context.Get<Order>(ContextKeys.CreatedOrder);
+            var orderItemsInDb = (await DbContext.Order.FindAsync(order.Id))
+                .OrderItems.Single(
+                s => s.CatalogueItem.CatalogueItemType == CatalogueItemType.AssociatedService);
+
+            var dbPrice = orderItemsInDb.Price.Value;
+
+            Test.Pages.OrderForm.EnterPriceInputValue(dbPrice.ToString());
+
+            Test.Pages.OrderForm.ClickSaveButton();
+        }
+
+        [Then(@"the price is valid")]
+        public void ThenThePriceIsValid()
+        {
+            Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeFalse();
+            Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
+        }
     }
 }

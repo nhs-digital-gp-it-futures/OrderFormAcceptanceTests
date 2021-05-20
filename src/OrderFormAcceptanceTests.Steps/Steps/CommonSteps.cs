@@ -28,6 +28,7 @@
         {
         }
 
+        [Then(@"the price is not saved")]
         [Given(@"the User has not completed the Order")]
         [Given(@"no Funding Source option is selected")]
         [StepDefinition(@"the Associated Service is saved")]

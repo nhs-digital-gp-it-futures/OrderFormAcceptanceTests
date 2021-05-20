@@ -28,7 +28,7 @@
             return result.Single();
         }
 
-        public static async Task<Organisation> GetOdsCode(string connectionString, Guid organisationId)
+        public static async Task<Organisation> GetOrganisationById(string connectionString, Guid organisationId)
         {
             var query = "SELECT * FROM Organisations WHERE OrganisationId = @organisationId;";
             var result = await SqlExecutor.ExecuteAsync<Organisation>(connectionString, query, new { organisationId });
