@@ -21,20 +21,23 @@ Scenario: View Dashboard For Proxy - View Another Organisation's Dashboard
     And the user selects an organisation
     When the user chooses to continue
     Then they are presented with the selected organisation's orders dashboard
-    And the selected organisation's name is displayed in the current organisation section
+    And the correct selected organisation's name is displayed in the current organisation section
 
 Scenario: View Dashboard For Proxy - Error Message
     Given the user is on the organisation's order dashboard
-    When the user chooses to continue without selecting an organisation
+    When the user chooses to change organisation
+    And the user chooses to continue without selecting an organisation
     Then an error message is presented
 
-    @ignore - due to BUG
 Scenario: View Dashboard For Proxy - Go Back
-    Given the list of organisations the user can create orders for is displayed
-    And the user selects an organisation
-    When the user chooses to continue
-    Then they are presented with the selected organisation's orders dashboard
-    And the selected organisation's name is displayed in the current organisation section
+    Given the user has previously selected an organisation
     When the user chooses to change organization
     And the user chooses to go back 
-    Then the selected organisation's name is displayed in the current organisation section
+    Then the correct selected organisation's name is displayed in the current organisation section
+
+Scenario: View Dashboard For Proxy - Go Back Button Updated
+    Given the user is on the change organisation page
+    And the user has selected a customer Organisation to act on behalf of
+    And the user chooses to manage orders for the organisation 
+    When the user chooses to go back
+    Then the user is taken back to a page with the correct Organisation ID in the URL

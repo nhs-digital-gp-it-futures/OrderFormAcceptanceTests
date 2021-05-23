@@ -1,6 +1,8 @@
 ﻿namespace OrderFormAcceptanceTests.Steps.Steps
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using FluentAssertions;
     using OrderFormAcceptanceTests.Domain;
@@ -25,6 +27,7 @@
             Test.Driver.Url.Should().Contain("/order/");
         }
 
+        [StepDefinition(@"the primary organisation is presented as the default organisation")]
         [When(@"the user chooses to create and manager orders")]
         public void WhenTheUserChoosesToCreateAndManagerOrders()
         {
@@ -38,7 +41,7 @@
             Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
         }
 
-        [Then(@"the selected organisation's name is displayed in the current organisation section")]
+        [Then(@"the correct selected organisation's name is displayed in the current organisation section")]
         public void ThenTheSelectedOrganisationSNameIsDisplayedInTheCurrentOrganisationSection()
         {
             var organisation = Context.Get<string>(ContextKeys.RelatedOrganisationName);
@@ -106,7 +109,6 @@
         {
             GivenTheUserIsLoggedInAsAProxyBuyer();
             WhenTheUserChoosesToChangeOrganisation();
-            ThenTheUserIsPresentedWithAListOfAllOrganisationsTheyCanCreateOrdersFor();
             Test.Pages.OrderForm.SelectRelatedOrgPageDisplayed()
             .Should().ContainEquivalentOf("select the organisation");
         }
@@ -132,11 +134,53 @@
             ThenTheUserIsPresentedWithAListOfAllOrganisationsTheyCanCreateOrdersFor();
         }
 
+        [Given(@"the user has previously selected an organisation")]
+        public async Task GivenTheUserHasPreviouslySelectedAnOrganisationAsync()
+        {
+            GivenTheUserIsLoggedInAsAProxyBuyer();
+            WhenTheUserChoosesToChangeOrganisation();
+
+            var orgId = Test.Pages.OrderForm.ClickRadioButton(1);
+            var organisation = await Organisation.GetOrganisationById(Test.IsapiConnectionString, new Guid(orgId));
+
+            Context.Remove(ContextKeys.RelatedOrganisationName);
+            Context.Add(ContextKeys.RelatedOrganisationName, organisation.Name);
+
+            WhenTheUserChoosesToContinue();
+            Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
+        }
+
         [When(@"the user chooses to change organization")]
         public void WhenTheUserChoosesToChangeOrganization()
         {
-            WhenTheUserChoosesToChangeOrganisation();
+            Test.Driver.Navigate().Refresh();
+            Test.Pages.OrganisationsOrdersDashboard.CreateNewOrderButtonDisplayed();
+            Test.Pages.OrderForm.ClickChangeOrgLink();
         }
 
+        [Given(@"the user has selected a customer Organisation to act on behalf of")]
+        public async Task GivenTheUserHasSelectedACustomerOrganisationToActOnBehalfOfAsync()
+        {
+            var orgId = Test.Pages.OrderForm.ClickRadioButton(1);
+            var organisation = await Organisation.GetOrganisationById(Test.IsapiConnectionString, new Guid(orgId));
+            Context.Remove(ContextKeys.ExpectedUrl);
+            Context.Add(ContextKeys.ExpectedUrl, organisation.OdsCode);
+            Test.Pages.OrderForm.ClickContinueButton();
+        }
+
+        [Given(@"the user chooses to manage orders for the organisation")]
+        public void GivenTheUserChoosesToManageOrdersForTheOrganisation()
+        {
+            Test.Pages.OrganisationsOrdersDashboard.CreateNewOrderButtonDisplayed();
+            Test.Pages.OrganisationsOrdersDashboard.CreateNewOrder();
+        }
+
+        [Then(@"the user is taken back to a page with the correct Organisation ID in the URL")]
+        public void ThenTheUserIsTakenBackToAPageWithTheCorrectOrganisationIDInTheURLAsync()
+        {
+            // using ODS Code rather than OrgId
+            var expectedOdsCode = Context.Get<string>(ContextKeys.ExpectedUrl);
+            Test.Driver.Url.Split('/').Last().Equals(expectedOdsCode);
+        }
     }
 }

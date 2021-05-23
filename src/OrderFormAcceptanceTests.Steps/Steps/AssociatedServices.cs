@@ -415,8 +415,6 @@
 
             // (3) clear the default value in the price field and enter a value higher than the item price
             Test.Pages.OrderForm.EnterPriceInputValue(exceededValue.ToString());
-
-            Test.Pages.OrderForm.ClickSaveButton();
         }
 
         [When(@"they choose to save")]
@@ -431,8 +429,8 @@
             Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeTrue();
         }
 
-        [Given(@"the User enters a price less than or equal to the list price selected")]
-        public async Task GivenTheUserEntersAPriceLessThanOrEqualToTheListPriceSelectedAsync()
+        [When(@"the User enters a price less than or equal to the list price selected")]
+        public async Task WhenTheUserEntersAPriceLessThanOrEqualToTheListPriceSelectedAsync()
         {
             var order = Context.Get<Order>(ContextKeys.CreatedOrder);
             var orderItemsInDb = (await DbContext.Order.FindAsync(order.Id))
@@ -442,15 +440,13 @@
             var dbPrice = orderItemsInDb.Price.Value;
 
             Test.Pages.OrderForm.EnterPriceInputValue(dbPrice.ToString());
-
-            Test.Pages.OrderForm.ClickSaveButton();
         }
 
         [Then(@"the price is valid")]
         public void ThenThePriceIsValid()
         {
             Test.Pages.OrderForm.ErrorMessagesDisplayed().Should().BeFalse();
-            Test.Pages.OrderForm.TaskListDisplayed().Should().BeTrue();
+            ThenTheAssociatedServicesDashboardIsPresented();
         }
     }
 }

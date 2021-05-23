@@ -29,5 +29,6 @@
 
         internal const string RelatedOrganisation = nameof(RelatedOrganisation);
         internal const string RelatedOrganisationName = nameof(RelatedOrganisationName);
+        internal const string PrimaryOrganisationName = nameof(PrimaryOrganisationName);
     }
 }
