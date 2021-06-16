@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using FluentAssertions;
+    using Microsoft.EntityFrameworkCore;
     using OrderFormAcceptanceTests.Domain;
     using OrderFormAcceptanceTests.Steps.Utils;
     using OrderFormAcceptanceTests.TestData;
@@ -34,6 +35,7 @@
             Test.Pages.OrganisationsOrdersDashboard.CreateNewOrderButtonDisplayed();
         }
 
+        [Then(@"the order dashboard for their chosen organisation is presented")]
         [Then(@"they are presented with the selected organisation's orders dashboard")]
         [Then(@"the organisation's order dashboard is presented")]
         public void ThenTheOrganisationsOrderDashboardIsPresented()
@@ -75,6 +77,7 @@
             Test.Pages.OrderForm.ClickChangeOrgLink();
         }
 
+        [StepDefinition(@"the list of organisations is presented")]
         [Then(@"the user is presented with a list of all organisations they can create orders for")]
         public void ThenTheUserIsPresentedWithAListOfAllOrganisationsTheyCanCreateOrdersFor()
         {
@@ -158,6 +161,8 @@
             Test.Pages.OrderForm.ClickChangeOrgLink();
         }
 
+        [StepDefinition(@"the user selects the organisation they want to act on behalf of")]
+        [StepDefinition(@"the user has selected a Customer Organisation to act on behalf of")]
         [Given(@"the user has selected a customer Organisation to act on behalf of")]
         public async Task GivenTheUserHasSelectedACustomerOrganisationToActOnBehalfOfAsync()
         {
@@ -175,12 +180,54 @@
             Test.Pages.OrganisationsOrdersDashboard.CreateNewOrder();
         }
 
-        [Then(@"the user is taken back to a page with the correct Organisation ID in the URL")]
-        public void ThenTheUserIsTakenBackToAPageWithTheCorrectOrganisationIDInTheURLAsync()
+        [Then(@"the Buying Catalogue URLs are updated to include the organisation ODS code of that customer organisation")]
+        [Then(@"the user is taken back to a page with the correct Organisation ODS in the URL")]
+        public void ThenTheUserIsTakenBackToAPageWithTheCorrectOrganisationODSInTheURLAsync()
         {
-            // using ODS Code rather than OrgId
             var expectedOdsCode = Context.Get<string>(ContextKeys.ExpectedUrl);
             Test.Driver.Url.Split('/').Last().Equals(expectedOdsCode);
+        }
+
+        [Then(@"the correct organisation ODS code is present in the URLs for the orders dashboard and each page of the order form")]
+        public void ThenTheCorrectOrganisationODSCodeIsPresentInTheURLsForTheOrdersDashboardAndEachPageOfTheOrderForm()
+        {
+            Test.Driver.Navigate().Refresh();
+            Test.Pages.OrganisationsOrdersDashboard.CreateNewOrder();
+
+            var expectedOdsCode = Context.Get<string>(ContextKeys.ExpectedUrl);
+            var splitOdsCode = expectedOdsCode.Split('/')[0];
+            Test.Driver.Url.Should().Equals(splitOdsCode);
+        }
+
+        [When(@"the user chooses to create manager orders")]
+        public void WhenTheUserChoosesToCreateManagerOrders()
+        {
+            Test.Pages.OrganisationsOrdersDashboard.CreateNewOrderButtonDisplayed();
+            Test.Pages.OrganisationsOrdersDashboard.CreateNewOrder();
+        }
+
+        [Given(@"that the user is presented with a list of organisations they can act on behalf of")]
+        public void GivenThatTheUserIsPresentedWithAListOfOrganisationsTheyCanActOnBehalfOf()
+        {
+            GivenTheUserIsLoggedInAsAProxyBuyer();
+            Test.Pages.OrganisationsOrdersDashboard.CreateNewOrderButtonDisplayed();
+            Test.Pages.OrganisationsOrdersDashboard.CreateNewOrder();
+            Test.Pages.OrderForm.NumberOfRadioButtonsDisplayed().Should().BeGreaterThan(0);
+        }
+
+        [Given(@"that the user wants to create a new order")]
+        public void GivenThatTheUserWantsToCreateANewOrder()
+        {
+            GivenTheUserIsLoggedInAsAProxyBuyer();
+            Test.Pages.OrganisationsOrdersDashboard.CreateNewOrderButtonDisplayed();
+            Test.Pages.OrganisationsOrdersDashboard.CreateNewOrder();
+        }
+
+        [Then(@"the order dashboard will include the order the user has just created")]
+        public void ThenTheOrderDashboardWillIncludeTheOrderTheUserHasJustCreated()
+        {
+            Test.Pages.OrganisationsOrdersDashboard.WaitForDashboardToBeDisplayed();
+            Test.Pages.OrganisationsOrdersDashboard.GetNumberOfCompleteOrders().Should().BeGreaterOrEqualTo(1);
         }
     }
 }

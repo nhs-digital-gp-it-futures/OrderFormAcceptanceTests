@@ -40,4 +40,10 @@ Scenario: View Dashboard For Proxy - Go Back Button Updated
     And the user has selected a customer Organisation to act on behalf of
     And the user chooses to manage orders for the organisation 
     When the user chooses to go back
-    Then the user is taken back to a page with the correct Organisation ID in the URL
+    Then the user is taken back to a page with the correct Organisation ODS in the URL
+
+Scenario: Updated URLs
+    Given the user is on the change organisation page
+    When the user has selected a Customer Organisation to act on behalf of
+    Then the Buying Catalogue URLs are updated to include the organisation ODS code of that customer organisation
+    And the correct organisation ODS code is present in the URLs for the orders dashboard and each page of the order form
