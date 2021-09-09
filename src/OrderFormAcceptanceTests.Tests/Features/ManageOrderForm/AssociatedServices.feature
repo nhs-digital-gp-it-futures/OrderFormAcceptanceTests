@@ -444,7 +444,7 @@ Scenario:  Associated Service - Associated Service dashboard
     Then the Associated Services dashboard is presented
     And the deleted Associated Service is not on the Associated Service dashboard
 
-    @ignore - test passing in manual but failing in test
+@ignore("Need-to-rewrite-this-test")
 Scenario: Associated Service - Price greater than list price selected
     Given an Associated Service has been saved to the order
     And the User has chosen to manage the Associated Service section
@@ -454,7 +454,7 @@ Scenario: Associated Service - Price greater than list price selected
     Then the price is not saved
     And they are informed
 
-    @ignore - test passing in manual but failing in test
+@ignore("Need-to-rewrite-this-test")
 Scenario: Associated Service - Price is less than or equal to the list price selected
     Given an Associated Service has been saved to the order
     And the User has chosen to manage the Associated Service section

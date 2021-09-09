@@ -7,18 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="nunit" Version="3.13.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
+    <PackageReference Include="nunit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
-    <PackageReference Include="SpecFlow" Version="3.7.38" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="89.0.4389.2300" />
-    <PackageReference Include="SpecFlow.NUnit" Version="3.7.38" />
-    <PackageReference Include="SpecFlow.NUnit.Runners" Version="3.7.38" />
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.7.38" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.321">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="SpecFlow" Version="3.9.22" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="93.0.4577.1500" />
+    <PackageReference Include="SpecFlow.NUnit" Version="3.9.22" />
+    <PackageReference Include="SpecFlow.NUnit.Runners" Version="3.9.22" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.22" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
