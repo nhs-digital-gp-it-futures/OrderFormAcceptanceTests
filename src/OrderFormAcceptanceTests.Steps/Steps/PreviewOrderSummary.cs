@@ -45,7 +45,7 @@
             var date = Test.Pages.PreviewOrderSummary.GetDateOrderSummaryCreatedValue();
             date.Should().NotBeNullOrEmpty();
             var expectedDate = DateTime.Now.ToString("d MMMM yyyy");
-            date.Should().EndWithEquivalent(expectedDate);
+            date.Should().EndWithEquivalentOf(expectedDate);
         }
 
         [Then(@"the Call Off Ordering Party information is displayed")]
@@ -95,7 +95,7 @@
             date.Should().NotBeNullOrEmpty();
             var order = await OrderHelpers.GetFullOrderAsync(Context.Get<Order>(ContextKeys.CreatedOrder).CallOffId, DbContext);
             var expectedDate = order.CommencementDate?.ToString("d MMMM yyyy");
-            date.Should().EndWithEquivalent(expectedDate);
+            date.Should().EndWithEquivalentOf(expectedDate);
         }
 
         [Then(@"Order items \(one-off cost\) table is displayed")]
